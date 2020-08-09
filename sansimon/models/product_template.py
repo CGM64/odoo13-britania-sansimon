@@ -28,7 +28,7 @@ select top 100 Articulo, Descripcion1 from art
     def create_products(self, products):
         i = 1
         for product in products:
-            print("Creando producto %s codigo %s" % (i, product["name"]))
+            _logger.info("Creando producto %s codigo %s" % (i, product["name"]))
             self.env['product.template'].create(product)
             i+=1
 
