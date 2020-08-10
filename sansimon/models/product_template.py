@@ -11,8 +11,11 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     def get_import_intelisis(self):
+        self.delete_all_date()
+
         query = """
-select top 100 Articulo, Descripcion1 from art
+select  Articulo, Descripcion1, categoria, grupo, familia, linea from art
+--where articulo = '3116 325'
         """
         sql_server = self.env["connect.mssql"].search([],limit=1)
         res = sql_server.execute_query(query)
@@ -21,15 +24,73 @@ select top 100 Articulo, Descripcion1 from art
             product = {}
             product["name"] = self._format_description(row["Descripcion1"])
             product["default_code"] = row["Articulo"]
+            product["categ_id"] = self._get_Categoria(row["categoria"], row["grupo"], row["familia"], row["linea"])
             product_templates.append(product)
 
         self.create_products(product_templates)
 
+    def _get_Categoria(self, name, grupo_name, familia_name, linea_name):
+        categoria_padre = self.env["product.category"].search([("name","=", "Saleable")])
+        categoria = categoria_padre
+        if name:
+            categoria = self.env["product.category"].search([("name","=", name)])
+            if not categoria:
+                categoria = self.env["product.category"].create({
+                "name": name,
+                "parent_id": categoria_padre.id
+                })
+
+        if grupo_name:
+            categoria_padre = categoria
+            categoria = self.env["product.category"].search([("name","=", grupo_name)])
+            if not categoria:
+                categoria = self.env["product.category"].create({
+                "name": grupo_name,
+                "parent_id": categoria_padre.id
+                })
+
+        if familia_name:
+            categoria_padre = categoria
+            categoria = self.env["product.category"].search([("name","=", familia_name)])
+            if not categoria:
+                categoria = self.env["product.category"].create({
+                "name": familia_name,
+                "parent_id": categoria_padre.id
+                })
+
+        if linea_name:
+            categoria_padre = categoria
+            categoria = self.env["product.category"].search([("name","=", linea_name)])
+            if not categoria:
+                categoria = self.env["product.category"].create({
+                "name": linea_name,
+                "parent_id": categoria_padre.id
+                })
+
+        #Si trae null la categoria de intelisis entonce se le asigna la categoria padre.
+        return categoria.id
+
+    def delete_all_date(self):
+
+        self._cr.execute('select distinct categ_id from product_template')
+        ids = tuple(categ[0] for categ in self._cr.fetchall())
+
+        self.env.cr.execute('Delete from product_template')
+
+        if ids:
+            self.env.cr.execute("Delete from product_category where id in %s and name <> 'Saleable' " , (ids,))
+
     def create_products(self, products):
         i = 1
         for product in products:
-            _logger.info("Creando producto %s codigo %s" % (i, product["name"]))
-            self.env['product.template'].create(product)
+
+            find_codigo = self.search([("default_code","=",product["default_code"])])
+            if not find_codigo:
+                _logger.info("Creando producto %s codigo %s" % (i, product["name"]))
+                self.env['product.template'].create(product)
+            else:
+                find_codigo["name"] = product["name"]
+                _logger.info("Actualizado, producto %s codigo %s" % (i, product["name"]))
             i+=1
 
     def _format_description(self, name):
