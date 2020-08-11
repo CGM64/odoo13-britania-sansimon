@@ -6,6 +6,8 @@ from odoo import models, fields, api
 
 _logger = logging.getLogger(__name__)
 
+EMPRESA = 'SANSI'
+SUCURSAL = 901
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -14,10 +16,15 @@ class ProductTemplate(models.Model):
         self.delete_all_date()
 
         query = """
-select  Articulo, Descripcion1, categoria, grupo, familia, linea from art
+select top 100 a.Articulo, a.Descripcion1, a.categoria, a.grupo, a.familia, a.linea,
+isnull(a.preciolista,0.0) * m.tipocambio precio, isnull(c.costopromedio,0.0) costopromedio
+from art a
+join mon m on m.moneda = 'Dolar'
+left outer join ArtCostoSucursal c on a.articulo = c.articulo and c.empresa = '%s' AND c.sucursal = %s
 --where articulo = '3116 325'
         """
         sql_server = self.env["connect.mssql"].search([],limit=1)
+        query = query % (EMPRESA, SUCURSAL,)
         res = sql_server.execute_query(query)
         product_templates = []
         for row in res:
@@ -25,6 +32,8 @@ select  Articulo, Descripcion1, categoria, grupo, familia, linea from art
             product["name"] = self._format_description(row["Descripcion1"])
             product["default_code"] = row["Articulo"]
             product["categ_id"] = self._get_Categoria(row["categoria"], row["grupo"], row["familia"], row["linea"])
+            product["list_price"] = row["precio"]
+            product["standard_price"] = row["costopromedio"]
             product_templates.append(product)
 
         self.create_products(product_templates)
