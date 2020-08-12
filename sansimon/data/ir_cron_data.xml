@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="0">
+    <!-- <data noupdate="0">
         <record id="san_simon_product_template_cron" model="ir.cron">
         	<field name="name">Actualiza productos de intelisis</field>
         	<field name="user_id" ref="base.user_root"/>
@@ -13,5 +13,5 @@
         	<field name="state">code</field>
         	<field name="code">model.get_import_intelisis()</field>
         </record>
-    </data>
+    </data> -->
 </odoo>

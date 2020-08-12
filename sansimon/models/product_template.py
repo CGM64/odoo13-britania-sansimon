@@ -13,10 +13,8 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     def get_import_intelisis(self):
-        self.delete_all_date()
-
         query = """
-select top 100 a.Articulo, a.Descripcion1, a.categoria, a.grupo, a.familia, a.linea,
+select top 100 a.Articulo, a.Tipo, a.Descripcion1, a.categoria, a.grupo, a.familia, a.linea,
 isnull(a.preciolista,0.0) * m.tipocambio precio, isnull(c.costopromedio,0.0) costopromedio
 from art a
 join mon m on m.moneda = 'Dolar'
@@ -31,12 +29,14 @@ left outer join ArtCostoSucursal c on a.articulo = c.articulo and c.empresa = '%
             product = {}
             product["name"] = self._format_description(row["Descripcion1"])
             product["default_code"] = row["Articulo"]
+            product["type"] = self._getType(row["Tipo"])
             product["categ_id"] = self._get_Categoria(row["categoria"], row["grupo"], row["familia"], row["linea"])
             product["list_price"] = row["precio"]
             product["standard_price"] = row["costopromedio"]
             product_templates.append(product)
 
         self.create_products(product_templates)
+        return True
 
     def _get_Categoria(self, name, grupo_name, familia_name, linea_name):
         categoria_padre = self.env["product.category"].search([("name","=", "Saleable")])
@@ -88,6 +88,7 @@ left outer join ArtCostoSucursal c on a.articulo = c.articulo and c.empresa = '%
 
         if ids:
             self.env.cr.execute("Delete from product_category where id in %s and name <> 'Saleable' " , (ids,))
+        return True
 
     def create_products(self, products):
         i = 1
@@ -116,3 +117,9 @@ left outer join ArtCostoSucursal c on a.articulo = c.articulo and c.empresa = '%
         if name[len(name) - 1:len(name)] == '"':
             name = name[ 1:len(name) - 1]
         return name
+
+    def _getType(self, name):
+        if name == "Normal":
+            return "product"
+        else:
+            return "service"
