@@ -15,5 +15,6 @@ models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
 
 uid = common.authenticate(db, username, password, {})
 
-models.execute_kw(db, uid, password, 'product.template', 'delete_all_date', [[]])
-models.execute_kw(db, uid, password, 'product.template', 'get_import_intelisis', [[]])
+#models.execute_kw(db, uid, password, 'product.template', 'delete_all_date', [[]])
+#models.execute_kw(db, uid, password, 'product.template', 'get_import_intelisis', [[]])
+models.execute_kw(db, uid, password, 'stock.inventory', 'getInventoryIntelisis', [[]])

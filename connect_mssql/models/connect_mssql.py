@@ -50,6 +50,38 @@ class ConnectMssql(models.Model):
                           "And make sure (pymssql) is installed (pip3 install pymssql)."
             _logger.exception(e)
 
+    def execute_proc(self, query, params):
+        result = []
+        try:
+            import pymssql
+
+            # Connection Parameters
+            my_server = self.server_name
+            my_user = self.user_name
+            my_database = self.database_name
+            my_password = self.password
+            my_query = query
+
+
+            # Make the connection and execute the query
+            conn = pymssql.connect(server=my_server, user=my_user, password=my_password, database=my_database)
+            cursor = conn.cursor(as_dict=True)
+            cursor.callproc(my_query, params)
+
+            for row in cursor:
+                result.append(row)
+            conn.close()
+
+
+        except Exception as e:
+            self.result = "An Error Occurred, please check your parameters!\n" \
+                          "And make sure (pymssql) is installed (pip3 install pymssql)."
+            _logger.exception(e)
+
+        return result
+
+
+
     def execute_update(self, query):
         try:
             import pymssql
