@@ -35,25 +35,29 @@ class Inventory(models.Model):
         stock_inventory = None
         for linea in inventario:
             i += 1
-            print(i)
-            almacen = self.ifExistAlmacen(linea['Almacen'])
+            print("Numero de linea %s y almacen (%s)" % (i,linea['Almacen']))
+            ialmacen = linea['Almacen'].strip()
+            almacen = self.ifExistAlmacen(ialmacen)
 
             if nueva_linea_almacen != almacen.id:
                 new_inventario = {}
-                new_inventario['name'] = "Inventario Inicial (%s)" % linea['Almacen'].strip()
+                new_inventario['name'] = "Inventario Inicial (%s)" % ialmacen
                 new_inventario['company_id'] = self.env.user.company_id.id
                 stock_inventory = self.env["stock.inventory"].create(new_inventario)
-                stock_inventory.action_start()
+                #stock_inventory.action_start()
                 nueva_linea_almacen = almacen.id
 
             if stock_inventory:
 
                 product = self.env["product.product"].search([('default_code','=',linea['Articulo'].strip())])
                 if product:
+                    padre_location_id = self.env["stock.location"].search([("name",'=',ialmacen)])
+                    padre_location_id = padre_location_id.id
+                    ubicacion = self.env["stock.location"].search([("name",'=','Stock'),('usage','=','internal'),('location_id','=',padre_location_id)])
                     new_linea_inventario = {}
                     new_linea_inventario['inventory_id'] = stock_inventory.id
                     new_linea_inventario['product_id'] = product.id
-                    new_linea_inventario['location_id'] = almacen.id
+                    new_linea_inventario['location_id'] = ubicacion.id
                     new_linea_inventario['product_qty'] = linea['Existencias']
                     new_linea_inventario['company_id'] = self.env.user.company_id.id
                     self.env["stock.inventory.line"].create(new_linea_inventario)
@@ -64,12 +68,10 @@ class Inventory(models.Model):
 
 
     def ifExistAlmacen(self, almacen_code):
-        almacen_code = almacen_code.strip()
-        almacen = self.env["stock.location"].search([("name","=",almacen_code)])
+        almacen = self.env["stock.warehouse"].search([("name","=",almacen_code)])
         if not almacen:
             new_almacen = {}
             new_almacen['name'] = almacen_code
-            new_almacen['location_id'] = UBICACION_PADRE
-            new_almacen['usage'] = 'internal'
-            almacen = self.env["stock.location"].create(new_almacen)
+            new_almacen['code'] = almacen_code
+            almacen = self.env["stock.warehouse"].create(new_almacen)
         return almacen
