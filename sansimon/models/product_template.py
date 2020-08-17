@@ -46,7 +46,9 @@ left outer join ArtCostoSucursal c on a.articulo = c.articulo and c.empresa = '%
             if not categoria:
                 categoria = self.env["product.category"].create({
                 "name": name,
-                "parent_id": categoria_padre.id
+                "parent_id": categoria_padre.id,
+                "property_cost_method": 'fifo',
+                "property_valuation": 'real_time',
                 })
 
         if grupo_name:
@@ -55,7 +57,9 @@ left outer join ArtCostoSucursal c on a.articulo = c.articulo and c.empresa = '%
             if not categoria:
                 categoria = self.env["product.category"].create({
                 "name": grupo_name,
-                "parent_id": categoria_padre.id
+                "parent_id": categoria_padre.id,
+                "property_cost_method": 'fifo',
+                "property_valuation": 'real_time',
                 })
 
         if familia_name:
@@ -64,7 +68,9 @@ left outer join ArtCostoSucursal c on a.articulo = c.articulo and c.empresa = '%
             if not categoria:
                 categoria = self.env["product.category"].create({
                 "name": familia_name,
-                "parent_id": categoria_padre.id
+                "parent_id": categoria_padre.id,
+                "property_cost_method": 'fifo',
+                "property_valuation": 'real_time',
                 })
 
         if linea_name:
@@ -73,7 +79,9 @@ left outer join ArtCostoSucursal c on a.articulo = c.articulo and c.empresa = '%
             if not categoria:
                 categoria = self.env["product.category"].create({
                 "name": linea_name,
-                "parent_id": categoria_padre.id
+                "parent_id": categoria_padre.id,
+                "property_cost_method": 'fifo',
+                "property_valuation": 'real_time',
                 })
 
         #Si trae null la categoria de intelisis entonce se le asigna la categoria padre.

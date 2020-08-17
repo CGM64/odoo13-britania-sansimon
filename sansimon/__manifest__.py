@@ -20,14 +20,16 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','stock','connect_mssql'],
+    'depends': ['base', 'account','stock','connect_mssql','l10n_gt'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'data/account.account.template.csv',
         'data/ir_cron_data.xml',
+        'data/account_account_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
