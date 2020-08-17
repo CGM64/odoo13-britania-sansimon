@@ -10,7 +10,7 @@
     </record>
 
     <record id="account_110640" model="account.account.template">
-      <field name="code">1.10.06.40</field>
+      <field name="code">1.1.06.40</field>
       <field name="name">Existencias en Tránsito</field>
       <field ref="account.data_account_type_current_assets" name="user_type_id"/>
       <field name="reconcile" eval="True"/>
