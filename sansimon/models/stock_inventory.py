@@ -2,7 +2,8 @@
 
 import logging
 
-from odoo import models, fields, api
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError, ValidationError, Warning
 
 _logger = logging.getLogger(__name__)
 
@@ -16,7 +17,8 @@ class Inventory(models.Model):
 
     def getInventoryIntelisis(self):
         query = "spInvval"
-        params = ( '023674 32','1056 653','(TODOS)','Costo Promedio','12/31/2020',EMPRESA)
+        #params = ( '023674 32','1056 653','(TODOS)','Costo Promedio','12/31/2020',EMPRESA)
+        params = ( '023674 32','VARIOS','(TODOS)','Costo Promedio','12/31/2020',EMPRESA)
         sql_server = self.env["connect.mssql"].search([],limit=1)
         #query = query % (EMPRESA,)
         res = sql_server.execute_proc(query, params)
@@ -35,7 +37,7 @@ class Inventory(models.Model):
         stock_inventory = None
         for linea in inventario:
             i += 1
-            print("Numero de linea %s y almacen (%s)" % (i,linea['Almacen']))
+
             ialmacen = linea['Almacen'].strip()
             almacen = self.ifExistAlmacen(ialmacen)
 
@@ -61,10 +63,19 @@ class Inventory(models.Model):
                     new_linea_inventario['product_qty'] = linea['Existencias']
                     new_linea_inventario['company_id'] = self.env.user.company_id.id
                     self.env["stock.inventory.line"].create(new_linea_inventario)
-                    print('Almacen %s codigo %s' % (almacen.name, linea['Articulo']))
+
 
                 else:
-                    raise UserError(_('El producto %s no existe') % linea['Articulo'])
+                    #raise UserError(_('El producto %s no existe') % linea['Articulo'])
+                    _logger.warning(_('El producto %s no existe') % linea['Articulo'])
+
+    def validateStockInventory(self):
+        stock_inventory = self.env["stock.inventory"].search([('state','=','draft')])
+        for inv in stock_inventory:
+            _logger.warning(_('Validando inventario %s') % inv.name)
+            inv.action_start()
+            inv.action_validate()
+        return True
 
 
     def ifExistAlmacen(self, almacen_code):

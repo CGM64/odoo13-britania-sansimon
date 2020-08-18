@@ -9,8 +9,8 @@ url = 'http://localhost:8013'
 db = 'Odoo13_SanSimonProd'
 username = 'admin'
 password = 'asdf'
-url = 'http://192.168.99.100:29013'
-db = 'Odoo13_SanSimon'
+#url = 'http://192.168.99.100:29013'
+#db = 'Odoo13_SanSimon'
 datos = []
 common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
 models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
@@ -19,7 +19,15 @@ uid = common.authenticate(db, username, password, {})
 
 #models.execute_kw(db, uid, password, 'product.template', 'delete_all_date', [[]])
 #models.execute_kw(db, uid, password, 'product.template', 'get_import_intelisis', [[]])
-models.execute_kw(db, uid, password, 'stock.inventory', 'getInventoryIntelisis', [[]])
 
+#Sirve para cargar el inventario de instelisis
+#models.execute_kw(db, uid, password, 'stock.inventory', 'getInventoryIntelisis', [[]])
+
+#Sirve para validar todos los movimientos de ajuste
+models.execute_kw(db, uid, password, 'stock.inventory', 'validateStockInventory', [[]])
+
+#Sirve para setear un valor en la configuracion de la conta para volver a cargar la plantilla contable
 #models.execute_kw(db, uid, password, 'account.account.template', 'actualizarPlantillaID', [[]])
+
+
 #models.execute_kw(db, uid, password, 'account.chart.template', 'try_loading', [[]])
