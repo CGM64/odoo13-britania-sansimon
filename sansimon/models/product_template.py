@@ -125,6 +125,7 @@ where estatus = 'ALTA' and tipo in ('Normal','Servicio')
             name = name[1:]
         if name[len(name) - 1:len(name)] == '"':
             name = name[ 1:len(name) - 1]
+        name = name.strip()
         return name
 
     def _getType(self, name):

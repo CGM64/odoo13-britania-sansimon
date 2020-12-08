@@ -5,12 +5,12 @@ class SanSimonOdoo(object):
     """docstring for ."""
 
 
-url = 'http://localhost:8013'
-db = 'Odoo13_SanSimonProd'
+#url = 'http://localhost:8013'
+#db = 'Odoo13_SanSimonProd'
 username = 'admin'
-password = 'asdf'
-#url = 'http://192.168.99.100:29013'
-#db = 'Odoo13_SanSimon'
+password = 's0p0rt3'
+url = 'http://192.168.99.100:29013'
+db = 'Odoo13_SansimonCE1207'
 datos = []
 common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
 models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
