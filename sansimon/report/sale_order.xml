@@ -5,7 +5,7 @@
             id="action_report_cotizacion"
             string="Cotizacion"
             model="sale.order"
-            report_type="qweb-html"
+            report_type="qweb-pdf"
             file="sansimon.report_saleorder"
             name="sansimon.report_saleorder"
             print_report_name="(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)"
