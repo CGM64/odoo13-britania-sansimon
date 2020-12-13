@@ -5,24 +5,40 @@
 
       <template id="report_invoice_document">
             <t t-call="web.external_layout">
-              HOOOOOOOOOLLLLLLLLLLLAAAAAAA
                 <t t-set="o" t-value="o.with_context(lang=lang)" />
-                <t t-set="address">
-                    <address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
-                    <div t-if="o.partner_id.vat" class="mt16">
-                        <t t-if="o.company_id.country_id.vat_label" t-esc="o.company_id.country_id.vat_label" id="inv_tax_id_label"/>
-                        <t t-else="">Tax ID</t>: <span t-field="o.partner_id.vat"/></div>
-                </t>
                 <div class="page">
-                    <h2>
-                        <span t-if="o.type == 'out_invoice' and o.state == 'posted'">Invoice</span>
-                        <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Draft Invoice</span>
-                        <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Cancelled Invoice</span>
-                        <span t-if="o.type == 'out_refund'">Credit Note</span>
-                        <span t-if="o.type == 'in_refund'">Vendor Credit Note</span>
-                        <span t-if="o.type == 'in_invoice'">Vendor Bill</span>
-                        <span t-if="o.name != '/'" t-field="o.name"/>
-                    </h2>
+                    <div class="row">
+                      <div class="col-6 text-center text-light bg-dark text-uppercase"><span>Documento Tributario Electrónico</span></div>
+                      <div class="col-6 text-right font-weight-bold text-capitalize border"><span>Factura</span></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-4"><span>Serie</span></div>
+                      <div class="col-4 text-center" ><span>Numero</span></div>
+                      <div class="col-4 text-right"><span>Fecha de emisión</span></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-4 font-weight-bold"><span>9D37CF0A</span></div>
+                      <div class="col-4 text-center font-weight-bold"><span>3345433446</span></div>
+                      <div class="col-4 text-right font-weight-bold"><span t-field="o.invoice_date"/></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-2"><span>No. Autorización: </span></div>
+                      <div class="col-6 font-weight-bold"><span>9D370F0A-C767-4366-8138-309E3B7769D9</span></div>
+                      <div class="col-2 text-right font-weight-bold"><span>Ref. Int.: </span></div>
+                      <div class="col-2 text-right font-weight-bold"><span t-if="o.name != '/'" t-field="o.name"/></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12 text-center text-light bg-dark text-uppercase"><span>Datos del Cliente</span></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-2"><span>Nombre:</span></div>
+                      <div class="col-10"><address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}' /></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-2"><span>Dirección:</span></div>
+                      <div class="col-10"><span t-field="o.partner_id.street"/></div>
+                    </div>
+
 
                     <div id="informations" class="row mt32 mb32">
                         <div class="col-auto mw-100 mb-2" t-if="o.invoice_date" name="invoice_date">
