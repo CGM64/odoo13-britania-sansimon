@@ -3,8 +3,8 @@
 from odoo import api, fields, models, _
 
 
-class ResCompany(models.Model):
-    _inherit = "res.company"
+class ResPartner(models.Model):
+    _inherit = "res.partner"
 
     display_street = fields.Char('Direccion Completa', compute='_compute_street_name')
     display_website = fields.Char('Display WebSite', compute='_compute_street_name')
@@ -19,7 +19,7 @@ class ResCompany(models.Model):
             if record.state_id:
                 direccion += " " + record.state_id.name
             record.display_street = direccion
-
+            
             if record.website:
                 encontrar = record.website.rfind('/')+1
                 record.display_website = record.website[encontrar:]

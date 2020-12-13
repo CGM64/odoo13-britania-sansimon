@@ -9,7 +9,7 @@
                 <div class="page">
                     <div class="row">
                       <div class="col-6 text-center text-light bg-dark text-uppercase"><span>Documento Tributario Electrónico</span></div>
-                      <div class="col-6 text-right font-weight-bold text-capitalize border"><span>Factura</span></div>
+                      <div class="col-6 text-right font-weight-bold text-capitalize border border-dark"><span>Factura</span></div>
                     </div>
                     <div class="row">
                       <div class="col-4"><span>Serie</span></div>
@@ -24,7 +24,7 @@
                     <div class="row">
                       <div class="col-2"><span>No. Autorización: </span></div>
                       <div class="col-6 font-weight-bold"><span>9D370F0A-C767-4366-8138-309E3B7769D9</span></div>
-                      <div class="col-2 text-right font-weight-bold"><span>Ref. Int.: </span></div>
+                      <div class="col-2 text-right"><span>Ref. Int.: </span></div>
                       <div class="col-2 text-right font-weight-bold"><span t-if="o.name != '/'" t-field="o.name"/></div>
                     </div>
                     <div class="row">
@@ -32,35 +32,25 @@
                     </div>
                     <div class="row">
                       <div class="col-2"><span>Nombre:</span></div>
-                      <div class="col-10"><address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}' /></div>
+                      <div class="col-10 font-weight-bold"><address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["name"], "no_marker": True}' /></div>
                     </div>
                     <div class="row">
                       <div class="col-2"><span>Dirección:</span></div>
-                      <div class="col-10"><span t-field="o.partner_id.street"/></div>
+                      <div class="col-10 font-weight-bold"><span t-field="o.partner_id.display_street"/></div>
                     </div>
-
-
-                    <div id="informations" class="row mt32 mb32">
-                        <div class="col-auto mw-100 mb-2" t-if="o.invoice_date" name="invoice_date">
-                            <strong>Invoice Date:</strong>
-                            <p class="m-0" t-field="o.invoice_date"/>
-                        </div>
-                        <div class="col-auto mw-100 mb-2" t-if="o.invoice_date_due and o.type == 'out_invoice' and o.state == 'posted'" name="due_date">
-                            <strong>Due Date:</strong>
-                            <p class="m-0" t-field="o.invoice_date_due"/>
-                        </div>
-                        <div class="col-auto mw-100 mb-2" t-if="o.invoice_origin" name="origin">
-                            <strong>Source:</strong>
-                            <p class="m-0" t-field="o.invoice_origin"/>
-                        </div>
-                        <div class="col-auto mw-100 mb-2" t-if="o.partner_id.ref" name="customer_code">
-                            <strong>Customer Code:</strong>
-                            <p class="m-0" t-field="o.partner_id.ref"/>
-                        </div>
-                        <div class="col-auto mw-100 mb-2" t-if="o.ref" name="reference">
-                            <strong>Reference:</strong>
-                            <p class="m-0" t-field="o.ref"/>
-                        </div>
+                    <div class="row">
+                      <div class="col-2"><span>NIT: </span></div>
+                      <div class="col-2 font-weight-bold"><span t-field="o.partner_id.vat"/></div>
+                      <div class="col-2"><span>Teléfono: </span></div>
+                      <div class="col-2 font-weight-bold"><span t-field="o.partner_id.phone"/></div>
+                      <div class="col-2 text-right"><span>Pedido: </span></div>
+                      <div class="col-2 text-right font-weight-bold"><span t-field="o.invoice_origin"/></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-2"><span>Vendedor: </span></div>
+                      <div class="col-6 font-weight-bold"><span t-field="o.invoice_user_id.name"/></div>
+                      <div class="col-2 text-right"><span>Vencimiento: </span></div>
+                      <div class="col-2 text-right font-weight-bold"><span t-field="o.invoice_date_due"/></div>
                     </div>
 
                     <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
@@ -68,22 +58,17 @@
                     <table class="table table-sm o_main_table" name="invoice_line_table">
                         <thead>
                             <tr>
-                                <!-- TODO: remove in master -->
-                                <t t-set="colspan" t-value="6"/>
-                                <th name="th_description" class="text-left"><span>Description</span></th>
-                                <!-- TODO: remove in master -->
-                                <th name="th_source" class="d-none text-left" t-if="0"><span>Source Document</span></th>
-                                <th name="th_quantity" class="text-right"><span>Quantity</span></th>
-                                <th name="th_priceunit" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>Unit Price</span></th>
+                                <t t-set="colspan" t-value="4"/>
+                                <th name="th_description" class="text-left"><span>Descripción</span></th>
+                                <th name="th_quantity" class="text-right"><span>Cantidad</span></th>
+                                <th name="th_priceunit" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>Precio</span></th>
                                 <th name="th_price_unit" t-if="display_discount" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
-                                    <span>Disc.%</span>
-                                    <!-- TODO: remove in master -->
-                                    <t t-set="colspan" t-value="colspan+1"/>
+                                  <span>Disc.%</span>
+                                  <t t-set="colspan" t-value="colspan+1"/>
                                 </th>
-                                <th name="th_taxes" t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}"><span>Taxes</span></th>
                                 <th name="th_subtotal" class="text-right">
                                     <span groups="account.group_show_line_subtotals_tax_excluded">Amount</span>
-                                    <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
+                                    <span groups="account.group_show_line_subtotals_tax_included">Importe</span>
                                 </th>
                             </tr>
                         </thead>
@@ -107,9 +92,6 @@
                                         </td>
                                         <td t-if="display_discount" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
                                             <span class="text-nowrap" t-field="line.discount"/>
-                                        </td>
-                                        <td t-attf-class="text-left {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
-                                            <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_ids))" id="line_tax_ids"/>
                                         </td>
                                         <td class="text-right o_price_total">
                                             <span class="text-nowrap" t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
@@ -147,35 +129,11 @@
 
                     <div class="clearfix">
                         <div id="total" class="row">
-                            <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto">
+                          <div class="col-6">
+                            <strong>Sujeto a pagos trimestrales.</strong>
+                          </div>
+                            <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'}">
                                 <table class="table table-sm" style="page-break-inside: avoid;">
-                                    <tr class="border-black o_subtotal" style="">
-                                        <td><strong>Subtotal</strong></td>
-                                        <td class="text-right">
-                                            <span t-field="o.amount_untaxed"/>
-                                        </td>
-                                    </tr>
-                                    <t t-foreach="o.amount_by_group" t-as="amount_by_group">
-                                        <tr style="">
-                                            <t t-if="len(o.line_ids.filtered(lambda line: line.tax_line_id)) in [0, 1] and o.amount_untaxed == amount_by_group[2]">
-                                                <td><span class="text-nowrap" t-esc="amount_by_group[0]"/></td>
-                                                <td class="text-right o_price_total">
-                                                    <span class="text-nowrap" t-esc="amount_by_group[3]" />
-                                                </td>
-                                            </t>
-                                            <t t-else="">
-                                                <td>
-                                                    <span t-esc="amount_by_group[0]"/>
-                                                    <span class="text-nowrap"> on
-                                                        <t t-esc="amount_by_group[4]"/>
-                                                    </span>
-                                                </td>
-                                                <td class="text-right o_price_total">
-                                                    <span class="text-nowrap" t-esc="amount_by_group[3]"/>
-                                                </td>
-                                            </t>
-                                        </tr>
-                                    </t>
                                     <tr class="border-black o_total">
                                         <td><strong>Total</strong></td>
                                         <td class="text-right">
@@ -186,9 +144,28 @@
                             </div>
                         </div>
                     </div>
-                    <p t-if="o.type in ('out_invoice', 'in_refund')">
-                        Please use the following communication for your payment : <b><span t-field="o.invoice_payment_ref"/></b>
+                    <p/>
+                    <div class="row">
+                      <div class="col-8">
+                    <p class="text-justify">
+                      <small>
+                      FACTURA CAMBIARIA GIRADA LIBRE DE PROTESTO A LA ORDEN O ENDOSO DE INDUSTRIAL MERCANTIL SAN SIMON, SOCIEDAD ANONIMA
+                      EL VALOR TOTAL POR EL QUE ESTA EXTENDIDA O POR EL ULTIMO SALDO INSOLUTO QUE APAREZCA. EL VALOR QUEDA SUJETA AL ______ %
+                      MENSUAL DE RECARGO SI EXCEDE DEL PLAZO ESTIPULADO EN ESTA. EL CLIENTE ACEPTA Y RECONOCE COMO OBLIGATORIAS LAS CONDICIONES
+                      ESPECIFICAS EN ESTA FACTURA. ESTA FACTURA SE CONSIDERA CANCELADA UNICAMENTE MEDIANTE RECIBO DE CAJA.
+                    </small>
                     </p>
+                    </div>
+                      <div class="col-4 text-center">
+                        <p style="height: 75px;"></p>
+                        <p class="m-0">___________________________________________</p>
+                        <p>Firma de Aceptación</p>
+                      </div>
+                    </div>
+
+
+
+
                     <p t-if="o.narration" name="comment">
                         <span t-field="o.narration"/>
                     </p>
@@ -198,14 +175,21 @@
                     <p t-if="o.fiscal_position_id.note" name="note">
                         <span t-field="o.fiscal_position_id.note"/>
                     </p>
-                    <div id="qrcode" t-if="(o.company_id.qr_code) and (o.currency_id.name == 'EUR') and (o.invoice_partner_bank_id.acc_number != False)">
-                        <p t-if="(o.invoice_partner_bank_id.qr_code_valid)">
-                            <strong class="text-center">Scan me with your banking app.</strong><br /><br />
-                            <img class="border border-dark rounded" t-att-src="o.invoice_partner_bank_id.build_qr_code_url(o.amount_residual, o.invoice_payment_ref or o.ref or o.name)"/>
-                        </p>
-                        <p t-if="(o.invoice_partner_bank_id.qr_code_valid == False)">
-                            <strong class="text-center">The SEPA QR Code informations are not set correctly.</strong><br />
-                        </p>
+                    <div t-attf-class="footer">
+                      <div class="row">
+                        <div class="col-12 text-center text-light bg-dark text-uppercase"><span>Datos del Certificador</span></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-2">Nombre: </div>
+                        <div class="col-2 font-weight-bold">INFILE, S. A.</div>
+                        <div class="col-2"></div>
+                        <div class="col-2"></div>
+                        <div class="col-2 text-left">NIT: </div>
+                        <div class="col-2 text-left font-weight-bold">5640773-4</div>
+                      </div>
+                      <div class="text-center" t-if="report_type == 'pdf'">
+                          Página: <span class="page"/> / <span class="topage"/>
+                      </div>
                     </div>
                 </div>
             </t>
