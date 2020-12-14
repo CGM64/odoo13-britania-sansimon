@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_move_l10n_gt_sat_form_view" model="ir.ui.view">
+            <field name="name">account.move.gtsat.form.view</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ref']" position="after">
+                    <field name="fac_serie"  attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
+                    <field name="fac_numero" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
+                    <field name="journal_tipo_operacion" invisible="1"/>
+                </xpath>
+                <notebook position="inside">
+
+                   <!-- <page name="duca_page" string="DUCA" attrs="{'invisible': [('journal_tipo_operacion','not in',('DUCA_IN','DUCA_OUT'))]}"> -->
+                   <page name="duca_page" string="DUCA"  attrs="{'invisible': [('type', 'not in',  ('in_invoice'))]}">
+
+                    <group string="Valores">
+                       <group>
+                         <field name="sat_invoice_id" domain="[('type', '=', 'in_invoice')]"/>
+                         <field name="sat_valor_transaccion"/>
+                         <field name="sat_gastos_transporte"/>
+                         <field name="sat_gastos_seguros"/>
+                       </group>
+                       <group>
+                         <field name="sat_gastos_otros"/>
+                         <field name="sat_tasa_cambio"/>
+                       </group>
+                    </group>
+                    </page>
+                    <!-- <page name="anexo_page" string="Anexo" attrs="{'invisible': [('journal_tipo_operacion','not in',('DUCA_IN','DUCA_OUT'))]}"> -->
+                    <page name="anexo_page" string="Anexo" attrs="{'invisible': [('type', 'not in',  ('in_invoice'))]}">
+                      <field name="sat_invoice_child_ids"/>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+        <record id="account_move_l10n_gt_sat_tree_view" model="ir.ui.view">
+            <field name="name">account.move.l10n_gt_sat.tree.view</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after">
+                    <field name="fac_serie" optional="hide"/>
+                    <field name="fac_numero" optional="show"/>
+                </field>
+            </field>
+          </record>
+      </data>
+  </odoo>

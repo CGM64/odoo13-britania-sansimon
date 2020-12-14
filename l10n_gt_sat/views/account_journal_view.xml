@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_account_journal_form">
+        <field name="name">fel.account.journal.form</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <group name="column_posting" position="after">
+                  <group string="Propiedades" groups="account.group_account_manager">
+                    <field name="tipo_operacion"/>
+                    <field name="tipo_documento"/>
+                    <field name="afiliacion_iva"/>
+                    <field name="invoice_receipt"/>
+                  </group>
+                </group>
+            </data>
+        </field>
+    </record>
+
+    <record id="view_l10n_gt_sat_account_journal_bank_form_inherited" model="ir.ui.view">
+        <field name="name">account.journal.bank.form.inherited</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_bank_journal_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bank_id']" position="after">
+                  <field name="cheque_template"/>
+                  <field name="voucher_template"/>
+                  <field name="papel_cheque"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>
