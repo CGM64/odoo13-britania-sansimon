@@ -29,6 +29,7 @@
         'views/templates.xml',
         'views/account_report.xml',
         'report/report_invoice.xml',
+        'report/report_invoice_ticket.xml',
         'data/account.account.template.csv',
         'data/ir_cron_data.xml',
         'data/account_account_data.xml',
