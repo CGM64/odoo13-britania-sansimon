@@ -5,16 +5,20 @@
 
     <template id="report_invoice_document_ticket">
       <t t-call="sansimon.external_layout_simple_page">
-        <t t-set="o" t-value="o.with_context(lang=lang)"/>
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
         <div class="page">
           <div class="oe_structure"/>
           <div class="container">
             <div class="row">
               <div class="col-12 text-center">
                 <br/>
-                <span>
-                  <strong>Sujeto a pagos trimestrales ISR</strong>
-                </span><br/>
+                <t t-foreach="doc.journal_id.fel_frases_ids" t-as="frases">
+                  <span>
+                    <strong><span t-field="frases.fel_escenario.texto"/></strong>
+                  </span>
+                </t>
+
+                <br/>
                 <span>
                   <strong>Documento Tributario Electrónico</strong>
                 </span><br/>
@@ -86,8 +90,12 @@
               <div class="col-4 m-0 p-0 text-right">39.89</div>
             </div>
             <div class="row  justify-content-end">
-              <div class="col-2 m-0 p-0 text-right"><strong>TOTAL</strong></div>
-              <div class="col-4 m-0 p-0 text-right"><strong>3,475.92</strong></div>
+              <div class="col-2 m-0 p-0 text-right">
+                <strong>TOTAL</strong>
+              </div>
+              <div class="col-4 m-0 p-0 text-right">
+                <strong>3,475.92</strong>
+              </div>
             </div>
             <br/>
             <br/>
@@ -99,8 +107,12 @@
             <br/>
             <div class="row text-center">
               <div class="col m-0 p-0">
-                <span>Documento Interno: <strong>FE-94882</strong></span><br/>
-                <span><strong>DATOS CERTIFICADOR</strong></span><br/>
+                <span>Documento Interno:
+                  <strong>FE-94882</strong>
+                </span><br/>
+                <span>
+                  <strong>DATOS CERTIFICADOR</strong>
+                </span><br/>
                 <span>NIT: 6001020-7 G4S Documenta, S. A.</span><br/>
                 <span>www.documenta.com.gt</span><br/>
               </div>
@@ -112,8 +124,8 @@
 
     <template id="report_invoice_ticket">
       <t t-call="web.html_container">
-        <t t-foreach="docs" t-as="o">
-          <t t-set="lang" t-value="o.invoice_user_id.sudo().lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+        <t t-foreach="docs" t-as="doc">
+          <t t-set="lang" t-value="doc.invoice_user_id.sudo().lang if doc.type in ('in_invoice', 'in_refund') else doc.partner_id.lang"/>
           <t t-call="sansimon.report_invoice_document_ticket" t-lang="lang"/>
         </t>
       </t>
