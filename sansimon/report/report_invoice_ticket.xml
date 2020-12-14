@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!-- Plantilla de la factura -->
+
+      <template id="report_invoice_document_ticket">
+            <t t-call="sansimon.external_layout_simple_page">
+                <t t-set="o" t-value="o.with_context(lang=lang)" />
+                <div class="page">
+                  <span>Hola Mundo</span>
+                </div>
+            </t>
+        </template>
+
+
+        <template id="report_invoice_ticket">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.invoice_user_id.sudo().lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-call="sansimon.report_invoice_document_ticket" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+
+        <template id="external_layout_simple_page">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <t t-call="sansimon.external_layout_ticket"><t t-raw="0"/></t>
+
+        </template>
+
+        <template id="external_layout_ticket">
+            <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+                <div class="o_boxed_header">
+                  <div class="row">
+                      <div class="col-12 text-center">
+                        <span class="mt0" t-field="company.name"/><br/>
+                        <span class="mt0" t-field="company.display_street"/><br/>
+                        <span class="mt0">Teléfono: </span><span class="mt0" t-field="company.phone"/><br/>
+                        <span class="mt0">Nit: </span><span t-field="company.vat"/><br/>
+                        <span class="mt0" t-field="company.display_website"/><br/>
+                      </div>
+                  </div>
+                </div>
+            </div>
+
+            <div t-attf-class="article o_report_layout_boxed o_company_#{company.id}_layout article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-call="web.address_layout"/>
+                <t t-raw="0"/>
+            </div>
+        </template>
+
+    </data>
+</odoo>
