@@ -1,67 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-<!-- Plantilla de la factura -->
+  <data>
+    <!-- Plantilla de la factura -->
 
-      <template id="report_invoice_document_ticket">
-            <t t-call="sansimon.external_layout_simple_page">
-                <t t-set="o" t-value="o.with_context(lang=lang)" />
-                <div class="page">
-                  <span>Hola Mundo</span>
-                </div>
-            </t>
-        </template>
-
-
-        <template id="report_invoice_ticket">
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="o">
-                    <t t-set="lang" t-value="o.invoice_user_id.sudo().lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
-                    <t t-call="sansimon.report_invoice_document_ticket" t-lang="lang"/>
-                </t>
-            </t>
-        </template>
-
-        <template id="external_layout_simple_page">
-            <t t-if="not o" t-set="o" t-value="doc"/>
-
-            <t t-if="not company">
-                <!-- Multicompany -->
-                <t t-if="company_id">
-                    <t t-set="company" t-value="company_id"/>
-                </t>
-                <t t-elif="o and 'company_id' in o">
-                    <t t-set="company" t-value="o.company_id.sudo()"/>
-                </t>
-                <t t-else="else">
-                    <t t-set="company" t-value="res_company"/>
-                </t>
-            </t>
-
-            <t t-call="sansimon.external_layout_ticket"><t t-raw="0"/></t>
-
-        </template>
-
-        <template id="external_layout_ticket">
-            <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
-                <div class="o_boxed_header">
-                  <div class="row">
-                      <div class="col-12 text-center">
-                        <span class="mt0" t-field="company.name"/><br/>
-                        <span class="mt0" t-field="company.display_street"/><br/>
-                        <span class="mt0">Teléfono: </span><span class="mt0" t-field="company.phone"/><br/>
-                        <span class="mt0">Nit: </span><span t-field="company.vat"/><br/>
-                        <span class="mt0" t-field="company.display_website"/><br/>
-                      </div>
-                  </div>
-                </div>
+    <template id="report_invoice_document_ticket">
+      <t t-call="sansimon.external_layout_simple_page">
+        <t t-set="o" t-value="o.with_context(lang=lang)"/>
+        <div class="page">
+          <div class="oe_structure"/>
+          <div class="container">
+            <div class="row">
+              <div class="col-12 text-center">
+                <br/>
+                <span>
+                  <strong>Sujeto a pagos trimestrales ISR</strong>
+                </span><br/>
+                <span>
+                  <strong>Documento Tributario Electrónico</strong>
+                </span><br/>
+                <span>
+                  <strong>Factura</strong>
+                </span><br/>
+                <span>
+                  <strong>Electronica</strong>
+                </span><br/>
+                <span>AUTORIZACION No.</span><br/>
+                <span>
+                  <strong>268969CC-2DD4-4ED5-B27D-8AA040859010</strong>
+                </span><br/>
+                <br/>
+                <span>SERIE
+                  <strong>26869CC</strong>
+                </span><br/>
+                <span>Número de DTE
+                  <strong>768888533</strong>
+                </span><br/>
+                <br/>
+                <span>Certificacion:
+                  <strong>11/12/2020 4:17:25 p.m.</strong>
+                </span><br/>
+                <span>Emisión:
+                  <strong>11/12/2020 4:17:45 p.m.</strong>
+                </span><br/>
+                <span>Vendedor:
+                  <strong>Candelaria Zapeta</strong>
+                </span><br/>
+              </div>
             </div>
-
-            <div t-attf-class="article o_report_layout_boxed o_company_#{company.id}_layout article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
-                <t t-call="web.address_layout"/>
-                <t t-raw="0"/>
+            <div class="row">
+              <div class="col-12 m-0 p-0">
+                <span>
+                  <strong>------------DATOS DEL COMPRADOR------------</strong>
+                </span><br/>
+                <span>NIT:
+                  <strong>5782633-1</strong>
+                </span><br/>
+                <span>Cliente:
+                  <strong>Erick Alberto Santos Quevedo</strong>
+                </span><br/>
+                <span>Dirección:
+                  <strong>Ciudad</strong>
+                </span><br/>
+                <span>------------------------------------------------------------</span><br/>
+              </div>
             </div>
-        </template>
+            <div class="row">
+              <div class="col-2">CT</div>
+              <div class="col-6">PRODUCTO</div>
+              <div class="col-4 text-right">TOTAL</div>
+            </div>
+            <div class="row">
+              <div class="col-2 m-0 p-0">601</div>
+              <div class="col-6 m-0 p-0">FC8244183OF</div>
+              <div class="col-4 m-0 p-0 text-right">3,116.88</div>
+            </div>
+            <div class="row">
+              <div class="col m-0 p-0">FLOTADO CLARO OF 8 2.44 X 1.83 (M)</div>
+            </div>
+            <div class="row  justify-content-end">
+              <div class="col-2 m-0 p-0 text-right">SUB.</div>
+              <div class="col-4 m-0 p-0 text-right">3,515.81</div>
+            </div>
+            <div class="row  justify-content-end">
+              <div class="col-2 m-0 p-0 text-right">DESC.</div>
+              <div class="col-4 m-0 p-0 text-right">39.89</div>
+            </div>
+            <div class="row  justify-content-end">
+              <div class="col-2 m-0 p-0 text-right"><strong>TOTAL</strong></div>
+              <div class="col-4 m-0 p-0 text-right"><strong>3,475.92</strong></div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <div class="row text-center">
+              <div class="col m-0 p-0">
+                <span>Documento Interno: <strong>FE-94882</strong></span><br/>
+                <span><strong>DATOS CERTIFICADOR</strong></span><br/>
+                <span>NIT: 6001020-7 G4S Documenta, S. A.</span><br/>
+                <span>www.documenta.com.gt</span><br/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </t>
+    </template>
 
-    </data>
+    <template id="report_invoice_ticket">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+          <t t-set="lang" t-value="o.invoice_user_id.sudo().lang if o.type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+          <t t-call="sansimon.report_invoice_document_ticket" t-lang="lang"/>
+        </t>
+      </t>
+    </template>
+
+    <template id="external_layout_simple_page">
+      <t t-if="not o" t-set="o" t-value="doc"/>
+
+      <t t-if="not company">
+        <!-- Multicompany -->
+        <t t-if="company_id">
+          <t t-set="company" t-value="company_id"/>
+        </t>
+        <t t-elif="o and 'company_id' in o">
+          <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-else="else">
+          <t t-set="company" t-value="res_company"/>
+        </t>
+      </t>
+
+      <t t-call="sansimon.external_layout_ticket"><t t-raw="0"/></t>
+
+    </template>
+
+    <template id="external_layout_ticket">
+      <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+        <div class="o_boxed_header">
+          <div class="row">
+            <div class="col-12 text-center">
+              <strong><span class="mt0" t-field="company.name"/></strong><br/>
+              <span class="mt0" t-field="company.display_street"/><br/>
+              <span class="mt0">Teléfono:
+              </span><span class="mt0" t-field="company.phone"/><br/>
+              <span class="mt0">Nit:
+              </span><span t-field="company.vat"/><br/>
+              <span class="mt0" t-field="company.display_website"/><br/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div t-attf-class="article o_report_layout_boxed o_company_#{company.id}_layout article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+        <t t-call="web.address_layout"/>
+        <t t-raw="0"/>
+      </div>
+    </template>
+
+  </data>
 </odoo>
