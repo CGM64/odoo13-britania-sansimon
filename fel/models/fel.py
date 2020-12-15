@@ -62,7 +62,7 @@ class Fel():
         d = documento
         schemaLocation = etree.QName("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation")
 
-        GTDocumento = etree.Element(DTE_NS+"GTDocumento", {schemaLocation: "http://www.sat.gob.gt/dte/fel/0.2.0"}, Version="0.1", nsmap=NSMAP)
+        GTDocumento = etree.Element(DTE_NS+"GTDocumento",  Version="0.1", nsmap=NSMAP)
         SAT = etree.SubElement(GTDocumento, DTE_NS+"SAT", ClaseDocumento="dte")
         DTE = etree.SubElement(SAT, DTE_NS+"DTE", ID="DatosCertificados")
         DatosEmision = etree.SubElement(DTE, DTE_NS+"DatosEmision", ID="DatosEmision")
@@ -277,6 +277,20 @@ class Fel():
         self.xmls = xmls.decode("utf-8").replace("&amp;", "&").encode("utf-8")
         self.xmls_base64 = base64.b64encode(xmls)
         self.xmls_file = etree.tostring(GTAnulacionDocumento, pretty_print=True, xml_declaration=True, encoding='UTF-8')
+
+    def respuesta_firma(self, respuesta):
+        XmlString = base64.b64decode(respuesta)
+        XmlPuro = etree.fromstring(XmlString)
+        XmlString = etree.tostring(XmlPuro,pretty_print=True)
+        datos_factura = {}
+        namespaces = {'owl': 'http://www.sat.gob.gt/dte/fel/0.2.0'}
+        for fila in XmlPuro.findall('owl:SAT/owl:DTE/owl:Certificacion/owl:NumeroAutorizacion', namespaces):
+            datos_factura["NumeroAutorizacion"] = fila.text
+            datos_factura["Serie"] = fila.attrib["Serie"]
+            datos_factura["Numero"] = fila.attrib["Numero"]
+            datos_factura["DocumentUID"] = self.documentuid
+            datos_factura["XML_Factura"] = XmlString
+        return datos_factura
 
     def firmar_xml_4gs(self, transaccion, anulacion):
         es_anulacion = anulacion
