@@ -51,6 +51,7 @@ class FelSetting(models.Model):
     emisor = fields.Many2one('res.partner', string='Emisor', requiered=True, translate=True)
     nombre_comercial = fields.Char(string='Nombre Comercial', requiered=True, translate=True)
     attach_xml = fields.Boolean(string='Attach XML',default=False)
+    demo = fields.Boolean(string='Demo',default=True)
     #correo_emisor = fields.Char(string='Correo Emisior')
     #direccion_emisor = fields.Char(string='Correo Emisior', required=True, default='Ciudad')
     active = fields.Boolean(default=True)

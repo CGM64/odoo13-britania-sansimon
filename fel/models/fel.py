@@ -1,5 +1,6 @@
 import base64
 from lxml import etree
+import xml.etree.ElementTree as ET
 import json
 import requests #pip3 install requests
 
@@ -42,15 +43,20 @@ class Fel():
         self.correo_copia = ''
         self.xml_firmado = ''
         self.factura_id = ''
+        self.documento = None
+        self.xml_response = None
+        self.documentuid = '' #Variable que se utiliza cuando la funcion devuelve el uuid para buscar la factura
 
-    def setDatosConexion(self, llave_firma, clave, alias_pfx, codigo, correo_copia, factura_id):
+    def setDatosConexion(self, llave_firma, clave, alias_pfx, demo, codigo, correo_copia, factura_id, documento):
         self.UrlFirma = 'https://signer-emisores.feel.com.gt/sign_solicitud_firmas/firma_xml'
         self.llave_firma = llave_firma
         self.clave = clave
         self.alias_pfx = alias_pfx
+        self.demo = demo
         self.codigo = codigo
         self.correo_copia = correo_copia
         self.factura_id = factura_id
+        self.documento = documento
 
     def getXmlFormat(self, documento):
         d = documento
@@ -271,3 +277,64 @@ class Fel():
         self.xmls = xmls.decode("utf-8").replace("&amp;", "&").encode("utf-8")
         self.xmls_base64 = base64.b64encode(xmls)
         self.xmls_file = etree.tostring(GTAnulacionDocumento, pretty_print=True, xml_declaration=True, encoding='UTF-8')
+
+    def firmar_xml_4gs(self, transaccion, anulacion):
+        es_anulacion = anulacion
+        Data1 = Data2 = Data3 = None
+
+        if transaccion == "SYSTEM_REQUEST":
+            Data1 = "POST_DOCUMENT_SAT"
+            Data2 = self.xmls_base64.decode("utf-8")
+            Data3 = self.documento["factura_id"]
+
+        elif transaccion == "LOOKUP_ISSUED_INTERNAL_ID":
+            Data1 = self.documento["factura_id"]
+            Data2 = ""
+            Data3 = "XML"
+
+        elif transaccion == "GET_DOCUMENT":
+            Data1 = self.documentuid
+            Data2 = ""
+            Data3 = "XML"
+
+        if anulacion:
+            Data1 = "VOID_DOCUMENT"
+            Data2 = self.xmls_base64.decode("utf-8")
+            Data3 = "XML"
+
+        if self.demo:
+            url = "https://pruebasfel.g4sdocumenta.com/webservicefront/factwsfront.asmx?wsdl"
+        else:
+            url = "https://fel.g4sdocumenta.com/webservicefront/factwsfront.asmx?wsdl"
+
+        headers = {'content-type': 'text/xml'}
+        data = """<?xml version="1.0" encoding="UTF-8"?>
+                <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://www.fact.com.mx/schema/ws">
+                    <SOAP-ENV:Header/>
+                    <SOAP-ENV:Body>
+                      <ws:RequestTransaction>
+                         <ws:Requestor>""" + self.clave + """</ws:Requestor>
+                         <ws:Transaction>""" + transaccion + """</ws:Transaction>
+                         <ws:Country>GT</ws:Country>
+                         <ws:Entity>""" + self.documento["NITEmisor"] + """</ws:Entity>
+                         <ws:User>""" + self.clave + """</ws:User>
+                         <ws:UserName>""" + self.alias_pfx + """</ws:UserName>
+                         <ws:Data1>""" + Data1 + """</ws:Data1>
+                         <ws:Data2>""" + Data2 + """</ws:Data2>
+                         <ws:Data3>""" + Data3 + """</ws:Data3>
+                      </ws:RequestTransaction>
+                    </SOAP-ENV:Body>
+                </SOAP-ENV:Envelope>
+                """
+
+        r = requests.post(url = url, data = data, headers=headers)
+
+        self.xml_response = r
+        self.xmls_file_firmado = r.text
+        self.xml_firmado = ET.fromstring(r.text)
+
+        result_firmado = {}
+        for child in self.xml_firmado.iter('*'):
+            result_firmado[child.tag] = child.text
+
+        return result_firmado

@@ -172,7 +172,7 @@ class AccountMove(models.Model):
 
         return documento
 
-    def firmar_factura(self, documento, batch, anulacion):
+    def firmar_factura_INFILE(self, documento, batch, anulacion):
         factura = self
 
         fel_setting = factura.journal_id.fel_setting_id
@@ -247,6 +247,91 @@ class AccountMove(models.Model):
             msg = "https://report.feel.com.gt/ingfacereport/ingfacereport_documento?uuid="+fel_certificacion_response["uuid"]
             factura.message_post(subject='FEL', body=msg)
 
+    def firmar_factura(self, documento, batch, anulacion):
+        factura = self
+
+        fel_setting = factura.journal_id.fel_setting_id
+
+        factura.fel_setting_id = fel_setting.id
+
+
+        fel_dte = fel.Fel()
+        if anulacion:
+            fel_dte.anular(documento)
+        else:
+            fel_dte.getXmlFormat(documento)
+
+        fel_dte.setDatosConexion(
+            fel_setting.token,
+            fel_setting.clave,
+            fel_setting.usuario,
+            fel_setting.demo,
+            documento["NITEmisor"],
+            "jrivera@bavaria.com.gt",
+            documento["factura_id"],
+            documento,
+        )
+        try:
+
+#=======================================>
+            #Realizo la primera conexion para mandar a firmar
+            result_firmado = fel_dte.firmar_xml_4gs("SYSTEM_REQUEST", anulacion)
+            #Servidor logra realizar conexion
+            codigo_error = 0
+            if fel_dte.xml_response.status_code == 200:
+                resultado = {}
+                codigo_error = result_firmado["{http://www.fact.com.mx/schema/ws}Code"]
+
+                #Si el codigo es 9, quiere decir que la factura ya habia sido enviada.
+                if result_firmado["{http://www.fact.com.mx/schema/ws}Code"] == "1":
+
+                    fel_dte.documentuid = result_firmado['{http://www.fact.com.mx/schema/ws}DocumentGUID']
+                    resultado = fel_dte.respuesta_firma(result_firmado["{http://www.fact.com.mx/schema/ws}ResponseData1"])
+
+
+                #Si el codigo es 9, quiere decir que la factura ya habia sido enviada.
+                elif result_firmado["{http://www.fact.com.mx/schema/ws}Code"] in ("9","999"):
+                    #Busco el UUID para buscar el numero de la factura
+                    result_firmado_code9 = fel_dte.firmar_xml_4gs("LOOKUP_ISSUED_INTERNAL_ID", False)
+
+                    #Con el UUID, puedo traer la informacion de la factura que ya habia sido firmada.
+                    fel_dte.documentuid = result_firmado_code9['{http://www.fact.com.mx/schema/ws}DocumentGUID']
+                    result_firmado_code9_getdocument = fel_dte.firmar_xml_4gs("GET_DOCUMENT", False)
+
+                    resultado = fel_dte.respuesta_firma(result_firmado_code9_getdocument["{http://www.fact.com.mx/schema/ws}ResponseData1"])
+
+                else:
+                    raise UserError(result_firmado["{http://www.fact.com.mx/schema/ws}Description"])
+
+                print(resultado)
+                if resultado:
+                    fecha_certificacion = ''
+                    try:
+                        import xml.etree.ElementTree as ET
+                        tree = ET.fromstring(resultado['XML_Factura'].decode('utf-8'))
+                        if tree:
+                            fecha_certificacion = tree[0][0][1][3].text
+                    except Exception as e:
+                        pass
+                    factura.fel_firma = resultado["NumeroAutorizacion"]
+                    #factura.name = str(fel_certificacion_response["serie"])+"-"+str(fel_certificacion_response["numero"])
+                    factura.fac_serie = resultado["Serie"]
+                    factura.fac_numero = resultado["Numero"]
+                    factura.fecha_certificacion = fecha_certificacion
+
+                    _logger.info("Factura Firmada id(%s), %s" % (documento["factura_id"],result_firmado["{http://www.fact.com.mx/schema/ws}Description"]))
+
+#=========================>
+#Me quede aqui, en teoria, es de recuperar la serie de la factura, y despues arreglar todo este desorden de codigo.
+
+            else:
+                _logger.exception("No se logra realizar conexion FEL")
+        except IOError as e:
+            _logger.exception("\n\n Error de Conexion-------------------------------")
+
+            error_msg = _("Something went wrong during your conexion\n``%s``") % str(e)
+            _logger.exception("\n\n" + error_msg)
+            raise self.env['res.config.settings'].get_config_warning(error_msg)
 
     def action_post(self):
         move = super(AccountMove,self).action_post()
