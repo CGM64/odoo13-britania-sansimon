@@ -301,6 +301,7 @@ class AccountMove(models.Model):
                     resultado = fel_dte.respuesta_firma(result_firmado_code9_getdocument["{http://www.fact.com.mx/schema/ws}ResponseData1"])
 
                 else:
+                    _logger.info(fel_dte.xmls)
                     raise UserError(result_firmado["{http://www.fact.com.mx/schema/ws}Description"])
 
                 print(resultado)
