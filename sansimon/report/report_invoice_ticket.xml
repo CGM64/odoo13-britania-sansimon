@@ -17,37 +17,36 @@
                     <strong><span t-field="frases.fel_escenario.texto"/></strong>
                   </span>
                 </t>
-
                 <br/>
                 <span>
                   <strong>Documento Tributario Electrónico</strong>
                 </span><br/>
                 <span>
-                  <strong>Factura</strong>
+                  <strong><span t-field="doc.journal_id.tipo_documento"/></strong>
                 </span><br/>
                 <span>
                   <strong>Electronica</strong>
                 </span><br/>
                 <span>AUTORIZACION No.</span><br/>
                 <span>
-                  <strong>268969CC-2DD4-4ED5-B27D-8AA040859010</strong>
+                  <strong><span t-field="doc.fel_firma"/></strong>
                 </span><br/>
                 <br/>
                 <span>SERIE
-                  <strong>26869CC</strong>
+                  <strong><span t-field="doc.fac_serie"/></strong>
                 </span><br/>
                 <span>Número de DTE
-                  <strong>768888533</strong>
+                  <strong><span t-field="doc.fac_numero"/></strong>
                 </span><br/>
                 <br/>
                 <span>Certificacion:
-                  <strong>11/12/2020 4:17:25 p.m.</strong>
+                  <strong><span t-field="doc.fecha_certificacion"/></strong>
                 </span><br/>
                 <span>Emisión:
-                  <strong>11/12/2020 4:17:45 p.m.</strong>
+                  <strong><span t-field="doc.invoice_date"/></strong>
                 </span><br/>
                 <span>Vendedor:
-                  <strong>Candelaria Zapeta</strong>
+                  <strong><span t-field="doc.invoice_user_id.name"/></strong>
                 </span><br/>
               </div>
             </div>
@@ -57,13 +56,13 @@
                   <strong>------------DATOS DEL COMPRADOR------------</strong>
                 </span><br/>
                 <span>NIT:
-                  <strong>5782633-1</strong>
+                  <strong><span t-field="doc.partner_id.vat"/></strong>
                 </span><br/>
                 <span>Cliente:
-                  <strong>Erick Alberto Santos Quevedo</strong>
+                  <strong><span t-field="doc.partner_id.name"/></strong>
                 </span><br/>
                 <span>Dirección:
-                  <strong>Ciudad</strong>
+                  <strong><span t-field="doc.partner_id.display_street"/></strong>
                 </span><br/>
                 <span>------------------------------------------------------------</span><br/>
               </div>
@@ -73,14 +72,18 @@
               <div class="col-6">PRODUCTO</div>
               <div class="col-4 text-right">TOTAL</div>
             </div>
+            <t t-set="current_subtotal" t-value="0"/>
+            <t t-set="lines" t-value="doc.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+            <t t-foreach="lines" t-as="line">
             <div class="row">
-              <div class="col-2 m-0 p-0">601</div>
-              <div class="col-6 m-0 p-0">FC8244183OF</div>
-              <div class="col-4 m-0 p-0 text-right">3,116.88</div>
+              <div class="col-2 m-0 p-0"><span t-field="line.quantity" t-options="{'widget': 'integer'}"/></div>
+              <div class="col-6 m-0 p-0"><span t-field="line.product_id.default_code"/></div>
+              <div class="col-4 m-0 p-0 text-right"><span t-field="line.price_total"/></div>
             </div>
             <div class="row">
-              <div class="col m-0 p-0">FLOTADO CLARO OF 8 2.44 X 1.83 (M)</div>
+              <div class="col m-0 p-0"><span t-field="line.name" t-options="{'widget': 'text'}"/></div>
             </div>
+          </t>
             <div class="row  justify-content-end">
               <div class="col-2 m-0 p-0 text-right">SUB.</div>
               <div class="col-4 m-0 p-0 text-right">3,515.81</div>
