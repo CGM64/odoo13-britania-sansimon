@@ -73,31 +73,36 @@
               <div class="col-4 text-right">TOTAL</div>
             </div>
             <t t-set="current_subtotal" t-value="0"/>
+            <t t-set="current_descuento" t-value="0"/>
             <t t-set="lines" t-value="doc.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
             <t t-foreach="lines" t-as="line">
-            <div class="row">
-              <div class="col-2 m-0 p-0"><span t-field="line.quantity" t-options="{'widget': 'integer'}"/></div>
-              <div class="col-6 m-0 p-0"><span t-field="line.product_id.default_code"/></div>
-              <div class="col-4 m-0 p-0 text-right"><span t-field="line.price_total"/></div>
-            </div>
-            <div class="row">
-              <div class="col m-0 p-0"><span t-field="line.name" t-options="{'widget': 'text'}"/></div>
-            </div>
-          </t>
+              <t t-set="current_subtotal" t-value="current_subtotal + (line.quantity * line.price_unit)"/>
+              <t t-set="current_descuento" t-value="current_descuento + ((line.quantity * line.price_unit) - line.price_total)"/>
+              <div class="row">
+                <div class="col-2 m-0 p-0"><span t-field="line.quantity" t-options="{'widget': 'integer'}"/></div>
+                <div class="col-6 m-0 p-0"><span t-field="line.product_id.default_code"/></div>
+                <div class="col-4 m-0 p-0 text-right"><span t-field="line.price_total"/></div>
+              </div>
+              <div class="row">
+                <div class="col m-0 p-0">
+                  <small><span t-field="line.name" t-options="{'widget': 'text'}"/></small>
+                </div>
+              </div>
+            </t>
             <div class="row  justify-content-end">
               <div class="col-2 m-0 p-0 text-right">SUB.</div>
-              <div class="col-4 m-0 p-0 text-right">3,515.81</div>
+              <div class="col-4 m-0 p-0 text-right"><span t-esc="current_subtotal" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></div>
             </div>
             <div class="row  justify-content-end">
               <div class="col-2 m-0 p-0 text-right">DESC.</div>
-              <div class="col-4 m-0 p-0 text-right">39.89</div>
+              <div class="col-4 m-0 p-0 text-right"><span t-esc="current_descuento" t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/></div>
             </div>
             <div class="row  justify-content-end">
               <div class="col-2 m-0 p-0 text-right">
                 <strong>TOTAL</strong>
               </div>
               <div class="col-4 m-0 p-0 text-right">
-                <strong>3,475.92</strong>
+                <strong><span t-field="doc.amount_total"/></strong>
               </div>
             </div>
             <br/>
@@ -111,7 +116,7 @@
             <div class="row text-center">
               <div class="col m-0 p-0">
                 <span>Documento Interno:
-                  <strong>FE-94882</strong>
+                  <strong><span t-field="doc.name"/></strong>
                 </span><br/>
                 <span>
                   <strong>DATOS CERTIFICADOR</strong>
