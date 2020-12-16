@@ -17,15 +17,15 @@
                       <div class="col-4 text-right"><span>Fecha de emisión</span></div>
                     </div>
                     <div class="row">
-                      <div class="col-4 font-weight-bold"><span>9D37CF0A</span></div>
-                      <div class="col-4 text-center font-weight-bold"><span>3345433446</span></div>
+                      <div class="col-4 font-weight-bold"><span><span t-field="o.fac_serie"/></span></div>
+                      <div class="col-4 text-center font-weight-bold"><span><span t-field="o.fac_numero"/></span></div>
                       <div class="col-4 text-right font-weight-bold"><span t-field="o.invoice_date"/></div>
                     </div>
                     <div class="row">
                       <div class="col-2"><span>No. Autorización: </span></div>
-                      <div class="col-6 font-weight-bold"><span>9D370F0A-C767-4366-8138-309E3B7769D9</span></div>
-                      <div class="col-2 text-right"><span>Ref. Int.: </span></div>
-                      <div class="col-2 text-right font-weight-bold"><span t-if="o.name != '/'" t-field="o.name"/></div>
+                      <div class="col-5 font-weight-bold"><span><span t-field="o.fel_firma"/></span></div>
+                      <div class="col-2 text-right"><span>Certificación: </span></div>
+                      <div class="col-3 text-right font-weight-bold"><span t-if="o.fecha_certificacion" t-field="o.fecha_certificacion"/></div>
                     </div>
                     <div class="row">
                       <div class="col-12 text-center text-light bg-dark text-uppercase"><span>Datos del Cliente</span></div>
@@ -181,11 +181,11 @@
                       </div>
                       <div class="row">
                         <div class="col-2">Nombre: </div>
-                        <div class="col-2 font-weight-bold">INFILE, S. A.</div>
-                        <div class="col-2"></div>
-                        <div class="col-2"></div>
-                        <div class="col-2 text-left">NIT: </div>
-                        <div class="col-2 text-left font-weight-bold">5640773-4</div>
+                        <div class="col-3 font-weight-bold"><span t-if="o.fel_setting_id" t-field="o.fel_setting_id.proveedor_id.name"/></div>
+                        <div class="col-1 text-left">NIT: </div>
+                        <div class="col-2 text-left font-weight-bold"><span t-if="o.fel_setting_id" t-field="o.fel_setting_id.proveedor_id.vat"/></div>
+                        <div class="col-2 text-right">Ref. Int.: </div>
+                        <div class="col-2 text-right font-weight-bold"><span t-if="o.name != '/'" t-field="o.name"/></div>
                       </div>
                       <div class="text-center" t-if="report_type == 'pdf'">
                           Página: <span class="page"/> / <span class="topage"/>

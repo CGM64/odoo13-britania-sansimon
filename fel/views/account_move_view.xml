@@ -9,9 +9,11 @@
         <data>
           <field name="fac_numero" position="after">
             <field name="fel_firma" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
+
           </field>
           <field name="team_id" position="after">
             <field name="fel_setting_id" options="{'no_create': True, 'no_open': True}" class="oe_inline"/>
+            <field name="fecha_certificacion" options="{'no_create': True, 'no_open': True}" class="oe_inline"/>
           </field>
 
           <button name="button_draft" position="replace">

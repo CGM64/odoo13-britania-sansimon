@@ -112,7 +112,6 @@
             <br/>
             <br/>
             <br/>
-            <br/>
             <div class="row text-center">
               <div class="col m-0 p-0">
                 <span>Documento Interno:
@@ -121,8 +120,9 @@
                 <span>
                   <strong>DATOS CERTIFICADOR</strong>
                 </span><br/>
-                <span>NIT: 6001020-7 G4S Documenta, S. A.</span><br/>
-                <span>www.documenta.com.gt</span><br/>
+                NIT: <span t-if="doc.fel_setting_id" t-field="doc.fel_setting_id.proveedor_id.vat"/><br/>
+                <span t-if="doc.fel_setting_id" t-field="doc.fel_setting_id.proveedor_id.name"/><br/>
+                <span t-if="doc.fel_setting_id" t-field="doc.fel_setting_id.proveedor_id.website"/><br/>
               </div>
             </div>
           </div>

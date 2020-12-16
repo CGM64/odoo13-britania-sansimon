@@ -19,7 +19,7 @@ class AccountMove(models.Model):
     fel_setting_id = fields.Many2one('fel.setting', string='Facturacion FEL', copy=False, readonly=True, track_visibility='onchange')
     fel_firma = fields.Char('Firma FEL', copy=False, readonly=True, track_visibility='onchange')
 
-    fecha_certificacion = fields.Char(string='Fecha certificacion',copy=False,readonly=True)
+    fecha_certificacion = fields.Datetime(string='Fecha certificacion',copy=False,readonly=True)
 
     def getNitFelFormat(self, nit):
         if nit:
@@ -302,11 +302,18 @@ class AccountMove(models.Model):
 
                 else:
                     _logger.info(fel_dte.xmls)
+                    factura.message_post(subject='FEL Error', body=result_firmado["{http://www.fact.com.mx/schema/ws}Description"])
                     raise UserError(result_firmado["{http://www.fact.com.mx/schema/ws}Description"])
+                #_logger.info(resultado)
 
-                print(resultado)
+                if factura.journal_id.fel_setting_id:
+                    if factura.journal_id.fel_setting_id.attach_xml:
+                        msg="Generando Factura Electronica FEL"
+                        attachments = [('Factura.xml', fel_dte.xmls_file),('Firmado.json', fel_dte.xmls_file_firmado)]
+                        self.message_post(subject='FEL', body=msg, attachments=attachments)
+
                 if resultado:
-                    fecha_certificacion = ''
+                    fecha_certificacion = None
                     try:
                         import xml.etree.ElementTree as ET
                         tree = ET.fromstring(resultado['XML_Factura'].decode('utf-8'))
@@ -318,7 +325,12 @@ class AccountMove(models.Model):
                     #factura.name = str(fel_certificacion_response["serie"])+"-"+str(fel_certificacion_response["numero"])
                     factura.fac_serie = resultado["Serie"]
                     factura.fac_numero = resultado["Numero"]
+
+                    fecha_certificacion = fields.datetime.strptime(fecha_certificacion, '%Y-%m-%dT%H:%M:%S')
+                    offset = fields.datetime.now(pytz.timezone(self.env.user.tz or 'UTC')).utcoffset()
+                    fecha_certificacion = fecha_certificacion + offset
                     factura.fecha_certificacion = fecha_certificacion
+                    #factura.message_post(subject='FEL', body=resultado)
 
                     _logger.info("Factura Firmada id(%s), %s" % (documento["factura_id"],result_firmado["{http://www.fact.com.mx/schema/ws}Description"]))
 
@@ -362,8 +374,10 @@ class AccountMove(models.Model):
                 documento["NumeroDocumentoAAnular"] = factura.fel_firma
                 documento["MotivoAnulacion"] = "Cancelacion de Factura"
                 documento["factura_id"] = str(factura.id)
-
                 factura.firmar_factura(documento, False, True)
+                #factura.message_post(subject='FEL', body=msg)
+
+
 
 
 
