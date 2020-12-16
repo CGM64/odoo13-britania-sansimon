@@ -31,6 +31,7 @@
         'views/templates.xml',
         'views/account_report.xml',
         'views/account_move_views.xml',
+        'views/account_account_views.xml',
         'views/account_tax.xml',
         'views/account_journal_view.xml',
         'views/product_template_view.xml',
