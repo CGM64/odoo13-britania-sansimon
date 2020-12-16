@@ -33,7 +33,7 @@
         'data/account.account.template.csv',
         'data/ir_cron_data.xml',
         'data/account_account_data.xml',
-        #'data/stock_account_data.xml',
+        'data/stock_account_data.xml',
         'report/sale_order.xml',
         'report/sale_order_templates.xml',
     ],

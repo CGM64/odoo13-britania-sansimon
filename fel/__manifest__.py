@@ -10,7 +10,7 @@
         El proceso de Factura Electrónica en Línea se conforma de una serie de procedimientos, para la emisión, transmisión, certificación conservación, por medios electrónicos de facturas, notas de crédito y débito, recibos, y otros documentos autorizados por la Superintendencia de Administración Tributaria para el Régimen FEL, que se denominaran Documentos Tributarios Electrónicos, definiendo sus características y su funcionamiento. Las disposiciones administrativas que regulan la Factura Electrónica en Línea fueron emitidas por medio del Acuerdo del Directorio de la SAT 13-2018 y faculta al Superintendente a establecer por medio de las dependencias competentes, los procedimientos, especificaciones generales y técnicas que permitan implementar el proceso.
     """,
 
-    'author': "Integratec, S. A.",
+    'author': "Integratec",
     'website': "http://www.integratec.com.gt",
 
     # Categories can be used to filter modules in modules listing
