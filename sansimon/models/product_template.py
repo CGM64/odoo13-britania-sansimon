@@ -35,10 +35,23 @@ where estatus = 'ALTA' and tipo in ('Normal','Servicio')
             product["categ_id"] = self._get_Categoria(row["categoria"], row["grupo"], row["familia"], row["linea"])
             product["list_price"] = row["precio"]
             product["standard_price"] = row["costopromedio"]
+            product["grupo_utilidad_id"] = self._get_GrupoUtilidad(row["grupodeutilidad"], row["PorcentajeSobrePrecio"])
             product_templates.append(product)
 
         self.create_products(product_templates)
         return True
+
+    def _get_GrupoUtilidad(self, name, porcentaje):
+        if name:
+            utilidad = self.env["product.grupoutilidad"].search([("name","=", name)])
+            if not utilidad:
+                utilidad = self.env["product.grupoutilidad"].create({
+                "name": name,
+                "porcentaje": int(porcentaje),
+                })
+            return utilidad.id
+        #Si trae null la categoria de intelisis entonce se le asigna la categoria padre.
+        return None
 
     def _get_Categoria(self, name, grupo_name, familia_name, linea_name):
         categoria_padre = self.env["product.category"].search([("name","=", "Saleable")])
