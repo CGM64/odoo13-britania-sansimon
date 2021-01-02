@@ -21,7 +21,7 @@ join mon m on m.moneda = 'Dolar'
 left outer join ArtCostoSucursal c on a.articulo = c.articulo and c.empresa = '%s' AND c.sucursal = %s
 left outer join ArtGrupoDeUtilidad g on g.GrupoDeUtilidad = a.GrupoDeUtilidad
 where estatus = 'ALTA' and tipo in ('Normal','Servicio')
---where articulo = '3116 325'
+and a.articulo = '1008 416GY'
         """
         sql_server = self.env["connect.mssql"].search([],limit=1)
         query = query % (EMPRESA, SUCURSAL,)
