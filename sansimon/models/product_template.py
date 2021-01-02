@@ -120,7 +120,14 @@ and a.articulo = '1008 416GY'
             find_codigo = self.search([("default_code","=",product["default_code"])])
             if not find_codigo:
                 _logger.info("Creando producto %s codigo %s" % (i, product["name"]))
-                self.env['product.template'].create(product)
+                find_codigo = self.env['product.template'].create(product)
+                name = ('product_sansimon_template_%s' % str(i))
+                self.env['ir.model.data'].create({
+	            'name': name,
+	            'model': 'product.template',
+	            'module': '__export__',
+	            'res_id': find_codigo.id,
+				})
             else:
                 find_codigo["name"] = product["name"]
                 _logger.info("Actualizado, producto %s codigo %s" % (i, product["name"]))
