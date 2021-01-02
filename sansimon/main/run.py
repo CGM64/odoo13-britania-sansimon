@@ -10,7 +10,7 @@ class SanSimonOdoo(object):
 username = 'admin'
 password = 's0p0rt3'
 url = 'http://192.168.99.100:29013'
-db = 'Odoo13_SansimonCE1207'
+db = 'Odoo13_SansimonED'
 datos = []
 common = xmlrpc.client.ServerProxy('{}/xmlrpc/2/common'.format(url))
 models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))

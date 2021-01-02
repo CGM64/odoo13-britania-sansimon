@@ -133,22 +133,22 @@ class AccountMove(models.Model):
         #Notas de credito o debito
         if tipo_documento in ['NDEB', 'NCRE']:
             documento["Complementos"] = True
-            if factura.refund_invoice_id:
+            if factura.reversed_entry_id:
                 #Este if es para identificar si no tiene firma, es del regimen anterior, se realiza por medio de buscar FACE en la descripcion de la serie.
-                if factura.refund_invoice_id.fel_serie.find("FACE")>=0:
+                if factura.reversed_entry_id.fac_serie.find("FACE")>=0:
                     documento["RegimenAntiguo"] = "Antiguo"
                     documento["FechaEmisionDocumentoOrigen"] = fields.Date.from_string(factura.invoice_date).strftime('%Y-%m-%dT%H:%M:%S')
-                    documento["MotivoAjuste"] = factura.name
-                    documento["NumeroAutorizacionDocumentoOrigen"] = factura.refund_invoice_id.fel_firma
-                    documento["NumeroDocumentoOrigen"] = factura.refund_invoice_id.fel_numero
-                    documento["SerieDocumentoOrigen"] = factura.refund_invoice_id.fel_serie
+                    documento["MotivoAjuste"] = factura.fel_motivo
+                    documento["NumeroAutorizacionDocumentoOrigen"] = factura.reversed_entry_id.fel_firma
+                    documento["NumeroDocumentoOrigen"] = factura.reversed_entry_id.fac_numero
+                    documento["SerieDocumentoOrigen"] = factura.reversed_entry_id.fac_serie
                 else:
                     documento["RegimenAntiguo"] = "Actual"
-                    documento["FechaEmisionDocumentoOrigen"] = str(factura.refund_invoice_id.invoice_date)
-                    documento["MotivoAjuste"] = factura.name
-                    documento["NumeroAutorizacionDocumentoOrigen"] = factura.refund_invoice_id.fel_firma
-                    documento["NumeroDocumentoOrigen"] = factura.refund_invoice_id.fel_numero
-                    documento["SerieDocumentoOrigen"] = factura.refund_invoice_id.fel_serie
+                    documento["FechaEmisionDocumentoOrigen"] = str(factura.reversed_entry_id.invoice_date)
+                    documento["MotivoAjuste"] = factura.fel_motivo
+                    documento["NumeroAutorizacionDocumentoOrigen"] = factura.reversed_entry_id.fel_firma
+                    documento["NumeroDocumentoOrigen"] = factura.reversed_entry_id.fac_numero
+                    documento["SerieDocumentoOrigen"] = factura.reversed_entry_id.fac_serie
 
         #Factura CompCambiaria
         elif tipo_documento in ['FCAM']:
