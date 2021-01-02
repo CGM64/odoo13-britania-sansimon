@@ -15,10 +15,11 @@ class ProductTemplate(models.Model):
     def get_import_intelisis(self):
         query = """
 select a.Articulo, a.Tipo, a.Descripcion1, a.categoria, a.grupo, a.familia, a.linea,
-isnull(a.preciolista,0.0) * m.tipocambio precio, isnull(c.costopromedio,0.0) costopromedio
+isnull(a.preciolista,0.0) * m.tipocambio precio, isnull(c.costopromedio,0.0) costopromedio, a.grupodeutilidad, g.PorcentajeSobrePrecio
 from art a
 join mon m on m.moneda = 'Dolar'
 left outer join ArtCostoSucursal c on a.articulo = c.articulo and c.empresa = '%s' AND c.sucursal = %s
+left outer join ArtGrupoDeUtilidad g on g.GrupoDeUtilidad = a.GrupoDeUtilidad
 where estatus = 'ALTA' and tipo in ('Normal','Servicio')
 --where articulo = '3116 325'
         """
