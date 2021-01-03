@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_account_journal_form">
+      <field name="name">sansimon.account.journal.form</field>
+      <field name="model">account.journal</field>
+      <field name="inherit_id" ref="account.view_account_journal_form"/>
+      <field name="arch" type="xml">
+        <data>
+          <field name="invoice_reference_model" position="after">
+            <field name="template_print"/>
+          </field>
+        </data>
+      </field>
+    </record>
+  </data>
+</odoo>

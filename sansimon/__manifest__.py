@@ -25,15 +25,14 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
         'views/account_report.xml',
+        'views/account_journal_view.xml',
         'report/report_invoice.xml',
         'report/report_invoice_ticket.xml',
         'data/account.account.template.csv',
         'data/ir_cron_data.xml',
         'data/account_account_data.xml',
-        'data/stock_account_data.xml',
+        #'data/stock_account_data.xml',
         'report/sale_order.xml',
         'report/sale_order_templates.xml',
     ],
