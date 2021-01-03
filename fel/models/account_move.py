@@ -18,6 +18,10 @@ class AccountMove(models.Model):
 
     fel_setting_id = fields.Many2one('fel.setting', string='Facturacion FEL', copy=False, readonly=True, track_visibility='onchange')
     fel_firma = fields.Char('Firma FEL', copy=False, readonly=True, track_visibility='onchange')
+    fel_motivo = fields.Char('Motivo', copy=False, readonly=False, track_visibility='onchange')
+
+    fel_factura_referencia_id = fields.Many2one('account.move', string="Factura Referencia", help="Factura de referencia para ligar la nota de debito con la factura",
+                                    domain="[('company_id', '=', company_id),('state', '=', 'posted'),('type', '=', 'out_invoice'),('partner_id', '=', partner_id)]",)
 
     fecha_certificacion = fields.Datetime(string='Fecha certificacion',copy=False,readonly=True)
 
@@ -267,7 +271,7 @@ class AccountMove(models.Model):
             fel_setting.usuario,
             fel_setting.demo,
             documento["NITEmisor"],
-            "jrivera@bavaria.com.gt",
+            documento["ECorreoEmisor"],
             documento["factura_id"],
             documento,
         )
@@ -346,14 +350,26 @@ class AccountMove(models.Model):
             _logger.exception("\n\n" + error_msg)
             raise self.env['res.config.settings'].get_config_warning(error_msg)
 
+    def action_post_firmar(self):
+        move = self
+        if move.journal_id.fel_setting_id:
+            if move.journal_id.tipo_documento in ['NDEB']:
+                if not move.fel_factura_referencia_id:
+                    raise UserError(_("Para operar una nota de debito debe seleccionar una factura referencia."))
+            if move.journal_id.tipo_documento in ['NDEB']:
+                if not move.fel_motivo:
+                    raise UserError(_("Debe ingresar un motivo para el documento."))
+            if not move.invoice_payment_term_id and move.journal_id.tipo_documento not in ['NCRE','FACT']:
+                raise UserError(_("Debe ingresar las condiciones de pago."))
+        if move.journal_id.fel_setting_id and move.state == 'posted':
+            if not move.invoice_date:
+                raise UserError(_("No puede utilizar este diario, solo se puede utilizar desde una venta."))
+            documento = move.getListFactura()
+            move.firmar_factura(documento, False, False)
+
     def action_post(self):
         move = super(AccountMove,self).action_post()
-        if self.journal_id.fel_setting_id and self.state == 'posted':
-            if not self.invoice_date:
-                raise UserError(_("No puede utilizar este diario, solo se puede utilizar desde una venta."))
-            documento = self.getListFactura()
-            self.firmar_factura(documento, False, False)
-
+        self.action_post_firmar()
         return move
 
 

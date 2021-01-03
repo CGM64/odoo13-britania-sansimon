@@ -14,6 +14,8 @@
           <field name="team_id" position="after">
             <field name="fel_setting_id" options="{'no_create': True, 'no_open': True}" class="oe_inline"/>
             <field name="fecha_certificacion" options="{'no_create': True, 'no_open': True}" class="oe_inline"/>
+            <field name="fel_factura_referencia_id" options="{'no_create': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+            <field name="fel_motivo" attrs="{'readonly': [('state', '!=', 'draft')]}"/>            
           </field>
 
           <button name="button_draft" position="replace">
