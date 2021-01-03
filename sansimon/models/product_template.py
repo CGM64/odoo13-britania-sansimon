@@ -21,7 +21,7 @@ join mon m on m.moneda = 'Dolar'
 left outer join ArtCostoSucursal c on a.articulo = c.articulo and c.empresa = '%s' AND c.sucursal = %s
 left outer join ArtGrupoDeUtilidad g on g.GrupoDeUtilidad = a.GrupoDeUtilidad
 where estatus = 'ALTA' and tipo in ('Normal','Servicio')
-and a.articulo = '1008 416GY'
+--and a.articulo = '1008 416GY'
         """
         sql_server = self.env["connect.mssql"].search([],limit=1)
         query = query % (EMPRESA, SUCURSAL,)
@@ -42,7 +42,10 @@ and a.articulo = '1008 416GY'
         return True
 
     def _get_GrupoUtilidad(self, name, porcentaje):
+        #print("que pasa nombre (%s) y porcentaje(%s)" % (name,porcentaje))
         if name:
+            if not porcentaje:
+                porcentaje = 0
             utilidad = self.env["product.grupoutilidad"].search([("name","=", name)])
             if not utilidad:
                 utilidad = self.env["product.grupoutilidad"].create({
