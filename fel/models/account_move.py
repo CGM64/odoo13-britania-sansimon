@@ -390,6 +390,7 @@ class AccountMove(models.Model):
                 documento["NumeroDocumentoAAnular"] = factura.fel_firma
                 documento["MotivoAnulacion"] = "Cancelacion de Factura"
                 documento["factura_id"] = str(factura.id)
+                documento["ECorreoEmisor"] = factura.fel_setting_id.emisor.email or ''
                 factura.firmar_factura(documento, False, True)
                 #factura.message_post(subject='FEL', body=msg)
 
