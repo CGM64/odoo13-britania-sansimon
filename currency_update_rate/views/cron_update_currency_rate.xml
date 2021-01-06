@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <odoo>
+        <data noupdate="1">
+            <record id="update_currency_rate_cron" model="ir.cron">
+            	<field name="name">Currency rate update</field>
+            	<field name="user_id" ref="base.user_root"/>
+            	<field name="active" eval="True"/>
+            	<field name="interval_number">1</field>
+            	<field name="interval_type">days</field>
+            	<field name="numbercall">-1</field>
+            	<field eval="False" name="doall"/>
+            	<field name="model_id" ref="currency_update_rate.model_update_currency_rate"/>
+            	<field name="state">code</field>
+            	<field name="code">model.update_currency_rate()</field>
+            </record>
+        </data>
+    </odoo>
+
