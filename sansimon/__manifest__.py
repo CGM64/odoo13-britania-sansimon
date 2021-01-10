@@ -27,6 +27,7 @@
         # 'security/ir.model.access.csv',
         'views/account_report.xml',
         'views/account_journal_view.xml',
+        'wizard/catalogo_excel_wizard_view.xml',
         'report/report_invoice.xml',
         'report/report_invoice_ticket.xml',
         'data/account.account.template.csv',
