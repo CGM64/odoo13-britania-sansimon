@@ -15,10 +15,7 @@
 
                   <field name="archivo" filename="name"/>
                   <field name="tipo_plantilla"/>
-                  <field name="ubicacion"/>
-                  <field name="inventario"/>
-                  <field name="transferencia"/>
-                  <field name="counterpart_account_id"/>
+
                 </group>
                 <footer>
                     <button string="Cargar Catalogos" name="cargar_catalogo_excel" type="object" class="btn-primary"/>

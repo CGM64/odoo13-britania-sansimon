@@ -18,8 +18,15 @@ class ProductGrupoUtilidad(models.Model):
     name = fields.Char(string='Descripcion', required=True)
     porcentaje = fields.Integer(string='Porcentaje', required=True)
 
+class ProductMarca(models.Model):
+    _name = 'product.marca'
+    _description = 'Marca'
+
+    name = fields.Char(string='Marca', required=True)
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     dai_id = fields.Many2one('product.dai', string='DAI', help='Select a DAI for this product')
     grupo_utilidad_id = fields.Many2one('product.grupoutilidad', string='Grupo de Utilidad')
+    marca_id = fields.Many2one('product.marca', string='Marca', help='Marca del producto.')
