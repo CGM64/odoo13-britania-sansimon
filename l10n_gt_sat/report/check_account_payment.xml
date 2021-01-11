@@ -26,6 +26,17 @@
     </t>
   </template>
 
+  <template id="report_arml_print_check">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <link href="/l10n_gt_sat/static/src/css/formato_papel.css" rel="stylesheet" />
+            <div t-att-data-oe-model="o._name" t-att-data-oe-id="o.id" t-foreach="o._check_get_pages()" t-as="page" class="page article ckus_page ckus_top_page" t-attf-style="top: {{ o.company_id.account_check_printing_margin_top }}in; left: {{ o.company_id.account_check_printing_margin_left }}in;">
+                <t t-call="{{o.journal_id.cheque_template}}"/>
+            </div>
+        </t>
+    </t>
+  </template>
+
 <!-- Formato para cheque BAM -->
   <template id="ckgt_check_BAM">
       <div>
@@ -33,12 +44,10 @@
               <div class="o-watermark">CANCELADO</div>
           </t>
           <table class="artml_table" style="width:100%;">
-            <tr style="height:35px;">
-              <td style="width:20%;">
-                <!-- <span t-if="page['sequence_number']" t-esc="page['sequence_number']" /> -->
-              </td>
+            <tr style="height:2px;">
+              <td style="width:0%;"></td>
               <td style="width:60%;"></td>
-              <td style="width:20%"></td>
+              <td style="width:40%"></td>
             </tr>
             <tr style="height:25px;">
               <td></td>

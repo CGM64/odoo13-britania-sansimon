@@ -65,4 +65,5 @@ class AccountJournal(models.Model):
     papel_cheque = fields.Selection(selection=[
             ('l10n_gt_sat.report_payment_receipt_media', 'Papel Media Carta'),
             ('l10n_gt_sat.report_payment_receipt_carta', 'Papel Carta'),
+            ('l10n_gt_sat.report_payment_receipt_check', 'Papel Cheque'),
         ], string='Papel', default='l10n_gt_sat.report_payment_receipt_media')

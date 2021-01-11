@@ -49,6 +49,22 @@
           <field name="dpi">90</field>
       </record>
 
+      <record id="l10n_gt_sat_papel_cheque" model="report.paperformat">
+        <field name="name">Papel Cheque</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">70</field>
+        <field name="page_width">180</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">11</field>
+        <field name="dpi">90</field>
+      </record>
+
       <!-- Formato para imprimir los cheques utilizan chque y baucher a media carta -->
       <report
           id="report_payment_receipt_media"
@@ -61,6 +77,19 @@
           paperformat="l10n_gt_sat.l10n_gt_sat_paper_cheque_media"
           attachment="(object.state == 'posted') and ((object.name or 'CH').replace('/','_')+'.pdf')"
       />
+
+      <report
+          id="report_payment_papel_cheque"
+          model="account.payment"
+          string="Formato de Cheque"
+          report_type="qweb-pdf"
+          name="l10n_gt_sat.report_payment_receipt_check"
+          file="l10n_gt_sat.report_payment_receipt_check"
+          menu="True"
+          paperformat="l10n_gt_sat.l10n_gt_sat_papel_cheque"
+          attachment="(object.state == 'posted') and ((object.name or 'CH').replace('/','_')+'.pdf')"
+      />
+
       <!-- Formato para imprimir los cheques utilizando cheque y voucher carta -->
       <report
           id="report_payment_receipt_carta"
