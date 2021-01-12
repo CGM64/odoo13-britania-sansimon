@@ -38,6 +38,7 @@
         'views/report_libro_diario.xml',
         'views/stock_piking_view.xml',
         'views/purchase_order_views.xml',
+        'views/account_payment_view.xml',
         'report/check_account_payment.xml',
         'wizard/account_report_libros_view.xml',
         'wizard/libro_contable_view.xml',

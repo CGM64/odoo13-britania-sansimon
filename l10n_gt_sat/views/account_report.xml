@@ -65,6 +65,22 @@
         <field name="dpi">90</field>
       </record>
 
+      <record id="bav_voucher" model="report.paperformat">
+      <field name="name">Voucher Paper Format</field>
+      <field name="default" eval="True"/>
+      <field name="format">custom</field>
+      <field name="page_height">139</field>
+      <field name="page_width">216</field>
+      <field name="orientation">Landscape</field>
+      <field name="margin_top">10</field>
+      <field name="margin_bottom">10</field>
+      <field name="margin_left">2</field>
+      <field name="margin_right">2</field>
+      <field name="header_line" eval="False"/>
+      <field name="header_spacing">11</field>
+      <field name="dpi">90</field>
+      </record>
+
       <!-- Formato para imprimir los cheques utilizan chque y baucher a media carta -->
       <report
           id="report_payment_receipt_media"
@@ -74,7 +90,7 @@
           name="l10n_gt_sat.report_arml_print_check_top_media"
           file="l10n_gt_sat.report_arml_print_check_top_media"
           menu="True"
-          paperformat="l10n_gt_sat.l10n_gt_sat_paper_cheque_media"
+          paperformat="l10n_gt_sat_paper_cheque_media"
           attachment="(object.state == 'posted') and ((object.name or 'CH').replace('/','_')+'.pdf')"
       />
 
@@ -86,7 +102,19 @@
           name="l10n_gt_sat.report_payment_receipt_check"
           file="l10n_gt_sat.report_payment_receipt_check"
           menu="True"
-          paperformat="l10n_gt_sat.l10n_gt_sat_papel_cheque"
+          paperformat="l10n_gt_sat_papel_cheque"
+          attachment="(object.state == 'posted') and ((object.name or 'CH').replace('/','_')+'.pdf')"
+      />
+
+      <report
+          id="report_payment_papel_cheque_voucher"
+          model="account.payment"
+          string="Formato de Cheque Voucher"
+          report_type="qweb-pdf"
+          name="l10n_gt_sat.report_payment_receipt_check_voucher"
+          file="l10n_gt_sat.report_payment_receipt_check_voucher"
+          menu="True"
+          paperformat="bav_voucher"
           attachment="(object.state == 'posted') and ((object.name or 'CH').replace('/','_')+'.pdf')"
       />
 
@@ -99,7 +127,7 @@
           name="l10n_gt_sat.report_arml_print_check_top_carta"
           file="l10n_gt_sat.report_arml_print_check_top_carta"
           menu="True"
-          paperformat="l10n_gt_sat.l10n_gt_sat_paper_cheque_carta"
+          paperformat="l10n_gt_sat_paper_cheque_carta"
           attachment="(object.state == 'posted') and ((object.name or 'CH').replace('/','_')+'.pdf')"
       />
 
@@ -110,7 +138,7 @@
             report_type="qweb-pdf"
             name="l10n_gt_sat.librofiscal"
             file="l10n_gt_sat.librofiscal"
-            paperformat="l10n_gt_sat.l10n_gt_sat_paper_libro_fiscal"
+            paperformat="l10n_gt_sat_paper_libro_fiscal"
           />
 
           <report
@@ -118,7 +146,7 @@
             model="report.l10n_gt_sat.account_librofiscal_report_xls"
             string="Libro Fiscal XLS"
             report_type="xlsx"
-            name="l10n_gt_sat.account_librofiscal_report_xls"
+            name="account_librofiscal_report_xls"
             file="Libro_Fiscal"
             attachment_use="False"
         />
@@ -128,7 +156,7 @@
           model="report.l10n_gt_sat.libro_contable_diario_xlsx"
           string="Libro Contable Diario XLS"
           report_type="xlsx"
-          name="l10n_gt_sat.libro_contable_diario_xlsx"
+          name="libro_contable_diario_xlsx"
           file="Diario"
           attachment_use="False"
         />
@@ -138,7 +166,7 @@
           model="report.l10n_gt_sat.libro_contable_mayor_xlsx"
           string="Libro Contable Mayor XLS"
           report_type="xlsx"
-          name="l10n_gt_sat.libro_contable_mayor_xlsx"
+          name="libro_contable_mayor_xlsx"
           file="Mayor"
           attachment_use="False"
         />

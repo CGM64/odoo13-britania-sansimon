@@ -10,6 +10,8 @@ class AccountPayment(models.Model):
     _inherit = "account.payment"
 
     check_no_negociable = fields.Boolean(string="No Negociable", default=False, tracking=True)
+    observaciones = fields.Char(string="Observaciones",required=False)
+    comentarios = fields.Char(string="Comentarios",required=False)
 
     @api.onchange('amount', 'currency_id')
     def _onchange_amount(self):

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_account_payment_form_inherit_l10n_gt_sat" model="ir.ui.view">
+        <field name="name">account.payment.sat</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form" />
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='communication']" position="after">
+            <field name="check_no_negociable" attrs="{'invisible': ['|', ('payment_method_code', '!=', 'check_printing'), ('check_number', '=', '0')]}"/>
+            <field name="observaciones" string="Observaciones"/>
+            <field name="comentarios" string="Comentarios"/>            
+          </xpath>
+        </field>
+    </record>
+</odoo>

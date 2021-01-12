@@ -26,12 +26,23 @@
     </t>
   </template>
 
-  <template id="report_arml_print_check">
+  <template id="report_payment_receipt_check">
     <t t-call="web.html_container">
         <t t-foreach="docs" t-as="o">
             <link href="/l10n_gt_sat/static/src/css/formato_papel.css" rel="stylesheet" />
             <div t-att-data-oe-model="o._name" t-att-data-oe-id="o.id" t-foreach="o._check_get_pages()" t-as="page" class="page article ckus_page ckus_top_page" t-attf-style="top: {{ o.company_id.account_check_printing_margin_top }}in; left: {{ o.company_id.account_check_printing_margin_left }}in;">
                 <t t-call="{{o.journal_id.cheque_template}}"/>
+            </div>
+        </t>
+    </t>
+  </template>
+
+  <template id="report_payment_receipt_check_voucher">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <link href="/l10n_gt_sat/static/src/css/formato_papel.css" rel="stylesheet" />
+            <div t-att-data-oe-model="o._name" t-att-data-oe-id="o.id" t-foreach="o._check_get_pages()" t-as="page" class="page article ckus_page ckus_top_page" t-attf-style="top: {{ o.company_id.account_check_printing_margin_top }}in; left: {{ o.company_id.account_check_printing_margin_left }}in;">
+                <t t-call="{{o.journal_id.voucher_template}}"/>
             </div>
         </t>
     </t>
@@ -356,5 +367,136 @@
           </div>
       </div>
   </template>
+
+  <template id="voucher_3">
+      <div>
+          <t t-if="page['state'] == 'cancelled'">
+              <div class="o-watermark">CANCELADO</div>
+          </t>
+          <style type="text/css">
+              table.ch_voucher{
+              line-height: 1.5;
+              font-size:  10px;
+              }
+          </style>
+          <table align="center" width="100%" class="ch_voucher">
+            <tr><td colspan="20" style="line-height: 3;">&#160;</td></tr>
+            <tr>
+              <td>&#160;</td>
+              <td>Cheque No:</td>
+              <td><span t-field="o.check_number"/></td>
+              <td colspan="16" align="right">
+                Moneda:
+                <t t-if="o.currency_id.name == 'USD'">DOLARES</t>
+                <t t-if="o.currency_id.name == 'GTQ'">QUETZALES</t>
+                <t t-if="o.currency_id.name == 'EUR'">EUROS</t>
+              </td>
+              <td colspan="2">&#160;</td>
+            </tr>
+            <tr>
+              <td>&#160;</td>
+              <td>Empresa:</td>
+              <td colspan="16"><span t-field="o.company_id.name"/></td>
+              <td colspan="2">&#160;</td>
+            </tr>
+            <tr>
+              <td>&#160;</td>
+              <td>Lugar y Fecha:</td>
+              <td colspan="10">
+                <span>Guatemala</span>&#160;
+                <span t-field="o.payment_date" t-options="{&quot;format&quot;: &quot;dd&quot;}"/>&#160;
+                <span>&#160;</span>
+                <span t-field="o.payment_date" t-options="{&quot;format&quot;: &quot;MMMM&quot;}"/>
+                <span>&#160;</span>
+                <span t-field="o.payment_date" t-options="{&quot;format&quot;: &quot;yyyy&quot;}"/>
+              </td>
+              <td>Importe:</td>
+              <td colspan="2"><span t-esc="'{0:,.2f}'.format(o.amount)"/></td>
+              <td>&#160;</td>
+            </tr>
+            <tr>
+              <td>&#160;</td>
+              <td colspan="17">Beneficiario:&#160;**<span t-field="o.partner_id.name"/>**</td>
+              <td colspan="2">&#160;</td>
+            </tr>
+            <tr>
+              <td>&#160;</td>
+              <td>Suma de:</td>
+              <td colspan="16"><span t-esc="o.check_amount_in_words"/></td>
+              <td colspan="2">&#160;</td>
+            </tr>
+            <tr>
+              <td>&#160;</td>
+              <td colspan="17">Cuenta Bancaria:&#160;<span t-field="o.journal_id.bank_acc_number"/>&#160;&#160;&#160;<span t-field="o.journal_id.bank_id.name"/></td>
+              <td colspan="2">&#160;</td>
+            </tr>
+            <tr>
+              <td>&#160;</td>
+              <td colspan="17">Cheque hecho por:&#160;<span t-field="o.create_uid.name"/></td>
+              <td colspan="2">&#160;</td>
+            </tr>
+            <tr>
+              <td>&#160;</td>
+              <td>Referencia:</td>
+              <td colspan="16"><span t-field="o.communication"/></td>
+              <td colspan="2">&#160;</td>
+            </tr>
+            <tr>
+              <td>&#160;</td>
+              <td>Observaciones:</td>
+              <td colspan="16"><span t-field="o.observaciones"/></td>
+              <td colspan="2">&#160;</td>
+            </tr>
+            <tr>
+              <td align="center" colspan="20">DATOS DE SOLICITUD DE CHEQUE</td>
+            </tr>
+            <tr>
+              <td colspan="2">&#160;</td>
+              <td>Solicitada por:</td>
+              <td colspan="2">&#160;</td>
+              <td>Aprobada por:</td>
+              <td colspan="2">&#160;</td>
+              <td>Recibido por:</td>
+              <td colspan="2">&#160;</td>
+            </tr>
+            <tr style="line-height: 4;">
+              <td colspan="2">&#160;</td>
+              <td>_______________</td>
+              <td colspan="2">&#160;</td>
+              <td>_______________</td>
+              <td colspan="2">&#160;</td>
+              <td>_______________</td>
+              <td colspan="2">&#160;</td>
+            </tr>
+            <tr>
+              <td colspan="20" align="center">POLIZA CONTABLE</td>
+            </tr>
+            <tr>
+              <td>&#160;</td>
+              <td colspan="10">CUENTA</td>
+              <td colspan="4">DEBE</td>
+              <td colspan="4">HABER</td>
+              <td>&#160;</td>
+            </tr>
+            <tr t-foreach="o.move_line_ids" t-as="l">
+              <t t-if="l.debit">
+                <td>&#160;</td>
+                 <td align="left" colspan="10"><span t-field="l.account_id.code"/>&#160;<span t-field="l.account_id.name"/></td>
+                 <td align="right" colspan="4"><span t-esc="'{0:,.2f}'.format(l.debit)"/></td>
+                 <td align="right" colspan="4">&#160;</td>
+                 <td>&#160;</td>
+              </t>
+              <t t-if="l.credit">
+                <td>&#160;</td>
+                  <td align="left" colspan="10"><span t-field="l.account_id.code"/>&#160;<span t-field="l.account_id.name"/></td>
+                  <td align="right" colspan="4">&#160;</td>
+                  <td align="right" colspan="4"><span t-esc="'{0:,.2f}'.format(l.credit)"/></td>
+                  <td>&#160;</td>
+              </t>
+          </tr>
+          </table>
+      </div>
+  </template>
+
 </data>
 </odoo>

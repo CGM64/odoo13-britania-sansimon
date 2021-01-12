@@ -53,6 +53,7 @@ class AccountJournal(models.Model):
     voucher_template = fields.Selection(selection=[
             ('l10n_gt_sat.voucher_1', 'Plantilla Voucher 1'),
             ('l10n_gt_sat.voucher_2', 'Plantilla Voucher 2'),
+            ('l10n_gt_sat.voucher_3', 'Plantilla Voucher 3'),
         ], string='Plantilla Voucher', default='l10n_gt_sat.voucher_1')
 
     cheque_template = fields.Selection(selection=[
@@ -65,5 +66,5 @@ class AccountJournal(models.Model):
     papel_cheque = fields.Selection(selection=[
             ('l10n_gt_sat.report_payment_receipt_media', 'Papel Media Carta'),
             ('l10n_gt_sat.report_payment_receipt_carta', 'Papel Carta'),
-            ('l10n_gt_sat.report_payment_receipt_check', 'Papel Cheque'),
+            ('l10n_gt_sat.report_payment_papel_cheque', 'Papel Cheque'),
         ], string='Papel', default='l10n_gt_sat.report_payment_receipt_media')
