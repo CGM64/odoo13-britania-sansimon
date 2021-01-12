@@ -114,21 +114,21 @@ class AccountMove(models.Model):
             if total_impuestos != 0:
                 linea["NombreCorto"] = "IVA"
                 linea["CodigoUnidadGravable"] = "2" if factura.journal_id.tipo_operacion == 'EXPO' else "1"
-                linea["MontoGravable"] = '{:.2f}'.format(factura.currency_id.round(total_linea_base))
-                linea["MontoImpuesto"] = '{:.2f}'.format(factura.currency_id.round(total_impuestos))
-            linea["Total"] = '{:.2f}'.format(factura.currency_id.round(total_linea))
+                linea["MontoGravable"] = '{:.4f}'.format(total_linea_base)
+                linea["MontoImpuesto"] = '{:.4f}'.format(total_impuestos)
+            linea["Total"] = '{:.4f}'.format(total_linea)
 
-            gran_total += factura.currency_id.round(total_linea)
-            gran_subtotal += factura.currency_id.round(total_linea_base)
-            gran_total_impuestos += factura.currency_id.round(total_impuestos)
+            gran_total += total_linea
+            gran_subtotal += total_linea_base
+            gran_total_impuestos += total_impuestos
 
 
 
             items.append(linea)
         documento["Items"] = items
-        documento["gran_total_impuestos"] = gran_total_impuestos
-        documento["TotalMontoImpuesto"] = '{:.2f}'.format(factura.currency_id.round(gran_total_impuestos))
-        documento["GranTotal"] = '{:.2f}'.format(factura.currency_id.round(gran_total))
+        documento["gran_total_impuestos"] = '{:.4f}'.format(gran_total_impuestos)
+        documento["TotalMontoImpuesto"] = '{:.4f}'.format(gran_total_impuestos)
+        documento["GranTotal"] = '{:.4f}'.format(gran_total)
 
         documento["Adenda"] = factura.name
 
