@@ -197,7 +197,7 @@
             <div class="o-watermark">CANCELADO</div>
         </t>
         <table class="artml_table" style="width:100%;">
-          <tr style="height:20px;">
+          <tr style="height:30px;">
             <td style="width:0%;"></td>
             <td style="width:60%;"></td>
             <td style="width:40%"></td>
@@ -215,11 +215,15 @@
             <td class="text-left"><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
               <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
               <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
+              <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
               <span t-esc="page['amount'].replace(o.currency_id.symbol, '')"/></td>
           </tr>
           <tr style="height:25px;">
             <td></td>
-            <td colspan="2"><span t-esc="page['partner_name']"/></td>
+            <td colspan="2">
+              <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
+                <span t-esc="page['partner_name']"/>
+              </td>
           </tr>
           <tr style="height:25px;">
             <td></td>
