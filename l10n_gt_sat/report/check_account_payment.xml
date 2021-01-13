@@ -230,6 +230,10 @@
             <td></td>
             <td colspan="2"><span t-esc="page['amount_in_word']"/></td>
           </tr>
+          <tr style="height:20px;">
+            <td><![CDATA[&nbsp;]]></td>
+            <td colspan="2"><![CDATA[&nbsp;]]></td>
+          </tr>
           <tr style="height:35px;">
             <td></td>
             <td colspan="2"><t t-if="o.check_no_negociable">NO NEGOCIABLE</t></td>
