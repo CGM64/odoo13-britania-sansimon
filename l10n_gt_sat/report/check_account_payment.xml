@@ -197,27 +197,25 @@
             <div class="o-watermark">CANCELADO</div>
         </t>
         <table class="artml_table" style="width:100%;">
-          <tr style="height:35px;">
-            <td style="width:20%;">
-              <!-- <span t-if="page['sequence_number']" t-esc="page['sequence_number']" /> -->
-            </td>
+          <tr style="height:20px;">
+            <td style="width:0%;"></td>
             <td style="width:60%;"></td>
-            <td style="width:20%"></td>
-          </tr>
-          <tr style="height:35px;">
-            <td colspan="3"><![CDATA[&nbsp;]]></td>
+            <td style="width:40%"></td>
           </tr>
           <tr style="height:25px;">
             <td></td>
             <td>
-              Guatemala,
+              <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>Guatemala,
               <span t-field="o.payment_date" t-options='{"format":"dd"}'/>
               <span>&#160;</span>
               <span t-field="o.payment_date" t-options='{"format": "MMMM"}'/>
               <span>&#160;</span>
               <span t-field="o.payment_date" t-options='{"format": "yyyy"}'/>
             </td>
-            <td class="text-right"><span t-esc="page['amount'].replace(o.currency_id.symbol, '')"/></td>
+            <td class="text-left"><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
+              <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
+              <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
+              <span t-esc="page['amount'].replace(o.currency_id.symbol, '')"/></td>
           </tr>
           <tr style="height:25px;">
             <td></td>
