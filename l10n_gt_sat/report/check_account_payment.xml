@@ -63,7 +63,7 @@
             <tr style="height:25px;">
               <td></td>
               <td>
-                Guatemala,
+                <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>Guatemala,
   							<span t-field="o.payment_date" t-options='{"format":"dd"}'/>
   							<span>&#160;</span>
   							<span t-field="o.payment_date" t-options='{"format": "MMMM"}'/>
