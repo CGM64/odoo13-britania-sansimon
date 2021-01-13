@@ -70,7 +70,10 @@
   							<span>&#160;</span>
   							<span t-field="o.payment_date" t-options='{"format": "yyyy"}'/>
               </td>
-              <td class="text-left"><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><span t-esc="page['amount'].replace(o.currency_id.symbol, '')"/></td>
+              <td class="text-left"><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
+                <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
+                <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
+                <span t-esc="page['amount'].replace(o.currency_id.symbol, '')"/></td>
             </tr>
             <tr style="height:25px;">
               <td></td>
