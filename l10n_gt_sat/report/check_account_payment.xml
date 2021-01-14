@@ -55,12 +55,12 @@
               <div class="o-watermark">CANCELADO</div>
           </t>
           <table class="artml_table" style="width:100%;">
-            <tr style="height:20px;">
+            <tr style="height:40px;">
               <td style="width:0%;"></td>
               <td style="width:60%;"></td>
               <td style="width:40%"></td>
             </tr>
-            <tr style="height:25px;">
+            <tr style="height:30px;">
               <td></td>
               <td>
                 <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>Guatemala,
@@ -75,13 +75,13 @@
                 <![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
                 <span t-esc="page['amount'].replace(o.currency_id.symbol, '')"/></td>
             </tr>
-            <tr style="height:25px;">
+            <tr style="height:30px;">
               <td></td>
               <td colspan="2"><span t-esc="page['partner_name']"/></td>
             </tr>
-            <tr style="height:25px;">
+            <tr style="height:30px;">
               <td></td>
-              <td colspan="2"><span t-esc="page['amount_in_word']"/></td>
+	      <td colspan="2"><small><span t-esc="page['amount_in_word']"/></small></td>
             </tr>
             <tr style="height:35px;">
               <td></td>
@@ -382,11 +382,12 @@
           <style type="text/css">
               table.ch_voucher{
               line-height: 1.5;
-              font-size:  10px;
+              font-size:  14px;
               }
           </style>
           <table align="center" width="100%" class="ch_voucher">
-            <tr><td colspan="20" style="line-height: 3;">&#160;</td></tr>
+		  <tr><td colspan="20" style="line-height: 3;">&#160;</td></tr>
+		<tr><td colspan="20" style="height:30px;">&#160;</td></tr>
             <tr>
               <td>&#160;</td>
               <td>Cheque No:</td>
