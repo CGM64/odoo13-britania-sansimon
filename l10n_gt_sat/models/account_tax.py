@@ -13,14 +13,5 @@ class account_tax(models.Model):
 		('idp','Impuesto sobre distribucion de petroleo y derivados'),
 		('itme','Impuesto Tasa Municipal Energía'),
 		('ipeq','Impuesto Pequeño Contribuyente'),
-		])
-
-	sat_tipo_producto = fields.Selection([
-		('bien','Bien'),
-		('servicio','Servicio'),
-		('exento','Excento'),
-		('gas','Combustible'),
-		('exp_in_ca_bien', 'Exportacion Bien in CA'),
-		('imp_in_ca_bien', 'Importacion Bien in CA'),
-		('imp_out_ca_bien', 'Importacion Bien out CA'),
+		('inguat','Impuesto de INGUAT'),
 		])

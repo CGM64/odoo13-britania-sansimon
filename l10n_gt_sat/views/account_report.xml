@@ -146,11 +146,10 @@
             model="report.l10n_gt_sat.account_librofiscal_report_xls"
             string="Libro Fiscal XLS"
             report_type="xlsx"
-            name="account_librofiscal_report_xls"
+            name="l10n_gt_sat.account_librofiscal_report_xls"
             file="Libro_Fiscal"
             attachment_use="False"
         />
-
         <report
           id="libro_contable_diario_xlsx"
           model="report.l10n_gt_sat.libro_contable_diario_xlsx"

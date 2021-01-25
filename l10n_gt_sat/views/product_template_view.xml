@@ -9,6 +9,7 @@
         <field name="dai_id"/>
         <field name="grupo_utilidad_id"/>
         <field name="marca_id"/>
+        <field name="sat_tipo_producto" />
       </group>
     </field>
   </record>

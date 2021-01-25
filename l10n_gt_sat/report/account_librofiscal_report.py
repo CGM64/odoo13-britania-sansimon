@@ -89,6 +89,8 @@ class AccountCommonJournalReport(models.TransientModel):
                     ('date','<=',fecha_al),
                     ('invoice_date','!=',False),
                     ('state','in',('posted','cancel')),
+                    #('partner_id','=',11151),
+                    #('id','=',33202),
                 ]
                 if libro['libro'] == "purchase":
                     domain.append(('state', '=', 'posted'))
@@ -250,6 +252,7 @@ class AccountCommonJournalReport(models.TransientModel):
         model = self.env.context.get('active_model')
         docs = self.env[model].browse(self.env.context.get('active_id'))
         libros = self.get_libro(data)
+        print("llego al get libro")
 
 
 

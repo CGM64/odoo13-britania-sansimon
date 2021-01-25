@@ -30,3 +30,12 @@ class ProductTemplate(models.Model):
     dai_id = fields.Many2one('product.dai', string='DAI', help='Select a DAI for this product')
     grupo_utilidad_id = fields.Many2one('product.grupoutilidad', string='Grupo de Utilidad')
     marca_id = fields.Many2one('product.marca', string='Marca', help='Marca del producto.')
+    sat_tipo_producto = fields.Selection([
+		('bien','Bien'),
+		('servicio','Servicio'),
+		('exento','Excento'),
+		('gas','Combustible'),
+		('exp_in_ca_bien', 'Exportacion Bien in CA'),
+		('imp_in_ca_bien', 'Importacion Bien in CA'),
+		('imp_out_ca_bien', 'Importacion Bien out CA'),
+		])

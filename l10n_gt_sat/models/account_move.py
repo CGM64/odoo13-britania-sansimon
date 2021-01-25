@@ -70,6 +70,7 @@ class AccountMove(models.Model):
             total = 0.0
             total_currency = 0.0
             iva_importacion = 0.0
+            iva = 0.0
             currencies = set()
 
             total_servicio = total_servicio_iva = 0.0
@@ -120,31 +121,28 @@ class AccountMove(models.Model):
                         total += line.balance
                         total_currency += line.amount_currency
 
-                for linea in line.tax_ids:
-                    if line.product_id.type in ('service'):
-                        total_servicio += line.balance
-                    elif linea.impuesto_sat == 'ipeq':
+                for impuesto in line.tax_line_id:
+                    if impuesto.impuesto_sat == 'ipeq':
                         sat_peq_contri += line.balance
-                    elif linea.sat_tipo_producto == 'exento':
+                    elif impuesto.impuesto_sat == 'iva':
+                        iva += line.balance
+                    elif impuesto.impuesto_sat == 'idp':
                         sat_exento += line.balance
-                    elif linea.sat_tipo_producto == 'gas':
+                    elif impuesto.impuesto_sat == 'inguat':
+                        sat_exento += line.balance
+
+
+                if line.product_id:
+                    if line.product_id.sat_tipo_producto == 'gas':
                         sat_combustible += line.balance
-                    elif linea.sat_tipo_producto == 'exp_in_ca_bien':
+                    elif line.product_id.sat_tipo_producto == 'exp_in_ca_bien':
                         sat_exportacion_in_ca += line.balance
+                    elif line.product_id.sat_tipo_producto == 'imp_out_ca_bien':
+                        iva_importacion += line.balance
+                    elif line.product_id.type in ('service'):
+                        total_servicio += line.balance
                     else:
                         total_bien += line.balance
-
-                if move.journal_id.tipo_operacion in ('DUCA_IN','DUCA_OUT'):
-                    #No voy a utilizar la iva por cobrar default.
-                    #tax_repartition_line = self.company_id.account_purchase_tax_id.invoice_repartition_line_ids.filtered(lambda line: line.repartition_type == 'tax')
-                    tax_repartition_line = self.env['account.tax'].search([('company_id','=',self.company_id.id),('type_tax_use','=','purchase'),('sat_tipo_producto','in',('imp_out_ca_bien','imp_in_ca_bien'))], limit=1)
-                    tax_repartition_line = tax_repartition_line.invoice_repartition_line_ids.filtered(lambda line: line.repartition_type == 'tax')
-                    iva_compras_default = tax_repartition_line.account_id.id
-                    if not iva_compras_default:
-                        raise ValidationError(_("No se a configurado la cuenta por default del IVA Compras para el documento DUCA."))
-                    if line.account_id.id == iva_compras_default:
-                        iva_importacion += line.balance
-
 
 
             if move.type == 'out_invoice':
@@ -193,7 +191,7 @@ class AccountMove(models.Model):
                 move.sat_bien = sign * total_bien
                 move.sat_exento = sign * sat_exento
                 move.sat_combustible = sign * sat_combustible
-                move.sat_iva = sign * (total - total_untaxed)
+                move.sat_iva = iva
                 move.sat_subtotal = move.sat_servicio + move.sat_bien
 
 
