@@ -133,7 +133,13 @@ class AccountMove(models.Model):
 
 
                 if line.product_id:
-                    if line.product_id.sat_tipo_producto == 'gas':
+                    es_peq_contribuyente = False
+                    for line_imp in line.tax_ids:
+                        if line_imp.impuesto_sat == 'ipeq':
+                            es_peq_contribuyente = True
+                    if es_peq_contribuyente:
+                        sat_peq_contri += line.balance
+                    elif line.product_id.sat_tipo_producto == 'gas':
                         sat_combustible += line.balance
                     elif line.product_id.sat_tipo_producto == 'exp_in_ca_bien':
                         sat_exportacion_in_ca += line.balance
