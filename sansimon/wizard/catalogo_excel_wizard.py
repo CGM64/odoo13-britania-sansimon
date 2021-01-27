@@ -35,13 +35,23 @@ class ImportarCatalogosExcel(models.TransientModel):
 	archivo = fields.Binary(string="Archivo (XLS)")
 	tipo_plantilla = fields.Selection([
 		('p1', 'Revisar Productos'),
-	], required=True, default='p1')
+		('p2', 'Actualizar Costos'),
+	], required=True, default='p2')
 
 
 
 	def cargar_catalogo_excel(self):
 		if self.tipo_plantilla == 'p1':
 			self._revisar_producto()
+		if self.tipo_plantilla == 'p2':
+			self._actualizar_sale_margin()
+
+	def _actualizar_sale_margin(self):
+		print("Si llego")
+		pedido_detalle = self.env["sale.order.line"].search([])
+		for linea in pedido_detalle:
+			linea.product_id_change_margin()
+			print(linea.name)
 
 	def _revisar_producto(self):
 		fp = tempfile.NamedTemporaryFile(delete= False,suffix=".xlsx")
