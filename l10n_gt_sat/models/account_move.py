@@ -141,6 +141,8 @@ class AccountMove(models.Model):
                         sat_peq_contri += line.balance
                     elif line.product_id.sat_tipo_producto == 'gas':
                         sat_combustible += line.balance
+                    elif line.product_id.sat_tipo_producto == 'exento':
+                        sat_exento += line.balance
                     elif line.product_id.sat_tipo_producto == 'exp_in_ca_bien':
                         sat_exportacion_in_ca += line.balance
                     elif line.product_id.sat_tipo_producto == 'imp_out_ca_bien':
@@ -185,19 +187,21 @@ class AccountMove(models.Model):
                 move.sat_iva = iva_importacion
                 move.sat_importa_in_ca = move.sat_iva / 0.12
                 move.sat_exportacion_in_ca = sign * sat_exportacion_in_ca
-                move.sat_amount_total = move.sat_importa_in_ca + move.sat_iva + move.sat_exportacion_in_ca
+                move.sat_exento = sign * sat_exento
+                move.sat_amount_total = move.sat_importa_in_ca + move.sat_iva + move.sat_exportacion_in_ca + move.sat_exento
 
             elif move.journal_id.tipo_operacion == 'DUCA_OUT':
                 move.sat_iva = iva_importacion
                 move.sat_importa_out_ca = move.sat_iva / 0.12
-                move.sat_amount_total = move.sat_importa_out_ca + move.sat_iva
+                move.sat_exento = sign * sat_exento
+                move.sat_amount_total = move.sat_importa_out_ca + move.sat_iva + move.sat_exento
             else:
 
                 move.sat_servicio = sign * total_servicio
                 move.sat_bien = sign * total_bien
                 move.sat_exento = sign * sat_exento
                 move.sat_combustible = sign * sat_combustible
-                move.sat_iva = iva
+                move.sat_iva = sign * iva
                 move.sat_subtotal = move.sat_servicio + move.sat_bien
 
 

@@ -134,20 +134,21 @@ class AccountCommonJournalReport(models.TransientModel):
                     top_key = documento.partner_id.id
 
                     #Comienza el desarrollo para top 10
-                    dic_top_documento = {}
-                    dic_top_documento['partner_id'] = documento.partner_id.id
-                    dic_top_documento['partner'] = documento.partner_id
+                    if documento.journal_id.tipo_operacion not in ('DUCA_IN','DUCA_OUT'):
+                        dic_top_documento = {}
+                        dic_top_documento['partner_id'] = documento.partner_id.id
+                        dic_top_documento['partner'] = documento.partner_id
 
-                    #Primero analice si la lista del top existe, si existe lo reasigno y si no lo inicializo con valor 0, para que se pueda hacer la suma
-                    if top_key in lista_top_documentos:
-                        dic_top_documento = lista_top_documentos[top_key]
-                    else:
-                        dic_top_documento['sat_base'] = 0.0
-                        dic_top_documento['cant_docs'] = 0
+                        #Primero analice si la lista del top existe, si existe lo reasigno y si no lo inicializo con valor 0, para que se pueda hacer la suma
+                        if top_key in lista_top_documentos:
+                            dic_top_documento = lista_top_documentos[top_key]
+                        else:
+                            dic_top_documento['sat_base'] = 0.0
+                            dic_top_documento['cant_docs'] = 0
 
-                    dic_top_documento['sat_base'] = dic_top_documento['sat_base'] + documento.sat_combustible + documento.sat_servicio + documento.sat_bien + documento.sat_importa_in_ca + documento.sat_importa_out_ca
-                    dic_top_documento['cant_docs'] = dic_top_documento['cant_docs'] + 1
-                    lista_top_documentos[top_key] = dic_top_documento
+                        dic_top_documento['sat_base'] = dic_top_documento['sat_base'] + documento.sat_combustible + documento.sat_servicio + documento.sat_bien + documento.sat_importa_in_ca + documento.sat_importa_out_ca
+                        dic_top_documento['cant_docs'] = dic_top_documento['cant_docs'] + 1
+                        lista_top_documentos[top_key] = dic_top_documento
 
                     #Comienza el desarrollo para el libro resumido
                     day_to_year = documento.invoice_date.timetuple().tm_yday #Obtengo el dia del anio para utilizarlo como llave
