@@ -9,6 +9,7 @@
           <form string="Lista de Precios" class="o_sale_order">
             <header>
               <button name="action_cancel" states="draft,send" type="object" string="Cancel"/>
+              <button name="action_calcular" icon="fa-calculator" states="draft" type="object" string="Calcular" confirm="Este proceso borrara todo y lo volvera a cargar. ¿Esta seguro de continuar?"/>
               <field name="state" widget="statusbar" statusbar_visible="draft,send,cancel"/>
             </header>
             <sheet>
@@ -19,11 +20,18 @@
               </div>
               <group>
                 <group>
-                  <field name="ref"/>
-                  <field name="narration"/>
+                  <field name="applied_on" widget="radio"/>
                 </group>
                 <group>
-                  <field name="date"/>
+                  <field name="categ_id" options="{'no_create_edit': True}" attrs="{
+                                  'invisible':[('applied_on', '!=', '0_categoria')],
+                                  'required':[('applied_on', '=', '0_categoria')]}"/>
+                  <field name="vendor_bill_id" options="{'no_create_edit': True}" attrs="{
+                                  'invisible':[('applied_on', '!=', '1_factura_compra')],
+                                  'required':[('applied_on', '=', '1_factura_compra')]}"/>
+                  <field name="partner_id" options="{'no_create_edit': True}" attrs="{
+                                  'invisible':[('applied_on', '!=', '2_proveedor')],
+                                  'required':[('applied_on', '=', '2_proveedor')]}"/>
                   <field name="company_id" groups="base.group_multi_company"/>
                 </group>
               </group>
@@ -33,10 +41,22 @@
                     <tree string="Sales Order Lines" editable="bottom">
                       <field name="listprice_id" invisible="1"/>
                       <field name="product_id"/>
-                      <field name="state"/>
+                      <field name="price_original"/>
+                      <field name="price_nuevo"/>
+                      <field name="percent_margen"/>
+                      <field name="price_diferencia"/>
+                      <field name="percent_diferencia"/>
+                      <field name="state" invisible="1"/>
                       <field name="company_id" groups="base.group_multi_company"/>
                     </tree>
                   </field>
+                </page>
+                <page string="Informacion Adicional">
+                  <group>
+                    <field name="date"/>
+                    <field name="ref"/>
+                    <field name="narration"/>
+                  </group>
                 </page>
               </notebook>
             </sheet>
