@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+      <record id="view_upd_listprice_form" model="ir.ui.view">
+        <field name="name">upd.listprice.form</field>
+        <field name="model">upd.listprice</field>
+        <field name="arch" type="xml">
+          <form string="Lista de Precios" class="o_sale_order">
+            <header>
+              <button name="action_cancel" states="draft,send" type="object" string="Cancel"/>
+              <field name="state" widget="statusbar" statusbar_visible="draft,send,cancel"/>
+            </header>
+            <sheet>
+              <div class="oe_title">
+                <h1>
+                  <field name="name"/>
+                </h1>
+              </div>
+              <group>
+                <group>
+                  <field name="ref"/>
+                  <field name="narration"/>
+                </group>
+                <group>
+                  <field name="date"/>
+                  <field name="company_id" groups="base.group_multi_company"/>
+                </group>
+              </group>
+              <notebook>
+                <page string="Lines" name="lines_ids">
+                  <field name="line_ids" mode="tree">
+                    <tree string="Sales Order Lines" editable="bottom">
+                      <field name="listprice_id" invisible="1"/>
+                      <field name="product_id"/>
+                      <field name="state"/>
+                      <field name="company_id" groups="base.group_multi_company"/>
+                    </tree>
+                  </field>
+                </page>
+              </notebook>
+            </sheet>
+          </form>
+        </field>
+      </record>
+
+
+      <record model="ir.actions.act_window" id="action_upd_listprice">
+        <field name="name">Cambio de Lista de Precios</field>
+        <field name="res_model">upd.listprice</field>
+        <field name="view_mode">tree,form</field>
+      </record>
+
+      <menuitem name="Cambio de Lista de Precios" id="menu_upd_listprice" action="action_upd_listprice" sequence="145" parent="sale.product_menu_catalog"/>
+
+
+    </data>
+</odoo>

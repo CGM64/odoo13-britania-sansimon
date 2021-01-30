@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for cargoe.generador.guia -->
+        <record id="seq_upd_listprice" model="ir.sequence">
+            <field name="name">Cambio de Lista de Precios Masiva</field>
+            <field name="code">udp.listprice</field>
+            <field name="prefix">	CLP/%(range_year)s/</field>
+            <field name="padding">5</field>
+            <field name="use_date_range" eval="True"/>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>
