@@ -9,7 +9,8 @@
           <form string="Lista de Precios" class="o_sale_order">
             <header>
               <button name="action_cancel" states="draft,send" type="object" string="Cancel"/>
-              <button name="action_calcular" icon="fa-calculator" states="draft" type="object" string="Calcular" confirm="Este proceso borrara todo y lo volvera a cargar. ¿Esta seguro de continuar?"/>
+              <button name="action_clean" icon="fa-eraser" states="draft" type="object" string="Limpiar" confirm="Esta seguro de borrar?"/>
+              <button name="action_calcular" icon="fa-calculator" states="draft" type="object" string="Calcular"/>
               <field name="state" widget="statusbar" statusbar_visible="draft,send,cancel"/>
             </header>
             <sheet>
@@ -21,6 +22,8 @@
               <group>
                 <group>
                   <field name="applied_on" widget="radio"/>
+                  <field name="compute_price" widget="radio"/>
+
                 </group>
                 <group>
                   <field name="categ_id" options="{'no_create_edit': True}" attrs="{
@@ -32,7 +35,16 @@
                   <field name="partner_id" options="{'no_create_edit': True}" attrs="{
                                   'invisible':[('applied_on', '!=', '2_proveedor')],
                                   'required':[('applied_on', '=', '2_proveedor')]}"/>
+
+                  <field name="fixed_price" options="{'no_create_edit': True}" attrs="{
+                                  'invisible':[('compute_price', '!=', '4_fixed')],
+                                  'required':[('compute_price', '=', '4_fixed')]}"/>
+                  <field name="percent_price" options="{'no_create_edit': True}" attrs="{
+                                  'invisible':[('compute_price', '!=', '5_percentage')],
+                                  'required':[('compute_price', '=', '5_percentage')]}"/>
                   <field name="company_id" groups="base.group_multi_company"/>
+
+
                 </group>
               </group>
               <notebook>

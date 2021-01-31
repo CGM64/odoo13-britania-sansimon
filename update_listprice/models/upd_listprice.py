@@ -33,6 +33,13 @@ class UdpListPrice(models.Model):
     vendor_bill_id = fields.Many2one('account.move', 'Factura Proveedor', domain=[('type', '=', 'in_invoice'),('state', '=', 'posted')])
     partner_id = fields.Many2one('res.partner', string='Proveedor', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
+    compute_price = fields.Selection([
+        ('4_fixed', 'Precio Fijo'),
+        ('5_percentage', 'Porcentaje'),
+        ('6_utilidad', 'Grupo de Utilidad')], index=True, default='4_fixed', required=True, string="Calculo del Precio")
+    fixed_price = fields.Float('Precio Fijo', digits='Product Price')
+    percent_price = fields.Float('Porcentaje al Precio')
+
     line_ids = fields.One2many(
         'upd.listprice.line', 'listprice_id', string='Lineas',
         copy=True, readonly=False,
@@ -56,8 +63,10 @@ class UdpListPrice(models.Model):
         for items in self:
             items.line_ids  = None
 
-    def action_calcular(self):
+    def action_clean(self):
         self._clean()
+
+    def action_calcular(self):
         if self.applied_on == "0_categoria":
             self._cargar_categorias()
 
@@ -69,9 +78,12 @@ class UdpListPrice(models.Model):
                 detalle = {
                 'product_id': product.id,
                 'price_original': product.list_price,
+                'price_nuevo': product.list_price,
                 'listprice_id': self.id
                 }
-                self.env['upd.listprice.line'].create(detalle)
+                buscar_existe = self.env['upd.listprice.line'].search([('listprice_id','=',self.id),('product_id','=',product.id)])
+                if not buscar_existe:
+                    self.env['upd.listprice.line'].create(detalle)
 
 class UdpListPriceLine(models.Model):
     _name = "upd.listprice.line"
@@ -97,5 +109,5 @@ class UdpListPriceLine(models.Model):
     def _compute_new_price(self):
         for item in self:
             item.percent_margen = 1
-            item.price_diferencia = 1
-            item.percent_diferencia = 1
+            item.price_diferencia = item.price_nuevo - item.price_original
+            item.percent_diferencia = item.price_diferencia * 100 / item.price_original
