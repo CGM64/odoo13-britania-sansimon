@@ -143,15 +143,23 @@ class UdpListPriceLine(models.Model):
     state = fields.Selection('Status', related='listprice_id.state')
     company_id = fields.Many2one(string='Company', related='listprice_id.company_id')
 
-    price_original = fields.Float('Original', digits='Product Price', readonly=True)
+    price_original = fields.Float('Original', digits='Product Price', compute='_compute_new_price', store=True, readonly=True)
     price_nuevo = fields.Float('Nuevo', digits='Product Price')
-    percent_margen = fields.Float('% Margen', compute='_compute_new_price')
-    price_diferencia = fields.Float('Diferencia', digits='Product Price', compute='_compute_new_price')
-    percent_diferencia = fields.Float('% Diferencia', compute='_compute_new_price')
+    percent_margen = fields.Float('% Margen', compute='_compute_new_price', store=True, readonly=True)
+    price_diferencia = fields.Float('Diferencia', digits='Product Price', compute='_compute_new_price', store=True, readonly=True)
+    percent_diferencia = fields.Float('% Diferencia', compute='_compute_new_price', store=True, readonly=True)
 
-    @api.depends('price_original', 'price_nuevo')
+    def _compute_new_price2(self):
+        return True
+
+    @api.depends('product_id', 'price_original', 'price_nuevo')
     def _compute_new_price(self):
         for item in self:
+            print("Si entro--------------------------------------")
             item.percent_margen = 1
+            item.price_original = item.product_id.list_price
             item.price_diferencia = item.price_nuevo - item.price_original
-            item.percent_diferencia = item.price_diferencia * 100 / item.price_original
+            if item.price_original != 0:
+                item.percent_diferencia = (item.price_diferencia * 100 / item.price_original)
+            else:
+                item.percent_diferencia = 0

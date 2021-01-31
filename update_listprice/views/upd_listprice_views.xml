@@ -8,7 +8,6 @@
         <field name="arch" type="xml">
           <form string="Lista de Precios" class="o_sale_order">
             <header>
-              <button name="action_cancel" states="draft" type="object" string="Cancel"/>
               <button name="action_anular" class="oe_highlight" states="confirm" type="object" string="Anular"/>
               <button name="action_clean" icon="fa-eraser" states="draft" type="object" string="Limpiar" confirm="Esta seguro de borrar?"/>
               <button name="action_calcular" icon="fa-calculator" states="draft" type="object" string="Calcular"/>
@@ -53,9 +52,9 @@
               <notebook>
                 <page string="Lines" name="lines_ids">
                   <field name="line_ids" mode="tree">
-                    <tree string="Sales Order Lines" editable="bottom">
+                    <tree string="Sales Order Lines" editable="botton">
                       <field name="listprice_id" invisible="1"/>
-                      <field name="product_id"/>
+                      <field name="product_id" options="{'no_create_edit': True}"/>
                       <field name="price_original"/>
                       <field name="price_nuevo"/>
                       <field name="percent_margen"/>
