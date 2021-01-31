@@ -13,13 +13,13 @@ class UdpListPrice(models.Model):
     name = fields.Char(string='Nombre', required=True, copy=False, readonly=True, index=True, default=lambda self: _('New'))
     date = fields.Datetime(string='Fecha', required=True, index=True, readonly=True,
         default=fields.Datetime.now())
-    ref = fields.Char(string='Referencia', copy=False)
-    narration = fields.Text(string='Comentarios')
+    ref = fields.Char(string='Referencia', readonly=True, states={'draft': [('readonly', False)]})
+    narration = fields.Text(string='Comentarios', readonly=True, states={'draft': [('readonly', False)]})
     company_id = fields.Many2one('res.company', string='Company', readonly=True, required=True, default=lambda self: self.env.company)
     state = fields.Selection(selection=[
-            ('draft', 'Draft'),
-            ('send', 'Enviado'),
-            ('cancel', 'Cancelled')
+            ('draft', 'Borrador'),
+            ('confirm', 'Confirmado'),
+            ('cancel', 'Cancelado')
         ], string='Estatus', required=True, readonly=True, copy=False, tracking=True,
         default='draft')
     applied_on = fields.Selection([
@@ -28,22 +28,25 @@ class UdpListPrice(models.Model):
         ('2_proveedor', 'Proveedor'),
         ('3_manual', 'Manual')], "Aplicar En",
         default='0_categoria', required=True,
-        help='Indica a Odoo en que se basa para generar una lista de productos para el cambio de precios.')
-    categ_id = fields.Many2one('product.category', string='Categoria Producto')
-    vendor_bill_id = fields.Many2one('account.move', 'Factura Proveedor', domain=[('type', '=', 'in_invoice'),('state', '=', 'posted')])
-    partner_id = fields.Many2one('res.partner', string='Proveedor', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        help='Indica a Odoo en que se basa para generar una lista de productos para el cambio de precios.', readonly=True, states={'draft': [('readonly', False)]})
+    categ_id = fields.Many2one('product.category', string='Categoria Producto', readonly=True, states={'draft': [('readonly', False)]})
+    vendor_bill_id = fields.Many2one('account.move', 'Factura Proveedor', domain=[('type', '=', 'in_invoice'),('state', '=', 'posted')], readonly=True, states={'draft': [('readonly', False)]})
+    partner_id = fields.Many2one('res.partner', string='Proveedor', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", readonly=True, states={'draft': [('readonly', False)]})
 
     compute_price = fields.Selection([
         ('4_fixed', 'Precio Fijo'),
         ('5_percentage', 'Porcentaje'),
-        ('6_utilidad', 'Grupo de Utilidad')], index=True, default='4_fixed', required=True, string="Calculo del Precio")
-    fixed_price = fields.Float('Precio Fijo', digits='Product Price')
-    percent_price = fields.Float('Porcentaje al Precio')
+        ('6_utilidad', 'Grupo de Utilidad')], index=True, default='4_fixed', required=True, string="Calculo del Precio", readonly=True, states={'draft': [('readonly', False)]},
+            help="Precio Fijo: le coloca un precio fijo al precio de lista\n"
+            "Porcentaje: Le aumenta un porcentaje al precio de lista\n"
+            "Grupo de Utilida: Le suma el grupo de utilidad al costo + el iva\n")
+    fixed_price = fields.Float('Precio Fijo', digits='Product Price',readonly=True, states={'draft': [('readonly', False)]})
+    percent_price = fields.Float('Porcentaje al Precio', readonly=True, states={'draft': [('readonly', False)]})
 
     line_ids = fields.One2many(
         'upd.listprice.line', 'listprice_id', string='Lineas',
-        copy=True, readonly=False,
-        states={'done': [('readonly', True)]})
+        copy=True, readonly=True,
+        states={'draft': [('readonly', False)]})
 
     @api.model
     def create(self, vals):
@@ -63,12 +66,41 @@ class UdpListPrice(models.Model):
         for items in self:
             items.line_ids  = None
 
+    def action_anular(self):
+        for item in self.line_ids:
+            item.product_id.list_price = item.price_original
+        self.state = 'cancel'
+
+    def action_confirmar(self):
+        for item in self.line_ids:
+            item.product_id.list_price = item.price_nuevo
+        self.state = 'confirm'
+
     def action_clean(self):
         self._clean()
 
     def action_calcular(self):
         if self.applied_on == "0_categoria":
             self._cargar_categorias()
+        if self.applied_on == "1_factura_compra":
+            self._cargar_factura_compra()
+        self._aplicar_precio()
+
+    def _aplicar_precio(self):
+        for item in self.line_ids:
+            item.price_nuevo
+            if self.compute_price == "4_fixed":
+                item.price_nuevo = self.fixed_price
+            elif self.compute_price == "5_percentage":
+                item.price_nuevo = (item.price_original + (item.price_original * (self.percent_price / 100))) or 0.0
+            elif self.compute_price == "6_utilidad":
+                item.price_nuevo = item.product_id.standard_price * (item.product_id.product_tmpl_id.grupo_utilidad_id.porcentaje / 100 + 1) * 1.12
+
+    def _get_find_product_line(self, product_id):
+        buscar_existe = self.env['upd.listprice.line'].search([('listprice_id','=',self.id),('product_id','=',product_id)])
+        if not buscar_existe:
+            return False
+        return True
 
     def _cargar_categorias(self):
         products_template = self.env["product.template"].search([('categ_id','=',self.categ_id.id)])
@@ -81,9 +113,21 @@ class UdpListPrice(models.Model):
                 'price_nuevo': product.list_price,
                 'listprice_id': self.id
                 }
-                buscar_existe = self.env['upd.listprice.line'].search([('listprice_id','=',self.id),('product_id','=',product.id)])
-                if not buscar_existe:
+                if not self._get_find_product_line(product.id):
                     self.env['upd.listprice.line'].create(detalle)
+
+    def _cargar_factura_compra(self):
+        for item in self.vendor_bill_id.invoice_line_ids:
+
+            detalle = {
+            'product_id': item.product_id.id,
+            'price_original': item.product_id.list_price,
+            'price_nuevo': item.product_id.standard_price,
+            'listprice_id': self.id
+            }
+            if not self._get_find_product_line(item.product_id.id):
+                self.env['upd.listprice.line'].create(detalle)
+
 
 class UdpListPriceLine(models.Model):
     _name = "upd.listprice.line"

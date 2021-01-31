@@ -8,10 +8,12 @@
         <field name="arch" type="xml">
           <form string="Lista de Precios" class="o_sale_order">
             <header>
-              <button name="action_cancel" states="draft,send" type="object" string="Cancel"/>
+              <button name="action_cancel" states="draft" type="object" string="Cancel"/>
+              <button name="action_anular" class="oe_highlight" states="confirm" type="object" string="Anular"/>
               <button name="action_clean" icon="fa-eraser" states="draft" type="object" string="Limpiar" confirm="Esta seguro de borrar?"/>
               <button name="action_calcular" icon="fa-calculator" states="draft" type="object" string="Calcular"/>
-              <field name="state" widget="statusbar" statusbar_visible="draft,send,cancel"/>
+              <button name="action_confirmar" class="oe_highlight" states="draft" type="object" string="Confirmar"/>
+              <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel"/>
             </header>
             <sheet>
               <div class="oe_title">
@@ -39,9 +41,10 @@
                   <field name="fixed_price" options="{'no_create_edit': True}" attrs="{
                                   'invisible':[('compute_price', '!=', '4_fixed')],
                                   'required':[('compute_price', '=', '4_fixed')]}"/>
-                  <field name="percent_price" options="{'no_create_edit': True}" attrs="{
-                                  'invisible':[('compute_price', '!=', '5_percentage')],
-                                  'required':[('compute_price', '=', '5_percentage')]}"/>
+                  <label for="percent_price" attrs="{'invisible':[('compute_price', '!=', '5_percentage')]}"/>
+                  <div attrs="{'invisible':[('compute_price', '!=', '5_percentage')]}">
+                    <field name="percent_price" class="oe_inline" attrs="{'invisible':[('compute_price', '!=', '5_percentage')]}"/>%%
+                  </div>
                   <field name="company_id" groups="base.group_multi_company"/>
 
 
