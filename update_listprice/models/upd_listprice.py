@@ -94,7 +94,10 @@ class UdpListPrice(models.Model):
             elif self.compute_price == "5_percentage":
                 item.price_nuevo = (item.price_original + (item.price_original * (self.percent_price / 100))) or 0.0
             elif self.compute_price == "6_utilidad":
-                item.price_nuevo = item.product_id.standard_price * (item.product_id.product_tmpl_id.grupo_utilidad_id.porcentaje / 100 + 1) * 1.12
+                if item.product_id.product_tmpl_id.grupo_utilidad_id:
+                    item.price_nuevo = item.product_id.standard_price * (item.product_id.product_tmpl_id.grupo_utilidad_id.porcentaje / 100 + 1) * 1.12
+                else:
+                    raise ValidationError(_('El producto [%s] no tiene definido grupo de utilidad.') % (item.product_id.name,))
 
     def _get_find_product_line(self, product_id):
         buscar_existe = self.env['upd.listprice.line'].search([('listprice_id','=',self.id),('product_id','=',product_id)])
