@@ -38,11 +38,11 @@
                                   'required':[('applied_on', '=', '2_proveedor')]}"/>
 
                   <field name="fixed_price" options="{'no_create_edit': True}" attrs="{
-                                  'invisible':[('compute_price', '!=', '4_fixed')],
-                                  'required':[('compute_price', '=', '4_fixed')]}"/>
-                  <label for="percent_price" attrs="{'invisible':[('compute_price', '!=', '5_percentage')]}"/>
-                  <div attrs="{'invisible':[('compute_price', '!=', '5_percentage')]}">
-                    <field name="percent_price" class="oe_inline" attrs="{'invisible':[('compute_price', '!=', '5_percentage')]}"/>%%
+                                  'invisible':[('compute_price', 'not in', ('fixed','fixed_volume'))],
+                                  'required':[('compute_price', 'in', ('fixed','fixed_volume'))]}"/>
+                  <label for="percent_price" attrs="{'invisible':[('compute_price', '!=', 'percentage')]}"/>
+                  <div attrs="{'invisible':[('compute_price', '!=', 'percentage')]}">
+                    <field name="percent_price" class="oe_inline" attrs="{'invisible':[('compute_price', '!=', 'percentage')]}"/>%%
                   </div>
                   <field name="company_id" groups="base.group_multi_company"/>
 
@@ -55,6 +55,7 @@
                     <tree string="Sales Order Lines" editable="botton">
                       <field name="listprice_id" invisible="1"/>
                       <field name="product_id" options="{'no_create_edit': True}"/>
+                      <field name="volume" optional="hide"/>
                       <field name="price_original"/>
                       <field name="price_nuevo"/>
                       <field name="percent_margen"/>

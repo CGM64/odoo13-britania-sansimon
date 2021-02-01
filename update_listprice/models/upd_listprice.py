@@ -34,9 +34,11 @@ class UdpListPrice(models.Model):
     partner_id = fields.Many2one('res.partner', string='Proveedor', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", readonly=True, states={'draft': [('readonly', False)]})
 
     compute_price = fields.Selection([
-        ('4_fixed', 'Precio Fijo'),
-        ('5_percentage', 'Porcentaje'),
-        ('6_utilidad', 'Grupo de Utilidad')], index=True, default='4_fixed', required=True, string="Calculo del Precio", readonly=True, states={'draft': [('readonly', False)]},
+        ('fixed', 'Precio Fijo'),
+        ('fixed_volume', 'Precio Fijo por Volumen'),
+        ('percentage', 'Porcentaje'),
+        ('percentage', 'Porcentaje'),
+        ('utilidad', 'Grupo de Utilidad')], index=True, default='fixed', required=True, string="Calculo del Precio", readonly=True, states={'draft': [('readonly', False)]},
             help="Precio Fijo: le coloca un precio fijo al precio de lista\n"
             "Porcentaje: Le aumenta un porcentaje al precio de lista\n"
             "Grupo de Utilida: Le suma el grupo de utilidad al costo + el iva\n")
@@ -89,11 +91,13 @@ class UdpListPrice(models.Model):
     def _aplicar_precio(self):
         for item in self.line_ids:
             item.price_nuevo
-            if self.compute_price == "4_fixed":
+            if self.compute_price == "fixed":
                 item.price_nuevo = self.fixed_price
-            elif self.compute_price == "5_percentage":
+            elif self.compute_price == "fixed_volume":
+                item.price_nuevo = item.volume * self.fixed_price
+            elif self.compute_price == "percentage":
                 item.price_nuevo = (item.price_original + (item.price_original * (self.percent_price / 100))) or 0.0
-            elif self.compute_price == "6_utilidad":
+            elif self.compute_price == "utilidad":
                 if item.product_id.product_tmpl_id.grupo_utilidad_id:
                     item.price_nuevo = item.product_id.standard_price * (item.product_id.product_tmpl_id.grupo_utilidad_id.porcentaje / 100 + 1) * 1.12
                 else:
@@ -146,6 +150,8 @@ class UdpListPriceLine(models.Model):
     state = fields.Selection('Status', related='listprice_id.state')
     company_id = fields.Many2one(string='Company', related='listprice_id.company_id')
 
+    volume = fields.Float(string='Volumen', related='product_id.volume')
+
     price_original = fields.Float('Original', digits='Product Price', compute='_compute_new_price', store=True, readonly=True)
     price_nuevo = fields.Float('Nuevo', digits='Product Price')
     percent_margen = fields.Float('% Margen', compute='_compute_new_price', store=True, readonly=True)
@@ -158,7 +164,6 @@ class UdpListPriceLine(models.Model):
     @api.depends('product_id', 'price_original', 'price_nuevo')
     def _compute_new_price(self):
         for item in self:
-            print("Si entro--------------------------------------")
             item.percent_margen = 1
             item.price_original = item.product_id.list_price
             item.price_diferencia = item.price_nuevo - item.price_original
