@@ -79,7 +79,7 @@
               <t t-set="current_subtotal" t-value="current_subtotal + (line.quantity * line.price_unit)"/>
               <t t-set="current_descuento" t-value="current_descuento + ((line.quantity * line.price_unit) - line.price_total)"/>
               <div class="row">
-                <div class="col-2 m-0 p-0"><span t-field="line.quantity" t-options="{'widget': 'integer'}"/></div>
+                <div class="col-2 m-0 p-0"><span t-esc="'{0:,.2f}'.format(line.quantity)"/></div>
                 <div class="col-6 m-0 p-0"><span t-field="line.product_id.default_code"/></div>
                 <div class="col-4 m-0 p-0 text-right"><span t-field="line.price_total"/></div>
               </div>
