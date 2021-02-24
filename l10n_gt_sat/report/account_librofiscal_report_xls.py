@@ -90,16 +90,16 @@ class LibroFiscalReportXls(models.AbstractModel):
         sheet_libro.set_column(columna + 5,columna + 5,12)
         sheet_libro.set_column(columna + 6,columna + 6,55)
         sheet_libro.set_column(columna + 7,columna + 7,10)
-        sheet_libro.set_column(columna + 8,columna + 8,10)
+        sheet_libro.set_column(columna + 8,columna + 8,15)
         sheet_libro.set_column(columna + 9,columna + 9,10)
-        sheet_libro.set_column(columna + 10,columna + 10,10)
+        sheet_libro.set_column(columna + 10,columna + 10,12)
         sheet_libro.set_column(columna + 11,columna + 11,12)
         sheet_libro.set_column(columna + 12,columna + 12,12)
         sheet_libro.set_column(columna + 13,columna + 13,12)
         sheet_libro.set_column(columna + 14,columna + 14,12)
-        sheet_libro.set_column(columna + 15,columna + 15,12)
+        sheet_libro.set_column(columna + 15,columna + 15,15)
         sheet_libro.set_column(columna + 16,columna + 16,12)
-        sheet_libro.set_column(columna + 17,columna + 17,12)
+        sheet_libro.set_column(columna + 17,columna + 17,15)
 
 
 
