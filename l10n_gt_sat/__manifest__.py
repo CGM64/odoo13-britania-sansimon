@@ -26,6 +26,8 @@
     'data': [
         'security/ir.model.access.csv',
         'data/account_chart_template_data.xml',
+        'data/account_account_data.xml',
+        #'data/stock_account_data.xml',
         #'data/product_dai_data.xml',
         'views/views.xml',
         'views/templates.xml',

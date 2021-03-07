@@ -27,9 +27,11 @@ class ProductMarca(models.Model):
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    dai_id = fields.Many2one('product.dai', string='DAI', help='Select a DAI for this product')
+    dai_id = fields.Many2one('product.dai', string='DAI', help='Select a DAI for this product', company_dependent=True)
     grupo_utilidad_id = fields.Many2one('product.grupoutilidad', string='Grupo de Utilidad')
     marca_id = fields.Many2one('product.marca', string='Marca', help='Marca del producto.')
+    company_id = fields.Many2one(
+        'res.company', 'Company', index=1, company_dependent=True)
     sat_tipo_producto = fields.Selection([
 		('bien','Bien'),
 		('servicio','Servicio'),
