@@ -2,12 +2,12 @@
 <odoo>
     <data noupdate="1">
 
-      <delete model="ir.property"
+      <!-- <delete model="ir.property"
         search="[('id','=',ref('stock_account.default_category_cost_method'))]"/>
 
         <delete model="ir.property"
           search="[('id','=',ref('stock_account.default_category_valuation'))]"/>
-
+ -->
 
 
         <record forcecreate="True" id="default_category_cost_method" model="ir.property">
@@ -23,11 +23,5 @@
             <field name="type">selection</field>
         </record>
 
-        <record forcecreate="True" id="default_company_id" model="ir.property">
-            <field name="name">Default Company</field>
-            <field name="fields_id" ref="product.field_product_template__company_id"/>
-            <field name="value_reference">res.company,2</field>
-            <field name="type">many2one</field>
-        </record>
     </data>
 </odoo>
