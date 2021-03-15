@@ -58,6 +58,14 @@ class Fel():
         self.factura_id = factura_id
         self.documento = documento
 
+    def sin_impuestos(self,info):
+        if info['AfiliacionIVA'] == 'PEQ':
+            return 1
+        else:
+            if info['Tipo'] == 'NABN':
+                return 1
+            return 0
+
     def getXmlFormat(self, documento):
         d = documento
         schemaLocation = etree.QName("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation")
@@ -124,7 +132,7 @@ class Fel():
             Descuento.text = item["Descuento"]
 
             #Impuestos
-            if "NombreCorto" in item:
+            if "NombreCorto" in item and self.sin_impuestos({'Tipo:':d['Tipo'],'AfiliacionIVA':d['AfiliacionIVA']}) == 0:
                 Impuestos = etree.SubElement(Item, DTE_NS+"Impuestos")
                 Impuesto = etree.SubElement(Impuestos, DTE_NS+"Impuesto")
                 NombreCorto = etree.SubElement(Impuesto, DTE_NS+"NombreCorto")
@@ -139,7 +147,7 @@ class Fel():
             Total.text = item["Total"]
 
         Totales = etree.SubElement(DatosEmision, DTE_NS+"Totales")
-        if d["gran_total_impuestos"] != 0:
+        if d["Tipo"] not in ['NABN'] and self.sin_impuestos({'Tipo:':d['Tipo'],'AfiliacionIVA':d['AfiliacionIVA']}) == 0:
             TotalImpuestos = etree.SubElement(Totales, DTE_NS+"TotalImpuestos")
             TotalImpuesto = etree.SubElement(TotalImpuestos, DTE_NS+"TotalImpuesto", NombreCorto="IVA", TotalMontoImpuesto=d["TotalMontoImpuesto"])
         GranTotal = etree.SubElement(Totales, DTE_NS+"GranTotal")
@@ -172,8 +180,9 @@ class Fel():
                         Version="0.0", nsmap=NSMAP_REF)
 
             #Factura Cambiaria
-            elif d["Tipo"] in ['FCAM']:
-                Complemento = etree.SubElement(Complementos, DTE_NS+"Complemento", IDComplemento="FCAM", NombreComplemento="GT_Complemento_Cambiaria-0.1.0", URIComplemento="GT_Complemento_Cambiaria-0.1.0.xsd")
+            elif d["Tipo"] in ['FCAM','FCAP']:
+                id_complemento = d["Tipo"]
+                Complemento = etree.SubElement(Complementos, DTE_NS+"Complemento", IDComplemento=id_complemento, NombreComplemento="GT_Complemento_Cambiaria-0.1.0", URIComplemento="GT_Complemento_Cambiaria-0.1.0.xsd")
                 AbonosFacturaCambiaria = etree.SubElement(Complemento, CFC_NS+"AbonosFacturaCambiaria", Version="1", nsmap=NSMAP_ABONO)
                 Abono = etree.SubElement(AbonosFacturaCambiaria, CFC_NS+"Abono")
                 NumeroAbono = etree.SubElement(Abono, CFC_NS+"NumeroAbono")

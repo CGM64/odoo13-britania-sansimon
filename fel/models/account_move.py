@@ -111,7 +111,7 @@ class AccountMove(models.Model):
             total_linea_base = precio_unitario_base * detalle.quantity
             total_impuestos = total_linea - total_linea_base
 
-            if total_impuestos != 0:
+            if tipo_documento not in ("NABN"):
                 linea["NombreCorto"] = "IVA"
                 linea["CodigoUnidadGravable"] = "2" if factura.journal_id.tipo_operacion == 'EXPO' else "1"
                 linea["MontoGravable"] = '{:.4f}'.format(total_linea_base)
@@ -155,7 +155,7 @@ class AccountMove(models.Model):
                     documento["SerieDocumentoOrigen"] = factura.reversed_entry_id.fac_serie
 
         #Factura CompCambiaria
-        elif tipo_documento in ['FCAM']:
+        elif tipo_documento in ['FCAM','FCAP']:
             documento["Complementos"] = True
             documento["FCAM_NumeroAbono"] = "1"
             documento["FCAM_FechaVencimiento"] = str(factura.invoice_date)

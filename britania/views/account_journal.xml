@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_account_journal_form_bri">
+        <field name="name">fel.account.journal.form.bri</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <group name="column_posting" position="after">
+                  <group string="Invoice template" groups="account.group_account_manager">
+                    <field name="template_invoice"/>
+                  </group>
+                </group>
+            </data>
+        </field>
+    </record>
+
+  </data>
+</odoo>
