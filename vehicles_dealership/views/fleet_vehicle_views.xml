@@ -6,8 +6,15 @@
       <field name="model">fleet.vehicle</field>
       <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
       <field name="arch" type="xml">
-        <xpath expr="//field[@name='company_id']" position="after">
+        <xpath expr="//field[@name='residual_value']" position="after">
+          <field name="tonelaje"/>
+          <field name="tipo_vehiculo"/>
+          <field name="aduana"/>
+          <field name="poliza"/>
         </xpath>
+        <!--<xpath expr="//form/sheet/group/group[4]" position="after">
+          <group string=
+        </xpath>-->
       </field>
     </record>
   </data>

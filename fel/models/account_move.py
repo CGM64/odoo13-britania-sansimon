@@ -93,11 +93,15 @@ class AccountMove(models.Model):
         items = []
         gran_total = gran_subtotal = gran_total_impuestos = 0
         for detalle in factura.invoice_line_ids:
+            descripcion = detalle.name
+            if 'is_vehicle' in self.env['product.product']._fields:
+                if detalle.product_id.is_vehicle:
+                    descripcion = self.get_descripcion(detalle,2)
             linea = {}
             linea["BienOServicio"] = "S"  if detalle.product_id.type == "service" else "B"
             linea["Cantidad"] = detalle.quantity
             linea["UnidadMedida"] = detalle.product_uom_id.name
-            linea["Descripcion"] = detalle.name
+            linea["Descripcion"] = descripcion
             precio_sin_descuento = detalle.price_unit
             linea["PrecioUnitario"] = '{:.2f}'.format(precio_sin_descuento)
             linea["Precio"] = '{:.2f}'.format(precio_sin_descuento * detalle.quantity)
