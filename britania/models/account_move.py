@@ -15,6 +15,20 @@ class AccountMove(models.Model):
         else:
             return False
 
+    def obtener_tasa_cambio(self):
+        rate = 1
+        if self.currency_id.id != self.company_id.currency_id.id:
+            rate = self.currency_id
+            rate = rate.with_context(dict(self._context or {}, date=self.invoice_date)).rate
+            if rate:
+                tasa = tasa / rate
+                rate = rate
+            else:
+                rate = self.env['res.currency'].search([('id','=',self.currency_id.id)])
+                tasa = tasa/rate.rate
+                rate = rate.rate
+        return rate
+
     #Funcion encargada de retornar la descripcion de un producto
     def get_descripcion(self,line_id,tipo=1):
         if line_id:
