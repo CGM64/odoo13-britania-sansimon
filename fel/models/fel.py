@@ -147,7 +147,7 @@ class Fel():
             Total.text = item["Total"]
 
         Totales = etree.SubElement(DatosEmision, DTE_NS+"Totales")
-        if d["Tipo"] not in ['NABN'] and self.sin_impuestos({'Tipo:':d['Tipo'],'AfiliacionIVA':d['AfiliacionIVA']}) == 0:
+        if d["Tipo"] not in ['NABN'] and self.sin_impuestos({'Tipo':d['Tipo'],'AfiliacionIVA':d['AfiliacionIVA']}) == 0:
             TotalImpuestos = etree.SubElement(Totales, DTE_NS+"TotalImpuestos")
             TotalImpuesto = etree.SubElement(TotalImpuestos, DTE_NS+"TotalImpuesto", NombreCorto="IVA", TotalMontoImpuesto=d["TotalMontoImpuesto"])
         GranTotal = etree.SubElement(Totales, DTE_NS+"GranTotal")
