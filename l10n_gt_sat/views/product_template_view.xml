@@ -7,10 +7,14 @@
     <field name="arch" type="xml">
       <group name="group_general" position="inside">
         <field name="dai_id"/>
-        <field name="grupo_utilidad_id"/>
+        <field name="grupo_utilidad_id" groups="purchase.group_purchase_manager"/>
         <field name="marca_id"/>
         <field name="sat_tipo_producto" />
       </group>
+
+      <xpath expr="//page[@name='purchase']" position="attributes">
+                <attribute name="groups">purchase.group_purchase_manager</attribute>
+      </xpath>
     </field>
   </record>
 
