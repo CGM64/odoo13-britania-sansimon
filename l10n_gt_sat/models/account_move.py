@@ -206,9 +206,8 @@ class AccountMove(models.Model):
                 move.sat_subtotal = move.sat_servicio + move.sat_bien
 
 
-
-                move.sat_amount_total = move.sat_subtotal + move.sat_iva + move.sat_exento + move.sat_combustible + move.sat_peq_contri
                 move.sat_peq_contri = sat_peq_contri
+                move.sat_amount_total = move.sat_subtotal + move.sat_iva + move.sat_exento + move.sat_combustible + move.sat_peq_contri
                 move.sat_base = move.sat_servicio + move.sat_bien + move.sat_combustible
 
             currency = len(currencies) == 1 and currencies.pop() or move.company_id.currency_id
