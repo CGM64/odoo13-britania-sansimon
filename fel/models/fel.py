@@ -132,7 +132,7 @@ class Fel():
             Descuento.text = item["Descuento"]
 
             #Impuestos
-            if "NombreCorto" in item and self.sin_impuestos({'Tipo:':d['Tipo'],'AfiliacionIVA':d['AfiliacionIVA']}) == 0:
+            if "NombreCorto" in item and self.sin_impuestos({'Tipo':d['Tipo'],'AfiliacionIVA':d['AfiliacionIVA']}) == 0:
                 Impuestos = etree.SubElement(Item, DTE_NS+"Impuestos")
                 Impuesto = etree.SubElement(Impuestos, DTE_NS+"Impuesto")
                 NombreCorto = etree.SubElement(Impuesto, DTE_NS+"NombreCorto")

@@ -31,5 +31,8 @@ class AccountPayment(models.Model):
             return amount_str and (amount_str + ' ').ljust(65, '*') or ''
 
     def do_print_checks(self):
+        for payment in self:
+            if payment.state == 'posted':
+                payment.write({'state':'sent'})
         papel = self.journal_id.papel_cheque
         return self.env.ref(papel).report_action(self)
