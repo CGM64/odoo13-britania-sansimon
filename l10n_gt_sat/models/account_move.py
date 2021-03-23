@@ -45,6 +45,7 @@ class AccountMove(models.Model):
     sat_fac_serie = fields.Char(string="Serie Factura", compute='_compute_libro_fiscal')
 
     journal_tipo_operacion = fields.Selection('Tipo de Operacion', related='journal_id.tipo_operacion', readonly=True)
+    referencia_interna = fields.Char(string="Referencia Interna", compute='_referencia_interna')
 
     def _compute_no_linea(self):
         self.no_linea = 0

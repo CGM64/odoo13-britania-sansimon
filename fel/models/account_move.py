@@ -93,11 +93,15 @@ class AccountMove(models.Model):
         items = []
         gran_total = gran_subtotal = gran_total_impuestos = 0
         for detalle in factura.invoice_line_ids:
+            descripcion = detalle.name
+            if 'is_vehicle' in self.env['product.product']._fields:
+                if detalle.product_id.is_vehicle:
+                    descripcion = self.get_descripcion(detalle,2)
             linea = {}
             linea["BienOServicio"] = "S"  if detalle.product_id.type == "service" else "B"
             linea["Cantidad"] = detalle.quantity
             linea["UnidadMedida"] = detalle.product_uom_id.name
-            linea["Descripcion"] = detalle.name
+            linea["Descripcion"] = descripcion
             precio_sin_descuento = detalle.price_unit
             linea["PrecioUnitario"] = '{:.2f}'.format(precio_sin_descuento)
             linea["Precio"] = '{:.2f}'.format(precio_sin_descuento * detalle.quantity)
@@ -111,7 +115,7 @@ class AccountMove(models.Model):
             total_linea_base = precio_unitario_base * detalle.quantity
             total_impuestos = total_linea - total_linea_base
 
-            if total_impuestos != 0:
+            if tipo_documento not in ("NABN"):
                 linea["NombreCorto"] = "IVA"
                 linea["CodigoUnidadGravable"] = "2" if factura.journal_id.tipo_operacion == 'EXPO' else "1"
                 linea["MontoGravable"] = '{:.4f}'.format(total_linea_base)
@@ -155,7 +159,7 @@ class AccountMove(models.Model):
                     documento["SerieDocumentoOrigen"] = factura.reversed_entry_id.fac_serie
 
         #Factura CompCambiaria
-        elif tipo_documento in ['FCAM']:
+        elif tipo_documento in ['FCAM','FCAP']:
             documento["Complementos"] = True
             documento["FCAM_NumeroAbono"] = "1"
             documento["FCAM_FechaVencimiento"] = str(factura.invoice_date)

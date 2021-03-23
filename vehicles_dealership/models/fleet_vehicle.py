@@ -16,6 +16,16 @@ class FleetVehicle(models.Model):
                                  ondelete="cascade", delegate=True,
                                  required=True)
     image_128 = fields.Image(string="Image Small", readonly=False)
+    tonelaje = fields.Char(string='Tonelaje',copy=False)
+    tipo_vehiculo = fields.Selection([
+        ('motocicleta','Motocilceta'),
+        ('automovil','Automovil'),
+        ('camion','Camion'),
+        ('Camioneta','Camioneta'),
+        ('cuatrimoto','Cuatrimoto'),
+        ('rustico','Vehículo Rustico')],string="Tipo vehiculo",default='motocicleta')
+    aduana = fields.Char(string='Aduana',copy=False)
+    poliza = fields.Char(string='Poliza',copy=False)
 
     @api.model
     def create(self, vals):
