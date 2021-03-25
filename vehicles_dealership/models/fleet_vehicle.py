@@ -5,6 +5,11 @@
 
 from odoo import api, fields, models
 
+class LineaVehicle(models.Model):
+    """Fleet Vehicle model."""
+
+    _name = 'linea.vehicle'
+    name = fields.Char(string='Linea',copy=False)
 
 class FleetVehicle(models.Model):
     """Fleet Vehicle model."""
@@ -25,7 +30,12 @@ class FleetVehicle(models.Model):
         ('cuatrimoto','Cuatrimoto'),
         ('rustico','Vehículo Rustico')],string="Tipo vehiculo",default='motocicleta')
     aduana = fields.Char(string='Aduana',copy=False)
-    poliza = fields.Char(string='Poliza',copy=False)
+    poliza = fields.Char(string='DUCA',copy=False)
+    cilindros = fields.Char(string='Cilindros',copy=False)
+    chasis = fields.Char(string='Chasis',copy=False)
+    linea = fields.Many2one('linea.vehicle', 'Linea',
+                                 ondelete="cascade", delegate=True,
+                                 required=True)
 
     @api.model
     def create(self, vals):
