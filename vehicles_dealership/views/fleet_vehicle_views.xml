@@ -15,6 +15,13 @@
         <!--<xpath expr="//form/sheet/group/group[4]" position="after">
           <group string=
         </xpath>-->
+        <xpath expr="//field[@name='transmission']" position="after">
+          <field name="chasis"/>
+          <field name="cilindros"/>
+        </xpath>
+        <xpath expr="//field[@name='model_year']" position="after">
+          <field name="linea"/>
+        </xpath>
       </field>
     </record>
   </data>
