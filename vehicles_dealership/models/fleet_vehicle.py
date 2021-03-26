@@ -11,6 +11,12 @@ class LineaVehicle(models.Model):
     _name = 'linea.vehicle'
     name = fields.Char(string='Linea',copy=False)
 
+class CodigoMarca(models.Model):
+    """Fleet Vehicle model."""
+
+    _name = 'codigo.marca'
+    name = fields.Char(string='Codigo de Marca',copy=False)
+
 class FleetVehicle(models.Model):
     """Fleet Vehicle model."""
 
@@ -33,7 +39,13 @@ class FleetVehicle(models.Model):
     poliza = fields.Char(string='DUCA',copy=False)
     cilindros = fields.Char(string='Cilindros',copy=False)
     chasis = fields.Char(string='Chasis',copy=False)
+    cc = fields.Char(string='C.C.',copy=False,help='Cilindrada total de motor')
+    ejes = fields.Char(string='Ejes',copy=False,help='Ejes')
+    motor = fields.Char(string='Motor',copy=False,help='Motor')
     linea = fields.Many2one('linea.vehicle', 'Linea',
+                                 ondelete="cascade", delegate=True,
+                                 required=True)
+    codigo_marca = fields.Many2one('codigo.marca', 'Codigo de marca',
                                  ondelete="cascade", delegate=True,
                                  required=True)
 

@@ -9,18 +9,26 @@
         <xpath expr="//field[@name='residual_value']" position="after">
           <field name="tonelaje"/>
           <field name="tipo_vehiculo"/>
-          <field name="aduana"/>
-          <field name="poliza"/>
+          <field name="codigo_marca"/>
         </xpath>
         <!--<xpath expr="//form/sheet/group/group[4]" position="after">
           <group string=
         </xpath>-->
         <xpath expr="//field[@name='transmission']" position="after">
+          <field name="motor"/>
           <field name="chasis"/>
           <field name="cilindros"/>
+          <field name="cc"/>
         </xpath>
         <xpath expr="//field[@name='model_year']" position="after">
           <field name="linea"/>
+          <field name="ejes"/>
+        </xpath>
+        <xpath expr="//form/sheet/group/group[4]" position="before">
+          <group string="Informacion de importacion">
+            <field name="aduana"/>
+            <field name="poliza"/>
+        </group>
         </xpath>
       </field>
     </record>
