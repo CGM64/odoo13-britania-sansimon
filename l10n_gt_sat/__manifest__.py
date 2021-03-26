@@ -47,6 +47,7 @@
         'report/account_librofiscal_report_view.xml',
         'report/purchase_order_views.xml',
         'views/res_company.xml',
+        'views/report_invoice.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
