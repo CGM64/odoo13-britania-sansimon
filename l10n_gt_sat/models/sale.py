@@ -10,8 +10,18 @@ from odoo.tools.float_utils import float_compare
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tools.misc import formatLang, get_lang
 
+class SaleOrder(models.Model):
 
-class PurchaseOrder(models.Model):
+    _inherit = "sale.order"
+
+    def action_confirm(self):
+        for linea in self.order_line:
+            if linea.product_id.type == 'product' and linea.qty_available_today < linea.product_uom_qty:
+                raise UserError(_('No hay suficiente existenca para el producto %s') % linea.name)
+        res = super(SaleOrder, self).action_confirm()
+        return res
+
+class SaleOrderLine(models.Model):
 
     _inherit = "sale.order.line"
 
