@@ -28,6 +28,7 @@
         'data/account_chart_template_data.xml',
         'data/account_account_data.xml',
         'data/stock_account_data.xml',
+        'data/res_group_data.xml',
         #'data/product_dai_data.xml',
         'views/views.xml',
         'views/templates.xml',
@@ -48,6 +49,7 @@
         'report/purchase_order_views.xml',
         'views/res_company.xml',
         'views/report_invoice.xml',
+        'views/sale_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

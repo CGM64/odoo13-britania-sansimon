@@ -6,6 +6,15 @@
             <field name="model">account.move</field>
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='price_unit']" position="replace">
+                    <field name="price_unit_access" invisible="1" />
+                    <field name="price_unit" attrs="{'readonly': [('price_unit_access', '=', False)]}" />
+                </xpath>
+
+                <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='discount']" position="replace">
+                    <field name="discount" string="Disc.%" groups="base.group_no_one" optional="show" attrs="{'readonly': [('price_unit_access', '=', False)]}"/>
+                </xpath>
+
                 <xpath expr="//field[@name='ref']" position="after">
                     <field name="fac_serie"  attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
                     <field name="fac_numero" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}"/>
