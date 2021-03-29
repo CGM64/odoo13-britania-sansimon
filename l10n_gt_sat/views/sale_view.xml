@@ -7,16 +7,20 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='order_line']/tree//field[@name='price_unit']" position="replace">
-                <field name="price_unit_access" invisible="1" />
-                <field name="price_unit" attrs="{'readonly': [('price_unit_access', '=', False)]}" />
+                <field name="price_unit" readonly="1" />
             </xpath>
-            <!--
-            Deshabilitando la opcion disable del descuento, porque auque se pueda utilizar las tarifas, no se refleja el descuento
-            en la factura, cuando esta es impresa.
-            <xpath expr="//field[@name='order_line']/tree//field[@name='discount']" position="replace">
-                <field name="discount" string="Disc.%" groups="product.group_discount_per_so_line" optional="show" attrs="{'readonly': [('price_unit_access', '=', False)]}" />
+        </field>
+    </record>
+
+    <record id="view_order_form_access_inherit" model="ir.ui.view">
+        <field name="name">view.order.access.view.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="groups_id" eval="[(4, ref('l10n_gt_sat.group_cambio_de_precios'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/tree//field[@name='price_unit']" position="replace">
+                <field name="price_unit" readonly="0" />
             </xpath>
-          -->
         </field>
     </record>
   </data>
