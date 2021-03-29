@@ -10,9 +10,13 @@
                 <field name="price_unit_access" invisible="1" />
                 <field name="price_unit" attrs="{'readonly': [('price_unit_access', '=', False)]}" />
             </xpath>
+            <!--
+            Deshabilitando la opcion disable del descuento, porque auque se pueda utilizar las tarifas, no se refleja el descuento
+            en la factura, cuando esta es impresa.
             <xpath expr="//field[@name='order_line']/tree//field[@name='discount']" position="replace">
                 <field name="discount" string="Disc.%" groups="product.group_discount_per_so_line" optional="show" attrs="{'readonly': [('price_unit_access', '=', False)]}" />
             </xpath>
+          -->
         </field>
     </record>
   </data>
