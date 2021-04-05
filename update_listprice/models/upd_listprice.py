@@ -142,10 +142,10 @@ class UdpListPriceLine(models.Model):
     _order = "product_id, listprice_id"
 
     listprice_id = fields.Many2one(
-        'upd.listprice', 'Lista de Precios', check_company=True,
+        'upd.listprice', 'Lista de Precios',
         index=True, ondelete='cascade')
     product_id = fields.Many2one(
-        'product.product', 'Product', check_company=True,
+        'product.product', 'Product', 
         index=True, required=True)
     state = fields.Selection('Status', related='listprice_id.state')
     company_id = fields.Many2one(string='Company', related='listprice_id.company_id')

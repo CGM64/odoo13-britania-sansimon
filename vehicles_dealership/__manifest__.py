@@ -22,6 +22,7 @@
 
     # Data
     'data': [
+        "security/ir.model.access.csv",
         "views/product_views.xml",
         "views/res_company_views.xml",
         "views/fleet_vehicle_views.xml",

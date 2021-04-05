@@ -14,16 +14,21 @@ class StockMovePeriodoXls(models.AbstractModel):
     def generate_xlsx_report(self, workbook, data, data_report):
         self.workbook = workbook
         sheet_libro = workbook.add_worksheet('Inventario')
+        self.money = workbook.add_format({'num_format': 'Q#,##0.00'})
 
         i = 0;
         sheet_libro.write(i,0,"Linea")
         sheet_libro.write(i,1,"Codigo")
         sheet_libro.write(i,2,"Descripcion")
-        sheet_libro.write(i,3,"Ext. Actual")
-        sheet_libro.write(i,4,"Cnt. Ini.")
-        sheet_libro.write(i,5,"Entradas")
-        sheet_libro.write(i,6,"Salidas")
-        sheet_libro.write(i,7,"Cnt. Final")
+        sheet_libro.write(i,3,"Precio de lista")
+        sheet_libro.write(i,4,"Coste")
+        sheet_libro.write(i,5,"Margen")
+        sheet_libro.write(i,6,"Ext. Actual")
+        sheet_libro.write(i,7,"Cnt. Ini.")
+        sheet_libro.write(i,8,"Entradas")
+        sheet_libro.write(i,9,"Salidas")
+        sheet_libro.write(i,10,"Cnt. Final")
+        sheet_libro.write(i,11,"Marca")
         sheet_libro.set_column(0,0,5)
         sheet_libro.set_column(1,1,16)
         sheet_libro.set_column(2,2,60)
@@ -58,19 +63,26 @@ class StockMovePeriodoXls(models.AbstractModel):
             sheet_libro.write(i,0,i)
             sheet_libro.write(i,1,producto.default_code)
             sheet_libro.write(i,2,producto.name)
-            sheet_libro.write(i,3,producto.qty_available)
+            sheet_libro.write(i,3,producto.list_price, self.money)
+            sheet_libro.write(i,4,producto.standard_price, self.money)
 
-            sheet_libro.write(i,4,res[producto.id]['qty_available'])
-            sheet_libro.write(i,5,moves_in_res.get(producto.id, 0.0))
-            sheet_libro.write(i,6,moves_out_res.get(producto.id, 0.0))
+            margen_price = producto.list_price - producto.standard_price
+            sheet_libro.write(i,5,margen_price, self.money)
+
+            sheet_libro.write(i,6,producto.qty_available)
+
+            sheet_libro.write(i,7,res[producto.id]['qty_available'])
+            sheet_libro.write(i,8,moves_in_res.get(producto.id, 0.0))
+
+            sheet_libro.write(i,9,moves_out_res.get(producto.id, 0.0))
 
             cantidad_final = res[producto.id]['qty_available'] + moves_in_res.get(producto.id, 0.0) - moves_out_res.get(producto.id, 0.0)
-            sheet_libro.write(i,7,cantidad_final)
-
-            sheet_libro.write(i,8,producto.categ_id.name)
+            sheet_libro.write(i,10,cantidad_final)
+            sheet_libro.write(i,11,producto.marca_id.name)
+            sheet_libro.write(i,12,producto.categ_id.name)
 
             lista = self.categoria(producto.categ_id.id)
-            j=7
+            j=12
             for categoria in lista:
                 j += 1
                 sheet_libro.write(i,j,categoria)
