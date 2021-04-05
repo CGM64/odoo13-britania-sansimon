@@ -106,79 +106,52 @@
                                                 <div class="container">
                                                     <div class="row">
                                                         <div class="col-lg-12">
-                                                            <form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus-thank-you" class="s_website_form container-fluid mt32" enctype="multipart/form-data" data-editable-form="false">
-
-                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                    <label for="contact_name" class="col-form-label col-sm-5">Your name</label>
-                                                                    <div class="col-sm-7">
-                                                                        <input type="text" name="Name" class="form-control o_website_form_input" required="" />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                    <label for="phone" class="col-form-label col-sm-5">Phone Number</label>
-                                                                    <div class="col-sm-7">
-                                                                        <input type="text" name="Phone" class="form-control o_website_form_input" required="" />
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                    <label for="departamento" class="col-form-label col-sm-5">Departamento</label>
-                                                                    <div class="col-sm-7">
-                                                                        <select class="form-control o_website_form_input" name="email_from">
-                                                                            <option value=" - Seleccionar - "/>
-                                                                            <t t-foreach="products" t-as="color">
-                                                                                <option t-att-value="color.id">
-                                                                                    <t t-esc="color.name" />
-                                                                                </option>
-                                                                            </t>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                    <label for="modelo" class="col-form-label col-sm-5">Modelo</label>
-                                                                    <div class="col-sm-7">
-                                                                        <select class="form-control o_website_form_input" name="Partner Name">
-                                                                            <option value=" - Seleccionar - "/>
-                                                                            <t t-foreach="attrib" t-as="at">
-                                                                                <option t-att-value="at.id">
-                                                                                    <t t-esc="at.name" />
-                                                                                </option>
-                                                                            </t>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                    <label for="medio" class="col-form-label col-sm-5">Medio por el cual nos conoció</label>
-                                                                    <div class="col-sm-7">
-                                                                        <select class="form-control o_website_form_input" name="Description">
-                                                                            <option value=" - Seleccionar - "/>
-                                                                            <t t-foreach="categorias" t-as="cat">
-                                                                                <option t-att-value="cat.id">
-                                                                                    <t t-esc="cat.name" />
-                                                                                </option>
-                                                                            </t>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                    <label for="medio" class="col-form-label col-sm-5">Acepto</label>
-                                                                    <input type="checkbox" id="checkbox_cgv" class="custom-control-input" required=""/>
-                                                                    <label for="checkbox_cgv" class="custom-control-label">
-                                                                        <a id="terms" target="_BLANK" href="/shop/terms" style="color:#FFFFFF;">Política de Privacidad</a>
-                                                                    </label>
-                                                                </div>
-
-                                                                <div class="form-group row">
-                                                                    <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
-                                                                        <a href="#" role="button" class="btn btn-primary btn-lg o_website_form_send">Send</a>
-                                                                        <span id="o_website_form_result"></span>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
+                                                          <div t-ignore="true">
+                                                                            <form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus-thank-you" class="s_website_form container-fluid mt32" enctype="multipart/form-data" data-editable-form="false">
+                                                                                <div class="form-group row form-field o_website_form_required_custom">
+                                                                                    <label class="col-lg-3 col-md-4 col-form-label" for="contact_name">Your Name</label>
+                                                                                    <div class="col-lg-7 col-md-8">
+                                                                                        <input type="text" class="form-control o_website_form_input" name="contact_name" t-att-value="request.params.get('contact_name', '')" required=""/>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row form-field">
+                                                                                    <label class="col-lg-3 col-md-4 col-form-label" for="phone">Phone Number</label>
+                                                                                    <div class="col-lg-7 col-md-8">
+                                                                                        <input type="text" class="form-control o_website_form_input" name="phone" t-att-value="request.params.get('phone', '')" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row form-field o_website_form_required_custom">
+                                                                                    <label class="col-lg-3 col-md-4 col-form-label" for="email_from">Email</label>
+                                                                                    <div class="col-lg-7 col-md-8">
+                                                                                        <input type="text" class="form-control o_website_form_input" name="email_from" required="" t-att-value="request.params.get('email_from', '')" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row form-field">
+                                                                                    <label class="col-lg-3 col-md-4 col-form-label" for="partner_name">Your Company</label>
+                                                                                    <div class="col-lg-7 col-md-8">
+                                                                                        <input type="text" class="form-control o_website_form_input" name="partner_name" t-att-value="request.params.get('partner_name', '')" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row form-field o_website_form_required">
+                                                                                    <label class="col-lg-3 col-md-4 col-form-label" for="name">Subject</label>
+                                                                                    <div class="col-lg-7 col-md-8">
+                                                                                        <input type="text" class="form-control o_website_form_input" name="name" required="" t-att-value="request.params.get('name', '')" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row form-field o_website_form_required_custom">
+                                                                                    <label class="col-lg-3 col-md-4 col-form-label" for="description">Your Question</label>
+                                                                                    <div class="col-lg-7 col-md-8">
+                                                                                        <textarea class="form-control o_website_form_input" name="description" required=""><t t-esc="request.params.get('description', '')"/></textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+                                                                                        <a href="#" role="button" class="btn btn-primary btn-lg o_website_form_send">Send</a>
+                                                                                        <span id="o_website_form_result"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>                                                          
                                                         </div>
                                                     </div>
                                                 </div>
