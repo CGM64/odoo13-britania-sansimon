@@ -41,31 +41,15 @@ class WebsiteSale(http.Controller):
         Fleet = request.env['fleet.vehicle.model']
         lista_fleet = Fleet.search([('brand_id', '=',67)])
 
-        Marca = request.env['codigo.marca']
-        lista_marca = Marca.search([])
-
-        Model = request.env['linea.vehicle']
-        lista_modelo = Model.search([])
-
-        Product = request.env['product.template']
-        lista_product = Product.search([])
-
-        ProductAttribute = request.env['product.attribute']
-        lista_attribute = ProductAttribute.search([])
-
-        Category = request.env['product.public.category']
-        lista_cat = Category.search([])
+        Medio = request.env['utm.medium']
+        lista_medio = Medio.search([])
 
         Departamentos =  request.env['res.country.state']
         lista_dp = Departamentos.search([('country_id','=',90)])
 
         values = {
-            'products': lista_product,
-            'attrib' : lista_attribute,
-            'categorias' : lista_cat,
-            'linea' : lista_modelo,
+            'medios': lista_medio,
             'depto' : lista_dp,
-            'marca' : lista_marca,
             'fleet' : lista_fleet,
         }
 

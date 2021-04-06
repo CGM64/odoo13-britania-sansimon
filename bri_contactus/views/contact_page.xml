@@ -159,9 +159,9 @@
                                                                         <div class="col-sm-7">
                                                                             <select class="form-control o_website_form_input" name="description">
                                                                                 <option value=" - Seleccionar - " />
-                                                                                <t t-foreach="categorias" t-as="cat">
-                                                                                    <option t-att-value="cat.id">
-                                                                                        <t t-esc="cat.name" />
+                                                                                <t t-foreach="medios" t-as="med">
+                                                                                    <option t-att-value="med.id">
+                                                                                        <t t-esc="med.name" />
                                                                                     </option>
                                                                                 </t>
                                                                             </select>
