@@ -16,7 +16,7 @@ class AccountMove(models.Model):
             return False
 
     def obtener_tasa_cambio(self):
-        rate = 1
+        tasa = rate = 1
         if self.currency_id.id != self.company_id.currency_id.id:
             rate = self.currency_id
             rate = rate.with_context(dict(self._context or {}, date=self.invoice_date)).rate
