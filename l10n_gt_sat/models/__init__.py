@@ -10,3 +10,4 @@ from . import stock_piking
 from . import purchase
 from . import account_account
 from . import res_company
+from . import sale
