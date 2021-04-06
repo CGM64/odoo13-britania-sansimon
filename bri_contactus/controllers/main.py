@@ -16,6 +16,19 @@ from odoo.exceptions import ValidationError
 from odoo.addons.website.controllers.main import Website
 from odoo.addons.website_form.controllers.main import WebsiteForm
 from odoo.osv import expression
+from odoo import api, models
+
+class LineaVehicle(models.Model):
+    """Fleet Vehicle model."""
+
+    _name = 'linea.vehicle'
+    name = fields.Char(string='Linea',copy=False)
+
+class CodigoMarca(models.Model):
+    """Fleet Vehicle model."""
+
+    _name = 'codigo.marca'
+    name = fields.Char(string='Codigo de Marca',copy=False)
 
 class WebsiteSale(http.Controller):
 
@@ -24,6 +37,15 @@ class WebsiteSale(http.Controller):
             '''/contact_prueba'''
         ],type='http',auth="public",website=True)
     def britcontactenos(self,page=0, category=None, search='', ppg=False, **post):
+
+        Fleet = request.env['fleet.vehicle.model']
+        lista_fleet = Fleet.search([('brand_id', '=',67)])
+
+        Marca = request.env['codigo.marca']
+        lista_marca = Marca.search([])
+
+        Model = request.env['linea.vehicle']
+        lista_modelo = Model.search([])
 
         Product = request.env['product.template']
         lista_product = Product.search([])
@@ -34,11 +56,17 @@ class WebsiteSale(http.Controller):
         Category = request.env['product.public.category']
         lista_cat = Category.search([])
 
+        Departamentos =  request.env['res.country.state']
+        lista_dp = Departamentos.search([('country_id','=',90)])
+
         values = {
-            'var_prueba': "¡Hola mundo!",
             'products': lista_product,
             'attrib' : lista_attribute,
             'categorias' : lista_cat,
+            'linea' : lista_modelo,
+            'depto' : lista_dp,
+            'marca' : lista_marca,
+            'fleet' : lista_fleet,
         }
 
         return request.render("bri_contactus.bri_contactenos", values)

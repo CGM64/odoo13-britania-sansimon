@@ -106,84 +106,84 @@
                                                 <div class="container">
                                                     <div class="row">
                                                         <div class="col-lg-12">
-                                                          <div t-ignore="true">
-                                                                            <form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus-thank-you" class="s_website_form container-fluid mt32" enctype="multipart/form-data" data-editable-form="false">
-                                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                                    <label class="col-form-label col-sm-5" for="contact_name">Your Name</label>
-                                                                                    <div class="col-sm-7">
-                                                                                        <input type="text" class="form-control o_website_form_input" name="contact_name" t-att-value="request.params.get('contact_name', '')" required=""/>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                                    <label class="col-form-label col-sm-5" for="email_from">Email</label>
-                                                                                    <div class="col-sm-7">
-                                                                                        <input type="text" class="form-control o_website_form_input" name="email_from" required="" t-att-value="request.params.get('email_from', '')" />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group row form-field">
-                                                                                    <label class="col-form-label col-sm-5" for="phone">Phone Number</label>
-                                                                                    <div class="col-sm-7">
-                                                                                        <input type="text" class="form-control o_website_form_input" name="phone" t-att-value="request.params.get('phone', '')" />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                                    <label for="departamento" class="col-form-label col-sm-5">Departamento</label>
-                                                                                    <div class="col-sm-7">
-                                                                                        <select class="form-control o_website_form_input" name="partner_name">
-                                                                                            <option value=" - Seleccionar - "/>
-                                                                                            <t t-foreach="products" t-as="color">
-                                                                                                <option t-att-value="color.id">
-                                                                                                    <t t-esc="color.name" />
-                                                                                                </option>
-                                                                                            </t>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                </div>
-                
-                                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                                    <label for="modelo" class="col-form-label col-sm-5">Modelo</label>
-                                                                                    <div class="col-sm-7">
-                                                                                        <select class="form-control o_website_form_input" name="name">
-                                                                                            <option value=" - Seleccionar - "/>
-                                                                                            <t t-foreach="attrib" t-as="at">
-                                                                                                <option t-att-value="at.id">
-                                                                                                    <t t-esc="at.name" />
-                                                                                                </option>
-                                                                                            </t>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                </div>
-                
-                                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                                    <label for="medio" class="col-form-label col-sm-5">Medio por el cual nos conoció</label>
-                                                                                    <div class="col-sm-7">
-                                                                                        <select class="form-control o_website_form_input" name="description">
-                                                                                            <option value=" - Seleccionar - "/>
-                                                                                            <t t-foreach="categorias" t-as="cat">
-                                                                                                <option t-att-value="cat.id">
-                                                                                                    <t t-esc="cat.name" />
-                                                                                                </option>
-                                                                                            </t>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                </div>
+                                                            <div t-ignore="true">
+                                                                <form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus_thanks" class="s_website_form container-fluid mt32" enctype="multipart/form-data" data-editable-form="false">
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label class="col-form-label col-sm-5" for="contact_name">Your Name</label>
+                                                                        <div class="col-sm-7">
+                                                                            <input type="text" class="form-control o_website_form_input" name="contact_name" t-att-value="request.params.get('contact_name', '')" required="" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label class="col-form-label col-sm-5" for="email_from">Email</label>
+                                                                        <div class="col-sm-7">
+                                                                            <input type="text" class="form-control o_website_form_input" name="email_from" required="" t-att-value="request.params.get('email_from', '')" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label class="col-form-label col-sm-5" for="phone">Phone Number</label>
+                                                                        <div class="col-sm-7">
+                                                                            <input type="text" class="form-control o_website_form_input" name="phone" t-att-value="request.params.get('phone', '')" required=""/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label for="departamento" class="col-form-label col-sm-5">Departamento</label>
+                                                                        <div class="col-sm-7">
+                                                                            <select class="form-control o_website_form_input" name="partner_name">
+                                                                                <option value=" - Seleccionar - " />
+                                                                                <t t-foreach="depto" t-as="dp">
+                                                                                    <option t-att-value="dp.id">
+                                                                                        <t t-esc="dp.name" />
+                                                                                    </option>
+                                                                                </t>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
 
-                                                                                <div class="form-group row form-field o_website_form_required_custom">
-                                                                                    <label for="medio" class="col-form-label col-sm-5">Acepto</label>
-                                                                                    <input type="checkbox" id="checkbox_cgv" class="custom-control-input" required=""/>
-                                                                                    <label for="checkbox_cgv" class="custom-control-label">
-                                                                                        <a id="terms" target="_BLANK" href="/shop/terms" style="color:#FFFFFF;">Política de Privacidad</a>
-                                                                                    </label>
-                                                                                </div>
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label for="modelo" class="col-form-label col-sm-5">Modelo</label>
+                                                                        <div class="col-sm-7">
+                                                                            <select class="form-control o_website_form_input" name="name">
+                                                                                <option value=" - Seleccionar - " />
+                                                                                <t t-foreach="fleet" t-as="lin">
+                                                                                    <option t-att-value="lin.id">
+                                                                                        <t t-esc="lin.name" />
+                                                                                    </option>
+                                                                                </t>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
 
-                                                                                <div class="form-group row">
-                                                                                    <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
-                                                                                        <a href="#" role="button" class="btn btn-primary btn-lg o_website_form_send">Send</a>
-                                                                                        <span id="o_website_form_result"></span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </form>
-                                                                        </div>                                                          
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label for="medio" class="col-form-label col-sm-5">Medio por el cual nos conoció</label>
+                                                                        <div class="col-sm-7">
+                                                                            <select class="form-control o_website_form_input" name="description">
+                                                                                <option value=" - Seleccionar - " />
+                                                                                <t t-foreach="categorias" t-as="cat">
+                                                                                    <option t-att-value="cat.id">
+                                                                                        <t t-esc="cat.name" />
+                                                                                    </option>
+                                                                                </t>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label for="medio" class="col-form-label col-sm-5">Acepto</label>
+                                                                        <input type="checkbox" id="checkbox_cgv" class="custom-control-input" required="" />
+                                                                        <label for="checkbox_cgv" class="custom-control-label">
+                                                                            <a id="terms" target="_BLANK" href="/shop/terms" style="color:#FFFFFF;">Política de Privacidad</a>
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <div class="form-group row">
+                                                                        <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+                                                                            <a href="#" role="button" class="btn btn-primary btn-lg o_website_form_send">Send</a>
+                                                                            <span id="o_website_form_result"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -230,4 +230,37 @@
             <div class="clearfix"></div>
         </t>
     </template>
+
+    <record id="contactus_thanks" model="website.page">
+        <field name="name">¡Gracias!</field>
+        <field name="type">qweb</field>
+        <field name="url">/contactus_thanks</field>
+        <field name="website_indexed" eval="False" />
+        <field name="is_published">True</field>
+        <field name="key">website_form.contactus_thanks</field>
+        <field name="arch" type="xml">
+            <t name="Thanks!" t-name="website_form.contactus_thanks">
+                <style>
+
+                  #contenedor{
+                  background-color: #000000;
+                  }
+
+                    img{
+                        max-width: 100%
+                    }
+                </style>
+                <t t-call="website.layout">
+                    <div id="contenedor" class="container-fluid">
+                        <picture>
+                            <source media="(min-width:1200px)" srcset="/bri_contactus/static/src/image/thank-you-large.jpg" />
+                            <source media="(min-width:991px)" srcset="/bri_contactus/static/src/image/thank-you-pc.jpg" />
+                            <source media="(min-width:767px)" srcset="/bri_contactus/static/src/image/thank-you-tablet.jpg" />
+                            <img src="/bri_contactus/static/src/image/thank-you-mobile.jpg" style="width:auto;" />
+                        </picture>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
 </odoo>

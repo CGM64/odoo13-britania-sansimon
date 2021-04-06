@@ -12,9 +12,10 @@
         'web_editor',
         'http_routing',
         'portal',
+        'crm',
         'social_media',
         'auth_signup',
-        'website', 'sale', 'website_payment', 'website_mail', 'website_form', 'website_rating', 'digest'
+        'website', 'sale', 'website_payment', 'website_mail', 'website_form', 'website_rating', 'digest',
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -39,6 +40,6 @@
     'data': [
         'views/contact_page.xml',
     ],
-   
+
     'application': True,
 }
