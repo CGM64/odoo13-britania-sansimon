@@ -9,12 +9,14 @@ class LineaVehicle(models.Model):
     """Fleet Vehicle model."""
 
     _name = 'linea.vehicle'
+    _description = 'Linea de vehiculo'
     name = fields.Char(string='Linea',copy=False)
 
 class CodigoMarca(models.Model):
     """Fleet Vehicle model."""
 
     _name = 'codigo.marca'
+    _description = 'Codigo Marca Vehiculo'
     name = fields.Char(string='Codigo de Marca',copy=False)
 
 class FleetVehicle(models.Model):
