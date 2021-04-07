@@ -29,6 +29,7 @@
             <field name="aduana"/>
             <field name="poliza"/>
             <field name="currency_id" readonly="0"/>
+            <field name="pedido"/>
         </group>
         </xpath>
       </field>

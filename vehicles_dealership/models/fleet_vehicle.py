@@ -51,6 +51,7 @@ class FleetVehicle(models.Model):
     codigo_marca = fields.Many2one('codigo.marca', 'Codigo de marca',
                                  ondelete="cascade", delegate=True,
                                  required=True)
+    pedido = fields.Char(string='No. Pedido',required=False,copy=False)
 
     @api.model
     def create(self, vals):
@@ -66,7 +67,8 @@ class FleetVehicle(models.Model):
             new_vehicle.product_id.with_context(ctx).write({
                 'name': new_vehicle.name,
                 'image_1920': new_vehicle.image_1920,
-                'is_vehicle': True})
+                'is_vehicle': True,
+                'default_code':new_vehicle.pedido})
             new_vehicle.product_id.product_tmpl_id.write({'is_vehicle': True})
         return new_vehicle
 
