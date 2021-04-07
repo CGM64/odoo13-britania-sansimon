@@ -30,7 +30,7 @@ class FleetVehicle(models.Model):
                                  ondelete="cascade", delegate=True,
                                  required=True)
     image_128 = fields.Image(string="Image Small", readonly=False)
-    tonelaje = fields.Char(string='Tonelaje',copy=False)
+    tonelaje = fields.Char(string='Tonelaje',copy=True)
     tipo_vehiculo = fields.Selection([
         ('motocicleta','Motocilceta'),
         ('automovil','Automovil'),
@@ -38,20 +38,20 @@ class FleetVehicle(models.Model):
         ('Camioneta','Camioneta'),
         ('cuatrimoto','Cuatrimoto'),
         ('rustico','Vehículo Rustico')],string="Tipo vehiculo",default='motocicleta')
-    aduana = fields.Char(string='Aduana',copy=False)
-    poliza = fields.Char(string='DUCA',copy=False)
+    aduana = fields.Char(string='Aduana',copy=True)
+    poliza = fields.Char(string='DUCA',copy=True)
     cilindros = fields.Char(string='Cilindros',copy=False)
-    chasis = fields.Char(string='Chasis',copy=False)
-    cc = fields.Char(string='C.C.',copy=False,help='Cilindrada total de motor')
-    ejes = fields.Char(string='Ejes',copy=False,help='Ejes')
-    motor = fields.Char(string='Motor',copy=False,help='Motor')
+    chasis = fields.Char(string='Chasis',copy=True)
+    cc = fields.Char(string='C.C.',copy=True,help='Cilindrada total de motor')
+    ejes = fields.Char(string='Ejes',copy=True,help='Ejes')
+    motor = fields.Char(string='Motor',copy=True,help='Motor')
     linea = fields.Many2one('linea.vehicle', 'Linea',
                                  ondelete="cascade", delegate=True,
-                                 required=True)
+                                 required=True,copy=True)
     codigo_marca = fields.Many2one('codigo.marca', 'Codigo de marca',
                                  ondelete="cascade", delegate=True,
-                                 required=True)
-    pedido = fields.Char(string='No. Pedido',required=False,copy=False)
+                                 required=True,copy=True)
+    pedido = fields.Char(string='No. Pedido',required=False,copy=True)
 
     @api.model
     def create(self, vals):
@@ -84,6 +84,7 @@ class FleetVehicle(models.Model):
 
         for vehicle in self:
             if vehicle.product_id:
+                vehicle.product_id.default_code = vehicle.pedido
                 if vals.get('image_1920', False):
                     update_prod_vals.update({'image_1920': vehicle.image_1920})
                 if vals.get('model_id', False) or vals.get('license_plate', False):
