@@ -38,7 +38,9 @@ class WebsiteSale(http.Controller):
         ],type='http',auth="public",website=True)
     def britcontactenos(self,page=0, category=None, search='', ppg=False, **post):
 
+        #Se declara el nombre del objeto 'Fleet' junto con que modelo pertenece.
         Fleet = request.env['fleet.vehicle.model']
+        #Se llena la lista 'lista_fleet' y con el modelo declarado previemante 'Fleet' con search
         lista_fleet = Fleet.search([('brand_id', '=',67)])
 
         Medio = request.env['utm.medium']
