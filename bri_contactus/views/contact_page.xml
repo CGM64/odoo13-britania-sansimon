@@ -2,6 +2,12 @@
 
 <odoo>
     <template id="bri_contactenos" name="Contactenos">
+      <xpath expr="." position="inside">
+        <script
+            type="text/javascript"
+            src="/bri_contactus/static/src/js/javaScript.js">
+         </script>
+    </xpath>
 
         <t t-set="additional_title">Contactenos</t>
 
@@ -107,11 +113,11 @@
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <div t-ignore="true">
-                                                                <form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus_thanks" class="s_website_form container-fluid mt32" enctype="multipart/form-data" data-editable-form="false">
+                                                                <form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus_thanks" class="s_website_form container-fluid mt32" name="contact" enctype="multipart/form-data" data-editable-form="false">
                                                                     <div class="form-group row form-field o_website_form_required_custom">
                                                                         <label class="col-form-label col-sm-5" for="contact_name">Your Name</label>
                                                                         <div class="col-sm-7">
-                                                                            <input type="text" class="form-control o_website_form_input" name="contact_name" t-att-value="request.params.get('contact_name', '')" required="" />
+                                                                            <input id="contact_nm" type="text" class="form-control o_website_form_input" name="contact_name" t-att-value="request.params.get('contact_name', '')" required="" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row form-field o_website_form_required_custom">
@@ -126,12 +132,14 @@
                                                                             <input type="text" class="form-control o_website_form_input" name="phone" t-att-value="request.params.get('phone', '')" required=""/>
                                                                         </div>
                                                                     </div>
+
                                                                     <div class="form-group row form-field o_website_form_required_custom">
                                                                         <label for="departamento" class="col-form-label col-sm-5">Departamento</label>
                                                                         <div class="col-sm-7">
-                                                                            <select class="form-control o_website_form_input" name="partner_name">
+                                                                            <select class="form-control o_website_form_input" name="depto">
+                                                                              <option value=""> - Seleccionar - </option>
                                                                                 <t t-foreach="depto" t-as="dp">
-                                                                                    <option t-att-value="dp.id">
+                                                                                    <option t-att-value="dp.name">
                                                                                         <t t-esc="dp.name" />
                                                                                     </option>
                                                                                 </t>
@@ -142,9 +150,10 @@
                                                                     <div class="form-group row form-field o_website_form_required_custom">
                                                                         <label for="modelo" class="col-form-label col-sm-5">Modelo</label>
                                                                         <div class="col-sm-7">
-                                                                            <select class="form-control o_website_form_input" name="name">
+                                                                            <select id="model" class="form-control o_website_form_input" name="modelo">
+                                                                              <option value=""> - Seleccionar - </option>
                                                                                 <t t-foreach="fleet" t-as="lin">
-                                                                                    <option t-att-value="lin.id">
+                                                                                    <option t-att-value="lin.name">
                                                                                         <t t-esc="lin.name" />
                                                                                     </option>
                                                                                 </t>
@@ -155,13 +164,28 @@
                                                                     <div class="form-group row form-field o_website_form_required_custom">
                                                                         <label for="medio" class="col-form-label col-sm-5">Medio por el cual nos conoció</label>
                                                                         <div class="col-sm-7">
-                                                                            <select class="form-control o_website_form_input" name="description">
+                                                                            <select class="form-control o_website_form_input" name="medio_conocio">
+                                                                              <option value=""> - Seleccionar - </option>
                                                                                 <t t-foreach="medios" t-as="med">
-                                                                                    <option t-att-value="med.id">
+                                                                                    <option t-att-value="med.name">
                                                                                         <t t-esc="med.name" />
                                                                                     </option>
                                                                                 </t>
                                                                             </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row form-field o_website_form_required_custom" style="display:none;">
+                                                                        <label for="modelo" class="col-form-label col-sm-5">Name</label>
+                                                                        <div class="col-sm-7">
+                                                                          <input t-att-value="medios" type="text" class="form-control o_website_form_input" name="name"/>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row form-field o_website_form_required_custom" style="display:none;">
+                                                                        <label for="medio" class="col-form-label col-sm-5">Description</label>
+                                                                        <div class="col-sm-7">
+                                                                          <input t-att-value="fleet" type="text" class="form-control o_website_form_input" name="description"/>
                                                                         </div>
                                                                     </div>
 

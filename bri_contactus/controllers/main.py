@@ -18,18 +18,6 @@ from odoo.addons.website_form.controllers.main import WebsiteForm
 from odoo.osv import expression
 from odoo import api, models
 
-class LineaVehicle(models.Model):
-    """Fleet Vehicle model."""
-
-    _name = 'linea.vehicle'
-    name = fields.Char(string='Linea',copy=False)
-
-class CodigoMarca(models.Model):
-    """Fleet Vehicle model."""
-
-    _name = 'codigo.marca'
-    name = fields.Char(string='Codigo de Marca',copy=False)
-
 class WebsiteSale(http.Controller):
 
     @http.route(
