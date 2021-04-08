@@ -52,7 +52,6 @@ class AccountMove(models.Model):
                     'tonelaje':'Tonelaje :'.format(vehiculo.tonelaje if vehiculo.tonelaje else ''),
                     'transmision':'Transmision : {}'.format('Automatica' if vehiculo.transmission == 'automatic' else 'Manual'),
                     'tipo_combustible':'Combustible {}'.format(combustible),
-                    'co2':'Emisiones de Co2: {}'.format(vehiculo.co2),
                     'potencia':'Potencia: {}'.format(vehiculo.power),
                     'vin':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
                     'asientos':'Asientos: {}'.format(vehiculo.seats),
@@ -70,7 +69,6 @@ TIPO VEHICULO   : %s
 TONELAJE    : %s
 TRANSMISION        : %s
 COMBUSTIBLE       : %s
-EMISIONES DE CO2           : %s
 POTENCIA     : %s
 VIN/CHASIS        : %s
 ASIENTOS   : %s
@@ -86,14 +84,13 @@ POLIZA : %s
                     ,vehiculo.tonelaje if vehiculo.tonelaje else ''
                     ,'Automatica' if vehiculo.transmission == 'automatic' else 'Manual'
                     ,combustible
-                    ,vehiculo.co2
                     ,vehiculo.power
                     ,vehiculo.vin_sn
                     ,vehiculo.seats
                     ,vehiculo.doors
                     ,vehiculo.model_year
                     ,vehiculo.color
-                    ,vehiculo.license_plate
+                    ,vehiculo.license_plate if vehicle.license_plate else ''
                     ,vehiculo.aduana if vehiculo.aduana else ''
                     ,vehiculo.poliza if vehiculo.poliza else ''))
 
