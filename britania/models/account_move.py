@@ -61,7 +61,7 @@ class AccountMove(models.Model):
                     'tipo_combustible':'Combustible {}'.format(combustible),
                     'doors':'Puertas: {}'.format(vehiculo.doors),
                     'Ejes':'Ejes :'.format(vehiculo.ejes if vehiculo.ejes else ''),
-                    'tonelaje':'Tonelaje :'.format(vehiculo.tonelaje if vehiculo.tonelaje else 0),
+                    'tonelaje':'Tonelaje :'.format(vehiculo.tonelaje if vehiculo.tonelaje else '0'),
                     'Aduana':'Aduana: {}'.format(vehiculo.aduana if vehiculo.aduana else ''),
                     'Poliza':'Poliza: {}'.format(vehiculo.poliza if vehiculo.poliza else ''),
                     }
@@ -101,7 +101,7 @@ POLIZA : %s
                     ,combustible
                     ,vehiculo.doors
                     ,vehiculo.ejes if vehiculo.ejes else ''
-                    ,vehiculo.tonelaje if vehiculo.tonelaje else 0
+                    ,vehiculo.tonelaje if vehiculo.tonelaje else '0'
                     ,vehiculo.aduana if vehiculo.aduana else ''
                     ,vehiculo.poliza if vehiculo.poliza else ''))
 
