@@ -87,7 +87,7 @@ ADUANA : %s
 POLIZA : %s
 """
                 return (resultado % (
-                    ,vehiculo.tipo_vehiculo if vehiculo.tipo_vehiculo else ''
+                    vehiculo.tipo_vehiculo if vehiculo.tipo_vehiculo else ''
                     ,'Automatica' if vehiculo.transmission == 'automatic' else 'Manual'
                     ,vehiculo.marca_id.name if vehiculo.marca_id else ''
                     ,vehiculo.model_year
