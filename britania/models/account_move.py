@@ -49,11 +49,11 @@ class AccountMove(models.Model):
                     resultado = {
                     'tipo_vehiculo':'Tipo vehiculo : {}'.format(vehiculo.tipo_vehiculo if vehiculo.tipo_vehiculo else ''),
                     'transmision':'Transmision : {}'.format('Automatica' if vehiculo.transmission == 'automatic' else 'Manual'),
-                    'marca':'Marca: {}'.format(vehiculo.marca_id.name if vehiculo.marca_id else ''),
+                    'marca':'Marca: {}'.format(vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''),
                     'modelo':'Modelo: {}'.format(vehiculo.model_year),
                     'cc':'CC: {}'.format(vehiculo.cc),
                     'asientos':'Asientos: {}'.format(vehiculo.seats),
-                    'linea':'Linea: {}'.format(vehiculo.linea),
+                    'linea':'Linea: {}'.format(vehiculo.linea.name),
                     'vin':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
                     'motor':'Motor: {}'.format(vehiculo.motor),
                     'cilindros':'Cilindros: {}'.format(vehiculo.cilindros),
@@ -93,7 +93,7 @@ POLIZA : %s
                     ,vehiculo.model_year
                     ,vehiculo.cc
                     ,vehiculo.seats
-                    ,vehiculo.linea
+                    ,vehiculo.linea.name
                     ,vehiculo.vin_sn
                     ,vehiculo.motor
                     ,vehiculo.cilindros
