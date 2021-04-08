@@ -81,6 +81,9 @@
 
                     }
             </style>
+
+        <script type="text/javascript" src="/bri_contactus/static/src/js/javaScript.js"></script>
+
         <t t-call="website.layout">
 
             <div class="container-fluid">
@@ -176,21 +179,21 @@
                                                                     </div>
 
                                                                     <div class="form-group row form-field o_website_form_required_custom" style="display:none;">
-                                                                        <label for="modelo" class="col-form-label col-sm-5">Name</label>
+                                                                        <label for="nm" class="col-form-label col-sm-5">Name</label>
                                                                         <div class="col-sm-7">
-                                                                          <input t-att-value="medios" type="text" class="form-control o_website_form_input" name="name"/>
+                                                                          <input id="nm" type="text" class="form-control o_website_form_input" name="name"/>
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="form-group row form-field o_website_form_required_custom" style="display:none;">
-                                                                        <label for="medio" class="col-form-label col-sm-5">Description</label>
+                                                                        <label for="desc" class="col-form-label col-sm-5">Description</label>
                                                                         <div class="col-sm-7">
-                                                                          <input t-att-value="fleet" type="text" class="form-control o_website_form_input" name="description"/>
+                                                                          <input id="conc" type="text" class="form-control o_website_form_input" name="description"/>
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="form-group row form-field o_website_form_required_custom">
-                                                                        <label for="medio" class="col-form-label col-sm-5">Acepto</label>
+                                                                        <label for="checkbox_cgv" class="col-form-label col-sm-5">Acepto</label>
                                                                         <input type="checkbox" id="checkbox_cgv" class="custom-control-input" required="" />
                                                                         <label for="checkbox_cgv" class="custom-control-label">
                                                                             <a id="terms" target="_BLANK" href="/shop/terms" style="color:#FFFFFF;">Política de Privacidad</a>
@@ -199,7 +202,7 @@
 
                                                                     <div class="form-group row">
                                                                         <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
-                                                                            <a href="#" role="button" class="btn btn-primary btn-lg o_website_form_send">Send</a>
+                                                                            <a href="#" role="button" class="btn btn-primary btn-lg o_website_form_send" onclick="concatenar()">Send</a>
                                                                             <span id="o_website_form_result"></span>
                                                                         </div>
                                                                     </div>
