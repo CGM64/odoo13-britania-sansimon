@@ -5,8 +5,8 @@ function concatenar(){
         name = document.getElementById("contact_nm").value;
         document.getElementById("nm").value = name;
 
-        desc = document.getElementById("contact_nm").value +", "+
-        document.getElementById("model").value;
-
+        var combo = document.getElementById("modelo");
+        var selected = combo.options[combo.selectedIndex].text;
+        desc = document.getElementById("contact_nm").value +", "+ selected;
         document.getElementById("conc").value = desc;
     }

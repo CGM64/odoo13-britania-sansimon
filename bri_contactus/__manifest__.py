@@ -20,6 +20,7 @@
     'data': [
         'views/contact_page.xml',
         'views/crm_lead_view.xml',
+        'data/britania_crm_data.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'installable': True,
