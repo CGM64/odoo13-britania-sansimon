@@ -47,50 +47,61 @@ class AccountMove(models.Model):
                     combustible = 'Hibrido'
                 if vehiculo and tipo == 1:
                     resultado = {
-                    'name':vehiculo.name,
                     'tipo_vehiculo':'Tipo vehiculo : {}'.format(vehiculo.tipo_vehiculo if vehiculo.tipo_vehiculo else ''),
-                    'tonelaje':'Tonelaje :'.format(vehiculo.tonelaje if vehiculo.tonelaje else ''),
                     'transmision':'Transmision : {}'.format('Automatica' if vehiculo.transmission == 'automatic' else 'Manual'),
-                    'tipo_combustible':'Combustible {}'.format(combustible),
-                    'potencia':'Potencia: {}'.format(vehiculo.power),
-                    'vin':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
-                    'asientos':'Asientos: {}'.format(vehiculo.seats),
-                    'doors':'Puertas: {}'.format(vehiculo.doors),
+                    'marca':'Marca: {}'.format(vehiculo.marca_id.name if vehiculo.marca_id else ''),
                     'modelo':'Modelo: {}'.format(vehiculo.model_year),
+                    'cc':'CC: {}'.format(vehiculo.cc),
+                    'asientos':'Asientos: {}'.format(vehiculo.seats),
+                    'linea':'Linea: {}'.format(vehiculo.linea),
+                    'vin':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
+                    'motor':'Motor: {}'.format(vehiculo.motor),
+                    'cilindros':'Cilindros: {}'.format(vehiculo.cilindros),
                     'color':'Color: {}'.format(vehiculo.color),
-                    'Placa':'Placa: {}'.format(vehiculo.license_plate),
+                    'tipo_combustible':'Combustible {}'.format(combustible),
+                    'doors':'Puertas: {}'.format(vehiculo.doors),
+                    'Ejes':'Ejes :'.format(vehiculo.ejes if vehiculo.ejes else ''),
+                    'tonelaje':'Tonelaje :'.format(vehiculo.tonelaje if vehiculo.tonelaje else 0),
                     'Aduana':'Aduana: {}'.format(vehiculo.aduana if vehiculo.aduana else ''),
                     'Poliza':'Poliza: {}'.format(vehiculo.poliza if vehiculo.poliza else ''),
                     }
                     return resultado
                 elif vehiculo and tipo != 1:
-                    resultado = """%s
+                    resultado = """
 TIPO VEHICULO   : %s
-TONELAJE    : %s
 TRANSMISION        : %s
-COMBUSTIBLE       : %s
-POTENCIA     : %s
-VIN/CHASIS        : %s
-ASIENTOS   : %s
-PUERTAS     : %s
+MARCA     : %s
 MODELO    : %s
+CC    : %s
+ASIENTOS   : %s
+LINEA    : %s
+VIN/CHASIS        : %s
+MOTOR  : %s
+CILINDROS  : %s
 COLOR        : %s
-PLACA  : %s
+COMBUSTIBLE       : %s
+PUERTAS    : %s
+EJES    : %s
+TONELAJE    : %s
 ADUANA : %s
 POLIZA : %s
 """
-                return (resultado % (vehiculo.name
+                return (resultado % (
                     ,vehiculo.tipo_vehiculo if vehiculo.tipo_vehiculo else ''
-                    ,vehiculo.tonelaje if vehiculo.tonelaje else ''
                     ,'Automatica' if vehiculo.transmission == 'automatic' else 'Manual'
-                    ,combustible
-                    ,vehiculo.power
-                    ,vehiculo.vin_sn
-                    ,vehiculo.seats
-                    ,vehiculo.doors
+                    ,vehiculo.marca_id.name if vehiculo.marca_id else ''
                     ,vehiculo.model_year
+                    ,vehiculo.cc
+                    ,vehiculo.seats
+                    ,vehiculo.linea
+                    ,vehiculo.vin_sn
+                    ,vehiculo.motor
+                    ,vehiculo.cilindros
                     ,vehiculo.color
-                    ,vehiculo.license_plate if vehicle.license_plate else ''
+                    ,combustible
+                    ,vehiculo.doors
+                    ,vehiculo.ejes if vehiculo.ejes else ''
+                    ,vehiculo.tonelaje if vehiculo.tonelaje else 0
                     ,vehiculo.aduana if vehiculo.aduana else ''
                     ,vehiculo.poliza if vehiculo.poliza else ''))
 
