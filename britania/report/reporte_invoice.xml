@@ -369,7 +369,7 @@
                 <span t-field="o.fel_factura_referencia_id.name"/>
               </t>
             </div>
-            <div class="col-6" style="text-align:right;">Tasa de cambio:&#160;Q.<t t-esc="'{0:,.2f}'.format(1 / o.obtener_tasa_cambio())"/></div>
+            <div class="col-6" style="text-align:right;">&#160;</div>
             </div>
           </div>
         </div>
