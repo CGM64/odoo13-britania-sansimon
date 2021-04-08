@@ -2,11 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Formulario de contacto',
-    'category': 'Website/Website',
-    'summary': 'Formulario de contacto(prueba)',
+    'name': 'Britania formulario de contacto',
+    'category': 'Website',
+    'summary': 'Formulario de contacto',
     'version': '1.0',
-    'description': "Prueba formulario de contacto",
+    'description': "Modulo para el formulario de contacto Britania",
     'depends': [
         'web',
         'web_editor',

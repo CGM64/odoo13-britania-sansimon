@@ -9,7 +9,7 @@
          </script>
     </xpath>
 
-        <t t-set="additional_title">Contactenos</t>
+        <t t-set="additional_title">Contáctenos</t>
 
         <style>
                 #form-container {
@@ -177,6 +177,8 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
+
+                                                                    <!-- Ocultando campos requeridos del formulario -->
                                                                     <div class="form-group row form-field o_website_form_required_custom" style="display:none;">
                                                                       <input id="nm" type="text" class="form-control o_website_form_input" name="name"/>
                                                                       <input id="conc" type="text" class="form-control o_website_form_input" name="description"/>
@@ -184,7 +186,7 @@
 
                                                                     <div class="form-group row form-field o_website_form_required_custom">
                                                                         <label for="checkbox_cgv" class="col-form-label col-sm-5">Acepto</label>
-                                                                        <input type="checkbox" id="checkbox_cgv" class="custom-control-input" required=""  onclick="concatenar()"/>
+                                                                        <input type="checkbox" id="checkbox_cgv" class="custom-control-input" required=""/>
                                                                         <label for="checkbox_cgv" class="custom-control-label">
                                                                             <a id="terms" target="_BLANK" href="/shop/terms" style="color:#FFFFFF;">Política de Privacidad</a>
                                                                         </label>

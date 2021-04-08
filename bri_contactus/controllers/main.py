@@ -22,7 +22,7 @@ class WebsiteSale(http.Controller):
 
     @http.route(
         [
-            '''/contact_prueba'''
+            '''/contactanos'''
         ],type='http',auth="public",website=True)
     def britcontactenos(self,page=0, category=None, search='', ppg=False, **post):
 
