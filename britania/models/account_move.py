@@ -53,7 +53,7 @@ class AccountMove(models.Model):
                     'modelo':'Modelo: {}'.format(vehiculo.model_year),
                     'cc':'CC: {}'.format(vehiculo.cc),
                     'asientos':'Asientos: {}'.format(vehiculo.seats),
-                    'linea':'Linea: {}'.format(vehiculo.linea.name),
+                    'linea':'Linea: {}'.format(vehiculo.model_id.name if vehiculo.model_id else ''),
                     'vin':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
                     'motor':'Motor: {}'.format(vehiculo.motor),
                     'cilindros':'Cilindros: {}'.format(vehiculo.cilindros),
@@ -93,7 +93,7 @@ POLIZA : %s
                     ,vehiculo.model_year
                     ,vehiculo.cc
                     ,vehiculo.seats
-                    ,vehiculo.linea.name
+                    ,vehiculo.model_id.name if vehiculo.model_id else ''
                     ,vehiculo.vin_sn
                     ,vehiculo.motor
                     ,vehiculo.cilindros

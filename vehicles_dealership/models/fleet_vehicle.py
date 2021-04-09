@@ -5,19 +5,18 @@
 
 from odoo import api, fields, models
 
-class LineaVehicle(models.Model):
-    """Fleet Vehicle model."""
-
-    _name = 'linea.vehicle'
-    _description = 'Linea de vehiculo'
-    name = fields.Char(string='Linea',copy=False)
-
 class CodigoMarca(models.Model):
     """Fleet Vehicle model."""
 
     _name = 'codigo.marca'
     _description = 'Codigo Marca Vehiculo'
     name = fields.Char(string='Codigo de Marca',copy=False)
+
+class FleetVehicle(models.Model):
+    """Fleet Vehicle model."""
+
+    _inherit = 'fleet.vehicle.model'
+    codigo = fields.Char(string="Codigo")
 
 class FleetVehicle(models.Model):
     """Fleet Vehicle model."""
@@ -45,9 +44,6 @@ class FleetVehicle(models.Model):
     cc = fields.Char(string='C.C.',copy=True,help='Cilindrada total de motor')
     ejes = fields.Char(string='Ejes',copy=True,help='Ejes')
     motor = fields.Char(string='Motor',copy=True,help='Motor')
-    linea = fields.Many2one('linea.vehicle', 'Linea',
-                                 ondelete="cascade", delegate=True,
-                                 required=True,copy=True)
     codigo_marca = fields.Many2one('codigo.marca', 'Codigo de marca',
                                  ondelete="cascade", delegate=True,
                                  required=True,copy=True)
