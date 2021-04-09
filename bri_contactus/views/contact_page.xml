@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="bri_contactenos" name="Contactenos">
+      <xpath expr="." position="inside">
+        <script
+            type="text/javascript"
+            src="/bri_contactus/static/src/js/javaScript.js">
+         </script>
+    </xpath>
+
+        <t t-set="additional_title">Contáctenos</t>
+
+        <style>
+                #form-container {
+                    position: absolute;
+                    top: 15%;
+                    left: 85px;
+                    width: 550px;
+                    padding-bottom: 15px;
+                    padding-top: 15px;
+                    padding-left: 30px;
+                    padding-right: 30px;
+                    z-index: 20;
+                    color: #fff;
+                }
+
+                #instrucciones {
+                    position: absolute;
+                    top: 13%;
+                    left: 60px;
+                    width: 550px;
+                    padding-bottom: 15px;
+                    padding-top: 15px;
+                    padding-left: 30px;
+                    padding-right: 30px;
+                    z-index: 20;
+                    color: #fff;
+                }
+
+                p{
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    font-size: 90%;
+                }
+
+                img{
+                    max-width: 100%
+                }
+
+                @media handheld, only screen and (max-width: 767px) {
+                    #form-container {
+                        position: static;
+                        color: #000;
+                        border-top: 1px solid #000;
+                        border-bottom: 1px solid #000;
+                        margin: 15px;
+                        padding: 15px;
+                    }
+                    #instrucciones {
+                        position: static;
+                        color: #000;
+                        border-top: 1px solid #000;
+                        border-bottom: 1px solid #000;
+                        margin: 15px;
+                        padding: 15px;
+                    }
+
+                    #terms {
+                        position: static;
+                        color: #000000;
+                        margin: 15px;
+                        padding: 15px;
+                    }
+
+                    #checkbox_cgv {
+                        position: static;
+                        margin: 15px;
+                        padding: 15px;
+                    }
+
+                    }
+            </style>
+
+        <script type="text/javascript" src="/bri_contactus/static/src/js/javaScript.js"></script>
+
+        <t t-call="website.layout">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <picture>
+                        <source media="(min-width:1200px)" srcset="/bri_contactus/static/src/image/header-large.jpg" />
+                        <source media="(min-width:991px)" srcset="/bri_contactus/static/src/image/header-pc.jpg" />
+                        <source media="(min-width:767px)" srcset="/bri_contactus/static/src/image/header-tablet.jpg" />
+                        <img src="/bri_contactus/static/src/image/header-mobile.jpg" style="width:auto;" />
+                    </picture>
+                </div>
+
+                <div class="row">
+
+                    <div id="instrucciones" class="row">
+                        <div class="col-lg-12">
+                            <p class="instructions">Ingresa tus datos y un asesor te contactará para
+                                facilitarte la información solicitada y poder programar una prueba de manejo.</p>
+                        </div>
+                    </div>
+
+                    <div id="form-container" class="col-xs-12">
+                        <div id="wrap">
+                            <div class="container mt-2">
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <div class="oe_structure">
+                                            <section class="s_text_blockconcatenar">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <div t-ignore="true">
+                                                                <form action="/website_form/" method="post" data-model_name="crm.lead" data-success_page="/contactus_thanks" class="s_website_form container-fluid mt32" name="contact" enctype="multipart/form-data" data-editable-form="false">
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label class="col-form-label col-sm-5" for="contact_name">Your Name</label>
+                                                                        <div class="col-sm-7">
+                                                                            <input id="contact_nm" type="text" class="form-control o_website_form_input" name="contact_name" t-att-value="request.params.get('contact_name', '')" required="" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label class="col-form-label col-sm-5" for="email_from">Email</label>
+                                                                        <div class="col-sm-7">
+                                                                            <input type="text" class="form-control o_website_form_input" name="email_from" required="" t-att-value="request.params.get('email_from', '')" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label class="col-form-label col-sm-5" for="phone">Phone Number</label>
+                                                                        <div class="col-sm-7">
+                                                                            <input type="text" class="form-control o_website_form_input" name="phone" t-att-value="request.params.get('phone', '')" required=""/>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label for="departamento" class="col-form-label col-sm-5">Departamento</label>
+                                                                        <div class="col-sm-7">
+                                                                            <select class="form-control o_website_form_input" name="depto">
+                                                                              <option value=""> - Seleccionar - </option>
+                                                                                <t t-foreach="depto" t-as="dp">
+                                                                                    <option t-att-value="dp.id">
+                                                                                        <t t-esc="dp.name" />
+                                                                                    </option>
+                                                                                </t>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label for="modelo" class="col-form-label col-sm-5">Modelo</label>
+                                                                        <div class="col-sm-7">
+                                                                            <select id="modelo" class="form-control o_website_form_input" name="modelo">
+                                                                              <option value=""> - Seleccionar - </option>
+                                                                                <t t-foreach="fleet" t-as="lin">
+                                                                                    <option t-att-value="lin.id">
+                                                                                        <t t-esc="lin.name" />
+                                                                                    </option>
+                                                                                </t>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label for="medio" class="col-form-label col-sm-5">Medio por el cual nos conoció</label>
+                                                                        <div class="col-sm-7">
+                                                                            <select class="form-control o_website_form_input" name="medio_conocio">
+                                                                              <option value=""> - Seleccionar - </option>
+                                                                                <t t-foreach="medios" t-as="med">
+                                                                                    <option t-att-value="med.id">
+                                                                                        <t t-esc="med.name" />
+                                                                                    </option>
+                                                                                </t>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- Ocultando campos requeridos del formulario -->
+                                                                    <div class="form-group row form-field o_website_form_required_custom" style="display:none;">
+                                                                      <input id="nm" type="text" class="form-control o_website_form_input" name="name"/>
+                                                                      <input id="conc" type="text" class="form-control o_website_form_input" name="description"/>
+                                                                    </div>
+
+                                                                    <div class="form-group row form-field o_website_form_required_custom">
+                                                                        <label for="checkbox_cgv" class="col-form-label col-sm-5">Acepto</label>
+                                                                        <input type="checkbox" id="checkbox_cgv" class="custom-control-input" required=""/>
+                                                                        <label for="checkbox_cgv" class="custom-control-label">
+                                                                            <a id="terms" target="_BLANK" href="/shop/terms" style="color:#FFFFFF;">Política de Privacidad</a>
+                                                                        </label>
+                                                                    </div>
+
+                                                                    <div class="form-group row">
+                                                                        <div class="offset-lg-3 offset-md-4 col-md-8 col-lg-7">
+                                                                            <a href="#" role="button" class="btn btn-primary btn-lg o_website_form_send" onclick="concatenar()">Send</a>
+                                                                            <span id="o_website_form_result"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="privacy-terms">
+                <div class="col-xs-12">
+                    <p>
+                        <strong>Políticas de Privacidad</strong>
+                    </p>
+                    <p>La protección de sus datos es importante para nosotros. Bavaria Motors
+            representante oficial de BMW Motorrad en Guatemala no utilizará la información
+            recabada en este servidor para propósito alguno, distinto a la atención
+            individual del cliente, el envió de información por correo, notificación
+            de ofertas o investigación de mercado, teniendo el cliente la potestad
+            de poder de suscribirse de cualquier servicio de envió de información
+            cuando así lo considere conveniente. Para este propósito, la información
+            podrá ser almacenada y procesada por parte de Bavaria Motors. Asimismo
+            se declara que toda la información será manejada en conformidad con
+            las provisiones que la ley relacionada con la ley de protección de
+            datos así disponga.</p>
+                    <p>
+                        <strong>Nota Legal</strong>
+                    </p>
+                    <p>Precios informativos. Los precios pueden variar sin previo aviso La
+            disponibilidad de modelos para pruebas de manejo puede variar según
+            la disponibilidad actual en el consecionario. La realización de la
+            prueba de manejo puede tener restricciones determinadas por legislación
+            vía local. Consultar requisitos con ejecutivo de ventas previo a la
+            realización de la prueba de manejo.</p>
+                </div>
+            </div> <!-- <hr> -->
+            <div class="clearfix"></div>
+        </t>
+    </template>
+
+    <record id="contactus_thanks" model="website.page">
+        <field name="name">¡Gracias!</field>
+        <field name="type">qweb</field>
+        <field name="url">/contactus_thanks</field>
+        <field name="website_indexed" eval="False" />
+        <field name="is_published">True</field>
+        <field name="key">website_form.contactus_thanks</field>
+        <field name="arch" type="xml">
+            <t name="Thanks!" t-name="website_form.contactus_thanks">
+                <style>
+
+                  #contenedor{
+                  background-color: #000000;
+                  }
+
+                    img{
+                        max-width: 100%
+                    }
+                </style>
+                <t t-call="website.layout">
+                    <div id="contenedor" class="container-fluid">
+                        <picture>
+                            <source media="(min-width:1200px)" srcset="/bri_contactus/static/src/image/thank-you-large.jpg" />
+                            <source media="(min-width:991px)" srcset="/bri_contactus/static/src/image/thank-you-pc.jpg" />
+                            <source media="(min-width:767px)" srcset="/bri_contactus/static/src/image/thank-you-tablet.jpg" />
+                            <img src="/bri_contactus/static/src/image/thank-you-mobile.jpg" style="width:auto;" />
+                        </picture>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+</odoo>
