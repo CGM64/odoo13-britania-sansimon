@@ -103,24 +103,24 @@ class AccountMove(models.Model):
             linea["UnidadMedida"] = detalle.product_uom_id.name
             linea["Descripcion"] = descripcion
             precio_sin_descuento = detalle.price_unit
-            linea["PrecioUnitario"] = '{:.2f}'.format(precio_sin_descuento)
-            linea["Precio"] = '{:.2f}'.format(precio_sin_descuento * detalle.quantity)
+            linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
+            linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * detalle.quantity)
             precio_unitario = detalle.price_unit * (100-detalle.discount) / 100
-            descuento = precio_sin_descuento * detalle.quantity - precio_unitario * detalle.quantity
+            descuento = round(precio_sin_descuento * detalle.quantity - precio_unitario * detalle.quantity,4)
             linea["Descuento"] = '{:.6f}'.format(descuento)
 
             #Impuestos
             precio_unitario_base = detalle.price_subtotal / detalle.quantity
-            total_linea = precio_unitario * detalle.quantity
-            total_linea_base = precio_unitario_base * detalle.quantity
+            total_linea = round(precio_unitario * detalle.quantity,6)
+            total_linea_base = round(precio_unitario_base * detalle.quantity,6)
             total_impuestos = total_linea - total_linea_base
 
             if tipo_documento not in ("NABN"):
                 linea["NombreCorto"] = "IVA"
                 linea["CodigoUnidadGravable"] = "2" if factura.journal_id.tipo_operacion == 'EXPO' else "1"
-                linea["MontoGravable"] = '{:.4f}'.format(total_linea_base)
-                linea["MontoImpuesto"] = '{:.4f}'.format(total_impuestos)
-            linea["Total"] = '{:.4f}'.format(total_linea)
+                linea["MontoGravable"] = '{:.6f}'.format(total_linea_base)
+                linea["MontoImpuesto"] = '{:.6f}'.format(total_impuestos)
+            linea["Total"] = '{:.6f}'.format(total_linea)
 
             gran_total += total_linea
             gran_subtotal += total_linea_base
@@ -130,9 +130,9 @@ class AccountMove(models.Model):
 
             items.append(linea)
         documento["Items"] = items
-        documento["gran_total_impuestos"] = '{:.4f}'.format(gran_total_impuestos)
-        documento["TotalMontoImpuesto"] = '{:.4f}'.format(gran_total_impuestos)
-        documento["GranTotal"] = '{:.4f}'.format(gran_total)
+        documento["gran_total_impuestos"] = '{:.6f}'.format(gran_total_impuestos)
+        documento["TotalMontoImpuesto"] = '{:.6f}'.format(gran_total_impuestos)
+        documento["GranTotal"] = '{:.6f}'.format(gran_total)
 
         documento["Adenda"] = factura.name
 
