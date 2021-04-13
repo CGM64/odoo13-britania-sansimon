@@ -8,7 +8,7 @@ class ResPartner(models.Model):
     display_street = fields.Char('Direccion Completa', compute='_compute_street_name')
     display_website = fields.Char('Display WebSite', compute='_compute_street_name')
 
-    default_code = fields.Char('Referencia Interna', index=True)
+    default_code = fields.Char('Referencia Interna', index=True, readonly=True)
 
     def _compute_street_name(self):
         for record in self:
