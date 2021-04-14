@@ -3,47 +3,41 @@
 <odoo>
   <template id="new_footer" inherit_id="website.footer_custom" name="New footer">
              <xpath expr="//div[@id='footer']" position="replace">
+               <script type="text/javascript" src="/bri_contactus/static/src/js/javaScript.js"></script>
                <div id="fb-root"></div>
                <script async="async" defer="defer" crossorigin="anonymous" src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&amp;version=v10.0" nonce="S42hgdKw"/>
                <div id="footer" class="oe_structure oe_structure_solo" t-ignore="true" t-if="not no_footer">
           <section class="s_text_block pt16 pb8">
               <div class="container">
                   <div class="row">
-                      <div class="col-lg-2">
+                      <div class="col-lg-4">
                           <h5>Our Products &amp; Services</h5>
                           <ul class="list-unstyled">
                               <li><a href="/">Home</a></li>
                           </ul>
                       </div>
-                      <div class="col-lg-2" id="connect">
+                      <div class="col-lg-4" id="connect">
                           <h5>Connect with us</h5>
                           <ul class="list-unstyled">
                               <li><a href="/contactanos">Contact us</a></li>
                               <li><i class="fa fa-phone"/> <span class="o_force_ltr" t-field="res_company.phone"/></li>
                               <li><i class="fa fa-envelope"/>  <span t-field="res_company.email"/></li>
                           </ul>
+                            <p>
+                              <h5>Síguenos</h5>
+                                <a id="fb" t-if="website.social_facebook" t-att-href="website.social_facebook" class="btn btn-sm btn-link"><i class="fa fa-2x fa-facebook-square"/></a>
+                                <a t-if="website.social_twitter" t-att-href="website.social_twitter" class="btn btn-sm btn-link"><i class="fa fa-2x fa-twitter"/></a>
+                                <a t-if="website.social_linkedin" t-att-href="website.social_linkedin" class="btn btn-sm btn-link"><i class="fa fa-2x fa-linkedin"/></a>
+                                <a t-if="website.social_youtube" t-att-href="website.social_youtube" class="btn btn-sm btn-link"><i class="fa fa-2x fa-youtube-play"/></a>
+                                <a t-if="website.social_github" t-att-href="website.social_github" class="btn btn-sm btn-link"><i class="fa fa-2x fa-github"/></a>
+                                <a t-if="website.social_instagram" t-att-href="website.social_instagram" class="btn btn-sm btn-link"><i class="fa fa-2x fa-instagram"/></a>
+                            </p>
                       </div>
-                      <div class="col-lg-3" id="connect">
-                          <h5>Síguenos</h5>
-                          <p>
-                            <a t-if="website.social_facebook" t-att-href="website.social_facebook" class="btn btn-sm btn-link">
-                              <img loading="lazy" class="alignnone size-full wp-image-320" src="/bri_contactus/static/src/image/facebook.png" alt="" width="36" height="36"/>
-                              </a>
-                            <a t-if="website.social_twitter" t-att-href="website.social_twitter" class="btn btn-sm btn-link"><i class="fa fa-2x fa-twitter"/></a>
-                            <a t-if="website.social_linkedin" t-att-href="website.social_linkedin" class="btn btn-sm btn-link"><i class="fa fa-2x fa-linkedin"/></a>
-                            <a t-if="website.social_youtube" t-att-href="website.social_youtube" class="btn btn-sm btn-link">
-                              <img loading="lazy" class="alignnone size-full wp-image-320" src="/bri_contactus/static/src/image/youtube.png" alt="" width="36" height="36"/>
-                              </a>
-                            <a t-if="website.social_github" t-att-href="website.social_github" class="btn btn-sm btn-link"><i class="fa fa-2x fa-github"/></a>
-                            <a t-if="website.social_instagram" t-att-href="website.social_instagram" class="btn btn-sm btn-link">
-                              <img loading="lazy" class="alignnone size-full wp-image-320" src="/bri_contactus/static/src/image/instagram.png" alt="" width="36" height="36"/>
-                              </a>
-                          </p>
-                      </div>
-                      <div class="col-lg-5" id="connect">
-                          <div class="fb-page" data-href="https://www.facebook.com/BavariaMotorsGuatemala/" data-tabs="" data-width="" data-height="" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="false">
-                            <blockquote cite="https://www.facebook.com/BavariaMotorsGuatemala/" class="fb-xfbml-parse-ignore">
-                              <a href="https://www.facebook.com/BavariaMotorsGuatemala/">Monokuma :3</a>
+                      <div class="col-lg-4" id="connect">
+                        manzana
+                          <div id="divFb" class="fb-page" t-att-data-href="website.social_facebook" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="false">
+                            <blockquote id="blkFb" t-attf-cite="website.social_facebook" class="fb-xfbml-parse-ignore">
+                              <a id="aFb" t-attf-href="website.social_facebook"></a>
                             </blockquote>
                           </div>
                       </div>

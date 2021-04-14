@@ -50,6 +50,7 @@
         'views/res_company.xml',
         'views/report_invoice.xml',
         'views/sale_view.xml',
+        'views/custom_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
