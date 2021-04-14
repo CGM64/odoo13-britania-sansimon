@@ -34,10 +34,9 @@
                             </p>
                       </div>
                       <div class="col-lg-4" id="connect">
-                        manzana
-                          <div id="divFb" class="fb-page" t-att-data-href="website.social_facebook" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="false">
-                            <blockquote id="blkFb" t-attf-cite="website.social_facebook" class="fb-xfbml-parse-ignore">
-                              <a id="aFb" t-attf-href="website.social_facebook"></a>
+                          <div id="divFb" class="fb-page" t-att-data-href="https://www.facebook.com/BavariaMotorsGuatemala" data-small-header="false" data-adapt-container-width="false" data-hide-cover="false" data-show-facepile="false">
+                            <blockquote id="blkFb" t-attf-cite="https://www.facebook.com/BavariaMotorsGuatemala" class="fb-xfbml-parse-ignore">
+                              <a id="aFb" t-attf-href="https://www.facebook.com/BavariaMotorsGuatemala"></a>
                             </blockquote>
                           </div>
                       </div>
