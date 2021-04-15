@@ -51,6 +51,7 @@
         'views/report_invoice.xml',
         'views/sale_view.xml',
         'views/custom_view.xml',
+        'wizard/tags_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
