@@ -310,6 +310,9 @@
                 <t t-if="o.company_id.company_registry"><br/><span t-esc="o.company_id.company_registry.upper()"/></t>
                 <small>
                   <br/><span t-field="o.company_id.display_street"/>
+                  <br/>
+                  <span t-field="o.company_id.city"/>,
+                  <span t-field="o.company_id.state_id.name"/>
                 </small>
                 <t t-if="o.company_id.phone">
                 <small><br/>PBX:
@@ -366,7 +369,7 @@
                 <span t-field="o.fel_factura_referencia_id.name"/>
               </t>
             </div>
-            <div class="col-6" style="text-align:right;">Tasa de cambio:&#160;Q.<t t-esc="'{0:,.2f}'.format(1 / o.obtener_tasa_cambio())"/></div>
+            <div class="col-6" style="text-align:right;">&#160;</div>
             </div>
           </div>
         </div>

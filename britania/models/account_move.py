@@ -16,7 +16,7 @@ class AccountMove(models.Model):
             return False
 
     def obtener_tasa_cambio(self):
-        rate = 1
+        tasa = rate = 1
         if self.currency_id.id != self.company_id.currency_id.id:
             rate = self.currency_id
             rate = rate.with_context(dict(self._context or {}, date=self.invoice_date)).rate
@@ -47,53 +47,61 @@ class AccountMove(models.Model):
                     combustible = 'Hibrido'
                 if vehiculo and tipo == 1:
                     resultado = {
-                    'name':vehiculo.name,
-                    'tipo_vehiculo':'Tipo vehiculo : {}'.format(vehiculo.tipo_vehiculo if vehiculo.tipo_vehiculo else ''),
-                    'tonelaje':'Tonelaje :'.format(vehiculo.tonelaje if vehiculo.tonelaje else ''),
+                    'tipo_vehiculo':'Tipo vehiculo : {}'.format(vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''),
                     'transmision':'Transmision : {}'.format('Automatica' if vehiculo.transmission == 'automatic' else 'Manual'),
-                    'tipo_combustible':'Combustible {}'.format(combustible),
-                    'co2':'Emisiones de Co2: {}'.format(vehiculo.co2),
-                    'potencia':'Potencia: {}'.format(vehiculo.power),
-                    'vin':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
-                    'asientos':'Asientos: {}'.format(vehiculo.seats),
-                    'doors':'Puertas: {}'.format(vehiculo.doors),
+                    'marca':'Marca: {}'.format(vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''),
                     'modelo':'Modelo: {}'.format(vehiculo.model_year),
+                    'cc':'CC: {}'.format(vehiculo.cc),
+                    'asientos':'Asientos: {}'.format(vehiculo.seats),
+                    'linea':'Linea: {}'.format(vehiculo.model_id.name if vehiculo.model_id else ''),
+                    'vin':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
+                    'motor':'Motor: {}'.format(vehiculo.motor),
+                    'cilindros':'Cilindros: {}'.format(vehiculo.cilindros),
                     'color':'Color: {}'.format(vehiculo.color),
-                    'Placa':'Placa: {}'.format(vehiculo.license_plate),
+                    'tipo_combustible':'Combustible {}'.format(combustible),
+                    'doors':'Puertas: {}'.format(vehiculo.doors),
+                    'Ejes':'Ejes : {}'.format(str(vehiculo.ejes) if vehiculo.ejes else ''),
+                    'tonelaje':'Tonelaje : {}'.format(str(vehiculo.tonelaje) if vehiculo.tonelaje else 0),
                     'Aduana':'Aduana: {}'.format(vehiculo.aduana if vehiculo.aduana else ''),
                     'Poliza':'Poliza: {}'.format(vehiculo.poliza if vehiculo.poliza else ''),
                     }
                     return resultado
                 elif vehiculo and tipo != 1:
-                    resultado = """%s
+                    resultado = """
 TIPO VEHICULO   : %s
-TONELAJE    : %s
 TRANSMISION        : %s
-COMBUSTIBLE       : %s
-EMISIONES DE CO2           : %s
-POTENCIA     : %s
-VIN/CHASIS        : %s
-ASIENTOS   : %s
-PUERTAS     : %s
+MARCA     : %s
 MODELO    : %s
+CC    : %s
+ASIENTOS   : %s
+LINEA    : %s
+VIN/CHASIS        : %s
+MOTOR  : %s
+CILINDROS  : %s
 COLOR        : %s
-PLACA  : %s
+COMBUSTIBLE       : %s
+PUERTAS    : %s
+EJESasd    : %s
+TONELAJEasd    : %s
 ADUANA : %s
 POLIZA : %s
 """
-                return (resultado % (vehiculo.name
-                    ,vehiculo.tipo_vehiculo if vehiculo.tipo_vehiculo else ''
-                    ,vehiculo.tonelaje if vehiculo.tonelaje else ''
+                return (resultado % (
+                    vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''
                     ,'Automatica' if vehiculo.transmission == 'automatic' else 'Manual'
-                    ,combustible
-                    ,vehiculo.co2
-                    ,vehiculo.power
-                    ,vehiculo.vin_sn
-                    ,vehiculo.seats
-                    ,vehiculo.doors
+                    ,vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''
                     ,vehiculo.model_year
+                    ,vehiculo.cc
+                    ,vehiculo.seats
+                    ,vehiculo.model_id.name if vehiculo.model_id else ''
+                    ,vehiculo.vin_sn
+                    ,vehiculo.motor
+                    ,vehiculo.cilindros
                     ,vehiculo.color
-                    ,vehiculo.license_plate
+                    ,combustible
+                    ,vehiculo.doors
+                    ,vehiculo.ejes 
+                    ,str(vehiculo.tonelaje)
                     ,vehiculo.aduana if vehiculo.aduana else ''
                     ,vehiculo.poliza if vehiculo.poliza else ''))
 

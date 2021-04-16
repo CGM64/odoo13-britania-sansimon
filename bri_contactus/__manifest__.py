@@ -22,7 +22,6 @@
         'views/crm_lead_view.xml',
         'data/britania_crm_data.xml',
         'views/website_view.xml',
-        'views/custom_footer.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'installable': True,

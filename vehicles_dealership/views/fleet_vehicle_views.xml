@@ -21,16 +21,59 @@
           <field name="cc"/>
         </xpath>
         <xpath expr="//field[@name='model_year']" position="after">
-          <field name="linea"/>
           <field name="ejes"/>
         </xpath>
         <xpath expr="//form/sheet/group/group[4]" position="before">
           <group string="Informacion de importacion">
             <field name="aduana"/>
             <field name="poliza"/>
+            <field name="currency_id" readonly="0"/>
+            <field name="pedido"/>
         </group>
         </xpath>
       </field>
     </record>
+
+    <record id="fleet_vehicle_view_tree_inherit" model="ir.ui.view">
+        <field name="name">Flota de vehiculos inherit</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="model_id" position="after">
+                <field name="pedido" />
+            </field>
+        </field>
+    </record>
+
+
+    <record id="fleet_vehicle_model_view_inherit" model="ir.ui.view">
+        <field name="name">Flota de vehiculos modelo inherit</field>
+        <field name="model">fleet.vehicle.model</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form"/>
+        <field name="arch" type="xml">
+           <xpath expr="//form/sheet/div/h2" position="after">
+              
+                <label for="codigo" class="oe_edit_only"/>
+                <h2>
+                    <field name="codigo" placeholder="Codigo"/>
+                </h2>
+              
+           </xpath>
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_view_Kanban_inherit" model="ir.ui.view">
+        <field name="name">Flota de vehiculos Kanban inherit</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr='//kanban/templates/t/div/div/ul' position="inside">
+                <li>
+                  <t t-if="record.pedido.raw_value"><field name="pedido"/></t>
+                </li>
+            </xpath>
+        </field>
+    </record>
+
   </data>
 </odoo>

@@ -138,25 +138,29 @@ class AccountMove(models.Model):
 
         #Complementos
         documento["Complementos"] = False
-        #Notas de credito o debito
+         #Notas de credito o debito
         if tipo_documento in ['NDEB', 'NCRE']:
             documento["Complementos"] = True
-            if factura.reversed_entry_id:
-                #Este if es para identificar si no tiene firma, es del regimen anterior, se realiza por medio de buscar FACE en la descripcion de la serie.
-                if factura.reversed_entry_id.fac_serie.find("FACE")>=0:
-                    documento["RegimenAntiguo"] = "Antiguo"
-                    documento["FechaEmisionDocumentoOrigen"] = fields.Date.from_string(factura.invoice_date).strftime('%Y-%m-%dT%H:%M:%S')
-                    documento["MotivoAjuste"] = factura.fel_motivo
-                    documento["NumeroAutorizacionDocumentoOrigen"] = factura.reversed_entry_id.fel_firma
-                    documento["NumeroDocumentoOrigen"] = factura.reversed_entry_id.fac_numero
-                    documento["SerieDocumentoOrigen"] = factura.reversed_entry_id.fac_serie
-                else:
+            factura_referencia = None
+            if tipo_documento in ['NDEB']:
+                if factura.fel_factura_referencia_id:
+                    factura_referencia = factura.fel_factura_referencia_id
                     documento["RegimenAntiguo"] = "Actual"
-                    documento["FechaEmisionDocumentoOrigen"] = str(factura.reversed_entry_id.invoice_date)
-                    documento["MotivoAjuste"] = factura.fel_motivo
-                    documento["NumeroAutorizacionDocumentoOrigen"] = factura.reversed_entry_id.fel_firma
-                    documento["NumeroDocumentoOrigen"] = factura.reversed_entry_id.fac_numero
-                    documento["SerieDocumentoOrigen"] = factura.reversed_entry_id.fac_serie
+                    documento["FechaEmisionDocumentoOrigen"] = str(factura_referencia.invoice_date)
+            if tipo_documento in ['NCRE']:
+                if factura.reversed_entry_id:
+                    factura_referencia = factura.reversed_entry_id
+                    #Este if es para identificar si no tiene firma, es del regimen anterior, se realiza por medio de buscar FACE en la descripcion de la serie.
+                    if factura.reversed_entry_id.fac_serie.find("FACE")>=0:
+                        documento["RegimenAntiguo"] = "Antiguo"
+                        documento["FechaEmisionDocumentoOrigen"] = fields.Date.from_string(factura.invoice_date).strftime('%Y-%m-%dT%H:%M:%S')
+                    else:
+                        documento["RegimenAntiguo"] = "Actual"
+                        documento["FechaEmisionDocumentoOrigen"] = str(factura_referencia.invoice_date)
+            documento["MotivoAjuste"] = factura.fel_motivo
+            documento["NumeroAutorizacionDocumentoOrigen"] = factura_referencia.fel_firma
+            documento["NumeroDocumentoOrigen"] = factura_referencia.fac_numero
+            documento["SerieDocumentoOrigen"] = factura_referencia.fac_serie
 
         #Factura CompCambiaria
         elif tipo_documento in ['FCAM','FCAP']:

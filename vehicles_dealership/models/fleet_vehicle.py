@@ -5,29 +5,31 @@
 
 from odoo import api, fields, models
 
-class LineaVehicle(models.Model):
-    """Fleet Vehicle model."""
-
-    _name = 'linea.vehicle'
-    name = fields.Char(string='Linea',copy=False)
-
 class CodigoMarca(models.Model):
     """Fleet Vehicle model."""
 
     _name = 'codigo.marca'
+    _description = 'Codigo Marca Vehiculo'
     name = fields.Char(string='Codigo de Marca',copy=False)
+
+class FleetVehicle(models.Model):
+    """Fleet Vehicle model."""
+
+    _inherit = 'fleet.vehicle.model'
+    codigo = fields.Char(string="Codigo")
 
 class FleetVehicle(models.Model):
     """Fleet Vehicle model."""
 
     _inherit = 'fleet.vehicle'
     _inherits = {'product.product': 'product_id'}
+    currency_id = fields.Many2one('res.currency',string="Moneda",readonly=False,related='')
 
     product_id = fields.Many2one('product.product', 'Product',
                                  ondelete="cascade", delegate=True,
                                  required=True)
     image_128 = fields.Image(string="Image Small", readonly=False)
-    tonelaje = fields.Char(string='Tonelaje',copy=False)
+    tonelaje = fields.Char(string='Tonelaje',copy=True)
     tipo_vehiculo = fields.Selection([
         ('motocicleta','Motocilceta'),
         ('automovil','Automovil'),
@@ -35,19 +37,17 @@ class FleetVehicle(models.Model):
         ('Camioneta','Camioneta'),
         ('cuatrimoto','Cuatrimoto'),
         ('rustico','Vehículo Rustico')],string="Tipo vehiculo",default='motocicleta')
-    aduana = fields.Char(string='Aduana',copy=False)
-    poliza = fields.Char(string='DUCA',copy=False)
+    aduana = fields.Char(string='Aduana',copy=True)
+    poliza = fields.Char(string='DUCA',copy=True)
     cilindros = fields.Char(string='Cilindros',copy=False)
-    chasis = fields.Char(string='Chasis',copy=False)
-    cc = fields.Char(string='C.C.',copy=False,help='Cilindrada total de motor')
-    ejes = fields.Char(string='Ejes',copy=False,help='Ejes')
-    motor = fields.Char(string='Motor',copy=False,help='Motor')
-    linea = fields.Many2one('linea.vehicle', 'Linea',
-                                 ondelete="cascade", delegate=True,
-                                 required=True)
+    chasis = fields.Char(string='Chasis',copy=True)
+    cc = fields.Char(string='C.C.',copy=True,help='Cilindrada total de motor')
+    ejes = fields.Char(string='Ejes',copy=True,help='Ejes')
+    motor = fields.Char(string='Motor',copy=True,help='Motor')
     codigo_marca = fields.Many2one('codigo.marca', 'Codigo de marca',
                                  ondelete="cascade", delegate=True,
-                                 required=True)
+                                 required=True,copy=True)
+    pedido = fields.Char(string='No. Pedido',required=False,copy=True)
 
     @api.model
     def create(self, vals):
@@ -63,7 +63,8 @@ class FleetVehicle(models.Model):
             new_vehicle.product_id.with_context(ctx).write({
                 'name': new_vehicle.name,
                 'image_1920': new_vehicle.image_1920,
-                'is_vehicle': True})
+                'is_vehicle': True,
+                'default_code':new_vehicle.pedido})
             new_vehicle.product_id.product_tmpl_id.write({'is_vehicle': True})
         return new_vehicle
 
@@ -79,6 +80,7 @@ class FleetVehicle(models.Model):
 
         for vehicle in self:
             if vehicle.product_id:
+                vehicle.product_id.default_code = vehicle.pedido
                 if vals.get('image_1920', False):
                     update_prod_vals.update({'image_1920': vehicle.image_1920})
                 if vals.get('model_id', False) or vals.get('license_plate', False):

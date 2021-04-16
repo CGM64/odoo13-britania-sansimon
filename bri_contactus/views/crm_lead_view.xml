@@ -16,6 +16,6 @@
           <h2><field class="text-danger" name="id" nolabel="1"/></h2>
         </div>
       </xpath>
-      </field>
+    </field>
   </record>
 </odoo>
