@@ -41,4 +41,7 @@ class ProductTemplate(models.Model):
 		('imp_in_ca_bien', 'Importacion Bien in CA'),
 		('imp_out_ca_bien', 'Importacion Bien out CA'),
 		])
+
     tag_ids = fields.Many2many('product.tag', 'product_template_tags', 'tag_id', 'product_id', string='Etiquetas', help="Clasifique sus productos con etiquetas personalizadas.")
+
+    model_ids = fields.Many2many('fleet.vehicle.model', string='Modelos', help="Modelos para la asignacion de producto.")
