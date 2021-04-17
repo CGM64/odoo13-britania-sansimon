@@ -44,4 +44,4 @@ class ProductTemplate(models.Model):
 
     tag_ids = fields.Many2many('product.tag', 'product_template_tags', 'tag_id', 'product_id', string='Etiquetas', help="Clasifique sus productos con etiquetas personalizadas.")
 
-    model_ids = fields.Many2many('fleet.vehicle.model', string='Modelos', help="Modelos para la asignacion de producto.")
+    #model_ids = fields.Many2many('fleet.vehicle.model', string='Modelos', help="Modelos para la asignacion de producto.")
