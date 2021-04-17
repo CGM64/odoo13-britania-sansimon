@@ -19,6 +19,7 @@ class AccountMove(models.Model):
     sat_exento = fields.Monetary(string="Exento", compute='_compute_libro_fiscal', currency_field='company_currency_id')
     sat_peq_contri = fields.Monetary(string="Pequeño Contribuyente", compute='_compute_libro_fiscal', currency_field='company_currency_id')
     sat_iva = fields.Monetary(string="IVA", compute='_compute_libro_fiscal', currency_field='company_currency_id')
+    sat_iva_porcentaje = fields.Float(string="IVA Porcentaje", compute='_compute_libro_fiscal')
     sat_subtotal = fields.Monetary(string="Subtotal", compute='_compute_libro_fiscal', currency_field='company_currency_id')
     sat_amount_total = fields.Monetary(string="Sat Total", compute='_compute_libro_fiscal', currency_field='company_currency_id')
     sat_combustible = fields.Monetary(string="Combustible", compute='_compute_libro_fiscal', currency_field='company_currency_id')
@@ -62,6 +63,7 @@ class AccountMove(models.Model):
         invoice_ids = [move.id for move in self if move.id and move.is_invoice(include_receipts=True)]
 
         for move in self:
+            move.sat_iva_porcentaje = 0
             total_untaxed = 0.0
             total_untaxed_currency = 0.0
             total_tax = 0.0
@@ -126,6 +128,7 @@ class AccountMove(models.Model):
                     if impuesto.impuesto_sat == 'ipeq':
                         sat_peq_contri += line.balance
                     elif impuesto.impuesto_sat == 'iva':
+                        move.sat_iva_porcentaje = impuesto.amount
                         iva += line.balance
                     elif impuesto.impuesto_sat == 'idp':
                         sat_exento += line.balance
