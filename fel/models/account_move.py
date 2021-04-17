@@ -112,8 +112,10 @@ class AccountMove(models.Model):
             #Impuestos
             precio_unitario_base = detalle.price_subtotal / detalle.quantity
             total_linea = round(precio_unitario * detalle.quantity,6)
-            total_linea_base = round(precio_unitario_base * detalle.quantity,6)
-            total_impuestos = total_linea - total_linea_base
+            #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
+            total_linea_base = round(total_linea / (factura.sat_iva_porcentaje/100+1),6)
+            #total_impuestos = total_linea - total_linea_base
+            total_impuestos = total_linea_base * (factura.sat_iva_porcentaje/100)
 
             if tipo_documento not in ("NABN"):
                 linea["NombreCorto"] = "IVA"
