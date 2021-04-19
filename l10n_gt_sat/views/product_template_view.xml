@@ -50,9 +50,6 @@
       <group name="group_standard_price" position="inside">
           <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
       </group>
-      <!-- <xpath expr="//field[@name='responsible_id']" position="after">
-          <field name="model_ids" widget="many2many_tags"/>
-      </xpath> -->
     </field>
   </record>
 </odoo>
