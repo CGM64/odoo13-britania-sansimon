@@ -27,6 +27,7 @@
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'views/upd_listprice_views.xml',
+        'views/product_template_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
