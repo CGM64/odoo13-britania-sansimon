@@ -56,8 +56,8 @@
     <menuitem name="Server to list" id="sol_gasto" parent="sol_gasto.menu_2"
               action="sol_gasto.action_server"/>
 -->
-  <menuitem id="menu_gs_gastos_root" name="Gastos" sequence="200" web_icon="gs_gastos,static/description/icon.png"/>
-  <menuitem id="menu_gs_gastos_my_expenses" name="Mis Gastos" sequence="1" parent="menu_gs_gastos_root" groups="base.group_user"/>
+  <menuitem id="menu_gs_gastos_root" name="Gastos" sequence="200" web_icon="sol_gasto,static/description/icon.png"/>
+  <menuitem id="menu_gs_gastos_my_expenses" name="M Expenses" sequence="1" parent="menu_gs_gastos_root" groups="base.group_user"/>
 
   </data>
 </odoo>
