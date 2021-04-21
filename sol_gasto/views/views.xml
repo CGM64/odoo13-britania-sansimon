@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="sol_gasto.list">
+      <field name="name">sol_gasto list</field>
+      <field name="model">sol_gasto.sol_gasto</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="sol_gasto.action_window">
+      <field name="name">sol_gasto window</field>
+      <field name="res_model">sol_gasto.sol_gasto</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="sol_gasto.action_server">
+      <field name="name">sol_gasto server</field>
+      <field name="model_id" ref="model_sol_gasto_sol_gasto"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="sol_gasto" id="sol_gasto.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="sol_gasto.menu_1" parent="sol_gasto.menu_root"/>
+    <menuitem name="Menu 2" id="sol_gasto.menu_2" parent="sol_gasto.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="sol_gasto.menu_1_list" parent="sol_gasto.menu_1"
+              action="sol_gasto.action_window"/>
+    <menuitem name="Server to list" id="sol_gasto" parent="sol_gasto.menu_2"
+              action="sol_gasto.action_server"/>
+-->
+  </data>
+</odoo>
