@@ -14,12 +14,27 @@
         <menuitem id="menu_gs_gastos_categ" name="Gastos" parent="menu_gs_gastos_root" sequence="1" groups="base.group_user"/>
 -->
 
+<record id="gs_gastos_actions_mis_gastos" model="ir.actions.act_window">
+    <field name="name">Mis Gastos</field>
+    <field name="res_model">gs.gastos</field>
+    <field name="view_mode">tree,kanban,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Create a new expense
+      </p>
+    </field>
+</record>
+
 <menuitem
-    id="model_menu_root"
+    id="menu_gs_gatos_root"
     name="Gastos"
     web_icon="sol_gasto,static/description/icon.png"
     groups="base.group_user"
     sequence="6"
 />
+      <menuitem id="menu_gs_gastos_mis_gastos" name="Mis Gastos" sequence="1" parent="menu_gs_gatos_root" groups="base.group_user"/>
+
+      <menuitem id="menu__gs_gastos_mis_gastos_my_expenses_to_submit" sequence="1" parent="menu_gs_gastos_mis_gastos" action="gs_gastos_actions_mis_gastos"/>
+
     </data>
 </odoo>
