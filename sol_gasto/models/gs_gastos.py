@@ -52,3 +52,12 @@ class GsGastos(models.Model):
     reference = fields.Char("Referencia", required=True, readonly=True, states={
         'draft': [('readonly', False)],
         'refused': [('readonly', False)]})
+
+    AVAILABLE_PRIORITIES = [
+        ('0', 'Low'),
+        ('1', 'Medium'),
+        ('2', 'High'),
+        ('3', 'Very High'),
+    ]
+    priority = fields.Selection(AVAILABLE_PRIORITIES, string='Prioridad', index=True,
+                                default=AVAILABLE_PRIORITIES[0][0])

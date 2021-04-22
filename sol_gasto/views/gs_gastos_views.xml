@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
 	<!--Acción-->
 	<record id="gs_gastos_actions_mis_gastos" model="ir.actions.act_window">
@@ -40,6 +41,7 @@
 							<field name="reference"/>
 							<field name="date"/>
 							<field name="currency_id" groups="base.group_multi_currency"/>
+							<field name="priority" widget="priority"/>
 						</group>
 					</group>
 
