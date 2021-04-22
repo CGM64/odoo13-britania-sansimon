@@ -46,7 +46,7 @@ class GsGastos(models.Model):
         "Reference Is Editable By Current User", default='draft')
 
     reference = fields.Char("Referencia")
-    partner_id = fields.Many2one('res.partner', string='Proveedor/Empresa', required=True,  change_default=True, tracking=True,help="Puedes buscar por Nombre, NIF, Email or Referencia.")
+    partner_id = fields.Many2one('res.partner', string='Vendedor', required=True,  change_default=True, tracking=True,help="Puedes buscar por Nombre, NIF, Email or Referencia.")
 
     name = fields.Char('Descripción', readonly=True, required=True, states={'draft': [(
         'readonly', False)], 'reported': [('readonly', False)], 'refused': [('readonly', False)]})
