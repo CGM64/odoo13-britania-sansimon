@@ -51,7 +51,7 @@ class GsGastos(models.Model):
         ('approved', 'Approved'),
         ('done', 'Paid'),
         ('refused', 'Refused')
-    ], compute='_compute_state', string='Status', copy=False, index=True, readonly=True, store=True, help="Status of the expense.")
+    ], default='draft', string='Status', copy=False, index=True, readonly=True, help="Status of the expense.")
 
     product_id = fields.Many2one('product.product', string='Product', readonly=True, tracking=True, states={'draft': [('readonly', False)], 'reported': [('readonly', False)], 'refused': [
                                  ('readonly', False)]}, domain="[('can_be_expensed', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", ondelete='restrict')
