@@ -63,6 +63,7 @@
 				<field name="state" widget="statusbar" invisible="1" />
 				<field name="partner_id"/>
 				<field name="name" placeholder="e.j. Descripción del gasto"/>
+				<field name="priority" widget="priority"/>
 				<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
 				<field name="date"/>
 			</tree>
@@ -93,6 +94,7 @@
 									<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
 									<field name="date"/>
 								</strong>
+								<field name="priority" widget="priority"/>
 							</div>
 						</div>
 					</t>
