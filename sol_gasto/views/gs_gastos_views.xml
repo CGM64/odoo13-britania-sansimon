@@ -17,9 +17,13 @@
 		<field name="model">gs.gastos</field>
 		<field name="arch" type="xml">
 			<form string="Gastos" class="o_expense_form">
+
 				<header>
-					<field name="state" widget="statusbar" statusbar_visible="draft,reported,approved,done,refused"/>
+					<field name="state" widget="statusbar" statusbar_visible="draft,cancel,approved,done,refused"/>
+					<button name="button_approved" string="Aprobar Solicitud" type="object" />
+					<button name="button_cancel" string="Cancelar Solicitud" type="object" />
 				</header>
+
 				<sheet>
 					<div class="oe_title">
 						<label for="name" class="oe_edit_only"/>
@@ -27,40 +31,73 @@
 							<field name="name" placeholder="e.j. Descripción del gasto"/>
 						</h1>
 					</div>
-
 					<group>
 						<group>
-							<field name="is_ref_editable" invisible="1"/>
-							<field name="partner_id" filters="1"/>
-							<field name="unit_amount" required="1" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
-							<!--<field name="total_amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>-->
+							<field name="partner_id"/>
+							<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
 						</group>
 						<group>
-							<field name="reference" attrs="{'readonly': [('is_ref_editable', '=', False)]}"/>
+							<field name="reference"/>
 							<field name="date"/>
 							<field name="currency_id" groups="base.group_multi_currency"/>
-							<field name="company_id" groups="base.group_multi_company"/>
-						</group>
-						<group>
-							<label for="payment_mode"/>
-							<div>
-								<field name="payment_mode" widget="radio"/>
-							</div>
 						</group>
 					</group>
-
 
 					<div>
 						<field name="description" class="oe_inline" placeholder="Observaciones..."/>
 					</div>
+
 				</sheet>
 			</form>
 		</field>
 	</record>
 
 
+	<record id="gs_gastos_view_tree" model="ir.ui.view">
+		<field name="name">gs.gastos.view.tree</field>
+		<field name="model">gs.gastos</field>
+		<field name="arch" type="xml">
+			<tree string="Gastos">
+				<field name="state" widget="statusbar" invisible="1" />
+				<field name="partner_id"/>
+				<field name="name" placeholder="e.j. Descripción del gasto"/>
+				<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+				<field name="date"/>
+			</tree>
+		</field>
+	</record>
 
 
+	<record id="gs_gastos_view_kanban" model="ir.ui.view">
+		<field name="name">gs.gastos.view.tree</field>
+		<field name="model">gs.gastos</field>
+		<field name="arch" type="xml">
+			<kanban class="o_custom_crm_visit_kanban">
+				<field name="state" widget="statusbar" invisible="1" />
+				<field name="partner_id"/>
+				<field name="name" placeholder="e.j. Descripción del gasto"/>
+				<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+				<field name="date"/>
+				<templates>
+					<t t-name="kanban-box">
+						<div t-attf-class="oe_kanban_global_click">
+							<div class="o_kanban_image">
+								<!--<img alt="Avatar" t-att-src="kanban_image('custom_crm.visit', 'image', record.id.raw_value)"/>-->
+							</div>
+							<div class="oe_kanban_details">
+								<strong class="o_kanban_record_title">
+									<field name="partner_id"/>
+									<field name="name" placeholder="e.j. Descripción del gasto"/>
+									<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+									<field name="date"/>
+								</strong>
+							</div>
+						</div>
+					</t>
+				</templates>
+			</kanban>
+		</field>
+	</record>
 
 
 
