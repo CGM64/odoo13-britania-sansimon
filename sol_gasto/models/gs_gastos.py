@@ -42,8 +42,43 @@ class GsGastos(models.Model):
                                                    False), ('company_id', '=', employee.company_id.id)]
         return res
 
-    name = fields.Char('Description', readonly=True, required=True, states={'draft': [(
+    is_ref_editable = fields.Boolean(
+        "Reference Is Editable By Current User", default='draft')
+
+    reference = fields.Char("Referencia")
+    partner_id = fields.Many2one('res.partner', string='Vendedor', required=True,  change_default=True, tracking=True,help="Puedes buscar por Nombre, NIF, Email or Referencia.")
+
+    name = fields.Char('Descripción', readonly=True, required=True, states={'draft': [(
         'readonly', False)], 'reported': [('readonly', False)], 'refused': [('readonly', False)]})
+
+    product_id = fields.Many2one('product.product', string='Product', readonly=True, tracking=True, states={'draft': [('readonly', False)], 'reported': [('readonly', False)], 'refused': [
+                                 ('readonly', False)]}, domain="[('can_be_expensed', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", ondelete='restrict')
+
+    unit_amount = fields.Float("Monto", compute='_compute_from_product_id_company_id', store=True, required=True, copy=True,
+                               states={'draft': [('readonly', False)], 'reported': [('readonly', False)], 'refused': [('readonly', False)]}, digits='Product Price')
+
+    currency_id = fields.Many2one('res.currency', string='Moneda', readonly=True, states={'draft': [(
+        'readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company.currency_id)
+
+    description = fields.Text('Notas...', readonly=True, states={'draft': [(
+        'readonly', False)], 'reported': [('readonly', False)], 'refused': [('readonly', False)]})
+
+    payment_mode = fields.Selection([
+        ("own_account", "Empleado reembolsa"),
+        ("company_account", "Empresa")
+    ], default='own_account', tracking=True, states={'done': [('readonly', True)], 'approved': [('readonly', True)], 'reported': [('readonly', True)]}, string="¿Quién reintegra?")
+
+    date = fields.Date(readonly=True, states={'draft': [('readonly', False)], 'reported': [(
+        'readonly', False)], 'refused': [('readonly', False)]}, default=fields.Date.context_today, string="Fecha Entrega")
+
+    employee_id = fields.Many2one('hr.employee', compute='_compute_employee_id', string="Employee",
+                                  store=True, required=True, readonly=False, tracking=True,
+                                  states={'approved': [('readonly', True)], 'done': [
+                                      ('readonly', True)]},
+                                  default=_default_employee_id, domain=lambda self: self._get_employee_id_domain(), check_company=True)
+
+    company_id = fields.Many2one('res.company', string='Company', required=True, readonly=True, states={
+        'draft': [('readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company)
 
     state = fields.Selection([
         ('draft', 'To Submit'),
@@ -52,29 +87,3 @@ class GsGastos(models.Model):
         ('done', 'Paid'),
         ('refused', 'Refused')
     ], default='draft', string='Status', copy=False, index=True, readonly=True, help="Status of the expense.")
-
-    product_id = fields.Many2one('product.product', string='Product', readonly=True, tracking=True, states={'draft': [('readonly', False)], 'reported': [('readonly', False)], 'refused': [
-                                 ('readonly', False)]}, domain="[('can_be_expensed', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]", ondelete='restrict')
-
-    unit_amount = fields.Float("Unit Price", compute='_compute_from_product_id_company_id', store=True, required=True, copy=True,
-                               states={'draft': [('readonly', False)], 'reported': [('readonly', False)], 'refused': [('readonly', False)]}, digits='Product Price')
-
-    currency_id = fields.Many2one('res.currency', string='Currency', readonly=True, states={'draft': [(
-        'readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company.currency_id)
-
-    description = fields.Text('Notes...', readonly=True, states={'draft': [(
-        'readonly', False)], 'reported': [('readonly', False)], 'refused': [('readonly', False)]})
-
-    payment_mode = fields.Selection([
-        ("own_account", "Employee (to reimburse)"),
-        ("company_account", "Company")
-    ], default='own_account', tracking=True, states={'done': [('readonly', True)], 'approved': [('readonly', True)], 'reported': [('readonly', True)]}, string="Paid By")
-
-    date = fields.Date(readonly=True, states={'draft': [('readonly', False)], 'reported': [(
-        'readonly', False)], 'refused': [('readonly', False)]}, default=fields.Date.context_today, string="Expense Date")
-
-    employee_id = fields.Many2one('hr.employee', compute='_compute_employee_id', string="Employee",
-                                  store=True, required=True, readonly=False, tracking=True,
-                                  states={'approved': [('readonly', True)], 'done': [
-                                      ('readonly', True)]},
-                                  default=_default_employee_id, domain=lambda self: self._get_employee_id_domain(), check_company=True)

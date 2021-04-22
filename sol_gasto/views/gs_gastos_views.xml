@@ -22,13 +22,36 @@
 				</header>
 				<sheet>
 					<div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
-                        <h1>
-                            <field name="name" placeholder="e.g. Lunch with Customer"/>
-                        </h1>
-                    </div>
+						<label for="name" class="oe_edit_only"/>
+						<h1>
+							<field name="name" placeholder="e.j. Descripción del gasto"/>
+						</h1>
+					</div>
+
+					<group>
+						<group>
+							<field name="is_ref_editable" invisible="1"/>
+							<field name="partner_id" filters="1"/>
+							<field name="unit_amount" required="1" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+							<!--<field name="total_amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>-->
+						</group>
+						<group>
+							<field name="reference" attrs="{'readonly': [('is_ref_editable', '=', False)]}"/>
+							<field name="date"/>
+							<field name="currency_id" groups="base.group_multi_currency"/>
+							<field name="company_id" groups="base.group_multi_company"/>
+						</group>
+						<group>
+							<label for="payment_mode"/>
+							<div>
+								<field name="payment_mode" widget="radio"/>
+							</div>
+						</group>
+					</group>
+
+
 					<div>
-						<field name="description" class="oe_inline" placeholder="Notes..."/>
+						<field name="description" class="oe_inline" placeholder="Observaciones..."/>
 					</div>
 				</sheet>
 			</form>
@@ -41,7 +64,7 @@
 
 
 
-<!--Esto permite visualizar la aplicación en la página de inicio-->
+	<!--Esto permite visualizar la aplicación en la página de inicio-->
 	<!--Menú-->
 	<menuitem id="menu_gs_gatos_root" name="Gastos" web_icon="sol_gasto,static/description/icon.png" groups="base.group_user" sequence="6" />
 	<!--Sub-Menú-->
