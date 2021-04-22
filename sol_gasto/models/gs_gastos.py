@@ -46,7 +46,7 @@ class GsGastos(models.Model):
         "Reference Is Editable By Current User", default='draft')
 
     reference = fields.Char("Referencia")
-    partner_id = fields.Many2one('res.partner', string='Vendedor', required=True,  change_default=True, tracking=True,help="Puedes buscar por Nombre, NIF, Email or Referencia.")
+    partner_id = fields.Many2one('res.partner', string='Proveedor', required=True,  change_default=True, tracking=True,help="Puedes buscar por Nombre, NIF, Email or Referencia.")
 
     name = fields.Char('Descripción', readonly=True, required=True, states={'draft': [(
         'readonly', False)], 'reported': [('readonly', False)], 'refused': [('readonly', False)]})
@@ -68,8 +68,11 @@ class GsGastos(models.Model):
         ("company_account", "Empresa")
     ], default='own_account', tracking=True, states={'done': [('readonly', True)], 'approved': [('readonly', True)], 'reported': [('readonly', True)]}, string="¿Quién reintegra?")
 
-    date = fields.Date(readonly=True, states={'draft': [('readonly', False)], 'reported': [(
-        'readonly', False)], 'refused': [('readonly', False)]}, default=fields.Date.context_today, string="Fecha Entrega")
+    date = fields.Date(readonly=True, states={
+        'draft': [('readonly', False)], 
+        'reported': [('readonly', False)], 
+        'refused': [('readonly', False)]}, 
+        default=fields.Date.context_today, string="Fecha Entrega")
 
     employee_id = fields.Many2one('hr.employee', compute='_compute_employee_id', string="Employee",
                                   store=True, required=True, readonly=False, tracking=True,
@@ -81,9 +84,10 @@ class GsGastos(models.Model):
         'draft': [('readonly', False)], 'refused': [('readonly', False)]}, default=lambda self: self.env.company)
 
     state = fields.Selection([
-        ('draft', 'To Submit'),
-        ('reported', 'Submitted'),
-        ('approved', 'Approved'),
-        ('done', 'Paid'),
-        ('refused', 'Refused')
+        ('draft', 'A ENVIAR'),
+        ('reported', 'ENVIADO'),
+        ('approved', 'APROBADO'),
+        ('done', 'PAGADO'),
+        ('refused', 'RECHAZADO'),
+        ('cancelled', 'CANCELADO')
     ], default='draft', string='Status', copy=False, index=True, readonly=True, help="Status of the expense.")
