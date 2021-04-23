@@ -13,8 +13,14 @@ class GsGastos(models.Model):
     def button_approved(self):
         self.write({'state': 'approved'})
 
+    def button_done(self):
+        self.write({'state': 'done'})
+
     def button_cancel(self):
         self.write({'state': 'cancel'})
+
+    def button_draft(self):
+        self.write({'state': 'draft'})
 
     state = fields.Selection([
         ('draft', 'Borrador'),
