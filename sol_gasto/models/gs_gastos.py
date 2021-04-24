@@ -88,4 +88,18 @@ class GsGastos(models.Model):
                                         'approved': [('readonly', True)],
                                         'done': [('readonly', True)]})
 
-
+    def open_window(self):
+        view_id = self.env.ref(
+            'account.view_account_payment_form'
+        ).id
+        context = self._context.copy()
+        return {
+            'name': 'Pagos',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'views': [(False, 'form')],
+            'res_model': 'account.payment',
+            'type': 'ir.actions.act_window',
+            'view_id': view_id,
+            'target': 'new',
+        }

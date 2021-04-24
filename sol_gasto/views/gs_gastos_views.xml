@@ -25,6 +25,7 @@
 					<button name="button_cancel" string="Cancelar Solicitud" type="object"  attrs="{'invisible':[('state','!=','approved')]}"/>
 					<button name="button_done" string="Pagar" type="object" attrs="{'invisible':[('state','!=','approved')]}"/>
 					<button name="button_draft" string="Cambiar a Borrador" type="object" attrs="{'invisible':[('state','=','draft')]}"/>
+					<button name="open_window" string="Test" type="object"/>
 				</header>
 
 				<sheet>
