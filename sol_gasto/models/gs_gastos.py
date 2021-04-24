@@ -32,32 +32,48 @@ class GsGastos(models.Model):
 
     name = fields.Char('Descripción', readonly=True, required=True,
                        states={'draft': [('readonly', False)],
-                               'refused': [('readonly', False)]})
+                               'cancel': [('readonly', True)],
+                               'approved': [('readonly', True)],
+                               'done': [('readonly', True)]})
 
-    partner_id = fields.Many2one('res.partner', string='Proveedor', required=True,
-                                 help="Puedes buscar por Nombre, NIF, Email or Referencia.")
+    partner_id = fields.Many2one('res.partner', string='Proveedor', readonly=True, required=True,
+                                 help="Puedes buscar por Nombre, NIF, Email or Referencia.",
+                                 states={'draft': [('readonly', False)],
+                                         'cancel': [('readonly', True)],
+                                         'approved': [('readonly', True)],
+                                         'done': [('readonly', True)]})
 
     unit_amount = fields.Float("Monto", store=True, required=True, copy=True, digits='Product Price',
                                states={'draft': [('readonly', False)],
-                                       'refused': [('readonly', False)]})
+                                       'cancel': [('readonly', True)],
+                                       'approved': [('readonly', True)],
+                                       'done': [('readonly', True)]})
 
-    currency_id = fields.Many2one('res.currency', string='Moneda', readonly=True,
+    currency_id = fields.Many2one('res.currency', string='Moneda', readonly=True, required=True,
                                   states={'draft': [('readonly', False)],
-                                          'refused': [('readonly', False)]},
+                                          'cancel': [('readonly', True)],
+                                          'approved': [('readonly', True)],
+                                          'done': [('readonly', True)]},
                                   default=lambda self: self.env.company.currency_id)
 
     description = fields.Text('Notas...', readonly=True,
                               states={'draft': [('readonly', False)],
-                                      'refused': [('readonly', False)]})
+                                      'cancel': [('readonly', True)],
+                                      'approved': [('readonly', True)],
+                                      'done': [('readonly', True)]})
 
-    date = fields.Date(readonly=True, states={
-        'draft': [('readonly', False)],
-        'refused': [('readonly', False)]},
-        default=fields.Date.context_today, string="Fecha Entrega")
+    date = fields.Date(readonly=True, required=True,
+                       states={'draft': [('readonly', False)],
+                               'cancel': [('readonly', True)],
+                               'approved': [('readonly', True)],
+                               'done': [('readonly', True)]},
+                       default=fields.Date.context_today, string="Fecha Entrega")
 
-    reference = fields.Char("Referencia", required=True, readonly=True, states={
-        'draft': [('readonly', False)],
-        'refused': [('readonly', False)]})
+    reference = fields.Char("Referencia", required=True, readonly=True,
+                            states={'draft': [('readonly', False)],
+                                    'cancel': [('readonly', True)],
+                                    'approved': [('readonly', True)],
+                                    'done': [('readonly', True)]})
 
     AVAILABLE_PRIORITIES = [
         ('0', 'Low'),
@@ -66,4 +82,8 @@ class GsGastos(models.Model):
         ('3', 'Very High'),
     ]
     priority = fields.Selection(AVAILABLE_PRIORITIES, string='Prioridad', index=True,
-                                default=AVAILABLE_PRIORITIES[0][0])
+                                default=AVAILABLE_PRIORITIES[0][0],
+                                states={'draft': [('readonly', False)],
+                                        'cancel': [('readonly', True)],
+                                        'approved': [('readonly', True)],
+                                        'done': [('readonly', True)]})
