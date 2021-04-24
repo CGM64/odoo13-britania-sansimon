@@ -88,18 +88,4 @@ class GsGastos(models.Model):
                                         'approved': [('readonly', True)],
                                         'done': [('readonly', True)]})
 
-    def open(self):
-        products = self.mapped('product_id')
-        context = {'search_default_internal_loc': 1,
-                   'search_default_locationgroup': 1}
-        domain = [('product_id', 'in', products.ids)]
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'stock.quant',
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'domain': domain,
-            'context': context,
-            'res_id': 'stock.product_open_quants',
-            'target': 'new',
-        }
+
