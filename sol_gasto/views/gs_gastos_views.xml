@@ -63,10 +63,10 @@
 		<field name="arch" type="xml">
 			<tree string="Gastos">
 				<field name="state" widget="statusbar" invisible="1" />
-				<field name="partner_id"/>
-				<field name="name" placeholder="e.j. Descripción del gasto"/>
-				<field name="priority" widget="priority"/>
-				<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+				<field name="partner_id" readonly="1"/>
+				<field name="name" placeholder="e.j. Descripción del gasto" readonly="1"/>
+				<field name="priority" widget="priority" readonly="1"/>
+				<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" readonly="1"/>
 				<field name="date"/>
 			</tree>
 		</field>
@@ -111,6 +111,8 @@
 							<div class="o_kanban_record_bottom">
 								<div class="oe_kanban_bottom_left">
 									<field name="priority" readonly="1" widget="priority" groups="base.group_user"/>
+									<span> Entregar: </span>
+									<field name="date"/>
 								</div>
 							</div>
 
