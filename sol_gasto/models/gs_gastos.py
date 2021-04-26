@@ -10,18 +10,6 @@ class GsGastos(models.Model):
     _name = "gs.gastos"
     _description = "Gastos"
 
-    def button_approved(self):
-        self.write({'state': 'approved'})
-
-    def button_done(self):
-        self.write({'state': 'done'})
-
-    def button_cancel(self):
-        self.write({'state': 'cancel'})
-
-    def button_draft(self):
-        self.write({'state': 'draft'})
-
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('cancel', 'Cancelado'),
@@ -88,13 +76,21 @@ class GsGastos(models.Model):
                                         'approved': [('readonly', True)],
                                         'done': [('readonly', True)]})
 
+    journal_id = fields.Many2one('account.journal', string='Diario', required=True, readonly=True,
+                                 states={'draft': [('readonly', False)],
+                                         'cancel': [('readonly', True)],
+                                         'approved': [('readonly', True)],
+                                         'done': [('readonly', True)]})
+
+
+
     def open_window(self):
         view_id = self.env.ref(
             'account.view_account_payment_form'
         ).id
-        context = self._context.copy()
+
         return {
-            'name': 'Pagos',
+            'name': 'Registrar Pago',
             'view_mode': 'form',
             'view_type': 'form',
             'views': [(False, 'form')],
@@ -103,3 +99,35 @@ class GsGastos(models.Model):
             'view_id': view_id,
             'target': 'new',
         }
+
+    def create_field(self):
+        ''' Open the account.payment.register wizard to pay the selected journal entries.
+        :return: An action opening the account.payment.register wizard.
+        '''
+        print(self.id)
+
+        return {
+            'name': _('Register Payment'),
+            'res_model': 'account.payment.register',
+            'view_mode': 'form',
+            'context': {
+                'active_model': 'account.move',
+                'active_ids': [self.id],
+            },
+            'target': 'new',
+            'type': 'ir.actions.act_window',
+
+        }
+
+    # Botones de estado
+    def button_approved(self):
+        self.write({'state': 'approved'})
+
+    def button_done(self):
+        self.write({'state': 'done'})
+
+    def button_cancel(self):
+        self.write({'state': 'cancel'})
+
+    def button_draft(self):
+        self.write({'state': 'draft'})
