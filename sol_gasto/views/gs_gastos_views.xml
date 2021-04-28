@@ -11,53 +11,17 @@
 			</p>
 		</field>
 	</record>
-	<!--Rehace la vista de account.payment-->
-	<record id="gs_gastos_pagos_view_form" model="ir.ui.view">
+
+<!--Creo acción para llamar a l formulario view_gastos_payment_register_form -->
+	<!-- <record id="action_account_invoice_refund" model="ir.actions.act_window">
 		<field name="name">gs.gastos.view.form</field>
-		<field name="model">gs.gastos</field>
-		<field name="arch" type="xml">
-			<form string="Gastos" class="o_expense_form">
-
-				<header>
-					<field name="state" widget="statusbar" statusbar_visible="draft,cancel,approved,done"/>
-					<button name="button_approved" string="Aprobar Solicitud" type="object" attrs="{'invisible':[('state','!=','draft')]}" />
-					<button name="button_cancel" string="Cancelar Solicitud" type="object" attrs="{'invisible':[('state','!=','approved')]}"/>
-					<button name="button_done" string="Pagar" type="object" attrs="{'invisible':[('state','!=','approved')]}"/>
-					<button name="button_draft" string="Cambiar a Borrador" type="object" attrs="{'invisible':[('state','=','draft')]}"/>
-					<button name="open_window" string="Test" type="object"/>
-				</header>
-
-				<sheet>
-					<div class="oe_title">
-						<label for="name" class="oe_edit_only"/>
-						<h1>
-							<field name="name" placeholder="e.j. Descripción del gasto"/>
-						</h1>
-					</div>
-					<group>
-						<group>
-							<field name="partner_id"/>
-							<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
-						</group>
-						<group>
-							<field name="reference"/>
-							<field name="date"/>
-							<field name="currency_id" groups="base.group_multi_currency"/>
-							<field name="priority" widget="priority"/>
-						</group>
-					</group>
-
-					<div>
-						<field name="description" class="oe_inline" placeholder="Observaciones..."/>
-					</div>
-
-				</sheet>
-			</form>
-		</field>
-	</record>
-	<!--Finaliza la creación la vista de account.payment-->
-
-
+		<field name="res_model">gs.gastos</field>
+		<field name="view_mode">form</field>
+		<field name="view_id" ref="view_gastos_payment_register_form"/>
+		<field name="target">new</field>
+		<field name="context">{'default_name': 'Jhayr'}</field>
+	</record> -->
+<!--Termina acción para llamar a l formulario view_gastos_payment_register_form -->
 
 	<record id="gs_gastos_view_form" model="ir.ui.view">
 		<field name="name">gs.gastos.view.form</field>
@@ -72,7 +36,7 @@
 					<button name="button_done" string="Pagar" type="object" attrs="{'invisible':[('state','!=','approved')]}"/>
 					<button name="button_draft" string="Cambiar a Borrador" type="object" attrs="{'invisible':[('state','=','draft')]}"/>
 					<button name="open_window" class="oe_highlight" string="Registrar Pago" type="object"/>
-					<button name="create_field" class="oe_highlight" string="Registrar Pago" type="object"/>
+					<!-- <button name="%(action_account_invoice_refund)d" type='action' string='Ask Refund' /> -->
 				</header>
 
 				<sheet>
@@ -123,7 +87,7 @@
 
 
 	<record id="gs_gastos_view_kanban" model="ir.ui.view">
-		<field name="name">gs.gastos.view.tree</field>
+		<field name="name">gs.gastos.view.kanban</field>
 		<field name="model">gs.gastos</field>
 		<field name="arch" type="xml">
 			<kanban class="o_custom_crm_visit_kanban">

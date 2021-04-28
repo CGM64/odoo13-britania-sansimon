@@ -26,6 +26,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/gs_gastos_views.xml',
+        'views/gs_gastos_pagos_views.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

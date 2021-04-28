@@ -82,39 +82,46 @@ class GsGastos(models.Model):
                                          'approved': [('readonly', True)],
                                          'done': [('readonly', True)]})
 
-
+    # <field name = "name" > gs.gastos.view.form < /field >
+    # <field name = "res_model" > gs.gastos < /field >
+    # <field name = "view_mode" > form < /field >
+    # <field name = "view_id" ref = "view_gastos_payment_register_form"/>
+    # <field name = "target" > new < /field >
 
     def open_window(self):
-        view_id = self.env.ref(
-            'account.view_account_payment_form'
-        ).id
+        self.env.context = dict(self.env.context)
+        context = self.env.context
 
+
+
+        proveedor=int(self.partner_id[0])
+        moneda=int(self.currency_id[0])
+        monto=Money(self.unit_amount),2)
+        diario=int(self.journal_id[0])
+        print("LOG ", self.journal_id," , ",self.unit_amount, ", Moneda: ", self.currency_id)
         return {
             'name': 'Registrar Pago',
+            'res_model': 'account.payment',
             'view_mode': 'form',
+            'view_id': 'account.view_account_payment_form',
+            'target': 'new',
+            'context': {
+                'readonly':True,
+                'default_observaciones': self.name,
+                'default_payment_type': 'outbound',
+                'default_partner_type': 'supplier',
+                'default_amount':monto ,
+                'default_partner_id': proveedor,
+                'default_payment_method_id': 4,
+                'default_journal_id': diario,
+                'default_currency_id':moneda,
+                'default_payment_date':self.date,
+                'default_check_no_negociable': 1,
+                
+            },
+
             'view_type': 'form',
             'views': [(False, 'form')],
-            'res_model': 'account.payment',
-            'type': 'ir.actions.act_window',
-            'view_id': view_id,
-            'target': 'new',
-        }
-
-    def create_field(self):
-        ''' Open the account.payment.register wizard to pay the selected journal entries.
-        :return: An action opening the account.payment.register wizard.
-        '''
-        print(self.id)
-
-        return {
-            'name': _('Register Payment'),
-            'res_model': 'account.payment.register',
-            'view_mode': 'form',
-            'context': {
-                'active_model': 'account.move',
-                'active_ids': [self.id],
-            },
-            'target': 'new',
             'type': 'ir.actions.act_window',
 
         }
