@@ -67,11 +67,11 @@
                         <strong></strong>
                       </div>
                       <div class="col-5">
-                        
+
                       </div>
                     </div>
                   </div>
-                
+
               </t>
               </div>
             </div>
@@ -239,7 +239,7 @@
         </t>
           <div t-attf-class="row fac_t_letra_peq text-justify p-3 {{ 'fac_t_letra_blanca' if o.journal_id.tipo_documento != 'FCAM' else '' }}">
             <b>Por medio de esta única Factura Cambiaria girada libre de protesto se servirá pagar a la orden o endoso de <span t-field='o.company_id.name'/> el valor total o por el último saldo insoluto condiciones que se establecen en el presente título y que se tendrán expresamente aceptadas con la firma de la presente factura en concepto de mercancía que acepta haber </b><br/><br/>
-            
+
             Condiciones de crédito: se cobrará Q 150.00 por cheque rechazado y/o retenido.  Esta factura no se considera cancelada si no se acompaña el recibo de caja correspondiente.   La firma de cualquier empleado o dependiente del comprador al aceptar esta factura, obligará a este a cumplir con todas las condiciones estipuladas en la misma. El comprador declara:  A) Haber recibido la mercadería a su entera satisfación.   B) Da como bueno el total que se indica en esta factura cambiaria girada libre de protesto.   C) Acepta pagar al vendedor intereses moratorios a razón del 2% variable mensual por e``````` tiempo que acuse el pago extemporáneo de este documento a partir de su vencimiento.   E) Que de no cumplir con la obligación de pago a su vencimiento, el tenedor podrá ejecutar este título de
             crédito para lo cual el comprador renuncia al fuero de su domicilio y se somete a los tribunales de este departamento, reconociéndose llano deudor de las costas a juicio si llegaren.   F) Que estando de acuerdo con todas y cada uno de los puntos que contiene este documento los ratifica al firmar la aceptación.    <t t-esc="o.company_id.name"/> se reserva el derecho a negociar este documento tal como lo establece la ley vigente.
 
@@ -461,9 +461,9 @@
               </tbody>
               <tfoot class="footer factura_pie_tabla">
                 <tr>
-                  <td colspan="7" class="factura_encabezado1">TOTAL A PAGAR EN LETRAS<br/><t t-esc="o.monto_letras(o.amount_total)"/></td>
+                  <td colspan="7" class="factura_encabezado1">TOTAL A PAGAR EN LETRAS<br/><t t-esc="o.monto_letras(o.get_total_invoice())"/></td>
                   <td colspan="2" class="text-center">TOTAL</td>
-                  <td class="factura_td_numeros"><span t-esc="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                  <td class="factura_td_numeros"><span t-esc="o.get_total_invoice()" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
                 </tr>
               </tfoot>
             </table>
@@ -544,7 +544,12 @@
     <template id="britania.invoice_template">
       <t t-call="web.html_container">
         <t t-foreach="docs" t-as="o">
-          <t t-call="{{o.journal_id.template_invoice}}"/>
+          <t t-if="o.journal_id.fel_setting_id">
+            <t t-call="{{o.journal_id.template_invoice}}"/>
+          </t>
+          <t t-if="not o.journal_id.fel_setting_id">
+            <t t-call="account.report_invoice_document"/>
+          </t>
         </t>
       </t>
     </template>
