@@ -112,9 +112,9 @@ POLIZA : %s
         #Verificar el tipo de moneda
         enletras = letras
         cantidadenletras = enletras.to_word(importe)
-        if self.currency_id.name == 'USD':
+        if self.company_id.currency_id.name == 'USD':
             cantidadenletras = cantidadenletras.replace('QUETZALES','DOLARES')
-        elif self.currency_id.name == 'EUR':
+        elif self.company_id.currency_id.name == 'EUR':
             cantidadenletras = cantidadenletras.resultado('QUETZALES','EUROS')
         else:
             cantidadenletras = cantidadenletras
@@ -188,6 +188,8 @@ POLIZA : %s
                 mostrar_contenido = True #Variable que me sirve solo para mostrar contenido en la primera linea, cuando la descripcion supera la linea
                 if l.product_id.is_vehicle:
                     descripcion = self.get_descripcion(l,1)
+
+                    tasa = abs(l.balance / l.amount_currency)
                     for d in descripcion:
                         linea = {}
                         i += 1
@@ -197,8 +199,8 @@ POLIZA : %s
                         linea['quantity'] = '{0:,.0f}'.format(l.quantity) if mostrar_contenido else ''
                         linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
                         linea['name'] = descripcion[d]
-                        linea['price_unit'] = o.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.price_unit) if mostrar_contenido else ''
-                        linea['price_total'] = o.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.price_total) if mostrar_contenido else ''
+                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.price_unit*tasa) if mostrar_contenido else ''
+                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.quantity * l.price_unit*tasa) if mostrar_contenido else ''
                         lineas.append(linea)
                         nlinea = i % num_linea_x_pagina
                         if nlinea == 0:
@@ -210,14 +212,15 @@ POLIZA : %s
                     for nueva_linea_desc in self.nueva_linea(l.name, largo_lineas):
                         linea = {}
                         i += 1
+                        tasa = abs(l.balance / l.amount_currency)
                         linea['linea'] = i
                         linea['blanco'] = False
                         linea['default_code'] = l.product_id.default_code  if mostrar_contenido else ''
                         linea['quantity'] = '{0:,.0f}'.format(l.quantity) if mostrar_contenido else ''
                         linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
                         linea['name'] = nueva_linea_desc
-                        linea['price_unit'] = o.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.price_unit) if mostrar_contenido else ''
-                        linea['price_total'] = o.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.price_total) if mostrar_contenido else ''
+                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.price_unit*tasa) if mostrar_contenido else ''
+                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.quantity * l.price_unit*tasa) if mostrar_contenido else ''
                         lineas.append(linea)
                         nlinea = i % num_linea_x_pagina
                         #self.nueva_linea(linea['name'])
@@ -244,29 +247,11 @@ POLIZA : %s
 
 
     def get_total_invoice(self):
-        gran_total = gran_subtotal = gran_total_impuestos = 0
+        gran_total = 0
         for detalle in self.invoice_line_ids:
             if detalle.quantity > 0 and detalle.price_unit > 0:
-                linea = {}
-                linea["Cantidad"] = detalle.quantity
-                precio_sin_descuento = detalle.price_unit
-                linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
-                linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * detalle.quantity)
-                precio_unitario = detalle.price_unit * (100-detalle.discount) / 100
-                descuento = round(precio_sin_descuento * detalle.quantity - precio_unitario * detalle.quantity,4)
-                linea["Descuento"] = '{:.6f}'.format(descuento)
-
-                #Impuestos
-                precio_unitario_base = detalle.price_subtotal / detalle.quantity
-                total_linea = round(precio_unitario * detalle.quantity,6)
-                #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
-                total_linea_base = round(total_linea / (self.sat_iva_porcentaje/100+1),6)
-                #total_impuestos = total_linea - total_linea_base
-                total_impuestos = round(total_linea_base * (self.sat_iva_porcentaje/100),6)
-
-                gran_total += total_linea
-                gran_subtotal += total_linea_base
-                gran_total_impuestos += total_impuestos
+                tasa = abs(detalle.balance /detalle.amount_currency)
+                gran_total += tasa * (detalle.quantity * detalle.price_unit)
 
         return float('{:.2f}'.format(gran_total))
 

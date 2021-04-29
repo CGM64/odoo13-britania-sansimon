@@ -463,7 +463,7 @@
                 <tr>
                   <td colspan="7" class="factura_encabezado1">TOTAL A PAGAR EN LETRAS<br/><t t-esc="o.monto_letras(o.get_total_invoice())"/></td>
                   <td colspan="2" class="text-center">TOTAL</td>
-                  <td class="factura_td_numeros"><span t-esc="o.get_total_invoice()" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                  <td class="factura_td_numeros"><span t-esc="o.get_total_invoice()" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                 </tr>
               </tfoot>
             </table>

@@ -44,7 +44,7 @@ class AccountMove(models.Model):
 
         documento = {}
         documento["factura_id"] = str(factura.id)
-        documento["CodigoMoneda"] = factura.currency_id.name
+        documento["CodigoMoneda"] = factura.company_id.currency_id.name
         documento["FechaHoraEmision"] = fields.Date.from_string(factura.invoice_date).strftime('%Y-%m-%dT%H:%M:%S')
         documento["Tipo"] = tipo_documento
         documento["AfiliacionIVA"] = factura.journal_id.afiliacion_iva
