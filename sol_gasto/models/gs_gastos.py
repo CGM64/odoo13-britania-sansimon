@@ -31,13 +31,12 @@ class GsGastos(models.Model):
                                          'approved': [('readonly', True)],
                                          'done': [('readonly', True)]})
 
-
     #amount = fields.Monetary(currency_field='currency_id')
     unit_amount = fields.Monetary(currency_field="currency_id", string="Monto", store=True, required=True, copy=True,
-                               states={'draft': [('readonly', False)],
-                                       'cancel': [('readonly', True)],
-                                       'approved': [('readonly', True)],
-                                       'done': [('readonly', True)]})
+                                  states={'draft': [('readonly', False)],
+                                          'cancel': [('readonly', True)],
+                                          'approved': [('readonly', True)],
+                                          'done': [('readonly', True)]})
 
     currency_id = fields.Many2one('res.currency', string='Moneda', readonly=True, required=True,
                                   states={'draft': [('readonly', False)],
@@ -83,24 +82,19 @@ class GsGastos(models.Model):
                                          'cancel': [('readonly', True)],
                                          'approved': [('readonly', True)],
                                          'done': [('readonly', True)]})
+    
+    hoy = date.today()
+    fecha_inicio = fields.Date(string='Inicio', default=hoy)
+    fecha_final = fields.Date(string='Fin')
+    
 
-    # <field name = "name" > gs.gastos.view.form < /field >
-    # <field name = "res_model" > gs.gastos < /field >
-    # <field name = "view_mode" > form < /field >
-    # <field name = "view_id" ref = "view_gastos_payment_register_form"/>
-    # <field name = "target" > new < /field >
-
-    def open_window(self):
-        self.env.context = dict(self.env.context)
-        context = self.env.context
-
-
-
-        proveedor=int(self.partner_id[0])
-        moneda=int(self.currency_id[0])
-        monto=self.unit_amount
-        diario=int(self.journal_id[0])
-        print("LOG ", self.journal_id," , ",self.unit_amount, ", Moneda: ", self.currency_id)
+    def aplicar_pago(self):
+        proveedor = int(self.partner_id[0])
+        moneda = int(self.currency_id[0])
+        monto = self.unit_amount
+        diario = int(self.journal_id[0])
+        self.ensure_one()
+        self.write({'state': 'done'})
         return {
             'name': 'Registrar Pago',
             'res_model': 'account.payment',
@@ -108,20 +102,18 @@ class GsGastos(models.Model):
             'view_id': 'account.view_account_payment_form',
             'target': 'new',
             'context': {
-                'readonly':True,
+                'readonly': True,
                 'default_observaciones': self.name,
                 'default_payment_type': 'outbound',
                 'default_partner_type': 'supplier',
-                'default_amount':monto ,
+                'default_amount': monto,
                 'default_partner_id': proveedor,
                 'default_payment_method_id': 4,
                 'default_journal_id': diario,
-                'default_currency_id':moneda,
-                'default_payment_date':self.date,
+                'default_currency_id': moneda,
+                'default_payment_date': self.date,
                 'default_check_no_negociable': 1,
-                
             },
-
             'view_type': 'form',
             'views': [(False, 'form')],
             'type': 'ir.actions.act_window',

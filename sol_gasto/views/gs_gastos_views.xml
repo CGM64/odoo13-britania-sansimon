@@ -4,7 +4,7 @@
 	<record id="gs_gastos_actions_mis_gastos" model="ir.actions.act_window">
 		<field name="name">Mis Gastos</field>
 		<field name="res_model">gs.gastos</field>
-		<field name="view_mode">kanban,form,tree</field>
+		<field name="view_mode">kanban,form,tree,calendar</field>
 		<field name="help" type="html">
 			<p class="o_view_nocontent_smiling_face">
         Crea una nueva solicitud de gasto.
@@ -23,9 +23,8 @@
 					<field name="state" widget="statusbar" statusbar_visible="draft,cancel,approved,done"/>
 					<button name="button_approved" string="Aprobar Solicitud" type="object" attrs="{'invisible':[('state','!=','draft')]}" />
 					<button name="button_cancel" string="Cancelar Solicitud" type="object" attrs="{'invisible':[('state','!=','approved')]}"/>
-					<button name="button_done" string="Pagar" type="object" attrs="{'invisible':[('state','!=','approved')]}"/>
 					<button name="button_draft" string="Cambiar a Borrador" type="object" attrs="{'invisible':[('state','=','draft')]}"/>
-					<button name="open_window" class="oe_highlight" string="Registrar Pago" type="object"/>
+					<button name="aplicar_pago" string="Registrar Pago" type="object" class="oe_highlight" attrs="{'invisible':[('state','!=','approved')]}"/>
 
 				</header>
 
@@ -60,6 +59,25 @@
 	</record>
 
 
+	
+	<record id="gs_gastos_view_calendar" model="ir.ui.view">
+		<field name="name">gs.gastos.view.calendar</field>
+		<field name="model">gs.gastos</field>
+		<field name="arch" type="xml">
+			<calendar string="Pagos Programados" date_start="fecha_inicio" date_stop="fecha_final" event_open_popup="true" mode="month" color="name" quick_add="True">
+				<field name="state" widget="statusbar" invisible="1" />
+				<field name="fecha_inicio" />
+				<field name="fecha_final" />
+				<field name="partner_id" readonly="1"/>
+				<field name="name" placeholder="e.j. Descripción del gasto" readonly="1"/>
+				<field name="priority" widget="priority" readonly="1"/>
+				<field name="unit_amount" options="{'no_create': True}" readonly="1"/>
+				<field name="date" readonly="1"/>
+			</calendar>
+		</field>
+	</record>
+
+
 	<record id="gs_gastos_view_tree" model="ir.ui.view">
 		<field name="name">gs.gastos.view.tree</field>
 		<field name="model">gs.gastos</field>
@@ -76,11 +94,13 @@
 		</field>
 	</record>
 
+	<!-- CSS only -->
 
 	<record id="gs_gastos_view_kanban" model="ir.ui.view">
 		<field name="name">gs.gastos.view.kanban</field>
 		<field name="model">gs.gastos</field>
 		<field name="arch" type="xml">
+
 			<kanban class="o_custom_crm_visit_kanban">
 				<!--<kanban default_group_by="stage_id" class="o_kanban_small_column o_opportunity_kanban" on_create="quick_create" quick_create_view="crm.quick_create_opportunity_form" archivable="false">-->>
 
@@ -89,44 +109,62 @@
 				<field name="name" placeholder="e.j. Descripción del gasto"/>
 				<field name="priority" widget="priority"/>
 				<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+				<field name="journal_id"/>
 				<field name="date"/>
 
 				<templates>
 					<t t-name="kanban-box">
 						<div t-attf-class="oe_kanban_global_click">
-							<div class="o_kanban_image">
-								<!--<img alt="Avatar" t-att-src="kanban_image('custom_crm.visit', 'image', record.id.raw_value)"/>-->
-							</div>
-							<div class="oe_kanban_content">
-								<strong class="o_kanban_record_title">
-									<field name="name"/>
-								</strong>
-							</div>
-							<div class="text-muted o_kanban_record_subtitle">
-								<t t-if="record.unit_amount.raw_value">
-									<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
-									<span t-if="record.partner_id.value">,</span>
-								</t>
-								<span t-if="record.partner_id.value">
-									<t t-esc="record.partner_id.value"/>
-									<span t-if="record.partner_id.value">,</span>
-								</span>
-								<span>
-									<field name="journal_id" readonly="1"/>
-								</span>
-							</div>
-
-							<div class="o_kanban_record_bottom">
-								<div class="oe_kanban_bottom_left">
-									<field name="priority" readonly="1" widget="priority" groups="base.group_user"/>
-									<span> Entregar: </span>
-									<field name="date"/>
+							<div class="row mb4">
+								<div class="col-6">
+									<strong>
+										<span>
+											<field name="name"/>
+										</span>
+									</strong>
+								</div>
+								<div class="col-6 text-right">
+									<strong>
+										<i class="fa fa-clock-o" role="img" aria-label="Date" title="Date"/>
+										<t t-esc="record.date.value"/>
+									</strong>
 								</div>
 							</div>
-
+							<div class="row">
+								<div class="col-12">
+									<span>
+										<field name="partner_id"/>
+									</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-6">
+									<field name="unit_amount" widget='monetary'/>
+									<field name="currency_id" invisible="1"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-6">
+									<field name="journal_id"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-6">
+									<span class="float-left">
+										<field name="priority" widget="priority" readonly="1"/>
+									</span>
+								</div>
+								<div class="col-6">
+									<span class="float-right">
+										<field name="state" widget="label_selection" options="{'classes': {'draft': 'secondary', 'sent': 'success'}}"/>
+									</span>
+								</div>
+							</div>
 						</div>
 					</t>
 				</templates>
+
+
 			</kanban>
 		</field>
 	</record>
