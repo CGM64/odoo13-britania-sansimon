@@ -215,3 +215,19 @@ class AccountMove(models.Model):
 
             currency = len(currencies) == 1 and currencies.pop() or move.company_id.currency_id
             is_paid = currency and currency.is_zero(move.amount_residual) or not move.amount_residual
+
+    class AccountMoveLine(models.Model):
+
+        _inherit = "account.move.line"
+
+        sat_tasa_cambio = fields.Float(string="Tasa de Cambio", compute='_compute_tasa_cambio', help="Tasa de cambio del documento")
+
+        def _compute_tasa_cambio(self):
+            tasa = 0.0
+            for detalle in self:
+                if detalle.amount_currency == 0:
+                    tasa = 1
+                else:
+                    tasa = detalle.balance / detalle.amount_currency
+
+                detalle.sat_tasa_cambio = tasa
