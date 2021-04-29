@@ -189,7 +189,7 @@ POLIZA : %s
                 if l.product_id.is_vehicle:
                     descripcion = self.get_descripcion(l,1)
 
-                    tasa = abs(l.balance / l.amount_currency)
+                    tasa = l.sat_tasa_cambio
                     for d in descripcion:
                         linea = {}
                         i += 1
@@ -212,7 +212,7 @@ POLIZA : %s
                     for nueva_linea_desc in self.nueva_linea(l.name, largo_lineas):
                         linea = {}
                         i += 1
-                        tasa = abs(l.balance / l.amount_currency)
+                        tasa = l.sat_tasa_cambio
                         linea['linea'] = i
                         linea['blanco'] = False
                         linea['default_code'] = l.product_id.default_code  if mostrar_contenido else ''
@@ -250,7 +250,7 @@ POLIZA : %s
         gran_total = 0
         for detalle in self.invoice_line_ids:
             if detalle.quantity > 0 and detalle.price_unit > 0:
-                tasa = abs(detalle.balance /detalle.amount_currency)
+                tasa = detalle.sat_tasa_cambio
                 gran_total += tasa * (detalle.quantity * detalle.price_unit)
 
         return float('{:.2f}'.format(gran_total))
