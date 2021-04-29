@@ -244,12 +244,31 @@ POLIZA : %s
 
 
     def get_total_invoice(self):
-        total=0
-        if self.invoice_line_ids:
-            for i in self.invoice_line_ids:
-                if i.quantity > 0 and i.price_unit > 0:
-                    total += i.price_total
-        return round(total,2)
+        gran_total = gran_subtotal = gran_total_impuestos = 0
+        for detalle in self.invoice_line_ids:
+            if detalle.quantity > 0 and detalle.price_unit > 0:
+                linea = {}
+                linea["Cantidad"] = detalle.quantity
+                precio_sin_descuento = detalle.price_unit
+                linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
+                linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * detalle.quantity)
+                precio_unitario = detalle.price_unit * (100-detalle.discount) / 100
+                descuento = round(precio_sin_descuento * detalle.quantity - precio_unitario * detalle.quantity,4)
+                linea["Descuento"] = '{:.6f}'.format(descuento)
+
+                #Impuestos
+                precio_unitario_base = detalle.price_subtotal / detalle.quantity
+                total_linea = round(precio_unitario * detalle.quantity,6)
+                #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
+                total_linea_base = round(total_linea / (self.sat_iva_porcentaje/100+1),6)
+                #total_impuestos = total_linea - total_linea_base
+                total_impuestos = round(total_linea_base * (self.sat_iva_porcentaje/100),6)
+
+                gran_total += total_linea
+                gran_subtotal += total_linea_base
+                gran_total_impuestos += total_impuestos
+
+        return float('{:.2f}'.format(gran_total))
 
 
 
