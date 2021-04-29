@@ -31,7 +31,9 @@ class GsGastos(models.Model):
                                          'approved': [('readonly', True)],
                                          'done': [('readonly', True)]})
 
-    unit_amount = fields.Float("Monto", store=True, required=True, copy=True, digits='Product Price',
+
+    #amount = fields.Monetary(currency_field='currency_id')
+    unit_amount = fields.Monetary(currency_field="currency_id", string="Monto", store=True, required=True, copy=True,
                                states={'draft': [('readonly', False)],
                                        'cancel': [('readonly', True)],
                                        'approved': [('readonly', True)],
@@ -96,7 +98,7 @@ class GsGastos(models.Model):
 
         proveedor=int(self.partner_id[0])
         moneda=int(self.currency_id[0])
-        monto=Money(self.unit_amount),2)
+        monto=self.unit_amount
         diario=int(self.journal_id[0])
         print("LOG ", self.journal_id," , ",self.unit_amount, ", Moneda: ", self.currency_id)
         return {

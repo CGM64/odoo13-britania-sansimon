@@ -12,16 +12,6 @@
 		</field>
 	</record>
 
-<!--Creo acción para llamar a l formulario view_gastos_payment_register_form -->
-	<!-- <record id="action_account_invoice_refund" model="ir.actions.act_window">
-		<field name="name">gs.gastos.view.form</field>
-		<field name="res_model">gs.gastos</field>
-		<field name="view_mode">form</field>
-		<field name="view_id" ref="view_gastos_payment_register_form"/>
-		<field name="target">new</field>
-		<field name="context">{'default_name': 'Jhayr'}</field>
-	</record> -->
-<!--Termina acción para llamar a l formulario view_gastos_payment_register_form -->
 
 	<record id="gs_gastos_view_form" model="ir.ui.view">
 		<field name="name">gs.gastos.view.form</field>
@@ -36,7 +26,7 @@
 					<button name="button_done" string="Pagar" type="object" attrs="{'invisible':[('state','!=','approved')]}"/>
 					<button name="button_draft" string="Cambiar a Borrador" type="object" attrs="{'invisible':[('state','=','draft')]}"/>
 					<button name="open_window" class="oe_highlight" string="Registrar Pago" type="object"/>
-					<!-- <button name="%(action_account_invoice_refund)d" type='action' string='Ask Refund' /> -->
+
 				</header>
 
 				<sheet>
@@ -50,7 +40,7 @@
 						<group>
 							<field name="partner_id" options="{'no_create': True}"/>
 							<field name="journal_id" options="{'no_create': True}" type="row"/>
-							<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True, 'no_create': True}"/>
+							<field name="unit_amount" options="{'no_create': True}"/>
 						</group>
 						<group>
 							<field name="reference"/>
@@ -79,7 +69,8 @@
 				<field name="partner_id" readonly="1"/>
 				<field name="name" placeholder="e.j. Descripción del gasto" readonly="1"/>
 				<field name="priority" widget="priority" readonly="1"/>
-				<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" readonly="1"/>
+				<field name="unit_amount" options="{'no_create': True}"/>
+				<!-- <field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" readonly="1"/> -->
 				<field name="date"/>
 			</tree>
 		</field>
