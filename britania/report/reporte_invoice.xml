@@ -512,7 +512,7 @@
                 <t t-if="o.journal_id.tipo_documento == 'FCAM'">NUMERO DE ABONO:<br/>MONTO DE ABONO:</t>
               </div>
               <div class="col-2 text-right">
-                <t t-if="o.journal_id.tipo_documento == 'FCAM'">1<br/><span t-esc="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></t>
+                <t t-if="o.journal_id.tipo_documento == 'FCAM'">1<br/><span t-esc="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></t>
               </div>
               <div class="col-4 text-center">____________________________________________________________________<br/>ENTREGUE CONFORME/NOMBRE</div>
             </div>
