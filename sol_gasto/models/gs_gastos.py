@@ -23,6 +23,7 @@ class GsGastos(models.Model):
                                'cancel': [('readonly', True)],
                                'approved': [('readonly', True)],
                                'done': [('readonly', True)]})
+    
 
     partner_id = fields.Many2one('res.partner', string='Proveedor', readonly=True, required=True,
                                  help="Puedes buscar por Nombre, NIF, Email or Referencia.",
@@ -82,11 +83,6 @@ class GsGastos(models.Model):
                                          'cancel': [('readonly', True)],
                                          'approved': [('readonly', True)],
                                          'done': [('readonly', True)]})
-    
-    hoy = date.today()
-    fecha_inicio = fields.Date(string='Inicio', default=hoy)
-    fecha_final = fields.Date(string='Fin')
-    
 
     def aplicar_pago(self):
         proveedor = int(self.partner_id[0])

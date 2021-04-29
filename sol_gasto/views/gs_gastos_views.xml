@@ -59,24 +59,20 @@
 	</record>
 
 
-	
+	<!--VISTA CALENDARIO-->
 	<record id="gs_gastos_view_calendar" model="ir.ui.view">
 		<field name="name">gs.gastos.view.calendar</field>
 		<field name="model">gs.gastos</field>
 		<field name="arch" type="xml">
-			<calendar string="Pagos Programados" date_start="fecha_inicio" date_stop="fecha_final" event_open_popup="true" mode="month" color="name" quick_add="True">
+			<calendar string="Pagos Programados" date_start="date" date_stop="date" event_open_popup="true" mode="month" color="state" quick_add="True">
 				<field name="state" widget="statusbar" invisible="1" />
-				<field name="fecha_inicio" />
-				<field name="fecha_final" />
-				<field name="partner_id" readonly="1"/>
-				<field name="name" placeholder="e.j. Descripción del gasto" readonly="1"/>
-				<field name="priority" widget="priority" readonly="1"/>
-				<field name="unit_amount" options="{'no_create': True}" readonly="1"/>
-				<field name="date" readonly="1"/>
+				<field name="partner_id"/>
+				<field name="state"/>
+				<field name="unit_amount"/>
 			</calendar>
 		</field>
 	</record>
-
+	<!--VISTA CALENDARIO //-->
 
 	<record id="gs_gastos_view_tree" model="ir.ui.view">
 		<field name="name">gs.gastos.view.tree</field>
@@ -87,9 +83,8 @@
 				<field name="partner_id" readonly="1"/>
 				<field name="name" placeholder="e.j. Descripción del gasto" readonly="1"/>
 				<field name="priority" widget="priority" readonly="1"/>
-				<field name="unit_amount" options="{'no_create': True}"/>
-				<!-- <field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" readonly="1"/> -->
-				<field name="date"/>
+				<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" readonly="1"/>
+				<field name="date" readonly="1"/>
 			</tree>
 		</field>
 	</record>
@@ -104,12 +99,12 @@
 			<kanban class="o_custom_crm_visit_kanban">
 				<!--<kanban default_group_by="stage_id" class="o_kanban_small_column o_opportunity_kanban" on_create="quick_create" quick_create_view="crm.quick_create_opportunity_form" archivable="false">-->>
 
-				<field name="state" widget="statusbar" invisible="1" />
-				<field name="partner_id"/>
-				<field name="name" placeholder="e.j. Descripción del gasto"/>
-				<field name="priority" widget="priority"/>
-				<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
-				<field name="journal_id"/>
+				<field name="state" widget="statusbar" invisible="1" readonly="1"/>
+				<field name="partner_id" readonly="1"/>
+				<field name="name" placeholder="e.j. Descripción del gasto" readonly="1"/>
+				<field name="priority" widget="priority" readonly="1"/>
+				<field name="unit_amount" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}" readonly="1"/>
+				<field name="journal_id" readonly="1"/>
 				<field name="date"/>
 
 				<templates>
