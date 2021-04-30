@@ -23,7 +23,6 @@ class GsGastos(models.Model):
                                'cancel': [('readonly', True)],
                                'approved': [('readonly', True)],
                                'done': [('readonly', True)]})
-    
 
     partner_id = fields.Many2one('res.partner', string='Proveedor', readonly=True, required=True,
                                  help="Puedes buscar por Nombre, NIF, Email or Referencia.",
@@ -32,7 +31,6 @@ class GsGastos(models.Model):
                                          'approved': [('readonly', True)],
                                          'done': [('readonly', True)]})
 
-    #amount = fields.Monetary(currency_field='currency_id')
     unit_amount = fields.Monetary(currency_field="currency_id", string="Monto", store=True, required=True, copy=True,
                                   states={'draft': [('readonly', False)],
                                           'cancel': [('readonly', True)],
@@ -79,6 +77,7 @@ class GsGastos(models.Model):
                                         'done': [('readonly', True)]})
 
     journal_id = fields.Many2one('account.journal', string='Diario', required=True, readonly=True,
+                                 default=56,
                                  states={'draft': [('readonly', False)],
                                          'cancel': [('readonly', True)],
                                          'approved': [('readonly', True)],
