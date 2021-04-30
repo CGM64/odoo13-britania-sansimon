@@ -115,6 +115,21 @@ class GsGastos(models.Model):
 
         }
 
+    def aplicar_factura(self):
+        self.ensure_one()
+        self.write({'state': 'done'})
+        return {
+            'name': 'Registrar Factura',
+            'res_model': 'account.move',
+            'view_mode': 'form',
+            'view_id': 'account.view_move_form',
+            'target': 'new',
+            'view_type': 'form',
+            'views': [(False, 'form')],
+            'type': 'ir.actions.act_window',
+
+        }
+
     # Botones de estado
     def button_approved(self):
         self.write({'state': 'approved'})
