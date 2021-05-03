@@ -2,8 +2,9 @@
 import re
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
 from odoo.tools import email_split, float_is_zero
+from odoo.addons import decimal_precision as dp
 
 
 class GsGastos(models.Model):
@@ -115,9 +116,21 @@ class GsGastos(models.Model):
 
         }
 
-    def aplicar_factura(self):
-        self.ensure_one()
+    # Botones de estado
+
+    def button_approved(self):
+        self.write({'state': 'approved'})
+
+    def button_done(self):
         self.write({'state': 'done'})
+
+    def button_cancel(self):
+        self.write({'state': 'cancel'})
+
+    def button_draft(self):
+        self.write({'state': 'draft'})
+
+    def aplicar_factura1(self):
         return {
             'name': 'Registrar Factura',
             'res_model': 'account.move',
@@ -130,15 +143,19 @@ class GsGastos(models.Model):
 
         }
 
-    # Botones de estado
-    def button_approved(self):
-        self.write({'state': 'approved'})
 
-    def button_done(self):
-        self.write({'state': 'done'})
+class AccountMove(models.Model):
+    _inherit = "account.move"
 
-    def button_cancel(self):
-        self.write({'state': 'cancel'})
+    def aplicar_factura(self):
+        return {
+            'name': 'Registrar Factura',
+            'res_model': 'account.move',
+            'view_mode': 'form',
+            'view_id': 'account.view_move_form',
+            'target': 'new',
+            'view_type': 'form',
+            'views': [(False, 'form')],
+            'type': 'ir.actions.act_window',
 
-    def button_draft(self):
-        self.write({'state': 'draft'})
+        }
