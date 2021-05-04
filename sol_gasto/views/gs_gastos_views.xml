@@ -25,7 +25,7 @@
 					<button name="button_cancel" string="Cancelar Solicitud" type="object" attrs="{'invisible':[('state','!=','approved')]}"/>
 					<button name="button_draft" string="Cambiar a Borrador" type="object" attrs="{'invisible':[('state','=','draft')]}"/>
 					<button name="aplicar_pago" string="Registrar Pago" type="object" class="oe_highlight" attrs="{'invisible':[('state','!=','approved')]}"/>
-					<button name="aplicar_factura1" string="Registrar Factura" type="object" class="oe_highlight"/>
+					<button name="aplicar_factura" string="Registrar Factura" type="object" class="oe_highlight"/>
 				</header>
 
 				<sheet>

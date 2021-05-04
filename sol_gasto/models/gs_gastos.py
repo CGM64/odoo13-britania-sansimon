@@ -130,7 +130,7 @@ class GsGastos(models.Model):
     def button_draft(self):
         self.write({'state': 'draft'})
 
-    def aplicar_factura1(self):
+    def aplicar_factura(self):
         return {
             'name': 'Registrar Factura',
             'res_model': 'account.move',
@@ -147,7 +147,7 @@ class GsGastos(models.Model):
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    def aplicar_factura(self):
+    def aplicar_factura1(self):
         return {
             'name': 'Registrar Factura',
             'res_model': 'account.move',
@@ -157,5 +157,4 @@ class AccountMove(models.Model):
             'view_type': 'form',
             'views': [(False, 'form')],
             'type': 'ir.actions.act_window',
-
         }

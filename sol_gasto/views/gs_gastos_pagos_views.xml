@@ -7,7 +7,7 @@
 			<field name="inherit_id" ref="sol_gasto.gs_gastos_view_form" />
 			<field name="arch" type="xml">
 				<xpath expr="//button[@name='button_draft']" position="after">
-					<button name="aplicar_factura" type="object" string="- Aplicar -" class="oe_highlight"/>
+					<button name="aplicar_factura1" type="object" string="- Aplicar -" class="oe_highlight"/>
 				</xpath>
 			</field>
 		</record>
