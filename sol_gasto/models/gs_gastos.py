@@ -113,7 +113,6 @@ class GsGastos(models.Model):
             'view_type': 'form',
             'views': [(False, 'form')],
             'type': 'ir.actions.act_window',
-
         }
 
     # Botones de estado
@@ -130,30 +129,36 @@ class GsGastos(models.Model):
     def button_draft(self):
         self.write({'state': 'draft'})
 
-    def aplicar_factura(self):
-        return {
-            'name': 'Registrar Factura',
-            'res_model': 'account.move',
-            'view_mode': 'form',
-            'view_id': 'account.view_move_form',
-            'target': 'new',
-            'view_type': 'form',
-            'views': [(False, 'form')],
-            'type': 'ir.actions.act_window',
 
+class GsComprasGastos(models.Model):
+    _inherit = 'purchase.order'
+
+    def aplicar_pago(self):
+        proveedor = self.partner_id.id
+        moneda = self.currency_id.id
+        monto = self.amount_total
+        context = {
+            'active_model': 'purchase.order',
+            'readonly': True,
+            'default_communication': self.name,
+            'default_payment_type': 'outbound',
+            'default_partner_type': 'supplier',
+            'default_amount': monto,
+            'default_partner_id': proveedor,
+            'default_payment_method_id': 4,
+            'default_journal_id': 56,
+            'default_currency_id': moneda,
+            'default_check_no_negociable': 1,
         }
-
-
-class AccountMove(models.Model):
-    _inherit = "account.move"
-
-    def aplicar_factura1(self):
+        self.ensure_one()
+        print("Context----------->", context)
         return {
-            'name': 'Registrar Factura',
-            'res_model': 'account.move',
+            'name': 'Registrar Pago',
+            'res_model': 'account.payment',
             'view_mode': 'form',
-            'view_id': 'account.view_move_form',
+            'view_id': 'account.view_account_payment_invoice_form',
             'target': 'new',
+            'context': context,
             'view_type': 'form',
             'views': [(False, 'form')],
             'type': 'ir.actions.act_window',

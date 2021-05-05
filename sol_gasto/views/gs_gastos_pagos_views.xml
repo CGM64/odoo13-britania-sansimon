@@ -3,11 +3,11 @@
 	<data>
 		<record id="view_gastos_payment_register_form" model="ir.ui.view">
 			<field name="name">gs.gastos.view.form</field>
-			<field name="model">gs.gastos</field>
-			<field name="inherit_id" ref="sol_gasto.gs_gastos_view_form" />
+			<field name="model">purchase.order</field>
+			<field name="inherit_id" ref="purchase.purchase_order_form" />
 			<field name="arch" type="xml">
-				<xpath expr="//button[@name='button_draft']" position="after">
-					<button name="aplicar_factura1" type="object" string="- Aplicar -" class="oe_highlight"/>
+				<xpath expr="//button[@name='button_done']" position="after">
+					<button name="aplicar_pago" type="object" string="Solicitar Pago" class="oe_highlight"/>
 				</xpath>
 			</field>
 		</record>
