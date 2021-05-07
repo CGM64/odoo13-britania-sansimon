@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account',],
+    'depends': ['base','account','repair'],
 
     # always loaded
     'data': [
@@ -29,6 +29,7 @@
         #'data/product_dai_data.xml',
         'report/reporte_invoice.xml',
         'views/account_journal.xml',
+        'views/repair_views.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
