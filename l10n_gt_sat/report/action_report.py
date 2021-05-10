@@ -7,6 +7,6 @@ from odoo.exceptions import ValidationError
 class testExport(models.Model):
     _inherit = "upd.listprice"
     _description = "Exportar lista de precios"
-    
+
     def export_xls(self):
-        return self.env.ref('britania.test_xlsx').report_action(self)
+        return self.env.ref('l10n_gt_sat.test_xlsx').report_action(self)

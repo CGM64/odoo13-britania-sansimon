@@ -9,6 +9,6 @@
     name="britania.report_list_price"
     file="reportCambioPrecios"
     menu="False"/>
-    
+
     </data>
 </odoo>

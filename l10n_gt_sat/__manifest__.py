@@ -54,6 +54,9 @@
         'views/res_partner_view.xml',
         'views/custom_view.xml',
         'wizard/tags_view.xml',
+        'report/purchase_order_views.xml',
+        'views/upd_listprice.xml',
+        'report/report_xlsx.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
