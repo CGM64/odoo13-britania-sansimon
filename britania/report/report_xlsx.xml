@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+
+    <report
+    id="test_xlsx"
+    model="upd.listprice"
+    string="Importar Excel"
+    report_type="xlsx"
+    name="britania.report_list_price"
+    file="reportCambioPrecios"
+    menu="False"/>
+    
+    </data>
+</odoo>

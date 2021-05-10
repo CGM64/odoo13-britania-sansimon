@@ -29,7 +29,10 @@
         #'data/product_dai_data.xml',
         'report/reporte_invoice.xml',
         'views/account_journal.xml',
-        'views/repair_views.xml'
+        'views/repair_views.xml',
+        'wizard/services_views.xml',
+        'report/report_xlsx.xml',
+        'views/upd_listprice.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
