@@ -8,6 +8,4 @@ class testExport(models.Model):
     _description = "Exportar lista de precios"
 
     def export_xls(self):
-        self.env.ref('update_listprice.test_xlsx').report_file = "ListaDePrecios"+ self.name
-
         return self.env.ref('update_listprice.test_xlsx').report_action(self)

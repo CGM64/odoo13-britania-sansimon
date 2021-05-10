@@ -2,12 +2,11 @@ from odoo import models
 
 
 class TestXlsx(models.AbstractModel):
-    _name = 'report.britania.report_list_price'
+    _name = 'report.update_listprice.report_list_price'
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, model):
         i = 6
-        print("lines", model.name)
         formatTitle = workbook.add_format({'bold': True, 'font_size': 20})
         formatLabel = workbook.add_format(
             {'bold': True, 'font_color': 'black'})
