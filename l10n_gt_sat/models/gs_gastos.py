@@ -15,7 +15,7 @@ class GsComprasGastos(models.Model):
         monto = round(self.amount_total, 2)
 
 
-        action = self.env.ref('account.action_payment_in_invoice_type_sat')
+        action = self.env.ref('l10n_gt_sat.action_account_payments_payable_sat')
         result = action.read()[0]
         create_bill = self.env.context.get('create_bill', False)
         # override the context to get rid of the default filtering

@@ -10,7 +10,7 @@
             </button>
 
             <xpath expr="//button[@name='button_done']" position="after">
-              <button name="aplicar_pago" type="object" string="Solicitar Pago" class="oe_highlight"/>
+              <button name="aplicar_pago" type="object" string="Anticipo" class="oe_highlight" groups="account.group_account_manager"/>
             </xpath>
         </field>
     </record>
