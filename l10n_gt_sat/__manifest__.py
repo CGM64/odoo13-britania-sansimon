@@ -31,7 +31,6 @@
         'data/res_group_data.xml',
         'data/sequence_res_partner_data.xml',
         #'data/product_dai_data.xml',
-        'views/gs_gastos_pagos_views.xml',
         'views/views.xml',
         'views/templates.xml',
         'views/account_report.xml',

@@ -8,6 +8,10 @@
             <button name="button_unlock" position="after">
                 <button name="action_purchase_order_imprimir" type="object" string="Imprimir" states="done" groups="purchase.group_purchase_manager"/>
             </button>
+
+            <xpath expr="//button[@name='button_done']" position="after">
+              <button name="aplicar_pago" type="object" string="Solicitar Pago" class="oe_highlight"/>
+            </xpath>
         </field>
     </record>
 </odoo>
