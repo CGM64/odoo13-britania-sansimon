@@ -14,27 +14,19 @@ class GsComprasGastos(models.Model):
         proveedor = self.partner_id.id
         monto = round(self.amount_total, 2)
 
-        self.env.context = dict(self.env.context)
-        self.env.context.update({
+
+        action = self.env.ref('account.action_payment_in_invoice_type_sat')
+        result = action.read()[0]
+        create_bill = self.env.context.get('create_bill', False)
+        # override the context to get rid of the default filtering
+        result['context'] = {
             'default_communication': self.name,
             'default_payment_type': 'outbound',
             'default_partner_type': 'supplier',
-            'default_amount': abs(self.amount_total),
+            'default_amount': self.amount_total,
             'default_partner_id': proveedor,
             'default_payment_method_id': 4,
             'default_journal_id': 56,
             'default_check_no_negociable': 1,
-        })
-
-        self.ensure_one()
-        return {
-            'name': 'Registrar Pago',
-            'res_model': 'account.payment',
-            'view_mode': 'form',
-            'view_id': self.env.ref('account.view_account_payment_invoice_form').id,
-            'target': 'new',
-            'context': self.env.context,
-            'view_type': 'form',
-            # 'views': [(False, 'form')],
-            'type': 'ir.actions.act_window',
         }
+        return result
