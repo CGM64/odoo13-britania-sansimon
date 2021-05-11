@@ -44,7 +44,7 @@ class AccountMove(models.Model):
 
         documento = {}
         documento["factura_id"] = str(factura.id)
-        documento["CodigoMoneda"] = factura.currency_id.name
+        documento["CodigoMoneda"] = factura.company_id.currency_id.name
         documento["FechaHoraEmision"] = fields.Date.from_string(factura.invoice_date).strftime('%Y-%m-%dT%H:%M:%S')
         documento["Tipo"] = tipo_documento
         documento["AfiliacionIVA"] = factura.journal_id.afiliacion_iva
@@ -92,7 +92,7 @@ class AccountMove(models.Model):
         #Items
         items = []
         gran_total = gran_subtotal = gran_total_impuestos = 0
-        for detalle in factura.invoice_line_ids:
+        for detalle in factura.invoice_line_ids.filtered(lambda l: l.price_total > 0):
             descripcion = detalle.name
             if 'is_vehicle' in self.env['product.product']._fields:
                 if detalle.product_id.is_vehicle:
@@ -102,10 +102,12 @@ class AccountMove(models.Model):
             linea["Cantidad"] = detalle.quantity
             linea["UnidadMedida"] = detalle.product_uom_id.name
             linea["Descripcion"] = descripcion
-            precio_sin_descuento = detalle.price_unit
+            tasa = detalle.sat_tasa_cambio
+            precio_sin_descuento = detalle.price_unit * tasa
             linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
             linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * detalle.quantity)
             precio_unitario = detalle.price_unit * (100-detalle.discount) / 100
+            precio_unitario = precio_unitario * tasa
             descuento = round(precio_sin_descuento * detalle.quantity - precio_unitario * detalle.quantity,4)
             linea["Descuento"] = '{:.6f}'.format(descuento)
 

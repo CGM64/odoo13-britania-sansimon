@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <report
+    id="test_xlsx"
+    model="upd.listprice"
+    string="Importar Excel"
+    report_type="xlsx"
+    name="update_listprice.report_list_price"
+    file="ListaDePrecios"
+    menu="False"/>
+
+    </data>
+</odoo>
