@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <template id="view_stock_picking_bri" inherit_id="stock.report_picking">
+      <xpath expr="/t/t/t/t/div/table[1]" position="after">
+        <div class="row">
+          <div class="col">
+            <span>Prueba firma</span>
+          </div>
+        </div>
+      </xpath>
+    </template>
+
+  </data>
+</odoo>
