@@ -3,6 +3,7 @@ from odoo import models
 
 class TestXlsx(models.AbstractModel):
     _name = 'report.update_listprice.report_list_price'
+    _description = "Excel Reporte de lista de precios"
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, model):

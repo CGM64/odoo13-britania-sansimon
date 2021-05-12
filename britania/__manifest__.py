@@ -31,6 +31,7 @@
         'views/account_journal.xml',
         'views/repair_views.xml',
         'wizard/services_views.xml',
+        'wizard/catalogo_excel_wizard_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
