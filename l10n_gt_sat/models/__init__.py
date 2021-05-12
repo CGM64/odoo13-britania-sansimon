@@ -14,3 +14,4 @@ from . import sale
 from . import product_tags
 from . import res_partner
 from . import gs_gastos
+from . import res_currency
