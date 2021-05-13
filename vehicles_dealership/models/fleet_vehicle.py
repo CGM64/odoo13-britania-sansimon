@@ -25,7 +25,7 @@ class FleetVehicle(models.Model):
     _inherits = {'product.product': 'product_id'}
     currency_id = fields.Many2one('res.currency',string="Moneda",readonly=False,related='')
 
-    product_id = fields.Many2one('product.product', 'Product',
+    product_id = fields.Many2one('product.product', 'Product Vehicle',
                                  ondelete="cascade", delegate=True,
                                  required=True)
     image_128 = fields.Image(string="Image Small", readonly=False)
