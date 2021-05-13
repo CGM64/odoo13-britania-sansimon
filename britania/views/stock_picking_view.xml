@@ -1,15 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <data>
-    <template id="view_stock_picking_bri" inherit_id="stock.report_picking">
-      <xpath expr="/t/t/t/t/div/table[1]" position="after">
-        <div class="row">
-          <div class="col">
-            <span>Prueba firma</span>
-          </div>
-        </div>
-      </xpath>
+    <template id="report_transferencia" inherit_id="stock.report_picking">
+        <xpath expr="//t/t/t/div" position="inside">
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <div class="col-auto">
+                <div class="container">
+                    <div class="row">
+                      <div class="col-1"></div>
+                      <div class="col-4">
+                        <hr size="2px" color="black" />
+                      </div>
+                      <div class="col-2"></div>
+                      <div class="col-4">
+                        <hr size="2px" color="black" />
+                      </div>
+                      <div class="col-1"></div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                      <div class="col-1"></div>
+                      <div class="col-4">
+                        <center>Nombre de quien recibe</center>
+                      </div>
+                      <div class="col-2"></div>
+                      <div class="col-4">
+                        <center>Nombre de quien envia</center>
+                      </div>
+                      <div class="col-1"></div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
     </template>
-
-  </data>
 </odoo>
