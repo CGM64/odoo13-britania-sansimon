@@ -75,5 +75,16 @@
         </field>
     </record>
 
+    <record id="view_fleet_vehicle_model_btn" model="ir.ui.view">
+      <field name="name">fleet.vehicle.model.buttom</field>
+      <field name="model">fleet.vehicle.model</field>
+      <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form"/>
+      <field name="arch" type="xml">
+        <field name="manager_id" position="after">
+          <field name="is_publish"/>
+        </field>
+      </field>
+    </record>
+
   </data>
 </odoo>

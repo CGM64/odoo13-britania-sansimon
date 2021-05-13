@@ -29,7 +29,7 @@ class WebsiteSale(http.Controller):
         #Se declara el nombre del objeto 'Fleet' junto con que modelo pertenece.
         Fleet = request.env['fleet.vehicle.model']
         #Se llena la lista 'lista_fleet' y con el modelo declarado previemante 'Fleet' con search
-        lista_fleet = Fleet.sudo().search([('brand_id', '=',67)])
+        lista_fleet = Fleet.sudo().search([('brand_id', '=',67),('is_publish','=',True)])
 
         Medio = request.env['utm.medium']
         lista_medio = Medio.sudo().search([])
