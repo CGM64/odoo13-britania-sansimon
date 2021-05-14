@@ -68,8 +68,31 @@
                 <field name="partner_id" position="after">
                     <field name="fac_serie" optional="hide"/>
                     <field name="fac_numero" optional="show"/>
+                    <field name="partner_ref" optional="hide"/>
                 </field>
             </field>
           </record>
+
+          <record id="account_move_l10n_gt_access_search_view" model="ir.ui.view">
+              <field name="name">account.move.access.search.view</field>
+              <field name="model">account.move</field>
+              <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+              <field name="arch" type="xml">
+                  <xpath expr="//field[@name='name']" position="replace">
+                      <field name="name" string="Factura"
+                           filter_domain="[
+                                '|', '|' , '|', '|','|',
+                                ('name', 'ilike', self), ('invoice_origin', 'ilike', self),
+                                ('ref', 'ilike', self), ('invoice_payment_ref', 'ilike', self),
+                                ('partner_id', 'child_of', self),
+                                ('partner_ref', '=', self)]"/>
+                  </xpath>
+    <!--
+                  <xpath expr="//field[@name='invoice_line_ids']/tree//field[@name='discount']" position="replace">
+                      <field name="discount" string="Disc.%" groups="base.group_no_one" optional="show" attrs="{'readonly': [('price_unit_access', '=', False)]}"/>
+                  </xpath>
+                -->
+              </field>
+            </record>
       </data>
   </odoo>

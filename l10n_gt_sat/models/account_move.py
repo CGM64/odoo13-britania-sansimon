@@ -47,6 +47,7 @@ class AccountMove(models.Model):
 
     journal_tipo_operacion = fields.Selection('Tipo de Operacion', related='journal_id.tipo_operacion', readonly=True)
     referencia_interna = fields.Char(string="Referencia Interna", compute='_referencia_interna')
+    partner_ref = fields.Char(string='Cod. Cliente', related='partner_id.default_code')
 
     def _compute_no_linea(self):
         self.no_linea = 0

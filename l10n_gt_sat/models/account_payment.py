@@ -13,6 +13,8 @@ class AccountPayment(models.Model):
     observaciones = fields.Char(string="Observaciones",required=False)
     comentarios = fields.Char(string="Comentarios",required=False)
 
+    partner_ref = fields.Char(string='Cod. Cliente', related='partner_id.default_code')
+
     @api.onchange('amount', 'currency_id')
     def _onchange_amount(self):
 
