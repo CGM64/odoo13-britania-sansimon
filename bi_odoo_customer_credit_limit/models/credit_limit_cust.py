@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import time
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, \
-    DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT
 from datetime import date, datetime, timedelta
 from odoo import models, fields, exceptions, api, _
 from odoo.exceptions import Warning
@@ -19,8 +18,7 @@ class credit_limit(models.Model):
 
     name = fields.Char(string='Name', required=True)
     code = fields.Char(string='Code', required=True)
-    credit_limit_cust = fields.Float(string='Credit Limit',
-            required=True)
+    credit_limit_cust = fields.Float(string='Credit Limit', required=True)
 
     credit_limit_formula = fields.Selection([('receive_rule',
             'Receivable Amount of Customer'), ('due_date_rule',
