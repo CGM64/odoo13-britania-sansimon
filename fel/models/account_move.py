@@ -44,7 +44,7 @@ class AccountMove(models.Model):
 
         documento = {}
         documento["factura_id"] = str(factura.id)
-        documento["CodigoMoneda"] = factura.currency_id.name
+        documento["CodigoMoneda"] = factura.company_id.currency_id.name
         documento["FechaHoraEmision"] = fields.Date.from_string(factura.invoice_date).strftime('%Y-%m-%dT%H:%M:%S')
         documento["Tipo"] = tipo_documento
         documento["AfiliacionIVA"] = factura.journal_id.afiliacion_iva
@@ -92,7 +92,7 @@ class AccountMove(models.Model):
         #Items
         items = []
         gran_total = gran_subtotal = gran_total_impuestos = 0
-        for detalle in factura.invoice_line_ids:
+        for detalle in factura.invoice_line_ids.filtered(lambda l: l.price_total > 0):
             descripcion = detalle.name
             if 'is_vehicle' in self.env['product.product']._fields:
                 if detalle.product_id.is_vehicle:
@@ -102,25 +102,29 @@ class AccountMove(models.Model):
             linea["Cantidad"] = detalle.quantity
             linea["UnidadMedida"] = detalle.product_uom_id.name
             linea["Descripcion"] = descripcion
-            precio_sin_descuento = detalle.price_unit
-            linea["PrecioUnitario"] = '{:.2f}'.format(precio_sin_descuento)
-            linea["Precio"] = '{:.2f}'.format(precio_sin_descuento * detalle.quantity)
+            tasa = detalle.sat_tasa_cambio
+            precio_sin_descuento = detalle.price_unit * tasa
+            linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
+            linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * detalle.quantity)
             precio_unitario = detalle.price_unit * (100-detalle.discount) / 100
-            descuento = precio_sin_descuento * detalle.quantity - precio_unitario * detalle.quantity
+            precio_unitario = precio_unitario * tasa
+            descuento = round(precio_sin_descuento * detalle.quantity - precio_unitario * detalle.quantity,4)
             linea["Descuento"] = '{:.6f}'.format(descuento)
 
             #Impuestos
             precio_unitario_base = detalle.price_subtotal / detalle.quantity
-            total_linea = precio_unitario * detalle.quantity
-            total_linea_base = precio_unitario_base * detalle.quantity
-            total_impuestos = total_linea - total_linea_base
+            total_linea = round(precio_unitario * detalle.quantity,6)
+            #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
+            total_linea_base = round(total_linea / (factura.sat_iva_porcentaje/100+1),6)
+            #total_impuestos = total_linea - total_linea_base
+            total_impuestos = round(total_linea_base * (factura.sat_iva_porcentaje/100),6)
 
             if tipo_documento not in ("NABN"):
                 linea["NombreCorto"] = "IVA"
                 linea["CodigoUnidadGravable"] = "2" if factura.journal_id.tipo_operacion == 'EXPO' else "1"
-                linea["MontoGravable"] = '{:.4f}'.format(total_linea_base)
-                linea["MontoImpuesto"] = '{:.4f}'.format(total_impuestos)
-            linea["Total"] = '{:.4f}'.format(total_linea)
+                linea["MontoGravable"] = '{:.6f}'.format(total_linea_base)
+                linea["MontoImpuesto"] = '{:.6f}'.format(total_impuestos)
+            linea["Total"] = '{:.6f}'.format(total_linea)
 
             gran_total += total_linea
             gran_subtotal += total_linea_base
@@ -130,9 +134,9 @@ class AccountMove(models.Model):
 
             items.append(linea)
         documento["Items"] = items
-        documento["gran_total_impuestos"] = '{:.4f}'.format(gran_total_impuestos)
-        documento["TotalMontoImpuesto"] = '{:.4f}'.format(gran_total_impuestos)
-        documento["GranTotal"] = '{:.4f}'.format(gran_total)
+        documento["gran_total_impuestos"] = '{:.6f}'.format(gran_total_impuestos)
+        documento["TotalMontoImpuesto"] = '{:.6f}'.format(gran_total_impuestos)
+        documento["GranTotal"] = '{:.6f}'.format(gran_total)
 
         documento["Adenda"] = factura.name
 

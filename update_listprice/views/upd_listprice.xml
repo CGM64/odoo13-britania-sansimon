@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <record id="view_updlistprice_inherited_buttom" model="ir.ui.view">
+      <field name="name">upd.inherited.buttom</field>
+      <field name="model">upd.listprice</field>
+      <field name="inherit_id" ref="update_listprice.view_upd_listprice_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//button[@name='action_confirmar']" position="after">
+            <button name="export_xls" type="object" icon='fa-download'/>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>

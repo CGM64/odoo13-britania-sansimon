@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_repair_line_form_bri">
+        <field name="name">repair.form.bri</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form"/>
+        <field name="arch" type="xml">
+            <data>
+              <xpath expr="//field[@name='product_id']" position="replace">
+                <field name="product_id" options="{'no_create': True}" domain="[('type', 'in', ['product', 'consu']),('is_vehicle','=',True)]"/>
+              </xpath>
+
+                <xpath expr="//field[@name='operations']/tree/field[@name='product_id']" position="replace">
+                  <field name="product_id" options="{'no_create': True}" domain="[('type', '!=', 'service'),('is_vehicle','=',False)]"/>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+  </data>
+</odoo>

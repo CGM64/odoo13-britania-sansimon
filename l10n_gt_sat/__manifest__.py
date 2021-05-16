@@ -52,6 +52,10 @@
         'views/report_invoice.xml',
         'views/sale_view.xml',
         'views/res_partner_view.xml',
+        'views/custom_view.xml',
+        'wizard/tags_view.xml',
+        'report/purchase_order_views.xml',
+        'views/res_currency_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

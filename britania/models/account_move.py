@@ -36,7 +36,7 @@ class AccountMove(models.Model):
                 vehiculo = self.env['fleet.vehicle'].sudo().search([('product_id','=',line_id.product_id.id)])
                 combustible = ''
                 if vehiculo.fuel_type == 'gasoline':
-                    combustible = 'Gasolina' 
+                    combustible = 'Gasolina'
                 elif vehiculo.fuel_type == 'diesel':
                     combustible = 'Diesel'
                 elif vehiculo.fuel_type == 'lpg':
@@ -100,7 +100,7 @@ POLIZA : %s
                     ,vehiculo.color
                     ,combustible
                     ,vehiculo.doors
-                    ,vehiculo.ejes 
+                    ,vehiculo.ejes
                     ,str(vehiculo.tonelaje)
                     ,vehiculo.aduana if vehiculo.aduana else ''
                     ,vehiculo.poliza if vehiculo.poliza else ''))
@@ -112,9 +112,9 @@ POLIZA : %s
         #Verificar el tipo de moneda
         enletras = letras
         cantidadenletras = enletras.to_word(importe)
-        if self.currency_id.name == 'USD':
+        if self.company_id.currency_id.name == 'USD':
             cantidadenletras = cantidadenletras.replace('QUETZALES','DOLARES')
-        elif self.currency_id.name == 'EUR':
+        elif self.company_id.currency_id.name == 'EUR':
             cantidadenletras = cantidadenletras.resultado('QUETZALES','EUROS')
         else:
             cantidadenletras = cantidadenletras
@@ -182,49 +182,69 @@ POLIZA : %s
         pagina = []
         i=0
         nlinea = 0
+        linea={}
+        gran_total = gran_subtotal = gran_total_impuestos = 0
         for l in o.invoice_line_ids.filtered(lambda l: l.price_total > 0):
-            #El siguiente ciclo es para cepara la descripcion en varias lineas si supera la logintud de 30 caracteres
-            mostrar_contenido = True #Variable que me sirve solo para mostrar contenido en la primera linea, cuando la descripcion supera la linea
-            if l.product_id.is_vehicle:
-                descripcion = self.get_descripcion(l,1)
-                for d in descripcion:
-                    linea = {}
-                    i += 1
-                    linea['linea'] = i
-                    linea['blanco'] = False
-                    linea['default_code'] = l.product_id.default_code  if mostrar_contenido else ''
-                    linea['quantity'] = '{0:,.0f}'.format(l.quantity) if mostrar_contenido else ''
-                    linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
-                    linea['name'] = descripcion[d]
-                    linea['price_unit'] = o.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.price_unit) if mostrar_contenido else ''
-                    linea['price_total'] = o.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.price_total) if mostrar_contenido else ''
-                    lineas.append(linea)
-                    nlinea = i % num_linea_x_pagina
-                    if nlinea == 0:
-                        pagina.append(lineas)
-                        lineas = []
-                    mostrar_contenido = False
+            if l.quantity > 0:
+                tasa = l.sat_tasa_cambio
+                precio_sin_descuento = l.price_unit * tasa
+                linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
+                linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * l.quantity)
+                precio_unitario = l.price_unit * (100-l.discount) / 100
+                precio_unitario = precio_unitario * tasa
+                descuento = round(precio_sin_descuento * l.quantity - precio_unitario * l.quantity,4)
+                linea["Descuento"] = '{:.6f}'.format(descuento)
+                precio_unitario_base = l.price_subtotal / l.quantity
+                total_linea = round(precio_unitario * l.quantity,6)
+                #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
+                total_linea_base = round(total_linea / (self.sat_iva_porcentaje/100+1),6)
+                #total_impuestos = total_linea - total_linea_base
+                total_impuestos = round(total_linea_base * (self.sat_iva_porcentaje/100),6)
+                gran_total += total_linea
+                gran_subtotal += total_linea_base
+                gran_total_impuestos += total_impuestos
+                #El siguiente ciclo es para cepara la descripcion en varias lineas si supera la logintud de 30 caracteres
+                mostrar_contenido = True #Variable que me sirve solo para mostrar contenido en la primera linea, cuando la descripcion supera la linea
+                if l.product_id.is_vehicle:
+                    descripcion = self.get_descripcion(l,1)
+                    for d in descripcion:
+                        linea = {}
+                        i += 1
+                        linea['linea'] = i
+                        linea['blanco'] = False
+                        linea['default_code'] = l.product_id.default_code  if mostrar_contenido else ''
+                        linea['quantity'] = '{0:,.0f}'.format(l.quantity) if mostrar_contenido else ''
+                        linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
+                        linea['name'] = descripcion[d]
+                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_unitario) if mostrar_contenido else ''
+                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(total_linea) if mostrar_contenido else ''
+                        lineas.append(linea)
+                        nlinea = i % num_linea_x_pagina
+                        if nlinea == 0:
+                            pagina.append(lineas)
+                            lineas = []
+                        mostrar_contenido = False
 
-            else:
-                for nueva_linea_desc in self.nueva_linea(l.name, largo_lineas):
-                    linea = {}
-                    i += 1
-                    linea['linea'] = i
-                    linea['blanco'] = False
-                    linea['default_code'] = l.product_id.default_code  if mostrar_contenido else ''
-                    linea['quantity'] = '{0:,.0f}'.format(l.quantity) if mostrar_contenido else ''
-                    linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
-                    linea['name'] = nueva_linea_desc
-                    linea['price_unit'] = o.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.price_unit) if mostrar_contenido else ''
-                    linea['price_total'] = o.currency_id.symbol + ' ' + '{0:,.2f}'.format(l.price_total) if mostrar_contenido else ''
-                    lineas.append(linea)
-                    nlinea = i % num_linea_x_pagina
-                    #self.nueva_linea(linea['name'])
-                    #print("Numero de linea (%s)  ---   (%s)   texto-largo(%s)(%s)" % (str(i), str(nlinea), len(linea['name']), linea['name']))
-                    if nlinea == 0:
-                        pagina.append(lineas)
-                        lineas = []
-                    mostrar_contenido = False
+                else:
+                    for nueva_linea_desc in self.nueva_linea(l.name, largo_lineas):
+                        linea = {}
+                        i += 1
+                        linea['linea'] = i
+                        linea['blanco'] = False
+                        linea['default_code'] = l.product_id.default_code  if mostrar_contenido else ''
+                        linea['quantity'] = '{0:,.0f}'.format(l.quantity) if mostrar_contenido else ''
+                        linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
+                        linea['name'] = nueva_linea_desc
+                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_unitario) if mostrar_contenido else ''
+                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(total_linea) if mostrar_contenido else ''
+                        lineas.append(linea)
+                        nlinea = i % num_linea_x_pagina
+                        #self.nueva_linea(linea['name'])
+                        #print("Numero de linea (%s)  ---   (%s)   texto-largo(%s)(%s)" % (str(i), str(nlinea), len(linea['name']), linea['name']))
+                        if nlinea == 0:
+                            pagina.append(lineas)
+                            lineas = []
+                        mostrar_contenido = False
         if len(lineas) >= 0:
             pagina.append(lineas)
 
@@ -240,6 +260,33 @@ POLIZA : %s
         #     for a in p:
         #         print(a)
         return pagina
+
+
+    def get_total_invoice(self):
+        gran_total = gran_subtotal = gran_total_impuestos = 0
+        linea={}
+        for l in self.invoice_line_ids.filtered(lambda l: l.price_total > 0):
+            if l.quantity > 0:
+                tasa = l.sat_tasa_cambio
+                precio_sin_descuento = l.price_unit * tasa
+                linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
+                linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * l.quantity)
+                precio_unitario = l.price_unit * (100-l.discount) / 100
+                precio_unitario = precio_unitario * tasa
+                descuento = round(precio_sin_descuento * l.quantity - precio_unitario * l.quantity,4)
+                linea["Descuento"] = '{:.6f}'.format(descuento)
+                precio_unitario_base = l.price_subtotal / l.quantity
+                total_linea = round(precio_unitario * l.quantity,6)
+                #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
+                total_linea_base = round(total_linea / (self.sat_iva_porcentaje/100+1),6)
+                #total_impuestos = total_linea - total_linea_base
+                total_impuestos = round(total_linea_base * (self.sat_iva_porcentaje/100),6)
+                gran_total += total_linea
+                gran_subtotal += total_linea_base
+                gran_total_impuestos += total_impuestos
+
+        return float('{:.2f}'.format(gran_total))
+
 
 
 

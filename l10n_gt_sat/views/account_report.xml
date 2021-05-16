@@ -69,7 +69,7 @@
       <field name="name">Voucher Paper Format</field>
       <field name="default" eval="True"/>
       <field name="format">custom</field>
-      <field name="page_height">139</field>
+      <field name="page_height">160</field>
       <field name="page_width">216</field>
       <field name="orientation">Landscape</field>
       <field name="margin_top">10</field>

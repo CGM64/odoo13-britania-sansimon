@@ -20,13 +20,16 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale'],
+    'depends': ['base','sale','report_xlsx'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'views/upd_listprice_views.xml',
+        'views/product_template_views.xml',
+        'views/upd_listprice.xml',
+        'report/report_xlsx.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

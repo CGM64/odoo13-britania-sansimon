@@ -19,6 +19,7 @@ class AccountMove(models.Model):
     sat_exento = fields.Monetary(string="Exento", compute='_compute_libro_fiscal', currency_field='company_currency_id')
     sat_peq_contri = fields.Monetary(string="Pequeño Contribuyente", compute='_compute_libro_fiscal', currency_field='company_currency_id')
     sat_iva = fields.Monetary(string="IVA", compute='_compute_libro_fiscal', currency_field='company_currency_id')
+    sat_iva_porcentaje = fields.Float(string="IVA Porcentaje", compute='_compute_libro_fiscal')
     sat_subtotal = fields.Monetary(string="Subtotal", compute='_compute_libro_fiscal', currency_field='company_currency_id')
     sat_amount_total = fields.Monetary(string="Sat Total", compute='_compute_libro_fiscal', currency_field='company_currency_id')
     sat_combustible = fields.Monetary(string="Combustible", compute='_compute_libro_fiscal', currency_field='company_currency_id')
@@ -46,6 +47,7 @@ class AccountMove(models.Model):
 
     journal_tipo_operacion = fields.Selection('Tipo de Operacion', related='journal_id.tipo_operacion', readonly=True)
     referencia_interna = fields.Char(string="Referencia Interna", compute='_referencia_interna')
+    partner_ref = fields.Char(string='Cod. Cliente', related='partner_id.default_code')
 
     def _compute_no_linea(self):
         self.no_linea = 0
@@ -62,6 +64,7 @@ class AccountMove(models.Model):
         invoice_ids = [move.id for move in self if move.id and move.is_invoice(include_receipts=True)]
 
         for move in self:
+            move.sat_iva_porcentaje = 0
             total_untaxed = 0.0
             total_untaxed_currency = 0.0
             total_tax = 0.0
@@ -126,6 +129,7 @@ class AccountMove(models.Model):
                     if impuesto.impuesto_sat == 'ipeq':
                         sat_peq_contri += line.balance
                     elif impuesto.impuesto_sat == 'iva':
+                        move.sat_iva_porcentaje = impuesto.amount
                         iva += line.balance
                     elif impuesto.impuesto_sat == 'idp':
                         sat_exento += line.balance
@@ -212,3 +216,19 @@ class AccountMove(models.Model):
 
             currency = len(currencies) == 1 and currencies.pop() or move.company_id.currency_id
             is_paid = currency and currency.is_zero(move.amount_residual) or not move.amount_residual
+
+    class AccountMoveLine(models.Model):
+
+        _inherit = "account.move.line"
+
+        sat_tasa_cambio = fields.Float(string="Tasa de Cambio", compute='_compute_tasa_cambio', help="Tasa de cambio del documento")
+
+        def _compute_tasa_cambio(self):
+            tasa = 0.0
+            for detalle in self:
+                if detalle.amount_currency == 0:
+                    tasa = 1
+                else:
+                    tasa = detalle.balance / detalle.amount_currency
+
+                detalle.sat_tasa_cambio = tasa

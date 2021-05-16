@@ -1,1 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fleet_model_year,access_fleet_model_year,model_fleet_model_year,base.group_user,1,1,1,1
+access_fleet_model_repair,access_fleet_model_repair,model_fleet_model_repair,base.group_user,1,1,1,1
