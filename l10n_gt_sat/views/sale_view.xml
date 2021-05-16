@@ -23,5 +23,27 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_order_form_access_search" model="ir.ui.view">
+        <field name="name">view.order.access.search.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="replace">
+                <field name="name" string="Order" filter_domain="['|', '|', '|', ('name', 'ilike', self), ('client_order_ref', 'ilike', self), ('partner_id', 'child_of', self), ('partner_ref', '=', self)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="tree" model="ir.ui.view">
+        <field name="name">view.order.access.tree.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="partner_ref" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
   </data>
 </odoo>

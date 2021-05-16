@@ -14,6 +14,8 @@ class SaleOrder(models.Model):
 
     _inherit = "sale.order"
 
+    partner_ref = fields.Char(string='Cod. Cliente', related='partner_id.default_code')
+
     def action_confirm(self):
         for linea in self.order_line:
             if linea.product_id.type == 'product' and linea.qty_available_today < linea.product_uom_qty:
