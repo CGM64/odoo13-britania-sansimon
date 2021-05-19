@@ -34,32 +34,21 @@ class AccountMove(models.Model):
         if line_id:
             if line_id.product_id.is_vehicle:
                 vehiculo = self.env['fleet.vehicle'].sudo().search([('product_id','=',line_id.product_id.id)])
-                combustible = ''
-                if vehiculo.fuel_type == 'gasoline':
-                    combustible = 'Gasolina'
-                elif vehiculo.fuel_type == 'diesel':
-                    combustible = 'Diesel'
-                elif vehiculo.fuel_type == 'lpg':
-                    combustible = 'GLP'
-                elif vehiculo.fuel_type == 'electric':
-                    combustible = 'Electrico'
-                elif combustible == 'hybrid':
-                    combustible = 'Hibrido'
-
+                combustible = {'gasoline':'Gasolina','diesel':'Diesel','lpg':'GLP','electric':'Electrico','hybrid':'Hibrido'}
                 resultado = {
                 'Tipo vehiculo':'Tipo vehiculo : {}'.format(vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''),
                 'Transmision':'Transmision : {}'.format('Automatica' if vehiculo.transmission == 'automatic' else 'Manual'),
-                'Marca':'Marca: {}'.format(vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''),
-                'Modelo':'Modelo: {}'.format(vehiculo.model_year),
-                'CC':'CC: {}'.format(vehiculo.cc),
-                'Asientos':'Asientos: {}'.format(vehiculo.seats),
-                'Linea':'Linea: {}'.format(vehiculo.model_id.name if vehiculo.model_id else ''),
-                'VIN/CHASIS':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
-                'Motor':'Motor: {}'.format(vehiculo.motor),
-                'Cilindros':'Cilindros: {}'.format(vehiculo.cilindros),
-                'Color':'Color: {}'.format(vehiculo.color),
-                'Combustible':'Combustible {}'.format(combustible),
-                'Puertas':'Puertas: {}'.format(vehiculo.doors),
+                'Marca':'Marca : {}'.format(vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''),
+                'Modelo':'Modelo : {}'.format(vehiculo.model_year),
+                'CC':'CC : {}'.format(vehiculo.cc),
+                'Asientos':'Asientos : {}'.format(vehiculo.seats),
+                'Linea':'Linea : {}'.format(vehiculo.model_id.name if vehiculo.model_id else ''),
+                'VIN/CHASIS':'VIN/CHASIS : {}'.format(vehiculo.vin_sn),
+                'Motor':'Motor : {}'.format(vehiculo.motor),
+                'Cilindros':'Cilindros : {}'.format(vehiculo.cilindros),
+                'Color':'Color : {}'.format(vehiculo.color),
+                'Combustible':'Combustible : {}'.format(combustible[vehiculo.fuel_type]),
+                'Puertas':'Puertas : {}'.format(vehiculo.doors),
                 'Ejes':'Ejes : {}'.format(str(vehiculo.ejes) if vehiculo.ejes else ''),
                 'Tonelaje':'Tonelaje : {}'.format(str(vehiculo.tonelaje) if vehiculo.tonelaje else 0),
                 }
@@ -71,47 +60,7 @@ class AccountMove(models.Model):
                 if tipo==1:
                     return resultado
                 elif tipo!=1:
-                    resultado = """
-Tipo vehiculo   : %s
-Transmision        : %s
-Marca     : %s
-Modelo    : %s
-CC    : %s
-Asientos   : %s
-Linea    : %s
-VIN/CHASIS        : %s
-Motor  : %s
-Cilindros  : %s
-Color        : %s
-Combustible       : %s
-Puertas    : %s
-Ejes    : %s
-Tonelaje    : %s
-%s : %s
-%s : %s"""             
-                return (resultado % (
-                    vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''
-                    ,'Automatica' if vehiculo.transmission == 'automatic' else 'Manual'
-                    ,vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''
-                    ,vehiculo.model_year
-                    ,vehiculo.cc
-                    ,vehiculo.seats
-                    ,vehiculo.model_id.name if vehiculo.model_id else ''
-                    ,vehiculo.vin_sn
-                    ,vehiculo.motor
-                    ,vehiculo.cilindros
-                    ,vehiculo.color
-                    ,combustible
-                    ,vehiculo.doors
-                    ,vehiculo.ejes
-                    ,str(vehiculo.tonelaje)
-                    ,'Aduana' if vehiculo.aduana else ''
-                    ,vehiculo.aduana if vehiculo.aduana else ''
-                    ,'Poliza' if vehiculo.poliza else ''
-                    ,vehiculo.poliza if vehiculo.poliza else ''))
-
-
-
+                    return '\n'.join(str(x) for x in resultado.values())
 
     #Funcion encargada de devolver un monto dado numericamente a un monto en letras
     def monto_letras(self,importe):
