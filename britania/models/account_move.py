@@ -45,47 +45,50 @@ class AccountMove(models.Model):
                     combustible = 'Electrico'
                 elif combustible == 'hybrid':
                     combustible = 'Hibrido'
-                if vehiculo and tipo == 1:
-                    resultado = {
-                    'tipo_vehiculo':'Tipo vehiculo : {}'.format(vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''),
-                    'transmision':'Transmision : {}'.format('Automatica' if vehiculo.transmission == 'automatic' else 'Manual'),
-                    'marca':'Marca: {}'.format(vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''),
-                    'modelo':'Modelo: {}'.format(vehiculo.model_year),
-                    'cc':'CC: {}'.format(vehiculo.cc),
-                    'asientos':'Asientos: {}'.format(vehiculo.seats),
-                    'linea':'Linea: {}'.format(vehiculo.model_id.name if vehiculo.model_id else ''),
-                    'vin':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
-                    'motor':'Motor: {}'.format(vehiculo.motor),
-                    'cilindros':'Cilindros: {}'.format(vehiculo.cilindros),
-                    'color':'Color: {}'.format(vehiculo.color),
-                    'tipo_combustible':'Combustible {}'.format(combustible),
-                    'doors':'Puertas: {}'.format(vehiculo.doors),
-                    'Ejes':'Ejes : {}'.format(str(vehiculo.ejes) if vehiculo.ejes else ''),
-                    'tonelaje':'Tonelaje : {}'.format(str(vehiculo.tonelaje) if vehiculo.tonelaje else 0),
-                    'Aduana':'Aduana: {}'.format(vehiculo.aduana if vehiculo.aduana else ''),
-                    'Poliza':'Poliza: {}'.format(vehiculo.poliza if vehiculo.poliza else ''),
-                    }
+
+                resultado = {
+                'Tipo vehiculo':'Tipo vehiculo : {}'.format(vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''),
+                'Transmision':'Transmision : {}'.format('Automatica' if vehiculo.transmission == 'automatic' else 'Manual'),
+                'Marca':'Marca: {}'.format(vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''),
+                'Modelo':'Modelo: {}'.format(vehiculo.model_year),
+                'CC':'CC: {}'.format(vehiculo.cc),
+                'Asientos':'Asientos: {}'.format(vehiculo.seats),
+                'Linea':'Linea: {}'.format(vehiculo.model_id.name if vehiculo.model_id else ''),
+                'VIN/CHASIS':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
+                'Motor':'Motor: {}'.format(vehiculo.motor),
+                'Cilindros':'Cilindros: {}'.format(vehiculo.cilindros),
+                'Color':'Color: {}'.format(vehiculo.color),
+                'Combustible':'Combustible {}'.format(combustible),
+                'Puertas':'Puertas: {}'.format(vehiculo.doors),
+                'Ejes':'Ejes : {}'.format(str(vehiculo.ejes) if vehiculo.ejes else ''),
+                'Tonelaje':'Tonelaje : {}'.format(str(vehiculo.tonelaje) if vehiculo.tonelaje else 0),
+                }
+                if vehiculo.aduana and vehiculo.aduana != '':
+                    resultado['Aduana'] = 'Aduana: {}'.format(vehiculo.aduana if vehiculo.aduana else False)
+
+                if vehiculo.poliza and vehiculo.poliza != '':
+                    resultado['Poliza'] = 'Poliza: {}'.format(vehiculo.poliza if vehiculo.poliza else False)
+                if tipo==1:
                     return resultado
-                elif vehiculo and tipo != 1:
+                elif tipo!=1:
                     resultado = """
-TIPO VEHICULO   : %s
-TRANSMISION        : %s
-MARCA     : %s
-MODELO    : %s
+Tipo vehiculo   : %s
+Transmision        : %s
+Marca     : %s
+Modelo    : %s
 CC    : %s
-ASIENTOS   : %s
-LINEA    : %s
+Asientos   : %s
+Linea    : %s
 VIN/CHASIS        : %s
-MOTOR  : %s
-CILINDROS  : %s
-COLOR        : %s
-COMBUSTIBLE       : %s
-PUERTAS    : %s
-EJESasd    : %s
-TONELAJEasd    : %s
-ADUANA : %s
-POLIZA : %s
-"""
+Motor  : %s
+Cilindros  : %s
+Color        : %s
+Combustible       : %s
+Puertas    : %s
+Ejes    : %s
+Tonelaje    : %s
+%s : %s
+%s : %s"""             
                 return (resultado % (
                     vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''
                     ,'Automatica' if vehiculo.transmission == 'automatic' else 'Manual'
@@ -102,8 +105,11 @@ POLIZA : %s
                     ,vehiculo.doors
                     ,vehiculo.ejes
                     ,str(vehiculo.tonelaje)
+                    ,'Aduana' if vehiculo.aduana else ''
                     ,vehiculo.aduana if vehiculo.aduana else ''
+                    ,'Poliza' if vehiculo.poliza else ''
                     ,vehiculo.poliza if vehiculo.poliza else ''))
+
 
 
 
