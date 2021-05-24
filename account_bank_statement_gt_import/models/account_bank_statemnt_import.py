@@ -165,7 +165,7 @@ class AccountBankStatementImport(models.TransientModel):
         numero_linea = 0
         for line in recordlist:
             numero_linea += 1
-            if not line:
+            if not line.strip():
                 continue
             if numero_linea > 9:
                 vals_line = {}
