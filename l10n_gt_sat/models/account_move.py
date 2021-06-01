@@ -137,7 +137,7 @@ class AccountMove(models.Model):
                         sat_exento += line.balance
 
 
-                if line.product_id:
+                if line.product_id and line.quantity >= 0:
                     es_peq_contribuyente = False
                     for line_imp in line.tax_ids:
                         if line_imp.impuesto_sat == 'ipeq':
