@@ -49,6 +49,9 @@ class ProductTemplate(models.Model):
         if not self:
             return
 
+        if not self.default_code:
+            return
+
         self._cr.execute('''
             SELECT default_code
             FROM product_template
