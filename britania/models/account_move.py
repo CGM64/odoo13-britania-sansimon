@@ -34,78 +34,33 @@ class AccountMove(models.Model):
         if line_id:
             if line_id.product_id.is_vehicle:
                 vehiculo = self.env['fleet.vehicle'].sudo().search([('product_id','=',line_id.product_id.id)])
-                combustible = ''
-                if vehiculo.fuel_type == 'gasoline':
-                    combustible = 'Gasolina'
-                elif vehiculo.fuel_type == 'diesel':
-                    combustible = 'Diesel'
-                elif vehiculo.fuel_type == 'lpg':
-                    combustible = 'GLP'
-                elif vehiculo.fuel_type == 'electric':
-                    combustible = 'Electrico'
-                elif combustible == 'hybrid':
-                    combustible = 'Hibrido'
-                if vehiculo and tipo == 1:
-                    resultado = {
-                    'tipo_vehiculo':'Tipo vehiculo : {}'.format(vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''),
-                    'transmision':'Transmision : {}'.format('Automatica' if vehiculo.transmission == 'automatic' else 'Manual'),
-                    'marca':'Marca: {}'.format(vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''),
-                    'modelo':'Modelo: {}'.format(vehiculo.model_year),
-                    'cc':'CC: {}'.format(vehiculo.cc),
-                    'asientos':'Asientos: {}'.format(vehiculo.seats),
-                    'linea':'Linea: {}'.format(vehiculo.model_id.name if vehiculo.model_id else ''),
-                    'vin':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
-                    'motor':'Motor: {}'.format(vehiculo.motor),
-                    'cilindros':'Cilindros: {}'.format(vehiculo.cilindros),
-                    'color':'Color: {}'.format(vehiculo.color),
-                    'tipo_combustible':'Combustible {}'.format(combustible),
-                    'doors':'Puertas: {}'.format(vehiculo.doors),
-                    'Ejes':'Ejes : {}'.format(str(vehiculo.ejes) if vehiculo.ejes else ''),
-                    'tonelaje':'Tonelaje : {}'.format(str(vehiculo.tonelaje) if vehiculo.tonelaje else 0),
-                    'Aduana':'Aduana: {}'.format(vehiculo.aduana if vehiculo.aduana else ''),
-                    'Poliza':'Poliza: {}'.format(vehiculo.poliza if vehiculo.poliza else ''),
-                    }
+                combustible = {'gasoline':'Gasolina','diesel':'Diesel','lpg':'GLP','electric':'Electrico','hybrid':'Hibrido'}
+                resultado = {
+                'Tipo vehiculo':'Tipo vehiculo : {}'.format(vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''),
+                'Transmision':'Transmision : {}'.format('Automatica' if vehiculo.transmission == 'automatic' else 'Manual'),
+                'Marca':'Marca : {}'.format(vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''),
+                'Modelo':'Modelo : {}'.format(vehiculo.model_year),
+                'CC':'CC : {}'.format(vehiculo.cc),
+                'Asientos':'Asientos : {}'.format(vehiculo.seats),
+                'Linea':'Linea : {}'.format(vehiculo.model_id.name if vehiculo.model_id else ''),
+                'VIN/CHASIS':'VIN/CHASIS : {}'.format(vehiculo.vin_sn),
+                'Motor':'Motor : {}'.format(vehiculo.motor),
+                'Cilindros':'Cilindros : {}'.format(vehiculo.cilindros),
+                'Color':'Color : {}'.format(vehiculo.color),
+                'Combustible':'Combustible : {}'.format(combustible[vehiculo.fuel_type]),
+                'Puertas':'Puertas : {}'.format(vehiculo.doors),
+                'Ejes':'Ejes : {}'.format(str(vehiculo.ejes) if vehiculo.ejes else ''),
+                'Tonelaje':'Tonelaje : {}'.format(str(vehiculo.tonelaje) if vehiculo.tonelaje else 0),
+                }
+                if vehiculo.aduana and vehiculo.aduana != '':
+                    resultado['Aduana'] = 'Aduana: {}'.format(vehiculo.aduana if vehiculo.aduana else False)
+
+                if vehiculo.poliza and vehiculo.poliza != '':
+                    resultado['Poliza'] = 'Poliza: {}'.format(vehiculo.poliza if vehiculo.poliza else False)
+                if tipo==1:
                     return resultado
-                elif vehiculo and tipo != 1:
-                    resultado = """
-TIPO VEHICULO   : %s
-TRANSMISION        : %s
-MARCA     : %s
-MODELO    : %s
-CC    : %s
-ASIENTOS   : %s
-LINEA    : %s
-VIN/CHASIS        : %s
-MOTOR  : %s
-CILINDROS  : %s
-COLOR        : %s
-COMBUSTIBLE       : %s
-PUERTAS    : %s
-EJESasd    : %s
-TONELAJEasd    : %s
-ADUANA : %s
-POLIZA : %s
-"""
-                return (resultado % (
-                    vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''
-                    ,'Automatica' if vehiculo.transmission == 'automatic' else 'Manual'
-                    ,vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''
-                    ,vehiculo.model_year
-                    ,vehiculo.cc
-                    ,vehiculo.seats
-                    ,vehiculo.model_id.name if vehiculo.model_id else ''
-                    ,vehiculo.vin_sn
-                    ,vehiculo.motor
-                    ,vehiculo.cilindros
-                    ,vehiculo.color
-                    ,combustible
-                    ,vehiculo.doors
-                    ,vehiculo.ejes
-                    ,str(vehiculo.tonelaje)
-                    ,vehiculo.aduana if vehiculo.aduana else ''
-                    ,vehiculo.poliza if vehiculo.poliza else ''))
-
-
+                elif tipo!=1:
+                    return '\n'.join(str(x) for x in resultado.values())
 
     #Funcion encargada de devolver un monto dado numericamente a un monto en letras
     def monto_letras(self,importe):
