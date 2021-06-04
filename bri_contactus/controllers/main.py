@@ -37,10 +37,14 @@ class WebsiteSale(http.Controller):
         Departamentos =  request.env['res.country.state']
         lista_dp = Departamentos.sudo().search([('country_id','=',90)])
 
+        medio_c =  request.env['crm.medio.contacto']
+        lista_medios_c = medio_c.sudo().search([])
+
         values = {
             'medios': lista_medio,
             'depto' : lista_dp,
             'fleet' : lista_fleet,
+            'medio_c' : lista_medios_c,
         }
 
         return request.render("bri_contactus.bri_contactenos", values)
