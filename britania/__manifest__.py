@@ -33,6 +33,7 @@
         'views/stock_picking_view.xml',
         'wizard/services_views.xml',
         'wizard/catalogo_excel_wizard_view.xml',
+        'data/crm_group_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
