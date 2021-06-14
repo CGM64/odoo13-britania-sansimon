@@ -131,13 +131,19 @@ class AccountMove(models.Model):
                     elif impuesto.impuesto_sat == 'iva':
                         move.sat_iva_porcentaje = impuesto.amount
                         iva += line.balance
-                    elif impuesto.impuesto_sat == 'idp':
+                    elif impuesto.impuesto_sat in ('idp','itme'):
                         sat_exento += line.balance
                     elif impuesto.impuesto_sat == 'inguat':
                         sat_exento += line.balance
+                #Cuando una factura en este caso ventas tiene iva exento, entonces no tiene tax_line_id, por esa razon se debe de ir a los tax_ids.
+                es_exento = False
+                if not line.tax_line_id:
+                    for taxids in line.tax_ids:
+                        if taxids.impuesto_sat == 'exeiva':
+                            es_exento = True
+                            sat_exento += line.balance
 
-
-                if line.product_id and line.quantity >= 0:
+                if line.product_id and not es_exento:
                     es_peq_contribuyente = False
                     for line_imp in line.tax_ids:
                         if line_imp.impuesto_sat == 'ipeq':
@@ -192,13 +198,13 @@ class AccountMove(models.Model):
                 move.sat_iva = iva_importacion
                 move.sat_importa_in_ca = move.sat_iva / 0.12
                 move.sat_exportacion_in_ca = sign * sat_exportacion_in_ca
-                move.sat_exento = sign * sat_exento
+                move.sat_exento = 0
                 move.sat_amount_total = move.sat_importa_in_ca + move.sat_iva + move.sat_exportacion_in_ca + move.sat_exento
 
             elif move.journal_id.tipo_operacion == 'DUCA_OUT':
                 move.sat_iva = iva_importacion
                 move.sat_importa_out_ca = move.sat_iva / 0.12
-                move.sat_exento = sign * sat_exento
+                move.sat_exento = 0
                 move.sat_amount_total = move.sat_importa_out_ca + move.sat_iva + move.sat_exento
             else:
 
