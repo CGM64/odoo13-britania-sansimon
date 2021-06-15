@@ -21,3 +21,21 @@ class repairOrder(models.Model):
                     i.product_uom_qty = i.product_uom_qty
                 else:
                     i.product_uom_qty = lista_product.labour_time
+
+class RepairFee(models.Model):
+    _inherit = "repair.fee"
+
+    amount_total = fields.Float(string="Total", compute="_get_amount_total")
+
+    def _get_amount_total(self):
+        for fee in self:
+            fee.amount_total = fee.price_unit * fee.product_uom_qty
+
+class RepairLine(models.Model):
+    _inherit = "repair.line"
+
+    amount_total = fields.Float(string="Total", compute="_get_amount_total")
+
+    def _get_amount_total(self):
+        for line in self:
+            line.amount_total = line.price_unit * line.product_uom_qty

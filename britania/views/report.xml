@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+  <template id="custom_report" inherit_id="repair.report_repairorder" name="custom_report">
+    <xpath expr="//thead" position="replace">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th class="text-right">Quantity</th>
+                <t t-if="o.invoice_method != 'none'">
+                    <th class="text-right">Unit Price</th>
+                    <th class="text-right">Price</th>
+                </t>
+            </tr>
+        </thead>
+    </xpath>
+
+    <xpath expr="//t[@t-if='o.operations']" position="replace">
+        <t t-if="o.operations">
+            <tr class="bg-200 o_line_section"><td colspan="5"><strong>Parts</strong></td></tr>
+            <tr t-foreach="o.operations" t-as="line">
+                <td>
+                    <p t-if="line.type == 'add'"><i>(Add)</i> <span t-field="line.name" /></p>
+                    <p t-if="line.type == 'remove'">(<i>Remove</i>) <span t-field="line.name"/></p>
+                </td>
+                <td class="text-right">
+                    <span t-field="line.product_uom_qty"/>
+                    <span groups="uom.group_uom" t-field="line.product_uom.name"/>
+                </td>
+                <t t-if="(line.repair_id.invoice_method != 'none')">
+                    <td class="text-right">
+                        <span t-field="line.price_unit"/>
+                    </td>
+                    <td class="text-right o_price_total">
+                        <span t-field="line.amount_total" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/>
+                   </td>
+                </t>
+            </tr>
+        </t>
+    </xpath>
+
+    <xpath expr="//t[@t-if='o.fees_lines']" position="replace">
+        <t t-if="o.fees_lines">
+            <tr class="bg-200 o_line_section"><td colspan="5"><strong>Operations</strong></td></tr>
+            <tr t-foreach="o.fees_lines" t-as="fees">
+                <td>
+                    <span t-field="fees.name"/>
+                </td>
+                <td class="text-right">
+                    <span t-field="fees.product_uom_qty"/>
+                    <span groups="uom.group_uom" t-field="fees.product_uom.name"/>
+                </td>
+                <t t-if="(fees.repair_id.invoice_method != 'none')">
+                    <td class="text-right">
+                        <span t-field="fees.price_unit"/>
+                    </td>
+                    <td class="text-right o_price_total">
+                        <span t-field="fees.amount_total"
+                            t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/>
+                   </td>
+                </t>
+            </tr>
+        </t>
+    </xpath>
+
+    <xpath expr="//div[@class='col-4']" position="replace">
+            <div class="col-4">
+                <table class="table table-sm">
+                    <t t-if="o.invoice_method !='none'">
+                        <tr class="border-black o_total">
+                            <td><strong>Total</strong></td>
+                            <td class="text-right o_price_total">
+                                <span t-field="o.amount_total"
+                                    t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/>
+                            </td>
+                        </tr>
+                    </t>
+                </table>
+            </div>
+    </xpath>
+  </template>
+</odoo>
