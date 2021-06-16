@@ -14,8 +14,11 @@ class CrmLead(models.Model):
             raise ValidationError(("No tiene permisos para realizar esta accion."))
 
     def write(self, vals):
+        if not vals.get('stage_id'):
+            return super(CrmLead, self).write(vals)
+
         if self.user_has_groups('britania.crm_group_gerente_ventas'):
-            res = super(CrmLead, self).write(vals)
+            return super(CrmLead, self).write(vals)
 
         if not self.user_has_groups('britania.crm_group_gerente_ventas'):
             valores = request.env['crm.stage'].search([('id', '=',vals.get('stage_id'))])
