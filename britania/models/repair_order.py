@@ -6,6 +6,8 @@ from odoo.http import request
 
 class repairOrder(models.Model):
     _inherit = "repair.order"
+    
+    tipo_orden = fields.Many2one('repair.type', 'Tipo de orden', index=True)
 
     def update_detail(self, search=''):
 
@@ -39,3 +41,16 @@ class RepairLine(models.Model):
     def _get_amount_total(self):
         for line in self:
             line.amount_total = line.price_unit * line.product_uom_qty
+
+class RepairType(models.Model):
+    _name = "repair.type"
+    _description = "Tipos de ordenes de reparación"
+
+    name = fields.Char('Tipo de orden', required=True)
+    state = fields.Selection([
+        ('borrador', 'Borrador'),
+    ], default='borrador', string='Estado', copy=False, index=True, readonly=True, help="Estado de la Conversión.")
+
+    _sql_constraints = [
+        ('name_uniq', 'unique (name)', "Ya existe un registro con este nombre!"),
+    ]

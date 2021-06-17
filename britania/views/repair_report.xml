@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
-  <template id="custom_report" inherit_id="repair.report_repairorder" name="custom_report">
+
+    <!-- Reporte reparacion-->
+    <template id="custom_report" inherit_id="repair.report_repairorder" name="custom_report">
     <xpath expr="//thead" position="replace">
         <thead>
             <tr>
-                <th>Description</th>
-                <th class="text-right">Quantity</th>
+                <th>Descripción</th>
+                <th class="text-right">Cantidad</th>
                 <t t-if="o.invoice_method != 'none'">
-                    <th class="text-right">Unit Price</th>
-                    <th class="text-right">Price</th>
+                    <th class="text-right">Precio Unit.</th>
+                    <th class="text-right">Precio</th>
                 </t>
             </tr>
         </thead>
@@ -17,7 +19,7 @@
 
     <xpath expr="//t[@t-if='o.operations']" position="replace">
         <t t-if="o.operations">
-            <tr class="bg-200 o_line_section"><td colspan="5"><strong>Parts</strong></td></tr>
+            <tr class="bg-200 o_line_section"><td colspan="5"><strong>Piezas</strong></td></tr>
             <tr t-foreach="o.operations" t-as="line">
                 <td>
                     <p t-if="line.type == 'add'"><i>(Add)</i> <span t-field="line.name" /></p>
@@ -41,7 +43,7 @@
 
     <xpath expr="//t[@t-if='o.fees_lines']" position="replace">
         <t t-if="o.fees_lines">
-            <tr class="bg-200 o_line_section"><td colspan="5"><strong>Operations</strong></td></tr>
+            <tr class="bg-200 o_line_section"><td colspan="5"><strong>Operaciones</strong></td></tr>
             <tr t-foreach="o.fees_lines" t-as="fees">
                 <td>
                     <span t-field="fees.name"/>
@@ -78,5 +80,44 @@
                 </table>
             </div>
     </xpath>
-  </template>
+    </template>
+
+    <!-- Reporte pedido-->
+    <template id="custom_report_sale" inherit_id="sale.report_saleorder_document" name="custom_report_sale">
+
+        <xpath expr="//th[@name='th_subtotal']" position="replace">
+        </xpath>
+
+        <xpath expr="//td[@name='td_taxes']" position="replace">
+        </xpath>
+
+        <xpath expr="//table[@class='table table-sm']" position="replace">
+            <table class="table table-sm">
+                <tr t-if="doc.total_discount">
+                    <td name="td_amount_untaxed_label"><strong>Subtotal</strong></td>
+                    <td name="td_amount_untaxed" class="text-right">
+                        <span t-field="doc.amount_total"/>
+                    </td>
+                </tr>
+                <tr t-if="doc.total_discount">
+                    <td><strong>Descuento</strong></td>
+                    <td name="td_tax_total" class="text-right">
+                        <span t-field="doc.total_discount"/>
+                    </td>
+                </tr>
+                <tr class="border-black o_total">
+                    <td name="td_amount_total_label"><strong>Total</strong></td>
+                    <td name="td_amount_total" class="text-right">
+                        <span t-field="doc.amount_total"/>
+                    </td>
+                </tr>
+            </table>
+        </xpath>
+
+        <xpath expr="//td[@t-if='display_discount']" position="replace">
+            <td t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
+                <span t-field="line.discount" t-options='{"widget": "float", "precision": 0}'/>
+            </td>
+        </xpath>
+    </template>
 </odoo>

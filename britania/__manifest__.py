@@ -34,7 +34,8 @@
         'wizard/services_views.xml',
         'wizard/catalogo_excel_wizard_view.xml',
         'data/crm_group_data.xml',
-        'views/report.xml',
+        'views/repair_report.xml',
+        'data/repair_type.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
