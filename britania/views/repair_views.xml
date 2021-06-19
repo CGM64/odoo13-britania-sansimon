@@ -19,9 +19,6 @@
     </record>
 
     <!--Menu de Tipo de Reparación-->
-
-    <menuitem id="menu_repair_type_menu_list" name="Tipos de ordenes de reparación" action="repair_type_action" parent="repair.repair_menu_config" groups="base.group_user" />
-
     <record id="repair_type_action" model="ir.actions.act_window">
       <field name="name">Tipos de ordenes de reparación</field>
       <field name="res_model">repair.type</field>
@@ -33,6 +30,8 @@
       </field>
     </record>
 
+    <menuitem id="menu_repair_type_menu_list" name="Tipos de ordenes de reparación" action="repair_type_action" parent="repair.repair_menu_config" groups="base.group_user" />
+    
     <record id="repair_type_form" model="ir.ui.view">
       <field name="name">repair.type.view.form</field>
       <field name="model">repair.type</field>
