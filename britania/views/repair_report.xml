@@ -64,8 +64,8 @@
             </tr>
         </t>
     </xpath>
-
-    <xpath expr="//div[@class='col-4']" position="replace">
+    
+    <xpath expr="//div[hasclass('col-4')]" position="replace">
             <div class="col-4">
                 <table class="table table-sm">
                     <t t-if="o.invoice_method !='none'">
@@ -91,27 +91,22 @@
         <xpath expr="//td[@name='td_taxes']" position="replace">
         </xpath>
 
-        <xpath expr="//table[@class='table table-sm']" position="replace">
-            <table class="table table-sm">
-                <tr t-if="doc.total_discount">
-                    <td name="td_amount_untaxed_label"><strong>Subtotal</strong></td>
-                    <td name="td_amount_untaxed" class="text-right">
-                        <span t-field="doc.amount_total_undiscounted"/>
-                    </td>
-                </tr>
-                <tr t-if="doc.total_discount">
-                    <td><strong>Descuento</strong></td>
-                    <td name="td_tax_total" class="text-right">
-                        <span t-field="doc.total_discount"/>
-                    </td>
-                </tr>
-                <tr class="border-black o_total">
-                    <td name="td_amount_total_label"><strong>Total</strong></td>
-                    <td name="td_amount_total" class="text-right">
-                        <span t-field="doc.amount_total"/>
-                    </td>
-                </tr>
-            </table>
+        <xpath expr="//tr[hasclass('o_subtotal')]" position="replace">
+            <tr t-if="doc.total_discount">
+                <td name="td_amount_untaxed_label"><strong>Subtotal</strong></td>
+                <td name="td_amount_untaxed" class="text-right">
+                    <span t-field="doc.amount_total_undiscounted"/>
+                </td>
+            </tr>
+        </xpath>
+
+        <xpath expr="//t[@t-foreach='doc.amount_by_group']" position="replace">
+            <tr t-if="doc.total_discount">
+                <td><strong>Descuento</strong></td>
+                <td name="td_tax_total" class="text-right">
+                    <span t-field="doc.total_discount"/>
+                </td>
+            </tr>
         </xpath>
 
         <xpath expr="//td[@t-if='display_discount']" position="replace">
