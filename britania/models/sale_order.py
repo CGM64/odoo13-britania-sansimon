@@ -23,6 +23,7 @@ class repairOrder(models.Model):
     _inherit = "sale.order"
     
     total_discount = fields.Monetary(string="Descuento", compute="_amount_discount")
+    amount_total_undiscounted = fields.Monetary(string="Total sin descuento", compute="_amount_total_undiscounted")
 
     @api.depends('order_line.price_total')
     def _amount_discount(self):
@@ -35,4 +36,17 @@ class repairOrder(models.Model):
                 total_desc += line.price_subtotal
             order.update({
                 'total_discount': total - order.amount_total,
+            })
+
+    @api.depends('total_discount')
+    def _amount_total_undiscounted(self):
+        
+        for order in self:
+            total = 0.0
+            if order.total_discount == 0.0:
+                total = order.amount_total
+            else:
+                total = order.amount_total + order.total_discount
+            order.update({
+                'amount_total_undiscounted': total,
             })

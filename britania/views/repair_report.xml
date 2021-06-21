@@ -96,7 +96,7 @@
                 <tr t-if="doc.total_discount">
                     <td name="td_amount_untaxed_label"><strong>Subtotal</strong></td>
                     <td name="td_amount_untaxed" class="text-right">
-                        <span t-field="doc.amount_total"/>
+                        <span t-field="doc.amount_total_undiscounted"/>
                     </td>
                 </tr>
                 <tr t-if="doc.total_discount">
