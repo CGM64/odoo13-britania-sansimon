@@ -36,6 +36,7 @@
         'data/crm_group_data.xml',
         'views/repair_report.xml',
         'data/repair_type.xml',
+        'views/account_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
