@@ -173,6 +173,7 @@ class AccountMove(models.Model):
                         linea['name'] = descripcion[d]
                         linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_unitario) if mostrar_contenido else ''
                         linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(total_linea) if mostrar_contenido else ''
+                        linea['discount'] = '{0:,.0f}'.format(l.discount) if mostrar_contenido else ''
                         lineas.append(linea)
                         nlinea = i % num_linea_x_pagina
                         if nlinea == 0:
@@ -192,6 +193,7 @@ class AccountMove(models.Model):
                         linea['name'] = nueva_linea_desc
                         linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_unitario) if mostrar_contenido else ''
                         linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(total_linea) if mostrar_contenido else ''
+                        linea['discount'] = str('{0:,.0f}'.format(l.discount))+"%" if mostrar_contenido else ''
                         lineas.append(linea)
                         nlinea = i % num_linea_x_pagina
                         #self.nueva_linea(linea['name'])

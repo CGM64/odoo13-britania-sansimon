@@ -429,11 +429,12 @@
                 </tr>
                 <tr class="factura_encabezado3">
                   <th>CODIGO</th>
-                  <th colspan="2">CANTIDAD</th>
+                  <th>CANT.</th>
                   <th>U/M</th>
-                  <th colspan="3">DESCRIPCION</th>
-                  <th colspan="2">UNITARIO</th>
-                  <th colspan="2">TOTAL</th>
+                  <th colspan="4">DESCRIPCION</th>
+                  <th>UNITARIO</th>
+                  <th>DESCUENTO</th>
+                  <th>TOTAL</th>
                 </tr>
               </thead>
               <tbody>
@@ -441,18 +442,20 @@
                   <tr>
                     <t t-if="l['blanco']">
                       <td>&#160;</td>
-                      <td colspan="2">&#160;</td>
+                      <td>&#160;</td>
                       <td class="text-center">&#160;</td>
-                      <td colspan="3">&#160;</td>
-                      <td colspan="2">&#160;</td>
+                      <td colspan="4">&#160;</td>
+                      <td>&#160;</td>
+                      <td>&#160;</td>
                       <td>&#160;</td>
                     </t>
                     <t t-else="">
                       <td><span t-esc="l['default_code']"/></td>
-                      <td colspan="2" class="text-center"><span t-esc="l['quantity']"/></td>
+                      <td class="text-center"><span t-esc="l['quantity']"/></td>
                       <td class="text-center"><span t-esc="l['product_uom_name']"/></td>
-                      <td colspan="3"><t t-esc="l['name']"/></td>
-                      <td colspan="2" class="factura_td_numeros"><span t-esc="l['price_unit']"/></td>
+                      <td colspan="4"><t t-esc="l['name']"/></td>
+                      <td class="factura_td_numeros"><span t-esc="l['price_unit']"/></td>
+                      <td class="text-center"><span t-esc="l['discount']"/></td>
                       <td class="factura_td_numeros"><span t-esc="l['price_total']"/></td>
                     </t>
                   </tr>
@@ -461,10 +464,13 @@
               </tbody>
               <tfoot class="footer factura_pie_tabla">
                 <tr>
-                  <td colspan="2" class="text-center">DESCUENTO</td>
+                  <td colspan="8" class="factura_encabezado1"><br/></td>
+                  <td class="text-center">DESCUENTO</td>
                   <td class="factura_td_numeros"><span t-esc="o.total_discount" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
-                  <td colspan="7" class="factura_encabezado1">TOTAL A PAGAR EN LETRAS<br/><t t-esc="o.monto_letras(o.get_total_invoice())"/></td>
-                  <td colspan="2" class="text-center">TOTAL</td>
+                </tr>
+                <tr>
+                  <td colspan="8" class="factura_encabezado1">TOTAL A PAGAR EN LETRAS<br/><t t-esc="o.monto_letras(o.get_total_invoice())"/></td>
+                  <td class="text-center">TOTAL</td>
                   <td class="factura_td_numeros"><span t-esc="o.get_total_invoice()" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                 </tr>
               </tfoot>
