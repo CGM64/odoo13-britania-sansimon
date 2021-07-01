@@ -47,6 +47,19 @@ class RepairType(models.Model):
     _description = "Tipos de ordenes de reparación"
 
     name = fields.Char('Tipo de orden', required=True)
+    default_type = fields.Boolean(string="Tipo de orden por defecto", help="Tipo de orden por defecto")
+
+    @api.onchange('default_type')
+    def _check_unique_nit(self):
+        tipos = request.env['repair.type'].search([('default_type', '=', True)])
+        for i in tipos:
+            if i.id == self.id:
+                pass
+            else:
+                i.update({
+                    'default_type': False,
+                })
+        
     state = fields.Selection([
         ('borrador', 'Borrador'),
     ], default='borrador', string='Estado', copy=False, index=True, readonly=True, help="Estado de la Conversión.")
@@ -54,3 +67,12 @@ class RepairType(models.Model):
     _sql_constraints = [
         ('name_uniq', 'unique (name)', "Ya existe un registro con este nombre!"),
     ]
+
+class Repair(models.Model):
+    _inherit = "repair.order"
+
+    def _default_type(self):
+        return self.env['repair.type'].search([('default_type', '=', True)], limit=1).id
+    
+    tipo_orden = fields.Many2one('repair.type', 'Tipo de orden', index=True, default=_default_type)
+

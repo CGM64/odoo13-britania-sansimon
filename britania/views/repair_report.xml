@@ -16,6 +16,39 @@
             </tr>
         </thead>
     </xpath>
+    
+    <xpath expr="//h2" position="replace">
+        <h2>
+            <span t-if="o.state != 'draft'">Orden de </span>
+            <span t-if="o.state == 'draft'">Presupuesto de </span>
+            <span t-field="o.tipo_orden"/>
+            <span> nº:</span>
+            <span t-field="o.name"/>
+        </h2>
+    </xpath>
+
+    <xpath expr="//div[@id='informations']" position="replace">
+        <div id="informations" class="row mt32 mb32">
+            <div t-if="o.product_id.name" class="col-3 bm-2">
+                <strong>Product to Repair:</strong>
+                <p t-field="o.product_id.name" class="m-0"/>
+            </div>
+            <div class="col-3 bm-2" groups="stock.group_production_lot">
+                <strong>Lot/Serial Number:</strong>
+                <t t-if="o.lot_id">
+                    <span t-field="o.lot_id.name"/>
+                </t>
+            </div>
+            <div t-if="o.guarantee_limit" class="col-3 bm-2">
+                <strong>Warranty:</strong>
+                <p t-field="o.guarantee_limit" class="m-0"/>
+            </div>
+            <div class="col-3 bm-2">
+                <strong>Fecha:</strong>
+                <p t-field="o.create_date" t-options="{'widget': 'date'}" class="m-0"/>
+            </div>
+        </div>
+    </xpath>
 
     <xpath expr="//t[@t-if='o.operations']" position="replace">
         <t t-if="o.operations">

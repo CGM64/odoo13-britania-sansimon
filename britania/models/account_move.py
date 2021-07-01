@@ -145,7 +145,7 @@ class AccountMove(models.Model):
                 precio_sin_descuento = l.price_unit * tasa
                 linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
                 linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * l.quantity)
-                precio_unitario = l.price_unit * (100-l.discount) / 100
+                precio_unitario = l.price_unit
                 precio_unitario = precio_unitario * tasa
                 descuento = round(precio_sin_descuento * l.quantity - precio_unitario * l.quantity,4)
                 linea["Descuento"] = '{:.6f}'.format(descuento)

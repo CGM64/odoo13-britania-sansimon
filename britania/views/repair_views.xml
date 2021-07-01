@@ -45,6 +45,9 @@
               <h1>
                 <field name="name" placeholder="Ejemplo: Servicio" />
               </h1>
+              <group>
+                <field string="Tipo de orden por defecto" name="default_type"/>
+              </group>
             </div>
           </sheet>
         </form>
@@ -60,6 +63,9 @@
         <data>
           <xpath expr="//field[@name='user_id']" position="after">
             <field name="tipo_orden" options="{'no_create': True, 'no_edit': True}"/>
+          </xpath>
+          <xpath expr="//field[@name='location_id']" position="before">
+            <field name="create_date" widget='date' readonly="1"/>
           </xpath>
         </data>
       </field>
