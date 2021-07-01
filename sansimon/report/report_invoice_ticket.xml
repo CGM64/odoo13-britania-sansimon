@@ -167,7 +167,7 @@
         <div class="o_boxed_header text-black">
           <div class="row">
             <div class="col-12 text-center">
-              <strong><span class="mt0" t-field="company.name"/></strong><br/>
+              <strong><span class="mt0" t-field="company.company_registry"/></strong><br/>
               <span class="mt0" t-field="company.display_street"/><br/>
               <span class="mt0">Teléfono:
               </span><span class="mt0" t-field="company.phone"/><br/>
