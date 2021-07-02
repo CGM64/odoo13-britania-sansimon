@@ -3,16 +3,19 @@
     <data noupdate="0">
         <record id="repair_type_01" model="repair.type">
             <field name="name">Servicio</field>
-            <field name="default_type">Servicio</field>
+            <field name="default_type">True</field>
         </record>
         <record id="repair_type_02" model="repair.type">
-            <field name="default_type">Garantía</field>
+            <field name="name">Garantía</field>
+            <field name="default_type">False</field>
         </record>
         <record id="repair_type_03" model="repair.type">
-            <field name="default_type">Cortesía</field>
+            <field name="name">Cortesía</field>
+            <field name="default_type">False</field>
         </record>
         <record id="repair_type_04" model="repair.type">
-            <field name="default_type">Reclamo</field>
+            <field name="name">Reclamo</field>
+            <field name="default_type">False</field>
         </record>
     </data>
 </odoo>
