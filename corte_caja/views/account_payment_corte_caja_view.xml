@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Acción-->
+    <record id="corte_caja_action" model="ir.actions.act_window">
+        <field name="name">Corte de Caja</field>
+        <field name="res_model">corte.caja</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+      Crea un nuevo corte de caja.
+            </p>
+        </field>
+    </record>
+
+    <!--item en el menú proveedores-->
+    <menuitem name="Corte de Caja" id="menu_account_payment_item" action="corte_caja_action" parent="account.menu_finance_receivables" />
+    
+    <!-- VISTA DE ARBOL INICIAL DE LA CONVERSION -->
+    <record id="corte_caja_view_tree" model="ir.ui.view">
+        <field name="name">corte.caja.view.form</field>
+        <field name="model">corte.caja</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+   
+    <!--Vista del Detalle -->
+    <record id="corte_caja_detalle_view_tree" model="ir.ui.view">
+        <field name="name">corte.caja.detalle.view_tree</field>
+        <field name="model">corte.caja.detalle</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="account_payment_line_id"/>
+                <field name="circular"/>
+                <field name="partner_id"/>
+                <field name="journal_id"/>
+                <field name="amount"/>
+            </tree>
+        </field>
+    </record>
+   
+    <record id="corte_caja_detalle_view_form" model="ir.ui.view">
+        <field name="name">corte.caja.detalle.view.form</field>
+        <field name="model">corte.caja.detalle</field>
+        <field name="arch" type="xml">
+            <form string="Corte de Caja" class="o_expense_form">
+                <sheet>
+                    <group>
+                        <field name="account_payment_line_id"/>
+                        <field name="partner_id"/>
+                        <field name="journal_id"/>
+                        <field name="amount"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="corte_caja_view_form" model="ir.ui.view">
+        <field name="name">corte.caja.view.form</field>
+        <field name="model">corte.caja</field>
+        <field name="arch" type="xml">
+            <form string="Corte de Caja" class="o_expense_form">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,cancel,transfered"/>
+                    <button name="bucar_pagos" type="object" string="Consultar" class="oe_highlight" icon="fa-search"/>
+                    <button name="sumar_por_diario" type="object" string="Test" class="oe_highlight" icon="fa-search"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.j. Descripción del gasto"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="user_id" options="{'no_create': True}"/>
+                            <field name="journal_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="fecha_inicio"/>
+                            <field name="fecha_fin"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Resumen">
+
+                        </page>
+                        <page string="Detalle">
+                            <field name="corte_caja_ids" context="{'tree_view_ref': 'corte_caja.corte_caja_detalle_view_tree'}" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
