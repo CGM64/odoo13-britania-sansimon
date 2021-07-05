@@ -51,29 +51,41 @@ class CorteCaja(models.Model):
             self.write({'state': 'confirm'})
             return result
 
-    def sumar_por_diario(self):
+
+    def _obtener_lista_diario(self):
         lista_diario=[]
         for linea in self.corte_caja_ids:
-            if linea not in lista_diario:
+            if linea.journal_id.id not in lista_diario:
                 lista_diario.append(linea.journal_id.id)
         print("lista_diario-->",lista_diario)
+        return lista_diario
 
-        # dominio = [
-        #     ('state', '=', 'posted'),
-        #     ('payment_type', '=', 'inbound'),         
-        # ]
+    def sumar_por_diario(self):
+        lista_diario=self._obtener_lista_diario()
+        listado_sumatoria=[]
 
-        # if self.user_id:
-        #     dominio += ('create_uid', '=', self.user_id.id),
-        # if self.journal_id:
-        #     dominio += ('journal_id', '=', self.journal_id.id),
-        # if self.fecha_inicio:
-        #     dominio += ('payment_date', '>=', self.fecha_inicio),
-        # if self.fecha_fin:
-        #     dominio += ('payment_date', '<=', self.fecha_fin),
+        dominio = [
+            ('state', '=', 'posted'),
+            ('payment_type', '=', 'inbound'),         
+        ]
 
-        # consulta_account_payment = payment.env['account.payment'].search(dominio)
-        # return sum(calculo.total for calculo in consulta_account_payment.move_line_ids.filtered(lambda journal: journal.code in ('LIQRE',)))
+        if self.user_id:
+            dominio += ('create_uid', '=', self.user_id.id),
+        if self.journal_id:
+            dominio += ('journal_id', '=', self.journal_id.id),
+        if self.fecha_inicio:
+            dominio += ('payment_date', '>=', self.fecha_inicio),
+        if self.fecha_fin:
+            dominio += ('payment_date', '<=', self.fecha_fin),
+        consulta_account_payment = self.env['account.payment'].search(dominio)
+
+        for diario in lista_diario:
+            print("Diario-->",diario)
+            sumatoria = sum(calculo.amount for calculo in consulta_account_payment.filtered(lambda journal: journal.journal_id.id in (diario,)))
+            dic_sumatoria={'journal_id':diario, 'total':sumatoria}
+            listado_sumatoria.append(dic_sumatoria)
+        print('listado_sumatoria-->',listado_sumatoria)
+        return listado_sumatoria
 
 
     def bucar_pagos(self):
