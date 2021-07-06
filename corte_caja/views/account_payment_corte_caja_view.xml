@@ -14,7 +14,7 @@
 
     <!--item en el menú proveedores-->
     <menuitem name="Corte de Caja" id="menu_account_payment_item" action="corte_caja_action" parent="account.menu_finance_receivables" />
-    
+
     <!-- VISTA DE ARBOL INICIAL DE LA CONVERSION -->
     <record id="corte_caja_view_tree" model="ir.ui.view">
         <field name="name">corte.caja.view.form</field>
@@ -25,7 +25,7 @@
             </tree>
         </field>
     </record>
-   
+
     <!--Vista del Detalle -->
     <record id="corte_caja_detalle_view_tree" model="ir.ui.view">
         <field name="name">corte.caja.detalle.view_tree</field>
@@ -40,7 +40,7 @@
             </tree>
         </field>
     </record>
-   
+
     <record id="corte_caja_detalle_view_form" model="ir.ui.view">
         <field name="name">corte.caja.detalle.view.form</field>
         <field name="model">corte.caja.detalle</field>
@@ -55,6 +55,34 @@
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+
+    <!--Vista del Resumen -->
+    <record id="corte_caja_resumen_view_tree" model="ir.ui.view">
+        <field name="name">corte.caja.resumen.view_tree</field>
+        <field name="model">corte.caja.resumen</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="journal_id"/>
+                <field name="amount"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Vista del Facturas -->
+    <record id="corte_caja_factura_view_tree" model="ir.ui.view">
+        <field name="name">corte.caja.factura.view_tree</field>
+        <field name="model">corte.caja.factura</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="account_move_line_id"/>
+                
+                <field name="partner_id"/>
+                <field name="invoice_date"/>
+                <field name="amount_total"/>
+            </tree>
         </field>
     </record>
 
@@ -85,13 +113,31 @@
                             <field name="fecha_fin"/>
                         </group>
                     </group>
+
+
                     <notebook>
                         <page string="Resumen">
+                            <field name="corte_caja_resumen_ids" context="{'tree_view_ref': 'corte_caja.corte_caja_resumen_view_tree'}" />
+                            <group name="resumen_group" col="6">
+                                <group colspan="4">
 
+                                </group>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="">
+                                    <div class="oe_inline o_td_label">
+                                        <label for="total_corte" />
+                                    </div>
+                                    <field name="total_corte" nolabel="1" class="" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
                         </page>
                         <page string="Detalle">
                             <field name="corte_caja_ids" context="{'tree_view_ref': 'corte_caja.corte_caja_detalle_view_tree'}" />
                         </page>
+                        <page string="Facturas">
+                            <field name="corte_caja_factura_ids" context="{'tree_view_ref': 'corte_caja.corte_caja_factura_view_tree'}" />
+                        </page>
+
                     </notebook>
                 </sheet>
             </form>
