@@ -91,8 +91,13 @@
         <field name="arch" type="xml">
             <form string="Corte de Caja" class="o_expense_form">
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,cancel,transfered"/>
-                    <button name="action_procesar" type="object" string="Consultar" class="oe_highlight" icon="fa-search"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,cancel,confirm"/>
+
+                    <button name="action_draft" string="Cambiar a Borrador" type="object" attrs="{'invisible':[('state','=','draft')]}"/>
+                    <button name="action_confirm" string="Confirmar" type="object" attrs="{'invisible':[('state','!=','draft')]}"/>
+                    <button name="action_cancel" string="Cancelar" type="object" attrs="{'invisible':[('state','!=','confirm')]}"/>
+
+                    <button name="action_procesar" type="object" string="Consultar" class="oe_highlight" icon="fa-search" attrs="{'invisible':[('state','!=','draft')]}"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -115,7 +120,7 @@
 
                     <notebook>
                         <page string="Resumen">
-                            <field name="corte_caja_resumen_ids" context="{'tree_view_ref': 'corte_caja.corte_caja_resumen_view_tree'}" />
+                            <field name="corte_caja_resumen_ids" options ="{'no_open':true, 'no_quick_create':true,'no_create_edit':true,'no_create':true}" context="{'tree_view_ref': 'corte_caja.corte_caja_resumen_view_tree'}" />
                             <group name="resumen_group" col="6">
                                 <group colspan="4">
 
@@ -130,11 +135,11 @@
                             </group>
                         </page>
                         <page string="Detalle">
-                            <field name="corte_caja_ids" context="{'tree_view_ref': 'corte_caja.corte_caja_detalle_view_tree'}" />
+                            <field name="corte_caja_ids" options ="{'no_open':true, 'no_quick_create':true,'no_create_edit':true,'no_create':true}" context="{'tree_view_ref': 'corte_caja.corte_caja_detalle_view_tree'}" />
                         </page>
 
                         <page string="Facturas">
-                             <field name="corte_caja_factura_ids" context="{'tree_view_ref': 'corte_caja.corte_caja_factura_view_tree'}" />
+                             <field name="corte_caja_factura_ids" options ="{'no_open':true, 'no_quick_create':true,'no_create_edit':true,'no_create':true}" context="{'tree_view_ref': 'corte_caja.corte_caja_factura_view_tree'}" />
                             <group name="factura_group" col="6">
                                 <group colspan="4">
 

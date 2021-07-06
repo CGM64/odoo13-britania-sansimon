@@ -14,7 +14,7 @@ class CorteCaja(models.Model):
 
     state = fields.Selection([
         ('draft', 'Borrador'),
-        ('transfered', 'Transferido'),
+        ('confirm', 'Confirmado'),
         ('cancel', 'Cancelado'),
     ], default='draft', string='Estado', copy=False, index=True, readonly=True, help="Estado de la Transferencia.")
 
@@ -25,7 +25,9 @@ class CorteCaja(models.Model):
                                                                                                     ('payment_type', '=', 'outbound'),
                                                                                                     ('payment_method_id.code', '=', 'manual')]).mapped("partner_id").ids)])
 
-    user_id = fields.Many2one('res.users', string='Usuario', )
+    user_id = fields.Many2one('res.users', string='Usuario', default=lambda self: self.env.uid)
+
+    
 
     fecha_inicio = fields.Date(string='Fecha inicio', index=True, readonly=True, states={
                                'draft': [('readonly', False)]},required=True)
@@ -101,6 +103,27 @@ class CorteCaja(models.Model):
         self._borrar_lineas()   
         self._buscar_pagos()
         self._buscar_facturas()
+    
+
+    def action_confirm(self):
+        cont=0
+        for rec in self.corte_caja_ids:
+            cont+=1
+        for rec in self.corte_caja_resumen_ids:
+            cont+=1
+        for rec in self.corte_caja_factura_ids:
+            cont+=1
+        
+        if cont ==0:
+            raise Warning("Existen líneas en blanco, por favor valide.")
+        else:
+            self.write({'state': 'confirm'})
+
+    def action_draft(self):
+        self.write({'state': 'draft'})
+
+    def action_cancel(self):
+        self.write({'state': 'cancel'})
 
     def _buscar_facturas(self):  
         dominio = [
