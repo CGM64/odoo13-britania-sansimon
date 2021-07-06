@@ -78,7 +78,6 @@
         <field name="arch" type="xml">
             <tree editable="bottom">
                 <field name="account_move_line_id"/>
-                
                 <field name="partner_id"/>
                 <field name="invoice_date"/>
                 <field name="amount_total"/>
@@ -93,8 +92,7 @@
             <form string="Corte de Caja" class="o_expense_form">
                 <header>
                     <field name="state" widget="statusbar" statusbar_visible="draft,cancel,transfered"/>
-                    <button name="bucar_pagos" type="object" string="Consultar" class="oe_highlight" icon="fa-search"/>
-                    <button name="sumar_por_diario" type="object" string="Test" class="oe_highlight" icon="fa-search"/>
+                    <button name="action_procesar" type="object" string="Consultar" class="oe_highlight" icon="fa-search"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -134,8 +132,21 @@
                         <page string="Detalle">
                             <field name="corte_caja_ids" context="{'tree_view_ref': 'corte_caja.corte_caja_detalle_view_tree'}" />
                         </page>
+
                         <page string="Facturas">
-                            <field name="corte_caja_factura_ids" context="{'tree_view_ref': 'corte_caja.corte_caja_factura_view_tree'}" />
+                             <field name="corte_caja_factura_ids" context="{'tree_view_ref': 'corte_caja.corte_caja_factura_view_tree'}" />
+                            <group name="factura_group" col="6">
+                                <group colspan="4">
+
+                                </group>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="">
+                                    <div class="oe_inline o_td_label">
+                                        <label for="total_facturas" />
+                                    </div>
+                                    <field name="total_facturas" nolabel="1" class="" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                                <div class="oe_clear"/>
+                            </group>
                         </page>
 
                     </notebook>

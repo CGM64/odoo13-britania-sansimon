@@ -47,14 +47,23 @@ class CorteCaja(models.Model):
 
 
     total_corte=fields.Float(string='Total', compute="_total_corte", store=True)
+    total_facturas=fields.Float(string='Total', compute="_total_facturas", store=True)
 
 
-    @api.onchange('corte_caja_ids','corte_caja_resumen_ids')
+
+    @api.onchange('corte_caja_ids','corte_caja_resumen_ids',)
     def _total_corte(self):
         suma=0
         for linea in self.corte_caja_resumen_ids:
             suma+=linea.amount
         self.total_corte=suma
+
+    @api.onchange('corte_caja_factura_ids')
+    def _total_facturas(self):
+        suma=0
+        for linea in self.corte_caja_factura_ids:
+            suma+=linea.amount_total
+        self.total_facturas=suma
 
     @api.model
     def create(self, vals):
@@ -86,10 +95,14 @@ class CorteCaja(models.Model):
     def _borrar_lineas(self):
         for rec in self: rec.corte_caja_ids = [(5,0,0)]
         for rec in self: rec.corte_caja_resumen_ids = [(5,0,0)]
+        for rec in self: rec.corte_caja_factura_ids = [(5,0,0)]
 
+    def action_procesar(self):
+        self._borrar_lineas()   
+        self._buscar_pagos()
+        self._buscar_facturas()
 
-    def _cargar_facturas(self):  
-
+    def _buscar_facturas(self):  
         dominio = [
             ('state', '=', 'posted'),
             ('type', '=', 'out_invoice'),      
@@ -106,11 +119,11 @@ class CorteCaja(models.Model):
 
         for factura in consulta_account_move:
             self.corte_caja_factura_ids=[(0,0,{'account_move_line_id':factura.id})]
+        
+        self._total_facturas()
 
 
-    def bucar_pagos(self):
-        self._borrar_lineas()       
-
+    def _buscar_pagos(self): 
         dominio = [
             ('state', '=', 'posted'),
             ('payment_type', '=', 'inbound'),      
@@ -133,8 +146,6 @@ class CorteCaja(models.Model):
         lista_suma_diario=self._sumar_por_diario(consulta_account_payment)
         for suma_diario in lista_suma_diario:
             self.corte_caja_resumen_ids=[(0,0,suma_diario)]
-
-        self._cargar_facturas()
 
         self._total_corte()
         
