@@ -26,32 +26,17 @@ class CorteCaja(models.Model):
                                                                                                     ('payment_method_id.code', '=', 'manual')]).mapped("partner_id").ids)])
 
     user_id = fields.Many2one('res.users', string='Usuario', default=lambda self: self.env.uid)
-
-    
-
-    fecha_inicio = fields.Date(string='Fecha inicio', index=True, readonly=True, states={
-                               'draft': [('readonly', False)]},required=True)
-    fecha_fin = fields.Date(string='Fecha fin', index=True, readonly=True, states={
-                            'draft': [('readonly', False)]},required=True)
+    fecha_inicio = fields.Date(string='Fecha inicio', index=True, readonly=True, states={'draft': [('readonly', False)]},required=True)
+    fecha_fin = fields.Date(string='Fecha fin', index=True, readonly=True, states={'draft': [('readonly', False)]},required=True)
     journal_id = fields.Many2one('account.journal', string='Diario de Pago')
 
-
     #Relaciones
-    corte_caja_ids = fields.One2many('corte.caja.detalle', 'corte_caja_id',
-                                                 'Detalle', copy=True, readonly=True, states={'draft': [('readonly', False)]})
-    
-    corte_caja_resumen_ids = fields.One2many('corte.caja.resumen', 'corte_caja_resumen_id',
-                                                 'Resumen', copy=True, readonly=True, states={'draft': [('readonly', False)]})
-
-
-    corte_caja_factura_ids = fields.One2many('corte.caja.factura', 'corte_caja_factura_id',
-                                                 'Resumen', copy=True, readonly=True, states={'draft': [('readonly', False)]})
-
+    corte_caja_ids = fields.One2many('corte.caja.detalle', 'corte_caja_id','Detalle', copy=True, readonly=True, states={'draft': [('readonly', False)]})
+    corte_caja_resumen_ids = fields.One2many('corte.caja.resumen', 'corte_caja_resumen_id','Resumen', copy=True, readonly=True, states={'draft': [('readonly', False)]})
+    corte_caja_factura_ids = fields.One2many('corte.caja.factura', 'corte_caja_factura_id','Resumen', copy=True, readonly=True, states={'draft': [('readonly', False)]})
 
     total_corte=fields.Float(string='Total', compute="_total_corte", store=True)
     total_facturas=fields.Float(string='Total', compute="_total_facturas", store=True)
-
-
 
     @api.onchange('corte_caja_ids','corte_caja_resumen_ids',)
     def _total_corte(self):
@@ -75,7 +60,6 @@ class CorteCaja(models.Model):
             result = super(CorteCaja, self).create(vals)
             self.write({'state': 'confirm'})
             return result
-
 
     def _obtener_lista_diario(self):
         lista_diario=[]
@@ -104,7 +88,6 @@ class CorteCaja(models.Model):
         self._buscar_pagos()
         self._buscar_facturas()
     
-
     def action_confirm(self):
         cont=0
         for rec in self.corte_caja_ids:
@@ -144,7 +127,6 @@ class CorteCaja(models.Model):
             self.corte_caja_factura_ids=[(0,0,{'account_move_line_id':factura.id})]
         
         self._total_facturas()
-
 
     def _buscar_pagos(self): 
         dominio = [
@@ -218,12 +200,10 @@ class CorteCajaFactura(models.Model):
 class AccountMovetInherit(models.Model):
     _inherit = "account.move"
 
-    corte_caja_id = fields.One2many('corte.caja.factura', 'account_move_line_id',
-                                   'Facturas', copy=True, readonly=True, states={'draft': [('readonly', False)]})
+    corte_caja_id = fields.One2many('corte.caja.factura', 'account_move_line_id','Facturas', copy=True, readonly=True, states={'draft': [('readonly', False)]})
 
 
 class AccountPaymentInherit(models.Model):
     _inherit = "account.payment"
 
-    move_raw_ids = fields.One2many('corte.caja.detalle', 'account_payment_line_id',
-                                   'Detalle', copy=True, readonly=True, states={'draft': [('readonly', False)]})
+    move_raw_ids = fields.One2many('corte.caja.detalle', 'account_payment_line_id','Detalle', copy=True, readonly=True, states={'draft': [('readonly', False)]})
