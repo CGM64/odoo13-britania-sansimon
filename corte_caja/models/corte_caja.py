@@ -87,6 +87,27 @@ class CorteCaja(models.Model):
         for rec in self: rec.corte_caja_ids = [(5,0,0)]
         for rec in self: rec.corte_caja_resumen_ids = [(5,0,0)]
 
+
+    def _cargar_facturas(self):  
+
+        dominio = [
+            ('state', '=', 'posted'),
+            ('type', '=', 'out_invoice'),      
+        ]
+
+        if self.user_id:
+            dominio += ('create_uid', '=', self.user_id.id),
+        if self.fecha_inicio:
+            dominio += ('invoice_date', '>=', self.fecha_inicio),
+        if self.fecha_fin:
+            dominio += ('invoice_date', '<=', self.fecha_fin),
+
+        consulta_account_move = request.env['account.move'].search(dominio)
+
+        for factura in consulta_account_move:
+            self.corte_caja_factura_ids=[(0,0,{'account_move_line_id':factura.id})]
+
+
     def bucar_pagos(self):
         self._borrar_lineas()       
 
@@ -112,6 +133,8 @@ class CorteCaja(models.Model):
         lista_suma_diario=self._sumar_por_diario(consulta_account_payment)
         for suma_diario in lista_suma_diario:
             self.corte_caja_resumen_ids=[(0,0,suma_diario)]
+
+        self._cargar_facturas()
 
         self._total_corte()
         
