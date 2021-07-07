@@ -144,7 +144,7 @@ class AccountBankStatementImport(models.TransientModel):
                 info['columna_credito'] = encabezado.find('Credito')
                 info['columna_saldo'] = encabezado.find('Saldo')
                 info['columna_agencia'] = encabezado.find('Agencia') + 1
-                
+
         return transactions, anio, mes, saldo_inicial, saldo_final
 
 
@@ -174,8 +174,8 @@ class AccountBankStatementImport(models.TransientModel):
                 vals_line['date'] = datetime.strptime(nueva_linea[0], '%d-%m-%Y').strftime(DEFAULT_SERVER_DATE_FORMAT)
                 vals_line['name'] = nueva_linea[1] + ": " + nueva_linea[2]+ ' ' + nueva_linea[3]
                 vals_line['ref'] = nueva_linea[2]
-                debe = nueva_linea[4] if nueva_linea[4] else "0.0"
-                haber = nueva_linea[5] if nueva_linea[5] else "0.0"
+                debe = nueva_linea[5] if nueva_linea[5] else "0.0"
+                haber = nueva_linea[4] if nueva_linea[4] else "0.0"
                 vals_line['amount'] = float(debe) - float(haber)
                 fecha_primera_linea = vals_line['date']
 
@@ -250,7 +250,7 @@ class AccountBankStatementImport(models.TransientModel):
         fecha_primera_linea = None
         mes = None
         anio = None
-        
+
         for line in recordlist:
             if encabezado:
                 encabezado = False
