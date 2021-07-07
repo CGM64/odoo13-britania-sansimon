@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+        <template id="corte_caja_report_pdf">
+            <t t-call="web.html_container">
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+
+                        <div class="container" t-foreach="o.corte_caja_pdf()" t-as="dato">
+                            <div class="col-sm">
+                                <t t-if="dato['factura']">
+                                    <span t-esc="dato['diario']"/>
+                                </t>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm">
+                                    <t t-foreach="dato['factura']" t-as="fac">
+                                        <p t-esc="fac['partner_id']" />
+                                    </t>
+                                </div>
+                                <div class="col-sm">
+                                    <t t-foreach="dato['factura']" t-as="fac">
+                                        <p t-esc="fac['amount']" />
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

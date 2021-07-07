@@ -98,6 +98,7 @@
                     <button name="action_cancel" string="Cancelar" type="object" attrs="{'invisible':[('state','!=','confirm')]}"/>
                     <button name="action_descargar" type="object" string="Descargar" class="oe_highlight" icon="fa-download" attrs="{'invisible':[('state','!=','confirm')]}"/>
                     <button name="action_procesar" type="object" string="Consultar" class="oe_highlight" icon="fa-search" attrs="{'invisible':[('state','!=','draft')]}"/>
+                    <button name="corte_caja_pdf" type="object" string="Reporte" class="oe_highlight" icon="fa-search" />
                 </header>
                 <sheet>
                     <div class="oe_title">

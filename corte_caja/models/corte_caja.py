@@ -153,6 +153,49 @@ class CorteCaja(models.Model):
             self.corte_caja_resumen_ids=[(0,0,suma_diario)]
 
         self._total_corte()
+
+    def _subtotal_diario(self, journal):
+        consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id','=',self.id)])
+        sumatoria = sum(calculo.amount for calculo in consulta_diario.filtered(lambda journal: journal.journal_id.id in (journal,)))
+        return sumatoria
+
+
+    def corte_caja_pdf(self):
+        consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id','=',self.id)])
+        lista_facturas=[]
+        print("consulta_diario-->",consulta_diario)
+        for diario in consulta_diario:
+            lista_corte = []
+            corte = self.corte_caja_ids.filtered(lambda d: d.journal_id.id == diario.journal_id.id)
+            
+            for diario in corte:
+                print("diario-->",diario.journal_id.id)
+
+                d_corte = {
+                    "diario_id": diario.journal_id.id,
+                    "diario_name": diario.journal_id.name,
+                    "partner_id": diario.partner_id.name,
+                    "amount": diario.amount,
+                }
+
+                d_corte["subtotal"]=self._subtotal_diario(diario.journal_id.id)
+
+                lista_corte.append(d_corte)
+        
+            dato_fact = {
+                    "diario": diario.journal_id.name,
+                    "factura": lista_corte,
+                }
+            lista_facturas.append(dato_fact)
+                   
+            for dato in lista_facturas:
+                if dato['factura']:
+                    for fac in dato['factura']:
+                        pass
+                        # print("fac: ",fac['partner_id'],' ',fac['subtotal'])
+        return lista_facturas
+
+
         
 class CorteCajaDetalle(models.Model):
     _name = "corte.caja.detalle"

@@ -25,7 +25,13 @@
     'data': [
         'security/ir.model.access.csv',
         'views/account_payment_corte_caja_view.xml',
-        'sequence/corte_caja_sequence.xml',       
+        'sequence/corte_caja_sequence.xml',  
+
+        'report/account_payment_corte_caja_report_views.xml',  
+        'report/corte_caja_report_pdf.xml',  
+        
+        
+             
     ],
     # only loaded in demonstration mode
     'demo': [
