@@ -156,20 +156,25 @@ class CorteCaja(models.Model):
 
     def _subtotal_diario(self, journal):
         consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id','=',self.id)])
-        sumatoria = sum(calculo.amount for calculo in consulta_diario.filtered(lambda journal: journal.journal_id.id in (journal,)))
+        sumatoria = sum(calculo.amount for calculo in consulta_diario.filtered(lambda j: j.journal_id.id in (journal,)))
         return sumatoria
 
 
     def corte_caja_pdf(self):
         consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id','=',self.id)])
         lista_facturas=[]
-        print("consulta_diario-->",consulta_diario)
         for diario in consulta_diario:
             lista_corte = []
             corte = self.corte_caja_ids.filtered(lambda d: d.journal_id.id == diario.journal_id.id)
             
             for diario in corte:
                 print("diario-->",diario.journal_id.id)
+
+                sumatoria = sum(calculo.amount for calculo in consulta_diario.filtered(lambda journal: journal.journal_id.id == diario.journal_id.id))
+                print("sumatoria",diario.journal_id.id,' ',sumatoria)
+
+                suma=self._subtotal_diario(diario.journal_id.id)
+                print("suma--->",suma)
 
                 d_corte = {
                     "diario_id": diario.journal_id.id,
