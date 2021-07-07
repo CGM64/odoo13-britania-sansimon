@@ -31,11 +31,14 @@ class repairOrder(models.Model):
     def _get_default(self):
         type = self.env['repair.type'].search([('active', '=',True)])
         tipos = []
-        for tipo in type:
-            tipos.append(tipo.sequence)
-        minimo = min(tipos)
-        t = self.env['repair.type'].search([('sequence', '=',minimo)]).id
-        return t
+        if type:
+            for tipo in type:
+                tipos.append(tipo.sequence)
+            minimo = min(tipos)
+            t = self.env['repair.type'].search([('sequence', '=',minimo)]).id
+            return t
+        else:
+            return
     
     tipo_orden = fields.Many2one('repair.type', 'Tipo de orden', index=True, default=_get_default)
 
