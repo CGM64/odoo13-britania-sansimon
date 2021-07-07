@@ -52,10 +52,13 @@ class ProductTemplate(models.Model):
         if not self.default_code:
             return
 
+        if self.default_code == "":
+            return
+
         self._cr.execute('''
             SELECT default_code
             FROM product_template
-            WHERE default_code = %s
-        ''', (self.default_code,))
+            WHERE default_code = %s AND id <> %s
+        ''', (self.default_code,self.id))
         if self._cr.fetchone():
             raise ValidationError(_("El codigo de producto debe ser unico."))
