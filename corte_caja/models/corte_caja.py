@@ -160,6 +160,11 @@ class CorteCaja(models.Model):
         return sumatoria
 
 
+    def total_corte_caja(self):
+        consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id','=',self.id)])
+        total_corte = sum(calculo.amount for calculo in consulta_diario)
+        return total_corte
+
     def corte_caja_pdf(self):
         consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id','=',self.id)])
         total_corte = sum(calculo.amount for calculo in consulta_diario)

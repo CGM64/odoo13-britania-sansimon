@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+        <template id="report_corte_caja_pdf">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+
+                        <div clas="page">
+
+                            <div clas="detalle" t-foreach="o.corte_caja_pdf()" t-as="dato">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <strong>
+                                            <p t-esc="dato['diario']" />
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="row" t-foreach="dato['factura']" t-as="fac">
+                                    <div class="col-3">
+                                        <p t-esc="fac['account_payment_line_id']" />
+                                    </div>
+                                    <div class="col-3">
+                                        <p t-esc="fac['circular']" />
+                                    </div>
+                                    <div class="col-3">
+                                        <p t-esc="fac['partner_id']" />
+                                    </div>
+                                    <div class="col-3">
+                                        <p class="float-right" t-esc="fac['amount']" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 float-right">
+                                        <strong>Subtotal:</strong>
+                                    </div>
+                                    <div class="col-6 ">
+                                        <strong>
+                                            <p class="float-right" t-esc="dato['subtotal']" />
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div clas="total">
+                                <div class="row">
+                                    <div class="col-6 float-right">
+                                        <strong>Total:</strong>
+                                    </div>
+                                    <div class="col-6 ">
+                                        <strong>
+                                            <p class="float-right" t-esc="o.total_corte_caja()" />
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
