@@ -43,23 +43,25 @@
                                     <div class="col-3">
                                         <p t-esc="fac['partner_id']" />
                                     </div>
-                                    <div class="col-3">
-                                        <p class="float-right" t-esc="fac['amount']" />
+                                    <div class="col-3 text-right">
+                                        <p t-esc="fac['amount']" />
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-6 float-right">
-                                        <strong>Subtotal:</strong>
+
+                                <div class="row justify-content-end">
+                                    <div class="col-3 border-bottom border-top">
+                                        <strong class="float-right">Subtotal:</strong>
                                     </div>
-                                    <div class="col-6 ">
-                                        <strong>
-                                            <p class="float-right" t-esc="dato['subtotal']" />
+                                    <div class="col-3 border-bottom border-top">
+                                        <strong class="float-right">
+                                            <p t-esc="dato['subtotal']"/>
                                         </strong>
                                     </div>
                                 </div>
                             </div>
+
                             <div clas="total">
-                                <div class="row">
+                                <div class="row border border-success rounded">
                                     <div class="col-6 float-right">
                                         <strong>Total:</strong>
                                     </div>
