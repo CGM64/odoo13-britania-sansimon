@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <template id="corte_caja_report_pdf">
+        <template id="report_corte_caja_pdf">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.basic_layout">
