@@ -154,7 +154,7 @@ class CorteCaja(models.Model):
 
         self._total_corte()
 
-    def _subtotal_diario(self, journal):
+    def _suma_diario(self, journal):
         consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id','=',self.id)])
         sumatoria = sum(calculo.amount for calculo in consulta_diario.filtered(lambda j: j.journal_id.id in (journal,)))
         return sumatoria
@@ -162,42 +162,38 @@ class CorteCaja(models.Model):
 
     def corte_caja_pdf(self):
         consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id','=',self.id)])
+        total_corte = sum(calculo.amount for calculo in consulta_diario)
         lista_facturas=[]
         for diario in consulta_diario:
             lista_corte = []
             corte = self.corte_caja_ids.filtered(lambda d: d.journal_id.id == diario.journal_id.id)
-            
+        
             for diario in corte:
-                print("diario-->",diario.journal_id.id)
-
-                sumatoria = sum(calculo.amount for calculo in consulta_diario.filtered(lambda journal: journal.journal_id.id == diario.journal_id.id))
-                print("sumatoria",diario.journal_id.id,' ',sumatoria)
-
-                suma=self._subtotal_diario(diario.journal_id.id)
-                print("suma--->",suma)
-
                 d_corte = {
                     "diario_id": diario.journal_id.id,
+                    "account_payment_line_id":diario.account_payment_line_id.name,
+                    "circular":diario.circular,
                     "diario_name": diario.journal_id.name,
                     "partner_id": diario.partner_id.name,
                     "amount": diario.amount,
                 }
-
-                d_corte["subtotal"]=self._subtotal_diario(diario.journal_id.id)
-
                 lista_corte.append(d_corte)
-        
+       
             dato_fact = {
                     "diario": diario.journal_id.name,
                     "factura": lista_corte,
+                    "subtotal":self._suma_diario(diario.journal_id.id),
+                    "total":total_corte,
                 }
             lista_facturas.append(dato_fact)
                    
-            for dato in lista_facturas:
-                if dato['factura']:
-                    for fac in dato['factura']:
-                        pass
-                        # print("fac: ",fac['partner_id'],' ',fac['subtotal'])
+        for dato in lista_facturas:
+            print("Diario-->",dato['diario'])
+            for fac in dato['factura']:
+                print("fac: ",fac['account_payment_line_id'],' ',fac['circular'],' ',fac['partner_id'],' ',fac['amount'])
+            print("Subtotal-->",dato['subtotal'])
+        print("Total-->",dato['total'])
+        
         return lista_facturas
 
 
