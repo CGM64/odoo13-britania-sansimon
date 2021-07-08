@@ -159,49 +159,62 @@ class CorteCaja(models.Model):
         sumatoria = sum(calculo.amount for calculo in consulta_diario.filtered(lambda j: j.journal_id.id in (journal,)))
         return sumatoria
 
-
+#Inicia Reporte
     def total_corte_caja(self):
         consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id','=',self.id)])
         total_corte = sum(calculo.amount for calculo in consulta_diario)
-        return total_corte
+
+        total = str(format(round(total_corte,2),','))
+        return total
+
+    def encabezado_corte_caja(self):
+        lista_encabezado=[]
+        encabezado={
+            "origen":self.name,
+            "user_id":self.user_id.name,
+        }
+        lista_encabezado.append(encabezado)
+        return lista_encabezado
 
     def corte_caja_pdf(self):
         consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id','=',self.id)])
         total_corte = sum(calculo.amount for calculo in consulta_diario)
         lista_facturas=[]
         for diario in consulta_diario:
+
             lista_corte = []
             corte = self.corte_caja_ids.filtered(lambda d: d.journal_id.id == diario.journal_id.id)
         
             for diario in corte:
+                moneda = diario.currency_id.symbol
                 d_corte = {
                     "diario_id": diario.journal_id.id,
                     "account_payment_line_id":diario.account_payment_line_id.name,
                     "circular":diario.circular,
                     "diario_name": diario.journal_id.name,
                     "partner_id": diario.partner_id.name,
-                    "amount": diario.amount,
+                    "amount":  moneda +' '+ str(format(round(diario.amount,2),',')),
+                    "total": moneda +' '+ str(format(round(diario.amount,2),','))                    
                 }
                 lista_corte.append(d_corte)
        
             dato_fact = {
                     "diario": diario.journal_id.name,
                     "factura": lista_corte,
-                    "subtotal":self._suma_diario(diario.journal_id.id),
-                    "total":total_corte,
+                    "subtotal":moneda +' '+ str(format(round(self._suma_diario(diario.journal_id.id),2),',')) ,
+                    "total":moneda +' '+ str(format(round(total_corte,2),',')),
                 }
             lista_facturas.append(dato_fact)
                    
         for dato in lista_facturas:
             print("Diario-->",dato['diario'])
             for fac in dato['factura']:
-                print("fac: ",fac['account_payment_line_id'],' ',fac['circular'],' ',fac['partner_id'],' ',fac['amount'])
+                print("fac: ",fac['account_payment_line_id'],' ',fac['circular'],' ',fac['partner_id'],' ',fac['total'])
             print("Subtotal-->",dato['subtotal'])
         print("Total-->",dato['total'])
         
         return lista_facturas
-
-
+#Finaliza Reporte
         
 class CorteCajaDetalle(models.Model):
     _name = "corte.caja.detalle"
