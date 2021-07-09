@@ -6,6 +6,18 @@
                     <t t-call="web.external_layout">
 
                         <div clas="page">
+
+                            <style>
+                            .div-bg {
+                                background-color:#3D3D3D;
+                                border-radius:20px;
+                            }
+                            .border-secondary{
+                                border: 2px solid  #3D3D3D !important;
+                                border-radius:20px !important;
+                            }
+                            </style>
+
                             <h2 class="text-center">REPORTE DE CORTE DE CAJA</h2>
 
                             <div clas="encabezado" t-foreach="o.encabezado_corte_caja()" t-as="dato">
@@ -33,18 +45,29 @@
                                         </strong>
                                     </div>
                                 </div>
+                                <div class="row div-bg p-3 mb-2 text-white" >
+                                    <div class="col-2 text-center ">PAGO</div>
+                                    <div class="col-2 text-center ">FECHA</div>
+                                    <div class="col-2 text-center">CIRCULAR</div>
+                                    <div class="col-3 text-center">CLIENTE</div>
+                                    <div class="col-4 text-center">MONTO</div>
+                                </div>
+
                                 <div class="row" t-foreach="dato['factura']" t-as="fac">
                                     <div class="col-auto ">
                                         <p t-esc="fac['account_payment_line_id']" />
                                     </div>
                                     <div class="col-auto ">
+                                        <p t-esc="fac['payment_date']" />
+                                    </div>
+                                    <div class="col-auto ">
                                         <p t-esc="fac['circular']" />
                                     </div>
-                                    <div class="col-6 ">
+                                    <div class="col-5 ">
                                         <p t-esc="fac['partner_id']" />
                                     </div>
-                                    <div class="col-2  text-right">
-                                        <p t-esc="fac['amount']" />
+                                    <div class="col-auto text-right">
+                                        <p class="text-right" t-esc="fac['amount']" />
                                     </div>
                                 </div>
 
@@ -65,8 +88,8 @@
                                 <div class="col-3">
                                     <strong class="float-right">Total:</strong>
                                 </div>
-                                <div class="col-3 border border-success rounded">
-                                    <strong class="float-right">
+                                <div class="col-3 p-3 mb-2 border text-white border-secondary rounded">
+                                    <strong class="text-center">
                                         <p t-esc="o.total_corte_caja()"/>
                                     </strong>
                                 </div>

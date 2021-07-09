@@ -194,6 +194,7 @@ class CorteCaja(models.Model):
                 d_corte = {
                     "diario_id": diario.journal_id.id,
                     "account_payment_line_id":diario.account_payment_line_id.name,
+                    "payment_date":diario.payment_date,
                     "circular":diario.circular,
                     "diario_name": diario.journal_id.name,
                     "partner_id": diario.partner_id.name,
@@ -225,6 +226,7 @@ class CorteCajaDetalle(models.Model):
     journal_id = fields.Many2one(string='Diario de Pago',related='account_payment_line_id.journal_id',store=True)
     circular = fields.Char(string='Circular',related='account_payment_line_id.communication',store=True)
     partner_id = fields.Many2one(string='Cliente', related='account_payment_line_id.partner_id', store=True)
+    payment_date=fields.Date(string='Fecha Pago', related='account_payment_line_id.payment_date', store=True)
 
     amount = fields.Monetary(string='Monto', related='account_payment_line_id.amount', store=True)
     currency_id = fields.Many2one(string='Currency', related='account_payment_line_id.currency_id', store=True)
@@ -250,6 +252,7 @@ class CorteCajaFactura(models.Model):
     name = fields.Char(string='Factura',related='account_move_line_id.name',store=True)
     partner_id = fields.Many2one(string='Cliente', related='account_move_line_id.partner_id', store=True)
     ref = fields.Char(string='Referencia',related='account_move_line_id.ref',store=True)
+    date =fields.Date(string='Fecha Factura',related='account_move_line_id.date',store=True)
 
     invoice_date = fields.Date(string='Fecha Factura',related='account_move_line_id.invoice_date',store=True)
     amount_total = fields.Monetary(string='Monto', related='account_move_line_id.amount_total', store=True)

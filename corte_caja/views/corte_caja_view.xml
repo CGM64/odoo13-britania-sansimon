@@ -33,6 +33,7 @@
         <field name="arch" type="xml">
             <tree editable="bottom">
                 <field name="account_payment_line_id"/>
+                <field name="payment_date"/>
                 <field name="circular"/>
                 <field name="partner_id"/>
                 <field name="journal_id"/>
@@ -49,6 +50,8 @@
                 <sheet>
                     <group>
                         <field name="account_payment_line_id"/>
+                        <field name="payment_date"/>
+                        <field name="circular"/>
                         <field name="partner_id"/>
                         <field name="journal_id"/>
                         <field name="amount"/>
@@ -78,6 +81,7 @@
         <field name="arch" type="xml">
             <tree editable="bottom">
                 <field name="account_move_line_id"/>
+                <field name="date"/>
                 <field name="partner_id"/>
                 <field name="invoice_date"/>
                 <field name="amount_total"/>
@@ -140,7 +144,7 @@
                         </page>
 
                         <page string="Facturas">
-                             <field name="corte_caja_factura_ids" options ="{'no_open':true, 'no_quick_create':true,'no_create_edit':true,'no_create':true}" context="{'tree_view_ref': 'corte_caja.corte_caja_factura_view_tree'}" />
+                            <field name="corte_caja_factura_ids" options ="{'no_open':true, 'no_quick_create':true,'no_create_edit':true,'no_create':true}" context="{'tree_view_ref': 'corte_caja.corte_caja_factura_view_tree'}" />
                             <group name="factura_group" col="6">
                                 <group colspan="4">
 
