@@ -173,7 +173,7 @@ class AccountMove(models.Model):
                         linea['name'] = descripcion[d]
                         linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_unitario) if mostrar_contenido else ''
                         linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(total_linea) if mostrar_contenido else ''
-                        linea['discount'] = '{0:,.0f}'.format(l.discount) if mostrar_contenido else ''
+                        linea['discount'] = str('{0:,.0f}'.format(l.discount))+"%" if mostrar_contenido else ''
                         lineas.append(linea)
                         nlinea = i % num_linea_x_pagina
                         if nlinea == 0:
@@ -267,22 +267,9 @@ class AccountMove(models.Model):
                 gran_total += total_linea
                 gran_subtotal += total_linea_base
                 gran_total_impuestos += total_impuestos
-        if gran_total > self.amount_total:
-            print("Normal")
-            diferencia = gran_total - self.amount_total
-            print("DIFERENCIA: ",diferencia)
-            total_descuento = self.total_discount - diferencia
-            print("TOTAL DESCUENTO: ", total_descuento)
-        else:
-            diferencia = gran_total - self.amount_total
-            print("DIFERENCIA: ",diferencia)
-            total_descuento = self.total_discount + diferencia
-            print("TOTAL DESCUENTO: ", total_descuento)
+                total_descuento += descuento
 
         return float('{:.2f}'.format(total_descuento))
-
-
-
 
     def _compute_no_linea(self):
         self.no_linea = 0
