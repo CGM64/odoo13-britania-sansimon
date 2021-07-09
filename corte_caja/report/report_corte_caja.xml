@@ -34,16 +34,16 @@
                                     </div>
                                 </div>
                                 <div class="row" t-foreach="dato['factura']" t-as="fac">
-                                    <div class="col-3">
+                                    <div class="col-auto ">
                                         <p t-esc="fac['account_payment_line_id']" />
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-auto ">
                                         <p t-esc="fac['circular']" />
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-6 ">
                                         <p t-esc="fac['partner_id']" />
                                     </div>
-                                    <div class="col-3 text-right">
+                                    <div class="col-2  text-right">
                                         <p t-esc="fac['amount']" />
                                     </div>
                                 </div>

@@ -8,6 +8,7 @@ from odoo.addons import decimal_precision as dp
 from odoo.http import request
 
 
+
 class CorteCaja(models.Model):
     _name = "corte.caja"
     _description = "Corte de Caja"
@@ -160,6 +161,9 @@ class CorteCaja(models.Model):
         return sumatoria
 
 #Inicia Reporte
+    def download_report(self):
+        return self.env['ir.actions.report'].search([('report_name', '=', 'corte_caja.report_corte_caja_pdf')]).report_action(self)
+
     def total_corte_caja(self):
         consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id','=',self.id)])
         total_corte = sum(calculo.amount for calculo in consulta_diario)
@@ -204,16 +208,9 @@ class CorteCaja(models.Model):
                     "subtotal":moneda +' '+ str(format(round(self._suma_diario(diario.journal_id.id),2),',')) ,
                     "total":moneda +' '+ str(format(round(total_corte,2),',')),
                 }
-            lista_facturas.append(dato_fact)
-                   
-        for dato in lista_facturas:
-            print("Diario-->",dato['diario'])
-            for fac in dato['factura']:
-                print("fac: ",fac['account_payment_line_id'],' ',fac['circular'],' ',fac['partner_id'],' ',fac['total'])
-            print("Subtotal-->",dato['subtotal'])
-        print("Total-->",dato['total'])
-        
+            lista_facturas.append(dato_fact)       
         return lista_facturas
+
 #Finaliza Reporte
         
 class CorteCajaDetalle(models.Model):
