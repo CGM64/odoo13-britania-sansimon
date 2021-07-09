@@ -26,13 +26,14 @@ class CorteCaja(models.Model):
                                                                                                     ('payment_type', '=', 'outbound'),
                                                                                                     ('payment_method_id.code', '=', 'manual')]).mapped("partner_id").ids)])
 
-    user_id = fields.Many2one(
-        'res.users', string='Usuario', default=lambda self: self.env.uid)
+    user_id = fields.Many2one('res.users', string='Usuario', default=lambda self: self.env.uid,readonly=True, states={'draft': [(
+        'readonly', False)]})
     fecha_inicio = fields.Date(string='Fecha inicio', index=True, readonly=True, states={
                                'draft': [('readonly', False)]}, required=True)
     fecha_fin = fields.Date(string='Fecha fin', index=True, readonly=True, states={
                             'draft': [('readonly', False)]}, required=True)
-    journal_id = fields.Many2one('account.journal', string='Diario de Pago')
+    journal_id = fields.Many2one('account.journal', string='Diario de Pago',readonly=True, states={'draft': [(
+        'readonly', False)]})
 
     # Relaciones
     corte_caja_ids = fields.One2many('corte.caja.detalle', 'corte_caja_id', 'Detalle',
