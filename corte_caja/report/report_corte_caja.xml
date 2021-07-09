@@ -5,7 +5,7 @@
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.external_layout">
 
-                        <div clas="page">
+                        <div clas="page mb-5">
 
                             <style>
                             .div-bg {
@@ -19,25 +19,47 @@
                             </style>
 
                             <h2 class="text-center">REPORTE DE CORTE DE CAJA</h2>
-
                             <div clas="encabezado" t-foreach="o.encabezado_corte_caja()" t-as="dato">
                                 <div class="row">
-                                    <div class="col-3">
+                                    <div class="col-auto">
+                                        <strong>Fecha de Impresión:</strong>
+                                    </div>
+                                    <div class="col-auto">
+                                        <p t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y')"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-auto">
                                         <strong>Cajero:</strong>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-auto">
                                         <p t-esc="dato['user_id']" />
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-auto">
                                         <strong>Origen:</strong>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-auto">
                                         <p t-esc="dato['origen']" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <strong>Del:</strong>
+                                    </div>
+                                    <div class="col-auto">
+                                        <p t-esc="dato['fecha_inicio']" />
+                                    </div>
+                                    <div class="col-auto">
+                                        <strong>al:</strong>
+                                    </div>
+                                    <div class="col-auto">
+                                        <p t-esc="dato['fecha_fin']" />
                                     </div>
                                 </div>
                             </div>
 
-                            <div clas="detalle" t-foreach="o.corte_caja_pdf()" t-as="dato">
+                            <div class="detalle mt-5 mb-5" t-foreach="o.corte_caja_pdf()" t-as="dato">
                                 <div class="row">
                                     <div class="col-3">
                                         <strong>
@@ -45,7 +67,7 @@
                                         </strong>
                                     </div>
                                 </div>
-                                <div class="row div-bg p-3 mb-2 text-white" >
+                                <div class="row div-bg p-3 mb-2 text-white">
                                     <div class="col-2 text-center ">PAGO</div>
                                     <div class="col-2 text-center ">FECHA</div>
                                     <div class="col-2 text-center">CIRCULAR</div>
@@ -83,7 +105,6 @@
                                 </div>
                             </div>
 
-
                             <div class="row mt-3 justify-content-end">
                                 <div class="col-3">
                                     <strong class="float-right">Total:</strong>
@@ -95,6 +116,17 @@
                                 </div>
                             </div>
 
+                            <h4 class="text-left">Resumen Facturas</h4>
+                            <div class="resumen_factura" t-foreach="o.sumar_por_estado()" t-as="dato">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <p t-esc="dato['estado']" />
+                                    </div>
+                                    <div class="col-auto">
+                                        <p t-esc="dato['total']" />
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
 
