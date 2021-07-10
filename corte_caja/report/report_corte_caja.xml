@@ -59,6 +59,8 @@
                                 </div>
                             </div>
 
+
+
                             <div class="detalle mt-5 mb-5" t-foreach="o.corte_caja_pdf()" t-as="dato">
                                 <div class="row">
                                     <div class="col-3">
@@ -89,7 +91,7 @@
                                         <p t-esc="fac['partner_id']" />
                                     </div>
                                     <div class="col-auto text-right">
-                                        <p class="text-right" t-esc="fac['amount']" />
+                                        <p t-esc="fac['amount']" />
                                     </div>
                                 </div>
 
@@ -116,18 +118,49 @@
                                 </div>
                             </div>
 
-                            <h4 class="text-left">Resumen Facturas</h4>
-                            <div class="resumen_factura" t-foreach="o.sumar_por_estado()" t-as="dato">
+                            <h4 class="text-left">RESUMEN FACTURAS</h4>
+                            <div class="" t-foreach="o.detalle_facturas()" t-as="dato">
                                 <div class="row">
-                                    <div class="col-auto">
-                                        <p t-esc="dato['estado']" />
+                                    <div class="col-3">
+                                        <strong>
+                                            <p t-esc="dato['estado']" />
+                                        </strong>
                                     </div>
-                                    <div class="col-auto">
-                                        <p t-esc="dato['total']" />
+                                    <div class="col-3">
+                                        <strong>
+                                            <p t-esc="dato['total']" />
+                                        </strong>
                                     </div>
                                 </div>
-                            </div>
+                                
+                                <t t-if=" dato['estado']=='No pagadas'">
+                                    <div class="row div-bg p-3 mb-2 text-white">
+                                        <div class="col-3 text-left ">FACTURA</div>
+                                        <div class="col-3 text-left ">FECHA</div>
+                                        <div class="col-3 text-left ">CLIENTE</div>
+                                        <div class="col-3 text-center ">MONTO</div>
+                                    </div>
+                                </t>
 
+                                <div class="row" t-foreach="dato['facturas']" t-as="fac">
+                                    <t t-if=" dato['estado']=='No pagadas'">
+
+                                        <div class="col-3 ">
+                                            <p t-esc="fac['factura']" />
+                                        </div>
+                                        <div class="col-3 ">
+                                            <p t-esc="fac['date']" />
+                                        </div>
+                                        <div class="col-3 ">
+                                            <p t-esc="fac['partner_id']" />
+                                        </div>
+                                        <div class="col-3 text-right">
+                                            <p t-esc="fac['monto']" />
+                                        </div>
+                                    </t>
+                                </div>
+
+                            </div>
                         </div>
 
                     </t>

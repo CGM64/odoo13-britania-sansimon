@@ -26,13 +26,13 @@ class CorteCaja(models.Model):
                                                                                                     ('payment_type', '=', 'outbound'),
                                                                                                     ('payment_method_id.code', '=', 'manual')]).mapped("partner_id").ids)])
 
-    user_id = fields.Many2one('res.users', string='Usuario', default=lambda self: self.env.uid,readonly=True, states={'draft': [(
+    user_id = fields.Many2one('res.users', string='Usuario', default=lambda self: self.env.uid, readonly=True, states={'draft': [(
         'readonly', False)]})
     fecha_inicio = fields.Date(string='Fecha inicio', index=True, readonly=True, states={
                                'draft': [('readonly', False)]}, required=True)
     fecha_fin = fields.Date(string='Fecha fin', index=True, readonly=True, states={
                             'draft': [('readonly', False)]}, required=True)
-    journal_id = fields.Many2one('account.journal', string='Diario de Pago',readonly=True, states={'draft': [(
+    journal_id = fields.Many2one('account.journal', string='Diario de Pago', readonly=True, states={'draft': [(
         'readonly', False)]})
 
     # Relaciones
@@ -245,38 +245,72 @@ class CorteCaja(models.Model):
             if estado.invoice_payment_state not in lista_estado:
                 lista_estado.append(
                     estado.account_move_line_id.invoice_payment_state)
-        print("estado.invoice_payment_state-->", lista_estado)
 
         for estado in lista_estado:
             sumatoria = sum(calculo.amount_total for calculo in self.corte_caja_factura_ids.filtered(
                 lambda f: f.invoice_payment_state in (estado,)))
             if estado == 'not_paid':
-                estado='No pagadas'
+                estado = 'No pagadas'
             if estado == 'in_payment':
-                estado='En proceso de pago'
+                estado = 'En proceso de pago'
             if estado == 'paid':
-                estado='Pagadas'
-                
+                estado = 'Pagadas'
+
             d_suma_factura = {
                 'estado': estado,
                 'total': str(format(round(sumatoria, 2), ',')),
             }
             lista_suma.append(d_suma_factura)
-            print("sumatoria-->", lista_suma)
         return lista_suma
 
-        # for linea in self.corte_caja_factura_ids:
-        #     print("linea-->",linea)
-        #     if linea.account_move_line.id not in lista_diario:
-        #         lista_diario.append(linea.account_move_line.id)
+    def detalle_facturas(self):
+        lista_facturas = []
+        lista_estado = []
+        for estado in self.corte_caja_factura_ids:
+            if estado.invoice_payment_state not in lista_estado:
+                lista_estado.append(
+                    estado.account_move_line_id.invoice_payment_state)
 
-        # lista_estado = ['not_paid','in_payment','paid']
-        # listado_sumatoria = []
-        # for estado in lista_estado:
-        #     sumatoria = sum(calculo.amount_total for calculo in lista_diario.filtered(lambda f: f.account_move_line.id in (estado,)))
-        #     dic_sumatoria = {'estate': estado, 'amount_total': sumatoria}
-        #     listado_sumatoria.append(dic_sumatoria)
-        # print(listado_sumatoria)
+        for estado in lista_estado:
+            sumatoria = sum(calculo.amount_total for calculo in self.corte_caja_factura_ids.filtered(lambda f: f.invoice_payment_state in (estado,)))
+            listado_facturas = []
+            facturas = self.corte_caja_factura_ids.filtered(lambda d: d.invoice_payment_state in (estado,))
+            facturas = facturas.sorted(lambda pago: pago.account_move_line_id.id)
+
+            for f in facturas:
+                if estado == 'not_paid':
+                    estado = 'No pagadas'
+                if estado == 'in_payment':
+                    estado = 'En proceso de pago'
+                if estado == 'paid':
+                    estado = 'Pagadas'
+                # moneda = diario.currency_id.symbol
+                moneda = f.account_move_line_id.currency_id.symbol
+
+                d_factura = {
+                    "estado": estado,
+                    "factura":f.account_move_line_id.name,
+                    "partner_id":f.partner_id.name,
+                    "date":f.date,
+                    "monto": moneda + str(format(round(f.amount_total, 2), ',')),
+                }
+                listado_facturas.append(d_factura)
+
+            dato_fact = {
+                "estado": estado,
+                "total": str(format(round(sumatoria, 2), ',')),
+                "facturas": listado_facturas,
+            }
+            lista_facturas.append(dato_fact)
+
+        for dato in lista_facturas:
+            print("rec: ",dato['estado'],' ',dato['total'])
+            
+            for fac in dato['facturas']:
+                if dato['estado']=='No pagadas':
+                    print(fac['estado'],' ',fac['factura'],' ',fac['monto'])
+        return lista_facturas
+
 
 # Finaliza Reporte
 
@@ -338,9 +372,6 @@ class CorteCajaFactura(models.Model):
                       related='account_move_line_id.ref', store=True)
     date = fields.Date(string='Fecha Factura',
                        related='account_move_line_id.date', store=True)
-
-    invoice_date = fields.Date(
-        string='Fecha Factura', related='account_move_line_id.invoice_date', store=True)
     amount_total = fields.Monetary(
         string='Monto', related='account_move_line_id.amount_total', store=True)
     currency_id = fields.Many2one(
