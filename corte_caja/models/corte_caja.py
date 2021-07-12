@@ -122,7 +122,7 @@ class CorteCaja(models.Model):
     def action_cancel(self):
         self.write({'state': 'cancel'})
 
-    def _buscar_facturas(self):
+    def _buscar_facturas(self):       
         dominio = [
             ('state', '=', 'posted'),
             ('type', '=', 'out_invoice'),
@@ -183,8 +183,7 @@ class CorteCaja(models.Model):
         return self.env['ir.actions.report'].search([('report_name', '=', 'corte_caja.report_corte_caja_pdf')]).report_action(self)
 
     def total_corte_caja(self):
-        consulta_diario = request.env['corte.caja.resumen'].search(
-            [('corte_caja_resumen_id', '=', self.id)])
+        consulta_diario = self.corte_caja_resumen_ids 
         total_corte = sum(calculo.amount for calculo in consulta_diario)
 
         total = str(format(round(total_corte, 2), ','))
@@ -202,8 +201,7 @@ class CorteCaja(models.Model):
         return lista_encabezado
 
     def corte_caja_pdf(self):
-        consulta_diario = request.env['corte.caja.resumen'].search(
-            [('corte_caja_resumen_id', '=', self.id)])
+        consulta_diario = self.corte_caja_resumen_ids 
 
         total_corte = sum(calculo.amount for calculo in consulta_diario)
         lista_facturas = []
@@ -263,14 +261,28 @@ class CorteCaja(models.Model):
             lista_suma.append(d_suma_factura)
         return lista_suma
 
-    def detalle_facturas(self):
-        lista_facturas = []
+    def _listado_pagos(self):
+        listado_pagos=[]
+        pagos=self.corte_caja_ids
+        for pago in pagos:
+            if pago.circular not in listado_pagos:
+                listado_pagos.append(pago.circular)
+        return listado_pagos
+    
+    def _invoice_payment_states(self):
         lista_estado = []
         for estado in self.corte_caja_factura_ids:
             if estado.invoice_payment_state not in lista_estado:
-                lista_estado.append(
-                    estado.account_move_line_id.invoice_payment_state)
+                lista_estado.append(estado.account_move_line_id.invoice_payment_state)
+        return lista_estado
 
+
+    def detalle_facturas(self):
+        listado_pagos=self._listado_pagos()
+        lista_estado=self._invoice_payment_states()
+
+        lista_facturas = []
+        listado_facturas_sin_pago=[]
         for estado in lista_estado:
             sumatoria = sum(calculo.amount_total for calculo in self.corte_caja_factura_ids.filtered(lambda f: f.invoice_payment_state in (estado,)))
             listado_facturas = []
@@ -284,31 +296,50 @@ class CorteCaja(models.Model):
                     estado = 'En proceso de pago'
                 if estado == 'paid':
                     estado = 'Pagadas'
-                # moneda = diario.currency_id.symbol
+                
+
                 moneda = f.account_move_line_id.currency_id.symbol
 
-                d_factura = {
-                    "estado": estado,
-                    "factura":f.account_move_line_id.name,
-                    "partner_id":f.partner_id.name,
-                    "date":f.date,
-                    "monto": moneda + str(format(round(f.amount_total, 2), ',')),
-                }
-                listado_facturas.append(d_factura)
+                if f.account_move_line_id.name in listado_pagos:
+                    print("Si está-->")
+                    d_factura = {
+                        "estado": estado,
+                        "factura":f.account_move_line_id.name,
+                        "partner_id":f.partner_id.name,
+                        "date":f.date,
+                        "monto": moneda + str(format(round(f.amount_total, 2), ',')),
+                    }
+                    listado_facturas.append(d_factura)
+
+                else:
+                    d_factura_sin_pago = {
+                        "estado": estado,
+                        "factura":f.account_move_line_id.name,
+                        "partner_id":f.partner_id.name,
+                        "date":f.date,
+                        "monto": moneda + str(format(round(f.amount_total, 2), ',')),
+                    }
+                    listado_facturas_sin_pago.append(d_factura_sin_pago)
 
             dato_fact = {
                 "estado": estado,
                 "total": str(format(round(sumatoria, 2), ',')),
                 "facturas": listado_facturas,
+                "facturas_sin_pago": listado_facturas_sin_pago,
             }
             lista_facturas.append(dato_fact)
+  
 
         for dato in lista_facturas:
             print("rec: ",dato['estado'],' ',dato['total'])
             
-            for fac in dato['facturas']:
-                if dato['estado']=='No pagadas':
-                    print(fac['estado'],' ',fac['factura'],' ',fac['monto'])
+            # print("Pagadas-->")
+            # for fac in dato['facturas']:
+            #     if dato['estado']=='No pagadas':
+            #         print(fac['estado'],' ',fac['factura'],' ',fac['monto'])
+            print("No Pagadas-->")
+            for fac in dato['facturas_sin_pago']:
+                print(fac['estado'],' ',fac['factura'],' ',fac['monto'])
         return lista_facturas
 
 
