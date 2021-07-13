@@ -4,3 +4,4 @@ from . import account_move
 from . import fleet_repair
 from . import repair_order
 from . import crm
+from . import sale_order

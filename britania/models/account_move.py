@@ -145,7 +145,7 @@ class AccountMove(models.Model):
                 precio_sin_descuento = l.price_unit * tasa
                 linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
                 linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * l.quantity)
-                precio_unitario = l.price_unit * (100-l.discount) / 100
+                precio_unitario = l.price_unit
                 precio_unitario = precio_unitario * tasa
                 descuento = round(precio_sin_descuento * l.quantity - precio_unitario * l.quantity,4)
                 linea["Descuento"] = '{:.6f}'.format(descuento)
@@ -173,6 +173,7 @@ class AccountMove(models.Model):
                         linea['name'] = descripcion[d]
                         linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_unitario) if mostrar_contenido else ''
                         linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(total_linea) if mostrar_contenido else ''
+                        linea['discount'] = str('{0:,.0f}'.format(l.discount))+"%" if mostrar_contenido else ''
                         lineas.append(linea)
                         nlinea = i % num_linea_x_pagina
                         if nlinea == 0:
@@ -192,6 +193,7 @@ class AccountMove(models.Model):
                         linea['name'] = nueva_linea_desc
                         linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_unitario) if mostrar_contenido else ''
                         linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(total_linea) if mostrar_contenido else ''
+                        linea['discount'] = str('{0:,.0f}'.format(l.discount))+"%" if mostrar_contenido else ''
                         lineas.append(linea)
                         nlinea = i % num_linea_x_pagina
                         #self.nueva_linea(linea['name'])
@@ -242,8 +244,32 @@ class AccountMove(models.Model):
 
         return float('{:.2f}'.format(gran_total))
 
+    def get_total_discount(self):
+        gran_total = gran_subtotal = gran_total_impuestos = 0
+        total_descuento = 0.00
+        linea={}
+        for l in self.invoice_line_ids.filtered(lambda l: l.price_total > 0):
+            if l.quantity > 0:
+                tasa = l.sat_tasa_cambio
+                precio_sin_descuento = l.price_unit * tasa
+                linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
+                linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * l.quantity)
+                precio_unitario = l.price_unit * (100-l.discount) / 100
+                precio_unitario = precio_unitario * tasa
+                descuento = round(precio_sin_descuento * l.quantity - precio_unitario * l.quantity,4)
+                linea["Descuento"] = '{:.6f}'.format(descuento)
+                precio_unitario_base = l.price_subtotal / l.quantity
+                total_linea = round(precio_unitario * l.quantity,6)
+                #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
+                total_linea_base = round(total_linea / (self.sat_iva_porcentaje/100+1),6)
+                #total_impuestos = total_linea - total_linea_base
+                total_impuestos = round(total_linea_base * (self.sat_iva_porcentaje/100),6)
+                gran_total += total_linea
+                gran_subtotal += total_linea_base
+                gran_total_impuestos += total_impuestos
+                total_descuento += descuento
 
-
+        return float('{:.2f}'.format(total_descuento))
 
     def _compute_no_linea(self):
         self.no_linea = 0
