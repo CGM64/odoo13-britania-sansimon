@@ -299,28 +299,14 @@ class CorteCaja(models.Model):
                 
 
                 moneda = f.account_move_line_id.currency_id.symbol
-
-                if f.account_move_line_id.name in listado_pagos:
-                    print("Si está-->")
-                    d_factura = {
-                        "estado": estado,
-                        "factura":f.account_move_line_id.name,
-                        "partner_id":f.partner_id.name,
-                        "date":f.date,
-                        "monto": moneda + str(format(round(f.amount_total, 2), ',')),
-                    }
-                    listado_facturas.append(d_factura)
-
-                else:
-                    d_factura_sin_pago = {
-                        "estado": estado,
-                        "factura":f.account_move_line_id.name,
-                        "partner_id":f.partner_id.name,
-                        "date":f.date,
-                        "monto": moneda + str(format(round(f.amount_total, 2), ',')),
-                    }
-                    listado_facturas_sin_pago.append(d_factura_sin_pago)
-
+                d_factura = {
+                    "estado": estado,
+                    "factura":f.account_move_line_id.name,
+                    "partner_id":f.partner_id.name,
+                    "date":f.date,
+                    "monto": moneda + str(format(round(f.amount_total, 2), ',')),
+                }
+                listado_facturas.append(d_factura)
             dato_fact = {
                 "estado": estado,
                 "total": str(format(round(sumatoria, 2), ',')),
@@ -330,16 +316,16 @@ class CorteCaja(models.Model):
             lista_facturas.append(dato_fact)
   
 
-        for dato in lista_facturas:
-            print("rec: ",dato['estado'],' ',dato['total'])
+        # for dato in lista_facturas:
+        #     print("rec: ",dato['estado'],' ',dato['total'])
             
-            # print("Pagadas-->")
-            # for fac in dato['facturas']:
-            #     if dato['estado']=='No pagadas':
-            #         print(fac['estado'],' ',fac['factura'],' ',fac['monto'])
-            print("No Pagadas-->")
-            for fac in dato['facturas_sin_pago']:
-                print(fac['estado'],' ',fac['factura'],' ',fac['monto'])
+        #     # print("Pagadas-->")
+        #     # for fac in dato['facturas']:
+        #     #     if dato['estado']=='No pagadas':
+        #     #         print(fac['estado'],' ',fac['factura'],' ',fac['monto'])
+        #     print("No Pagadas-->")
+        #     for fac in dato['facturas_sin_pago']:
+        #         print(fac['estado'],' ',fac['factura'],' ',fac['monto'])
         return lista_facturas
 
 
