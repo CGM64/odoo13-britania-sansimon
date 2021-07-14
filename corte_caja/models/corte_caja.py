@@ -235,32 +235,6 @@ class CorteCaja(models.Model):
             lista_facturas.append(dato_fact)
         return lista_facturas
 
-    def sumar_por_estado(self):
-        lista_estado = []
-        lista_suma = []
-
-        for estado in self.corte_caja_factura_ids:
-            if estado.invoice_payment_state not in lista_estado:
-                lista_estado.append(
-                    estado.account_move_line_id.invoice_payment_state)
-
-        for estado in lista_estado:
-            sumatoria = sum(calculo.amount_total for calculo in self.corte_caja_factura_ids.filtered(
-                lambda f: f.invoice_payment_state in (estado,)))
-            if estado == 'not_paid':
-                estado = 'No pagadas'
-            if estado == 'in_payment':
-                estado = 'En proceso de pago'
-            if estado == 'paid':
-                estado = 'Pagadas'
-
-            d_suma_factura = {
-                'estado': estado,
-                'total': str(format(round(sumatoria, 2), ',')),
-            }
-            lista_suma.append(d_suma_factura)
-        return lista_suma
-
     def _listado_pagos(self):
         listado_pagos=[]
         pagos=self.corte_caja_ids
@@ -268,6 +242,41 @@ class CorteCaja(models.Model):
             if pago.circular not in listado_pagos:
                 listado_pagos.append(pago.circular)
         return listado_pagos
+
+    def _listado_facturas(self):
+        listado_facturas=[]
+        facturas=self.corte_caja_factura_ids
+        for factura in facturas:
+            if factura.account_move_line_id.name not in listado_facturas:
+                listado_facturas.append(factura.account_move_line_id.name)
+        return listado_facturas
+    
+    def listado_anticipos(self):
+        facturas=self._listado_facturas()
+        pagos=self.corte_caja_ids
+        listado_anticipo=[]
+        lineas_anticipo=[]
+
+        sumatoria = 0
+        for pago in pagos:
+            if pago.circular not in facturas:
+                sumatoria+=pago.amount
+                moneda = pago.account_payment_line_id.currency_id.symbol
+                d_anticipo = {
+                    # "estado": estado,
+                    "pago":pago.account_payment_line_id.name,
+                    "partner_id":pago.partner_id.name,
+                    "date":pago.payment_date,
+                    "monto": moneda + str(format(round(pago.amount, 2), ',')),
+                }
+                lineas_anticipo.append(d_anticipo)
+        dato_anticipo = {
+                "total": str(format(round(sumatoria, 2), ',')),
+                "anticipos": lineas_anticipo,
+        }
+        listado_anticipo.append(dato_anticipo)
+        return listado_anticipo
+                
     
     def _invoice_payment_states(self):
         lista_estado = []
@@ -278,7 +287,6 @@ class CorteCaja(models.Model):
 
 
     def detalle_facturas(self):
-        listado_pagos=self._listado_pagos()
         lista_estado=self._invoice_payment_states()
 
         lista_facturas = []
@@ -297,7 +305,6 @@ class CorteCaja(models.Model):
                 if estado == 'paid':
                     estado = 'Pagadas'
                 
-
                 moneda = f.account_move_line_id.currency_id.symbol
                 d_factura = {
                     "estado": estado,
@@ -305,6 +312,7 @@ class CorteCaja(models.Model):
                     "partner_id":f.partner_id.name,
                     "date":f.date,
                     "monto": moneda + str(format(round(f.amount_total, 2), ',')),
+                    "saldo": moneda + str(format(round(f.amount_residual, 2), ',')), 
                 }
                 listado_facturas.append(d_factura)
             dato_fact = {
@@ -389,8 +397,8 @@ class CorteCajaFactura(models.Model):
                       related='account_move_line_id.ref', store=True)
     date = fields.Date(string='Fecha Factura',
                        related='account_move_line_id.date', store=True)
-    amount_total = fields.Monetary(
-        string='Monto', related='account_move_line_id.amount_total', store=True)
+    amount_total = fields.Monetary(string='Monto', related='account_move_line_id.amount_total', store=True)
+    amount_residual = fields.Monetary(string='Saldo', related='account_move_line_id.amount_residual', store=True)
     currency_id = fields.Many2one(
         string='Currency', related='account_move_line_id.currency_id', store=True)
 
