@@ -61,7 +61,7 @@
 
 
 
-                            <div class="detalle mt-5 mb-5" t-foreach="o.corte_caja_pdf()" t-as="dato">
+                            <div class="detalle mt-2" t-foreach="o.corte_caja_pdf()" t-as="dato">
                                 <div class="row">
                                     <div class="col-3">
                                         <strong>
@@ -69,7 +69,7 @@
                                         </strong>
                                     </div>
                                 </div>
-                                <div class="row div-bg p-3 mb-2 text-white">
+                                <div class="row div-bg p-1 mb-1 text-white">
                                     <div class="col-2 text-center ">PAGO</div>
                                     <div class="col-2 text-center ">FECHA</div>
                                     <div class="col-2 text-center">CIRCULAR</div>
@@ -107,7 +107,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mt-3 justify-content-end">
+                            <div class="row mt-2 justify-content-end">
                                 <div class="col-3">
                                     <strong class="float-right">Total:</strong>
                                 </div>
@@ -121,11 +121,11 @@
 
                             <h4 class="text-left">ANTICIPOS</h4>
                             <div class="anticipos" t-foreach="o.listado_anticipos()" t-as="dato">
-                                <div class="row div-bg p-3 mb-2 text-white">
-                                    <div class="col-3 text-center ">PAGO</div>
-                                    <div class="col-3 text-center ">FECHA</div>
-                                    <div class="col-3 text-center">CLIENTE</div>
-                                    <div class="col-3 text-center">MONTO</div>
+                                <div class="row div-bg p-1 mt-2 text-white">
+                                    <div class="col-3 text-left ">PAGO</div>
+                                    <div class="col-3 text-left ">FECHA</div>
+                                    <div class="col-3 text-left">CLIENTE</div>
+                                    <div class="col-3 text-left">MONTO</div>
                                 </div>
 
                                 <div class="row" t-foreach="dato['anticipos']" t-as="anticipo">
@@ -133,12 +133,12 @@
                                         <p t-esc="anticipo['pago']" />
                                     </div>
                                     <div class="col-3 ">
-                                        <p t-esc="anticipo['partner_id']" />
-                                    </div>
-                                    <div class="col-3 ">
                                         <p t-esc="anticipo['date']" />
                                     </div>
                                     <div class="col-3 ">
+                                        <p t-esc="anticipo['partner_id']" />
+                                    </div>
+                                    <div class="col-3 text-right">
                                         <p t-esc="anticipo['monto']" />
                                     </div>
                                 </div>
@@ -171,10 +171,10 @@
                                 </div>
 
                                 <t t-if=" dato['estado']=='No pagadas'">
-                                    <div class="row div-bg p-3 mb-2 text-white">
-                                        <div class="col-2 text-left ">FACTURA</div>
+                                    <div class="row div-bg p-1 mt-2 text-white">
+                                        <div class="col-3 text-left ">FACTURA</div>
                                         <div class="col-2 text-left ">FECHA</div>
-                                        <div class="col-4 text-left ">CLIENTE</div>
+                                        <div class="col-3 text-left ">CLIENTE</div>
                                         <div class="col-2 text-center ">MONTO</div>
                                         <div class="col-2 text-center ">SALDO</div>
                                     </div>
@@ -183,25 +183,101 @@
                                 <div class="row" t-foreach="dato['facturas']" t-as="fac">
                                     <t t-if=" dato['estado']=='No pagadas'">
 
-                                        <div class="col-auto ">
+                                        <div class="col-3 p-0">
                                             <p t-esc="fac['factura']" />
                                         </div>
-                                        <div class="col-auto ">
+                                        <div class="col-2  ">
                                             <p t-esc="fac['date']" />
                                         </div>
-                                        <div class="col-auto ">
+                                        <div class="col-3  ">
                                             <p t-esc="fac['partner_id']" />
                                         </div>
-                                        <div class="col-3 text-right">
+                                        <div class="col-2  text-right">
                                             <p t-esc="fac['monto']" />
                                         </div>
-                                        <div class="col-3 text-right">
+                                        <div class="col-2  text-right">
                                             <p t-esc="fac['saldo']" />
                                         </div>
                                     </t>
                                 </div>
 
                             </div>
+
+
+                            <h4 class="text-left mt-2">FACTURAS DE OTROS DÍAS</h4>
+                            <div class="facturas" t-foreach="o.facturas_otros_dias()" t-as="dato">
+                                <div class="row div-bg p-1 mt-2 text-white">
+                                    <div class="col-3 text-left ">FACTURA</div>
+                                    <div class="col-3 text-left ">FECHA</div>
+                                    <div class="col-3 text-left">CLIENTE</div>
+                                    <div class="col-3 text-left">MONTO</div>
+                                </div>
+
+                                <div class="row" t-foreach="dato['facturas']" t-as="fac">
+                                    <div class="col-3 ">
+                                        <p t-esc="fac['name']" />
+                                    </div>
+                                    <div class="col-3 ">
+                                        <p t-esc="fac['date']" />
+                                    </div>
+                                    <div class="col-3 ">
+                                        <p t-esc="fac['partner_id']" />
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <p t-esc="fac['amount_total']" />
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-end">
+                                    <div class="col-3 border-bottom border-top">
+                                        <strong class="float-right">Total:</strong>
+                                    </div>
+                                    <div class="col-3 border-bottom border-top">
+                                        <strong class="float-right">
+                                            <p t-esc="dato['total']"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <h4 class="text-left">NOTAS DE CRÉDITO</h4>
+                            <div class="nc" t-foreach="o.detalle_notas_credito()" t-as="dato">
+                                <div class="row div-bg p-1 mt-2 text-white">
+                                    <div class="col-3 text-left ">NOTA CREDITO</div>
+                                    <div class="col-3 text-left ">FECHA</div>
+                                    <div class="col-3 text-left">CLIENTE</div>
+                                    <div class="col-3 text-left">MONTO</div>
+                                </div>
+
+                                <div class="row" t-foreach="dato['nota_credito']" t-as="nc">
+                                    <div class="col-3 ">
+                                        <p t-esc="nc['name']" />
+                                    </div>
+                                    <div class="col-3 ">
+                                        <p t-esc="nc['invoice_date']" />
+                                    </div>
+                                    <div class="col-3 ">
+                                        <p t-esc="nc['partner_id']" />
+                                    </div>
+                                    <div class="col-3 text-right">
+                                        <p t-esc="nc['amount_total']" />
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-end">
+                                    <div class="col-3 border-bottom border-top">
+                                        <strong class="float-right">Total:</strong>
+                                    </div>
+                                    <div class="col-3 border-bottom border-top">
+                                        <strong class="float-right">
+                                            <p t-esc="dato['total']"/>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </t>

@@ -6,6 +6,7 @@ from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationE
 from odoo.tools import email_split, float_is_zero
 from odoo.addons import decimal_precision as dp
 from odoo.http import request
+import datetime
 
 
 class CorteCaja(models.Model):
@@ -239,31 +240,88 @@ class CorteCaja(models.Model):
         listado_pagos=[]
         pagos=self.corte_caja_ids
         for pago in pagos:
-            if pago.circular not in listado_pagos:
-                listado_pagos.append(pago.circular)
+            if pago.account_payment_line_id.id not in listado_pagos:
+                listado_pagos.append(pago.account_payment_line_id.id)
         return listado_pagos
 
     def _listado_facturas(self):
         listado_facturas=[]
         facturas=self.corte_caja_factura_ids
         for factura in facturas:
-            if factura.account_move_line_id.name not in listado_facturas:
-                listado_facturas.append(factura.account_move_line_id.name)
+            if factura.account_move_line_id.id not in listado_facturas and factura.invoice_payment_state != 'not_paid' :
+                listado_facturas.append(factura.account_move_line_id.id)
         return listado_facturas
     
-    def listado_anticipos(self):
+    def facturas_otros_dias(self):
         facturas=self._listado_facturas()
+        pagos_aplicados=self.get_pagos_aplicados_factura(None)
+
+        facturas_otros_dias=[]
+        listado_facturas=[]
+        ids_facturas=[]
+        for registro in pagos_aplicados:
+            if registro['move_id'] not in facturas:
+                ids_facturas.append(registro['move_id'])  
+
+        dominio=[('id','in',tuple(ids_facturas))] 
+        sumatoria=0
+        consulta_account_move = request.env['account.move'].search(dominio)
+        for rec in consulta_account_move:
+            # or rec.create_uid != self.user_id.id
+            if self.fecha_inicio != rec.date and self.fecha_fin != rec.date:
+                sumatoria+=rec.amount_total
+                dic_facturas_otros_dias={
+                    'id':rec.id,
+                    'name':rec.name,
+                    'date':rec.date,
+                    'partner_id':rec.partner_id.name,
+                    'amount_total':rec.amount_total,
+                }
+                facturas_otros_dias.append(dic_facturas_otros_dias)
+        dato_fact = {
+                "total": str(format(round(sumatoria, 2), ',')),
+                "facturas": facturas_otros_dias,
+        }
+        listado_facturas.append(dato_fact)
+
+        return listado_facturas
+        
+    def get_pagos_aplicados_factura(self,parametro):
+        listado_ids=[]
+        query = """
+                    SELECT ml2.id,ml2.partner_id,ml.move_name,ml2.payment_id,ml.move_id, ml2.ref, m2.date, apr.amount
+                    FROM account_move_line ml
+                    JOIN account_partial_reconcile apr on apr.debit_move_id = ml.id
+                    JOIN account_move_line ml2 on apr.credit_move_id = ml2.id
+                    JOIN account_move m2 on ml2.move_id = m2.id
+                    where ml.account_internal_type = 'receivable'
+                    and m2.date  between  %s and %s
+                    order by ml2.payment_id
+                """
+        self.env.cr.execute(query, (self.fecha_inicio, self.fecha_fin,))
+        query_result = self.env.cr.dictfetchall()
+
+        for registro in query_result:
+            if parametro=='pagos':
+                listado_ids.append(registro['payment_id'])
+            if parametro=='nota_credito':
+                listado_ids.append(registro['move_id'])
+            else:
+                 listado_ids.append(registro)
+        return listado_ids
+    
+    def listado_anticipos(self):
+        facturas=self.get_pagos_aplicados_factura('pagos')
         pagos=self.corte_caja_ids
         listado_anticipo=[]
         lineas_anticipo=[]
 
         sumatoria = 0
         for pago in pagos:
-            if pago.circular not in facturas:
+            if pago.account_payment_line_id.id not in facturas:
                 sumatoria+=pago.amount
                 moneda = pago.account_payment_line_id.currency_id.symbol
                 d_anticipo = {
-                    # "estado": estado,
                     "pago":pago.account_payment_line_id.name,
                     "partner_id":pago.partner_id.name,
                     "date":pago.payment_date,
@@ -277,14 +335,12 @@ class CorteCaja(models.Model):
         listado_anticipo.append(dato_anticipo)
         return listado_anticipo
                 
-    
     def _invoice_payment_states(self):
         lista_estado = []
         for estado in self.corte_caja_factura_ids:
             if estado.invoice_payment_state not in lista_estado:
                 lista_estado.append(estado.account_move_line_id.invoice_payment_state)
         return lista_estado
-
 
     def detalle_facturas(self):
         lista_estado=self._invoice_payment_states()
@@ -322,19 +378,48 @@ class CorteCaja(models.Model):
                 "facturas_sin_pago": listado_facturas_sin_pago,
             }
             lista_facturas.append(dato_fact)
-  
-
-        # for dato in lista_facturas:
-        #     print("rec: ",dato['estado'],' ',dato['total'])
-            
-        #     # print("Pagadas-->")
-        #     # for fac in dato['facturas']:
-        #     #     if dato['estado']=='No pagadas':
-        #     #         print(fac['estado'],' ',fac['factura'],' ',fac['monto'])
-        #     print("No Pagadas-->")
-        #     for fac in dato['facturas_sin_pago']:
-        #         print(fac['estado'],' ',fac['factura'],' ',fac['monto'])
         return lista_facturas
+
+
+    def detalle_notas_credito(self):       
+        dominio = [
+            ('state', '=', 'posted'),
+            ('type', '=', 'out_refund'),
+            ('invoice_payment_state', '=', 'paid'),
+        ]
+
+        if self.user_id:
+            dominio += ('create_uid', '=', self.user_id.id),
+        if self.fecha_inicio:
+            dominio += ('invoice_date', '>=', self.fecha_inicio),
+        if self.fecha_fin:
+            dominio += ('invoice_date', '<=', self.fecha_fin),
+
+        consulta_account_move = request.env['account.move'].search(dominio)
+        notas_credito=self.get_pagos_aplicados_factura('nota_credito')
+        lista_nc=[]
+        lista_nota_credito=[]
+        sumatoria=0
+        for nota_credito in consulta_account_move:
+            if nota_credito.id in notas_credito:
+                sumatoria+=nota_credito.amount_total
+                dict_notas_credito={
+                    "id":nota_credito.id,
+                    "name":nota_credito.name,
+                    "partner_id":nota_credito.partner_id.name,
+                    "amount_total":nota_credito.amount_total,
+                    "invoice_date":nota_credito.invoice_date,
+                }
+                lista_nc.append(dict_notas_credito)
+        dato_nc = {
+                "total": str(format(round(sumatoria, 2), ',')),
+                "nota_credito": lista_nc,
+            }
+        lista_nota_credito.append(dato_nc)
+        print("dict_notas_credito->",lista_nota_credito)
+        return lista_nota_credito
+
+
 
 
 # Finaliza Reporte

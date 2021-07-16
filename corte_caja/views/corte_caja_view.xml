@@ -103,7 +103,7 @@
                     <button name="action_cancel" string="Cancelar" type="object" attrs="{'invisible':[('state','!=','confirm')]}"/>
                     <button name="download_report" type="object" string="Descargar Reporte" class="oe_highlight" icon="fa-download" attrs="{'invisible':[('state','!=','confirm')]}"/>
                     <button name="action_procesar" type="object" string="Consultar" class="oe_highlight" icon="fa-search" attrs="{'invisible':[('state','!=','draft')]}"/>
-                    <button name="listado_anticipos" type="object" string="Reporte" class="oe_highlight" icon="fa-search" />
+                    <button name="facturas_otros_dias" type="object" string="Reporte" class="oe_highlight" icon="fa-search" />
                 </header>
                 <sheet>
                     <div class="oe_title">
