@@ -27,4 +27,14 @@ class AccountMove(models.Model):
         if self.journal_id.template_print in ('template_factura'):
             return self.env.ref('sansimon.account_invoices').report_action(self)
         elif self.journal_id.template_print in ('template_ticket'):
+            logging.info(x*100)
+            logging.info(self)
+            paper_format = self.env['report.paperformat'].sudo().search([('name','=','PaperFormat Invoice POS')],limit=1)
+            paper_format.page_height = 297
+            if paper_format:
+                if items:
+                    if len(items) >= 4:
+                        paper_format.page_height += (20*(len(items)-4))
+                    else:
+                        paper_format.page_height = 297
             return self.env.ref('sansimon.account_invoices_ticket').report_action(self)
