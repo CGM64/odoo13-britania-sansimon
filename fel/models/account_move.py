@@ -11,6 +11,7 @@ from . import fel
 import logging
 import pytz
 
+
 _logger = logging.getLogger(__name__)
 
 class AccountMove(models.Model):
@@ -102,16 +103,34 @@ class AccountMove(models.Model):
             linea["Cantidad"] = detalle.quantity
             linea["UnidadMedida"] = detalle.product_uom_id.name
             linea["Descripcion"] = descripcion
-            tasa = detalle.sat_tasa_cambio
-            precio_sin_descuento = detalle.price_unit * tasa
-            linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
-            linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * detalle.quantity)
-            precio_unitario = detalle.price_unit * (100-detalle.discount) / 100
-            precio_unitario = precio_unitario * tasa
-            descuento = round(precio_sin_descuento * detalle.quantity - precio_unitario * detalle.quantity,4)
-            linea["Descuento"] = '{:.6f}'.format(descuento)
+            tasa = round(self.currency_id.rate,7)
+            precio_sin_descuento = detalle.price_unit
+
+            precio_unitario = precio_sin_descuento * (100-detalle.discount) / 100
+
+
+
+
 
             #Impuestos
+            print("------------------------------------------------")
+            print("tasa")
+            print(tasa)
+            print("precio_sin_descuento")
+            print(precio_sin_descuento)
+            print("precio_unitario")
+            print(precio_unitario)
+
+            precio_sin_descuento = round(precio_sin_descuento / tasa,2)
+            linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
+            linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * detalle.quantity)
+
+
+            precio_unitario = round(precio_unitario / tasa,2)
+
+            descuento = round((precio_sin_descuento * detalle.quantity) - (precio_unitario * detalle.quantity),4)
+            linea["Descuento"] = '{:.6f}'.format(descuento)
+
             precio_unitario_base = detalle.price_subtotal / detalle.quantity
             total_linea = round(precio_unitario * detalle.quantity,6)
             #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
