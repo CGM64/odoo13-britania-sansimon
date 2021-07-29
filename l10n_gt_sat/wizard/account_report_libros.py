@@ -38,6 +38,10 @@ class AccountLibroFiscalReport(models.TransientModel):
     ejercicio = fields.Integer(string='Ejercicio', default=now.year)
     vendedor = fields.Boolean(string='Vendedor', default=True)
 
+    #reporte de inventario
+    fecha_inicio = fields.Date(string='Fecha inicio')
+    fecha_fin = fields.Date(string='Fecha fin')
+
     def check_report(self):
         self.ensure_one()
         data = {}
@@ -49,4 +53,12 @@ class AccountLibroFiscalReport(models.TransientModel):
         data = {}
         data['form'] = self.read(['libro', 'tipo', 'periodo', 'ejercicio', 'company_id', 'vendedor'])[0]
         return self.env['ir.actions.report'].search([('report_name', '=', 'l10n_gt_sat.account_librofiscal_report_xls'),
+                ('report_type', '=', 'xlsx')], limit=1).report_action(self,data=data)
+
+
+    def export_invetory_xls(self):
+        self.ensure_one()
+        data = {}
+        data['form'] = self.read(['fecha_inicio', 'fecha_fin'])[0]
+        return self.env['ir.actions.report'].search([('report_name', '=', 'l10n_gt_sat.account_inventario_report_xls'),
                 ('report_type', '=', 'xlsx')], limit=1).report_action(self,data=data)
