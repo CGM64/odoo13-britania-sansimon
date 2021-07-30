@@ -69,10 +69,6 @@ class AccountMove(models.Model):
             precio_sin_descuento = round(precio_sin_descuento / tasa,2)
             precio_con_descuento = round(precio_con_descuento / tasa,2)
 
-            print("----------------------------------------")
-            print(tasa)
-            print(precio_con_descuento)
-
             descuento = round((precio_sin_descuento * detalle.quantity) - (precio_con_descuento * detalle.quantity),4)
 
             total_descuento += descuento
