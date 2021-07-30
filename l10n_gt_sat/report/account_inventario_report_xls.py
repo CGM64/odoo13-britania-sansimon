@@ -56,8 +56,11 @@ class LibroInventarioReportXls(models.AbstractModel):
                     lista_facturas.append(ordenes_compra)
 
             for recepcion in orden.picking_ids:
-                if recepcion.state =='done':
-                    print("ids->",recepcion.move_ids_without_package)
+                if recepcion.state =='done' :
+                    # print("ids->",recepcion.move_ids_without_package)
+                    for move in recepcion.move_ids_without_package:
+                        if recepcion.id==7732:
+                            print(move.move_line_ids.id)
                     orden_recepciones={
                         'recepcion_id':recepcion.id,
                         'recepcion':recepcion.name,
