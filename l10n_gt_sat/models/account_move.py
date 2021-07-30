@@ -61,10 +61,11 @@ class AccountMove(models.Model):
         total_total = total_base = total_impuestos  = total_descuento = total_sin_descuento = 0
         for detalle in self.invoice_line_ids.filtered(lambda l: l.price_total > 0):
 
-            tasa = round(detalle.sat_tasa_currency_rate,7)
+            tasa = detalle.sat_tasa_currency_rate
 
             precio_sin_descuento = detalle.price_unit
-            precio_con_descuento = precio_sin_descuento * (100-detalle.discount) / 100
+            desc = round((100-detalle.discount) / 100, 10)
+            precio_con_descuento = round(precio_sin_descuento * desc,2)
 
             precio_sin_descuento = round(precio_sin_descuento / tasa,2)
             precio_con_descuento = round(precio_con_descuento / tasa,2)
