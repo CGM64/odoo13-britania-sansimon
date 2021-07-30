@@ -295,8 +295,6 @@ class AccountMove(models.Model):
                 tasa = 1
                 if detalle.currency_id:
                     tasa = detalle.currency_id.rate
-                print("-----------asdf--------")
-                print(tasa)
                 detalle.sat_tasa_currency_rate = tasa
 
 
