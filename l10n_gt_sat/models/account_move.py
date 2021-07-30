@@ -52,6 +52,68 @@ class AccountMove(models.Model):
     def _compute_no_linea(self):
         self.no_linea = 0
 
+    #retorna toda la informacion necesaria de los calculos para la factura
+    def get_detalle_factura(self):
+        factura = {}
+        factura_detalle = []
+        factura_total = []
+
+        total_total = total_base = total_impuestos  = total_descuento = total_sin_descuento = 0
+        for detalle in self.invoice_line_ids.filtered(lambda l: l.price_total > 0):
+
+            tasa = round(detalle.sat_tasa_currency_rate,7)
+
+            precio_sin_descuento = detalle.price_unit
+            precio_con_descuento = precio_sin_descuento * (100-detalle.discount) / 100
+
+            precio_sin_descuento = round(precio_sin_descuento / tasa,2)
+            precio_con_descuento = round(precio_con_descuento / tasa,2)
+
+            print("----------------------------------------")
+            print(tasa)
+            print(precio_con_descuento)
+
+            descuento = round((precio_sin_descuento * detalle.quantity) - (precio_con_descuento * detalle.quantity),4)
+
+            total_descuento += descuento
+            total_linea_sin_descuento = precio_sin_descuento * detalle.quantity
+            total_sin_descuento += total_linea_sin_descuento
+
+            total_con_descuento = round(precio_con_descuento * detalle.quantity,6)
+            total_linea_base = round(total_con_descuento / (self.sat_iva_porcentaje/100+1),6)
+            total_linea_impuestos = round(total_linea_base * (self.sat_iva_porcentaje/100),6)
+
+            total_total += total_con_descuento
+            total_base += total_linea_base
+            total_impuestos += total_linea_impuestos
+
+            linea = {
+            'precio_sin_descuento': precio_sin_descuento,
+            'precio_con_descuento': precio_con_descuento,
+            'descuento': descuento,
+            'total_con_descuento': total_con_descuento,
+            'total_linea_sin_descuento': total_linea_sin_descuento,
+            'total_linea_base': total_linea_base,
+            'total_linea_impuestos': total_linea_impuestos,
+            'dato_linea': detalle,
+            }
+
+            factura_detalle.append(linea)
+
+        totales = {
+            'total_sin_descuento': total_sin_descuento,
+            'total_descuento': total_descuento,
+            'total_total': total_total,
+            'total_base': total_base,
+            'total_impuestos': total_impuestos,
+        }
+
+        factura = {
+            'detalle': factura_detalle,
+            'totales': totales,
+        }
+        return factura
+
     @api.depends(
         'line_ids.debit',
         'line_ids.credit',

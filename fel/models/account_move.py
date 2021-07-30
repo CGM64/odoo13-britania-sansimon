@@ -93,7 +93,11 @@ class AccountMove(models.Model):
         #Items
         items = []
         gran_total = gran_subtotal = gran_total_impuestos = 0
-        for detalle in factura.invoice_line_ids.filtered(lambda l: l.price_total > 0):
+
+        get_fac_doc = self.get_detalle_factura()
+
+        for linea_factura in get_fac_doc['detalle']:
+            detalle = linea_factura['dato_linea']
             descripcion = detalle.name
             if 'is_vehicle' in self.env['product.product']._fields:
                 if detalle.product_id.is_vehicle:
@@ -103,45 +107,24 @@ class AccountMove(models.Model):
             linea["Cantidad"] = detalle.quantity
             linea["UnidadMedida"] = detalle.product_uom_id.name
             linea["Descripcion"] = descripcion
-            tasa = round(detalle.sat_tasa_currency_rate,7)
-            precio_sin_descuento = detalle.price_unit
 
-            precio_unitario = precio_sin_descuento * (100-detalle.discount) / 100
-            precio_sin_descuento = round(precio_sin_descuento / tasa,2)
 
-            linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
-            linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * detalle.quantity)
-
-            precio_unitario = round(precio_unitario / tasa,2)
-            descuento = round((precio_sin_descuento * detalle.quantity) - (precio_unitario * detalle.quantity),4)
-
-            linea["Descuento"] = '{:.6f}'.format(descuento)
-
-            precio_unitario_base = detalle.price_subtotal / detalle.quantity
-            total_linea = round(precio_unitario * detalle.quantity,6)
-            #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
-            total_linea_base = round(total_linea / (factura.sat_iva_porcentaje/100+1),6)
-            #total_impuestos = total_linea - total_linea_base
-            total_impuestos = round(total_linea_base * (factura.sat_iva_porcentaje/100),6)
+            linea["PrecioUnitario"] = '{:.6f}'.format(linea_factura['precio_con_descuento'])
+            linea["Precio"] = '{:.6f}'.format(linea_factura['total_linea_sin_descuento'])
+            linea["Descuento"] = '{:.6f}'.format(linea_factura['descuento'])
 
             if tipo_documento not in ("NABN"):
                 linea["NombreCorto"] = "IVA"
                 linea["CodigoUnidadGravable"] = "2" if factura.journal_id.tipo_operacion == 'EXPO' else "1"
-                linea["MontoGravable"] = '{:.6f}'.format(total_linea_base)
-                linea["MontoImpuesto"] = '{:.6f}'.format(total_impuestos)
-            linea["Total"] = '{:.6f}'.format(total_linea)
-
-            gran_total += total_linea
-            gran_subtotal += total_linea_base
-            gran_total_impuestos += total_impuestos
-
-
+                linea["MontoGravable"] = '{:.6f}'.format(linea_factura['total_linea_base'])
+                linea["MontoImpuesto"] = '{:.6f}'.format(linea_factura['total_linea_impuestos'])
+            linea["Total"] = '{:.6f}'.format(linea_factura['total_con_descuento'])
 
             items.append(linea)
         documento["Items"] = items
-        documento["gran_total_impuestos"] = '{:.6f}'.format(gran_total_impuestos)
-        documento["TotalMontoImpuesto"] = '{:.6f}'.format(gran_total_impuestos)
-        documento["GranTotal"] = '{:.6f}'.format(gran_total)
+        tot = get_fac_doc['totales']
+        documento["TotalMontoImpuesto"] = '{:.6f}'.format(tot['total_impuestos'])
+        documento["GranTotal"] = '{:.6f}'.format(tot['total_total'])
 
         documento["Adenda"] = factura.name
 
