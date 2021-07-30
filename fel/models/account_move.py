@@ -109,7 +109,7 @@ class AccountMove(models.Model):
             linea["Descripcion"] = descripcion
 
 
-            linea["PrecioUnitario"] = '{:.6f}'.format(linea_factura['precio_con_descuento'])
+            linea["PrecioUnitario"] = '{:.6f}'.format(linea_factura['precio_sin_descuento'])
             linea["Precio"] = '{:.6f}'.format(linea_factura['total_linea_sin_descuento'])
             linea["Descuento"] = '{:.6f}'.format(linea_factura['descuento'])
 
