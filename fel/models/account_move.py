@@ -107,28 +107,14 @@ class AccountMove(models.Model):
             precio_sin_descuento = detalle.price_unit
 
             precio_unitario = precio_sin_descuento * (100-detalle.discount) / 100
-
-
-
-
-
-            #Impuestos
-            print("------------------------------------------------")
-            print("tasa")
-            print(tasa)
-            print("precio_sin_descuento")
-            print(precio_sin_descuento)
-            print("precio_unitario")
-            print(precio_unitario)
-
             precio_sin_descuento = round(precio_sin_descuento / tasa,2)
+
             linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
             linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * detalle.quantity)
 
-
             precio_unitario = round(precio_unitario / tasa,2)
-
             descuento = round((precio_sin_descuento * detalle.quantity) - (precio_unitario * detalle.quantity),4)
+
             linea["Descuento"] = '{:.6f}'.format(descuento)
 
             precio_unitario_base = detalle.price_subtotal / detalle.quantity
