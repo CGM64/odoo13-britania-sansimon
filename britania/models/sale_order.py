@@ -87,7 +87,6 @@ class AccountMove(models.Model):
     total_discount = fields.Monetary(string="Descuento", compute="_amount_discount")
     amount_total_undiscounted = fields.Monetary(string="Total sin descuento", compute="_amount_total_undiscounted")
     total_discount_dl = fields.Monetary(string="Descuento USD", compute="_amount_discount_dl")
-    amount_total_undiscounted_dl = fields.Monetary(string="Total sin descuento USD", compute="_amount_total_undiscounted_dl")
 
     @api.depends('invoice_line_ids.price_subtotal')
     def _amount_discount(self):
@@ -130,26 +129,3 @@ class AccountMove(models.Model):
                 account.update({
                     'total_discount_dl': total,
                 })
-
-    @api.depends('total_discount_dl')
-    def _amount_total_undiscounted_dl(self):
-        
-        for account in self:
-            total = 0.0
-            if account.total_discount_dl == 0.0:
-                total = account.amount_total
-            else:
-                gran_total = gran_subtotal = gran_total_impuestos = 0
-                for line in account.invoice_line_ids:
-                    precio_unitario = line.price_unit * (100-line.discount) / 100
-                    precio_unitario = precio_unitario * line.sat_tasa_cambio
-                    total_linea = round(precio_unitario * line.quantity,6)
-                    total_linea_base = round(total_linea / (self.sat_iva_porcentaje/100+1),6)
-                    total_impuestos = round(total_linea_base * (self.sat_iva_porcentaje/100),6)
-                    gran_total += total_linea
-                    gran_subtotal += total_linea_base
-                    gran_total_impuestos += total_impuestos
-                total = gran_total + self.total_discount_dl
-            account.update({
-                'amount_total_undiscounted_dl': total,
-            })

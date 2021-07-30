@@ -103,7 +103,7 @@ class AccountMove(models.Model):
             linea["Cantidad"] = detalle.quantity
             linea["UnidadMedida"] = detalle.product_uom_id.name
             linea["Descripcion"] = descripcion
-            tasa = round(self.currency_id.rate,7)
+            tasa = round(detalle.sat_tasa_currency_rate,7)
             precio_sin_descuento = detalle.price_unit
 
             precio_unitario = precio_sin_descuento * (100-detalle.discount) / 100

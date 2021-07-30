@@ -376,7 +376,7 @@
         </div>
         <div class="page">
           <link rel="stylesheet" href="/britania/static/src/css/report.css"/>
-          <t t-foreach="o.detalle_factura()" t-as="pagina">
+          <t t-foreach="o.detalle_factura()['detalle']" t-as="pagina">
             <table class="factura_tabla factura_ancho fac_t_letra salto">
               <thead>
                 <tr style="border:0px;">
@@ -468,30 +468,30 @@
                   <tr>
                     <td colspan="8" class="factura_encabezado1"><br/></td>
                     <td class="text-center">SUBTOTAL</td>
-                    <td class="factura_td_numeros"><span t-esc="o.amount_total_undiscounted_dl" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                    <td class="factura_td_numeros"><span t-esc="o.detalle_factura()['total']['gran_total']" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                   </tr>
                   <tr>
                     <td colspan="8" class="factura_encabezado1"><br/></td>
                     <td class="text-center">DESCUENTO</td>
-                    <td class="factura_td_numeros"><span t-esc="o.total_discount_dl" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                    <td class="factura_td_numeros"><span t-esc="o.detalle_factura()['total']['gran_subtotal']" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                   </tr>
                 </t>
                 <t t-if="not o.currency_id.symbol == '$'">
                   <tr>
                     <td colspan="8" class="factura_encabezado1"><br/></td>
                     <td class="text-center">SUBTOTAL</td>
-                    <td class="factura_td_numeros"><span t-esc="o.amount_total_undiscounted" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                    <td class="factura_td_numeros"><span t-esc="o.detalle_factura()['total']['gran_total']" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                   </tr>
                   <tr>
                     <td colspan="8" class="factura_encabezado1"><br/></td>
                     <td class="text-center">DESCUENTO</td>
-                    <td class="factura_td_numeros"><span t-esc="o.get_total_discount()" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                    <td class="factura_td_numeros"><span t-esc="o.detalle_factura()['total']['gran_subtotal']" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                   </tr>
                 </t>
                 <tr>
-                  <td colspan="8" class="factura_encabezado1">TOTAL A PAGAR EN LETRAS<br/><t t-esc="o.monto_letras(o.get_total_invoice())"/></td>
+                  <td colspan="8" class="factura_encabezado1">TOTAL A PAGAR EN LETRAS<br/><t t-esc="o.detalle_factura()['total']['gran_total_impuestos']"/></td>
                   <td class="text-center">TOTAL</td>
-                  <td class="factura_td_numeros"><span t-esc="o.get_total_invoice()" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                  <td class="factura_td_numeros"><span t-esc="o.detalle_factura()['total']['gran_total_impuestos']" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                 </tr>
               </tfoot>
             </table>

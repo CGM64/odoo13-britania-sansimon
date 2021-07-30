@@ -134,22 +134,30 @@ class AccountMove(models.Model):
         o = self
 
         lineas = []
-        pagina = []
+        pagina = {}
+        detalle = []
+        total = {}
         i=0
         nlinea = 0
         linea={}
-        gran_total = gran_subtotal = gran_total_impuestos = 0
+        gran_total = gran_subtotal = gran_total_impuestos = total_descuento = total_sin_descuento = 0
         for l in o.invoice_line_ids.filtered(lambda l: l.price_total > 0):
             if l.quantity > 0:
-                tasa = l.sat_tasa_cambio
-                precio_sin_descuento = l.price_unit * tasa
+                tasa = round(l.sat_tasa_currency_rate,7)
+                precio_sin_descuento = l.price_unit
                 linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
                 linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * l.quantity)
-                precio_unitario = l.price_unit
-                precio_unitario = precio_unitario * tasa
-                descuento = round(precio_sin_descuento * l.quantity - precio_unitario * l.quantity,4)
+                precio_unitario = precio_sin_descuento * (100-l.discount) / 100
+                precio_sin_descuento = round(precio_sin_descuento / tasa, 2)
+                precio_unitario = precio_unitario / tasa
+                descuento = round((precio_sin_descuento * l.quantity) - (precio_unitario * l.quantity),4)
                 linea["Descuento"] = '{:.6f}'.format(descuento)
-                precio_unitario_base = l.price_subtotal / l.quantity
+                precio_sin_descuento_x_cantidad = precio_sin_descuento * l.quantity
+                total_sin_descuento += precio_sin_descuento_x_cantidad
+                total_descuento += descuento
+                print("----------------------------")
+                print(precio_unitario)
+
                 total_linea = round(precio_unitario * l.quantity,6)
                 #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
                 total_linea_base = round(total_linea / (self.sat_iva_porcentaje/100+1),6)
@@ -157,7 +165,7 @@ class AccountMove(models.Model):
                 total_impuestos = round(total_linea_base * (self.sat_iva_porcentaje/100),6)
                 gran_total += total_linea
                 gran_subtotal += total_linea_base
-                gran_total_impuestos += total_impuestos
+                gran_total_impuestos += total_linea
                 #El siguiente ciclo es para cepara la descripcion en varias lineas si supera la logintud de 30 caracteres
                 mostrar_contenido = True #Variable que me sirve solo para mostrar contenido en la primera linea, cuando la descripcion supera la linea
                 if l.product_id.is_vehicle:
@@ -168,16 +176,16 @@ class AccountMove(models.Model):
                         linea['linea'] = i
                         linea['blanco'] = False
                         linea['default_code'] = l.product_id.default_code  if mostrar_contenido else ''
-                        linea['quantity'] = '{0:,.0f}'.format(l.quantity) if mostrar_contenido else ''
+                        linea['quantity'] = '{0:,.2f}'.format(l.quantity) if mostrar_contenido else ''
                         linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
                         linea['name'] = descripcion[d]
-                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_unitario) if mostrar_contenido else ''
-                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(total_linea) if mostrar_contenido else ''
-                        linea['discount'] = str('{0:,.0f}'.format(l.discount))+"%" if mostrar_contenido else ''
+                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_sin_descuento) if mostrar_contenido else ''
+                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_sin_descuento_x_cantidad) if mostrar_contenido else ''
+                        linea['discount'] = str('{0:,.2f}'.format(l.discount))+"%" if mostrar_contenido else ''
                         lineas.append(linea)
                         nlinea = i % num_linea_x_pagina
                         if nlinea == 0:
-                            pagina.append(lineas)
+                            detalle.append(lineas)
                             lineas = []
                         mostrar_contenido = False
 
@@ -188,22 +196,25 @@ class AccountMove(models.Model):
                         linea['linea'] = i
                         linea['blanco'] = False
                         linea['default_code'] = l.product_id.default_code  if mostrar_contenido else ''
-                        linea['quantity'] = '{0:,.0f}'.format(l.quantity) if mostrar_contenido else ''
+                        linea['quantity'] = '{0:,.2f}'.format(l.quantity) if mostrar_contenido else ''
                         linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
                         linea['name'] = nueva_linea_desc
-                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_unitario) if mostrar_contenido else ''
-                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(total_linea) if mostrar_contenido else ''
-                        linea['discount'] = str('{0:,.0f}'.format(l.discount))+"%" if mostrar_contenido else ''
+                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_sin_descuento) if mostrar_contenido else ''
+                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_sin_descuento_x_cantidad) if mostrar_contenido else ''
+                        linea['discount'] = str('{0:,.2f}'.format(l.discount))+"%" if mostrar_contenido else ''
                         lineas.append(linea)
                         nlinea = i % num_linea_x_pagina
                         #self.nueva_linea(linea['name'])
                         #print("Numero de linea (%s)  ---   (%s)   texto-largo(%s)(%s)" % (str(i), str(nlinea), len(linea['name']), linea['name']))
                         if nlinea == 0:
-                            pagina.append(lineas)
+                            detalle.append(lineas)
                             lineas = []
                         mostrar_contenido = False
+        total['gran_total'] = total_sin_descuento
+        total['gran_subtotal'] = total_descuento
+        total['gran_total_impuestos'] = gran_total_impuestos
         if len(lineas) >= 0:
-            pagina.append(lineas)
+            detalle.append(lineas)
 
 
         for x in range(nlinea, num_linea_x_pagina):
@@ -216,6 +227,9 @@ class AccountMove(models.Model):
         #
         #     for a in p:
         #         print(a)
+        pagina['detalle'] = detalle
+        pagina['total'] = total
+        print(pagina)
         return pagina
 
 

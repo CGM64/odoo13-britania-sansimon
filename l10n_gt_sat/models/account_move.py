@@ -228,6 +228,18 @@ class AccountMove(models.Model):
         _inherit = "account.move.line"
 
         sat_tasa_cambio = fields.Float(string="Tasa de Cambio", compute='_compute_tasa_cambio', help="Tasa de cambio del documento")
+        sat_tasa_currency_rate = fields.Float(string="Tasa Moneda", compute='_compute_tasa_moneda', store=True)
+
+        @api.depends('currency_id')
+        def _compute_tasa_moneda(self):
+            for detalle in self:
+                tasa = 1
+                if detalle.currency_id:
+                    tasa = detalle.currency_id.rate
+                print("-----------asdf--------")
+                print(tasa)
+                detalle.sat_tasa_currency_rate = tasa
+
 
         def _compute_tasa_cambio(self):
             tasa = 0.0
