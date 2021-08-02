@@ -39,8 +39,8 @@ class AccountLibroFiscalReport(models.TransientModel):
     vendedor = fields.Boolean(string='Vendedor', default=True)
 
     #reporte de inventario
-    fecha_inicio = fields.Date(string='Fecha inicio')
-    fecha_fin = fields.Date(string='Fecha fin')
+    fecha_inicio = fields.Date(string='Fecha inicio',default=now.today())
+    fecha_fin = fields.Date(string='Fecha fin',default=now.today())
 
     def check_report(self):
         self.ensure_one()

@@ -22,6 +22,26 @@ class LibroInventarioReportXls(models.AbstractModel):
         facturas= request.env['account.move'].search(dominio)
         return facturas
 
+    def _stock_valuation_layer(self,fecha_inicio,fecha_fin):
+        year = datetime.strptime(fecha_inicio, '%Y-%m-%d').strftime('%Y')
+        fecha_inicial = datetime.strptime(fecha_inicio, '%Y-%m-%d').strftime(str(year)+'-01-01')
+        fecha_final = datetime.strptime(fecha_fin, '%Y-%m-%d').strftime(str(year)+'-12-31')    
+        dominio = [
+            ('quantity', '>',0),
+            ('create_date', '>=', fecha_inicial),
+            ('create_date', '<=', fecha_final),
+        ]
+        valoracion= request.env['stock.valuation.layer'].search(dominio)
+        lista_valores=[]
+        for valor in valoracion:
+            dict_valores={
+                'stock_move_id':valor.stock_move_id,
+                'quantity':valor.quantity,
+                'value':valor.value,
+            }
+            lista_valores.append(dict_valores)
+        return lista_valores
+
     def _purchase_order(self,fecha_inicio,fecha_fin):
         year = datetime.strptime(fecha_inicio, '%Y-%m-%d').strftime('%Y')
         fecha_inicial = datetime.strptime(fecha_inicio, '%Y-%m-%d').strftime(str(year)+'-01-01')
@@ -34,6 +54,7 @@ class LibroInventarioReportXls(models.AbstractModel):
         purchase_order= request.env['purchase.order'].search(dominio)
 
         lista_ordenes=[]
+        stock_valuation_layer= self._stock_valuation_layer(fecha_inicio,fecha_fin)
         for orden in purchase_order:
             lista_facturas=[]
             lista_recepciones=[]
@@ -57,16 +78,20 @@ class LibroInventarioReportXls(models.AbstractModel):
 
             for recepcion in orden.picking_ids:
                 if recepcion.state =='done' :
-                    # print("ids->",recepcion.move_ids_without_package)
-                    for move in recepcion.move_ids_without_package:
-                        if recepcion.id==7732:
-                            print(move.move_line_ids.id)
+                    # print(recepcion.name)
+                    lista_valorizacion=[]
+                    for linea in recepcion.move_line_ids:
+                        valorizacion=list(filter(lambda svl: svl['stock_move_id']==linea.move_id, stock_valuation_layer))
+                        for valor in valorizacion:
+                            lista_valorizacion.append(valor['value'])
+                            # print("    recepcion-->",linea.move_id.id,valor['value'])
+
                     orden_recepciones={
                         'recepcion_id':recepcion.id,
                         'recepcion':recepcion.name,
                         'orden_id':orden.id,
                         'orden':orden.name,
-                        'monto_recepcion':0,
+                        'monto_recepcion':sum(lista_valorizacion),
                     }
                     lista_recepciones.append(orden_recepciones)
 
@@ -114,6 +139,7 @@ class LibroInventarioReportXls(models.AbstractModel):
         sheet_inventario.write(0, 6, "MONTO ORDEN",formato_encabezado)
         sheet_inventario.write(0, 7, "MONTO FACTURA RELACIONADA",formato_encabezado)
         sheet_inventario.write(0, 8, "RECEPCIONES",formato_encabezado)
+        sheet_inventario.write(0, 9, "MONTO RECEPCION",formato_encabezado)
 
         fila=0
         for factura in facturas:
@@ -137,13 +163,16 @@ class LibroInventarioReportXls(models.AbstractModel):
                 recepciones=list(filter(lambda o: o['orden_id']==orden['orden_id'], lista_recepcion))
                 lista_de_recepciones=[]
                 for recepcion in recepciones:
-                    lista_de_recepciones.append(recepcion['recepcion'])      
+                    lista_de_recepciones.append(recepcion['recepcion'])     
+                    sheet_inventario.write(fila, 9,recepcion['monto_recepcion'],formato_celda_numerica)
 
                 caracteres="'[]"
                 for caracter in caracteres:
                     lista_de_recepciones=str(lista_de_recepciones).replace(caracter,"")
 
                 sheet_inventario.write(fila, 8,str(lista_de_recepciones))
+                
+
 
 
 
