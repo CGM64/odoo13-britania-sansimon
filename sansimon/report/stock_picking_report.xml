@@ -86,6 +86,7 @@
                 </div>
 
                 <div class="page">
+                    <link rel="stylesheet" href="/sansimon/static/src/css/report.css" />
                     <div class="container">
                         <div class="row">
                             <table class="table table-sm" t-if="o.state!='done'" name="stock_move_table">
@@ -215,16 +216,16 @@
         <field name="page_height">200</field>
         <field name="page_width">140</field>
         <field name="orientation">Landscape</field>
-        <field name="margin_top">65</field>
+        <field name="margin_top">70</field>
         <field name="margin_bottom">10</field>
         <field name="margin_left">3</field>
         <field name="margin_right">3</field>
         <field name="header_line" eval="False" />
-        <field name="header_spacing">60</field>
+        <field name="header_spacing">65</field>
         <field name="dpi">90</field>
     </record>
 
-    <report string="Delivery Slip" id="action_report_delivery" model="stock.picking" report_type="qweb-pdf" name="stock.report_deliveryslip" file="stock.report_deliveryslip" print_report_name="'Delivery Slip - %s - %s' % (object.partner_id.name or '', object.name)" paperformat="stock_picking_vale_entrega" menu="False"/>
+    <report string="Delivery Slip" id="action_report_delivery" model="stock.picking" report_type="qweb-pdf" name="stock.report_deliveryslip" file="stock.report_deliveryslip" print_report_name="'Albarán de entrega - %s - %s' % (object.partner_id.name or '', object.name)" paperformat="stock_picking_vale_entrega" menu="False"/>
 
     <template id="stock_picking_call" inherit_id="stock.report_deliveryslip">
         <xpath expr="//t[@t-call='stock.report_delivery_document']" position="replace">
