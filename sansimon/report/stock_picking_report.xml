@@ -38,11 +38,7 @@
                                 <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)" class="factura_logo" />
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="page">
-                    <div class="container">
+                        <br></br>
                         <div class="row">
                             <h4>
                                 <span t-field="o.name" />
@@ -51,12 +47,14 @@
                             <table class="table table-sm">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th scope="col">ORDEN</th>
-                                        <th scope="col">FECHA DE ENVIO</th>
-                                        <th scope="col">VENDEDOR</th>
+                                        <th scope="col" style="width: 10%">ORDEN</th>
+                                        <th scope="col" style="width: 20%">FECHA DE ENVIO</th>
+                                        <th scope="col" style="width: 20%">FACTURA</th>
+                                        <th scope="col" style="width: 40%">VENDEDOR</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <t t-set="fac" t-value="o.obtener_factura()"/>
                                     <tr>
                                         <td>
                                             <span t-field="o.origin" />
@@ -68,6 +66,11 @@
                                             <t t-if="o.state != 'done'">
                                                 <span t-field="o.scheduled_date" />
                                             </t>
+                                        </td>
+                                        <td>
+                                            Serie: <t t-esc="fac['serie']"/>
+                                            <br/>
+                                            No. factura <t t-esc="fac['no']"/>
                                         </td>
                                         <td>
                                             <span t-field="o.create_uid.name" />
@@ -92,6 +95,11 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+
+                <div class="page">
+                    <div class="container">
                         <div class="row">
                             <table class="table table-sm" t-if="o.state!='done'" name="stock_move_table">
                                 <thead class="thead-dark">
@@ -158,10 +166,9 @@
                             </table>
                         </div>
                         <br></br>
-                        <br></br>
                         <div class="row">
                             <div class="container">
-                                <div class="row">
+                                <div class="row bottom-page">
                                     <div class="col-4">
                                         <hr color="black" />
                                     </div>
@@ -179,7 +186,6 @@
                                     <div class="col-4">
                                         <center>Firma transporte</center>
                                     </div>
-                                    <br></br>
                                     <br></br>
                                 </div>
                                 
@@ -222,12 +228,12 @@
         <field name="page_height">200</field>
         <field name="page_width">140</field>
         <field name="orientation">Landscape</field>
-        <field name="margin_top">45</field>
+        <field name="margin_top">65</field>
         <field name="margin_bottom">10</field>
         <field name="margin_left">3</field>
         <field name="margin_right">3</field>
         <field name="header_line" eval="False" />
-        <field name="header_spacing">39</field>
+        <field name="header_spacing">60</field>
         <field name="dpi">90</field>
     </record>
 
