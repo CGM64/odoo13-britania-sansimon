@@ -297,6 +297,7 @@
     </template>
 
     <template id="britania.invoice_britania">
+      <t t-foreach="docs" t-as="o">
       <t t-call="web.basic_layout">
 
         <div class="header">
@@ -565,6 +566,7 @@
             <div class="col-3"><img src="/britania/static/description/FEL.PNG" style="max-height:70px;padding-top: 4px;"/></div>
           </div>
         </div>
+      </t>
       </t>
     </template>
 

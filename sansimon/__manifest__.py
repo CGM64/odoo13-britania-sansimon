@@ -37,6 +37,7 @@
         #'data/stock_account_data.xml',
         'report/sale_order.xml',
         'report/sale_order_templates.xml',
+        'report/stock_picking_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
