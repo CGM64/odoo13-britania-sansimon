@@ -109,8 +109,7 @@ class LibroInventarioReportXls(models.AbstractModel):
 
     def generate_xlsx_report(self, workbook, data, data_report):
         formato_celda_numerica = workbook.add_format({'num_format': '#,##0.00', 'border': 0, })
-        formato_encabezado = workbook.add_format({'bold': 1,  'border': 1,    'align': 'center', 'valign':   'vcenter',
-                                                      'fg_color': '#1C1C1C', 'font_color': 'white'})
+        formato_encabezado = workbook.add_format({'bold': 1,  'border': 1,    'align': 'center', 'valign':   'vcenter','fg_color': '#1C1C1C', 'font_color': 'white'})
         formato_fecha = workbook.add_format({'num_format': 'dd/mm/yyyy', 'border': 0})
 
 
