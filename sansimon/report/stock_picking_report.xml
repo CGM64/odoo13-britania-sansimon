@@ -195,27 +195,17 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="footer">
-                    <div class="text-center text-muted">
-                        <hr color="black" />
-                        Página:
-                        <span class="page" />
-                        /
-                        <span class="topage" />
-                    </div>
-                </div>
             </t>
         </t>
     </template>
 
     <record id="stock_picking_vale_entrega" model="report.paperformat">
-        <field name="name">Papel Media Carta</field>
+        <field name="name">Papel Carta</field>
         <field name="default" eval="True" />
         <field name="format">custom</field>
-        <field name="page_height">200</field>
-        <field name="page_width">140</field>
-        <field name="orientation">Landscape</field>
+        <field name="page_height">279</field>
+        <field name="page_width">215</field>
+        <field name="orientation">Portrait</field>
         <field name="margin_top">70</field>
         <field name="margin_bottom">10</field>
         <field name="margin_left">3</field>
