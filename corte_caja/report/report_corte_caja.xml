@@ -59,6 +59,13 @@
                                 </div>
                             </div>
 
+
+                            <div class="row div-bg p-1 mb-1 text-white">
+                                <div class="col-3 text-center ">PAGO</div>
+                                <div class="col-3 text-center ">FECHA</div>
+                                <div class="col-3 text-center">CLIENTE</div>
+                                <div class="col-3 text-center">MONTO</div>
+                            </div>
                             <div class="detalle mt-2" t-foreach="o.corte_caja_pdf()" t-as="diario">
                                 <div class="row">
                                     <div class="col-3">
@@ -66,12 +73,6 @@
                                             <p t-esc="diario['diario']" />
                                         </strong>
                                     </div>
-                                </div>
-                                <div class="row div-bg p-1 mb-1 text-white">
-                                    <div class="col-3 text-center ">PAGO</div>
-                                    <div class="col-3 text-center ">FECHA</div>
-                                    <div class="col-3 text-center">CLIENTE</div>
-                                    <div class="col-3 text-center">MONTO</div>
                                 </div>
 
                                 <div class="" t-foreach="diario['monedas']" t-as="moneda">
