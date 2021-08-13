@@ -120,53 +120,50 @@
                                 </div>
                             </div>
 
-                            <!-- 
-                            <div class="row mt-2 justify-content-end">
-                                <div class="col-3">
-                                    <strong class="float-right">Total:</strong>
-                                </div>
-                                <div class="col-3 p-3 mb-2 border text-white border-secondary rounded">
-                                    <strong class="text-center">
-                                        <p t-esc="o.total_corte_caja()"/>
-                                    </strong>
-                                </div>
-                            </div> -->
 
-
+                            <!-- for moneda in lista_monedas:
+            print('>',moneda['moneda_id'],moneda['moneda_name'], moneda['sumatoria_por_moneda'])
+            for linea in moneda['lista_anticipos']:
+                print('     >',linea['pago'],' ',linea['partner_id'],' ',linea['monto']) -->
                             <h4 class="text-left">ANTICIPOS</h4>
-                            <div class="anticipos" t-foreach="o.listado_anticipos()" t-as="dato">
-                                <div class="row div-bg p-1 mt-2 text-white">
-                                    <div class="col-3 text-left ">PAGO</div>
-                                    <div class="col-3 text-left ">FECHA</div>
-                                    <div class="col-3 text-left">CLIENTE</div>
-                                    <div class="col-3 text-left">MONTO</div>
+                            <div class="row div-bg p-1 mt-2 text-white">
+                                <div class="col-3 text-left ">PAGO</div>
+                                <div class="col-3 text-left ">FECHA</div>
+                                <div class="col-3 text-left">CLIENTE</div>
+                                <div class="col-3 text-left">MONTO</div>
+                            </div>
+                            <div class="anticipos" t-foreach="o.listado_anticipos()" t-as="moneda">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <strong>
+                                            <p t-esc="moneda['moneda_name']" />
+                                        </strong>
+                                    </div>
                                 </div>
-
-                                <div class="row" t-foreach="dato['anticipos']" t-as="anticipo">
+                                <div class="row" t-foreach="moneda['lista_anticipos']" t-as="linea">
                                     <div class="col-3 ">
-                                        <p t-esc="anticipo['pago']" />
+                                        <p t-esc="linea['pago']" />
                                     </div>
                                     <div class="col-3 ">
-                                        <p t-esc="anticipo['date']" />
+                                        <p t-esc="linea['date']" />
                                     </div>
                                     <div class="col-3 ">
-                                        <p t-esc="anticipo['partner_id']" />
+                                        <p t-esc="linea['partner_id']" />
                                     </div>
                                     <div class="col-3 text-right">
-                                        <p t-esc="anticipo['monto']" />
+                                        <p t-esc="linea['monto']" />
                                     </div>
                                 </div>
 
                                 <div class="row justify-content-end">
                                     <div class="col-3 border-bottom border-top">
-                                        <strong class="float-right">Total:</strong>
-                                    </div>
-                                    <div class="col-3 border-bottom border-top">
                                         <strong class="float-right">
-                                            <p t-esc="dato['total']"/>
+                                            <p t-esc="moneda['sumatoria_por_moneda']"/>
                                         </strong>
                                     </div>
                                 </div>
+
+
                             </div>
 
                             <h4 class="text-left">RESUMEN FACTURAS</h4>
