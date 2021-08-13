@@ -22,8 +22,8 @@
                             .sub-titulo{
                                 font-size: 16px;
                             }
-                            .contenido{
-                                font-size: 14px;
+                            .contenido,.subtotal{
+                                font-size: 11.5px;
                             }
 
                             </style>
@@ -72,10 +72,10 @@
 
 
                             <div class="row div-bg p-1 mb-1 text-white">
-                                <div class="col-3 sub-titulo text-left ">PAGO</div>
-                                <div class="col-3 sub-titulo text-left ">FECHA</div>
-                                <div class="col-3 sub-titulo text-left">CLIENTE</div>
-                                <div class="col-3 sub-titulo text-left">MONTO</div>
+                                <div class="col-2 sub-titulo text-left ">PAGO</div>
+                                <div class="col-2 sub-titulo text-left ">FECHA</div>
+                                <div class="col-6 sub-titulo text-left">CLIENTE</div>
+                                <div class="col-2 sub-titulo text-right">MONTO</div>
                             </div>
                             <div class="detalle mt-2" t-foreach="o.corte_caja_pdf()" t-as="diario">
                                 <div class="row">
@@ -95,21 +95,21 @@
                                         </div>
                                     </div>
 
-                                    <div class="row" t-foreach="moneda['lista_corte']" t-as="linea">
-                                        <div class="col-auto contenido">
+                                    <div class="row contenido" t-foreach="moneda['lista_corte']" t-as="linea">
+                                        <div class="col-2 ">
                                             <p t-esc="linea['account_payment_line_id']" />
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="col-2">
                                             <p t-esc="linea['payment_date']" />
                                         </div>
-                                        <div class="col-5">
+                                        <div class="col-6">
                                             <p t-esc="linea['partner_id']" />
                                         </div>
-                                        <div class="col-3 text-right">
+                                        <div class="col-2 text-right">
                                             <p t-esc="linea['amount']" />
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row subtotal">
                                         <div class="col-12 text-right">
                                             <strong>
                                                 <p t-esc="moneda['sumatoria_por_moneda']" />
@@ -134,10 +134,10 @@
 
                             <h4 class="text-left titulo">ANTICIPOS</h4>
                             <div class="row div-bg p-1 mt-2 text-white">
-                                <div class="col-3 sub-titulo text-left ">PAGO</div>
-                                <div class="col-3 sub-titulo text-left ">FECHA</div>
-                                <div class="col-3 sub-titulo text-left">CLIENTE</div>
-                                <div class="col-3 sub-titulo text-left">MONTO</div>
+                                <div class="col-2 sub-titulo text-left ">PAGO</div>
+                                <div class="col-2 sub-titulo text-left ">FECHA</div>
+                                <div class="col-6 sub-titulo text-left">CLIENTE</div>
+                                <div class="col-2 sub-titulo text-right">MONTO</div>
                             </div>
                             <div class="anticipos" t-foreach="o.listado_anticipos()" t-as="moneda">
                                 <div class="row">
@@ -148,23 +148,26 @@
                                     </div>
                                 </div>
                                 <div class="row contenido" t-foreach="moneda['lista_anticipos']" t-as="linea">
-                                    <div class="col-auto ">
+                                    <div class="col-2 ">
                                         <p t-esc="linea['pago']" />
                                     </div>
-                                    <div class="col-auto ">
+                                    <div class="col-2 ">
                                         <p t-esc="linea['date']" />
                                     </div>
-                                    <div class="col-5 ">
+                                    <div class="col-6 ">
                                         <p t-esc="linea['partner_id']" />
                                     </div>
-                                    <div class="col-3 text-right">
+                                    <div class="col-2 text-right">
                                         <p t-esc="linea['monto']" />
                                     </div>
                                 </div>
 
-                                <div class="row justify-content-end">
-                                    <div class="col-3 border-bottom border-top">
-                                        <strong class="float-right">
+                                <div class="row subtotal">
+                                    <div class="col-2"></div>
+                                    <div class="col-2"></div>
+                                    <div class="col-6"></div>
+                                    <div class="col-2 text-right border-bottom border-top">
+                                        <strong>
                                             <p t-esc="moneda['sumatoria_por_moneda']"/>
                                         </strong>
                                     </div>
@@ -225,23 +228,23 @@
                             <h4 class="text-left mt-2 titulo">FACTURAS DE OTROS DÍAS</h4>
                             <div class="facturas" t-foreach="o.facturas_otros_dias()" t-as="dato">
                                 <div class="row div-bg p-1 mt-2 text-white">
-                                    <div class="col-3 sub-titulo text-left ">FACTURA</div>
-                                    <div class="col-3 sub-titulo text-left ">FECHA</div>
-                                    <div class="col-3 sub-titulo text-left">CLIENTE</div>
-                                    <div class="col-3 sub-titulo text-left">MONTO</div>
+                                    <div class="col-2 sub-titulo text-left ">FACTURA</div>
+                                    <div class="col-2 sub-titulo text-left ">FECHA</div>
+                                    <div class="col-6 sub-titulo text-left">CLIENTE</div>
+                                    <div class="col-2 sub-titulo text-right">MONTO</div>
                                 </div>
 
                                 <div class="row contenido" t-foreach="dato['facturas']" t-as="fac">
-                                    <div class="col-auto ">
+                                    <div class="col-2 ">
                                         <p t-esc="fac['name']" />
                                     </div>
-                                    <div class="col-auto ">
+                                    <div class="col-2 ">
                                         <p t-esc="fac['date']" />
                                     </div>
-                                    <div class="col-5 ">
+                                    <div class="col-6 ">
                                         <p t-esc="fac['partner_id']" />
                                     </div>
-                                    <div class="col-3 text-right">
+                                    <div class="col-2 text-right">
                                         <p t-esc="fac['amount_total']" />
                                     </div>
                                 </div>
@@ -258,28 +261,26 @@
                                 </div>
                             </div>
 
-
-
                             <h4 class="text-left titulo">NOTAS DE CRÉDITO</h4>
                             <div class="nc" t-foreach="o.detalle_notas_credito()" t-as="dato">
                                 <div class="row div-bg p-1 mt-2 text-white">
-                                    <div class="col-3 sub-titulo text-left ">NOTA CREDITO</div>
-                                    <div class="col-3 sub-titulo text-left ">FECHA</div>
-                                    <div class="col-3 sub-titulo text-left">CLIENTE</div>
-                                    <div class="col-3 sub-titulo text-left">MONTO</div>
+                                    <div class="col-2 sub-titulo text-left ">NOTA CREDITO</div>
+                                    <div class="col-2 sub-titulo text-left ">FECHA</div>
+                                    <div class="col-6 sub-titulo text-left">CLIENTE</div>
+                                    <div class="col-2 sub-titulo text-right">MONTO</div>
                                 </div>
 
                                 <div class="row contenido" t-foreach="dato['nota_credito']" t-as="nc">
-                                    <div class="col-auto ">
+                                    <div class="col-2 ">
                                         <p t-esc="nc['name']" />
                                     </div>
-                                    <div class="col-auto ">
+                                    <div class="col-2 ">
                                         <p t-esc="nc['invoice_date']" />
                                     </div>
-                                    <div class="col-5 ">
+                                    <div class="col-6 ">
                                         <p t-esc="nc['partner_id']" />
                                     </div>
-                                    <div class="col-3 text-right">
+                                    <div class="col-2 text-right">
                                         <p t-esc="nc['amount_total']" />
                                     </div>
                                 </div>
