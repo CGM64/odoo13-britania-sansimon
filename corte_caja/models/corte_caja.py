@@ -359,7 +359,7 @@ class CorteCaja(models.Model):
             pagos = self.corte_caja_ids.filtered(lambda p: p.currency_id.symbol==moneda[0])
             for pago in pagos:
                 if pago.account_payment_line_id.id not in facturas:
-                    print('PAGOS-> ',pago)
+                    # print('PAGOS-> ',pago)
                     sumatoria_por_moneda+=pago.amount
                     moneda = pago.account_payment_line_id.currency_id.symbol
                     d_anticipo = {
@@ -374,10 +374,10 @@ class CorteCaja(models.Model):
                 d_moneda['sumatoria_por_moneda']= 'Total: '+ moneda[0] + ' ' + str(format(round(sumatoria_por_moneda, 2), ','))
                 lista_monedas.append(d_moneda)
 
-        for moneda in lista_monedas:
-            print('>',moneda['moneda_id'],moneda['moneda_name'], moneda['sumatoria_por_moneda'])
-            for linea in moneda['lista_anticipos']:
-                print('     >',linea['pago'],' ',linea['partner_id'],' ',linea['monto'])
+        # for moneda in lista_monedas:
+        #     print('>',moneda['moneda_id'],moneda['moneda_name'], moneda['sumatoria_por_moneda'])
+        #     for linea in moneda['lista_anticipos']:
+        #         print('     >',linea['pago'],' ',linea['partner_id'],' ',linea['monto'])
         return lista_monedas
                 
     def _invoice_payment_states(self):
@@ -461,7 +461,7 @@ class CorteCaja(models.Model):
                 "nota_credito": lista_nc,
             }
         lista_nota_credito.append(dato_nc)
-        print("dict_notas_credito->",lista_nota_credito)
+        # print("dict_notas_credito->",lista_nota_credito)
         return lista_nota_credito
 
 
