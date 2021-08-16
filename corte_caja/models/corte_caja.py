@@ -173,22 +173,26 @@ class CorteCaja(models.Model):
         self._total_corte()
 
     def _suma_diario(self, journal):
-        consulta_diario = request.env['corte.caja.resumen'].search(
-            [('corte_caja_resumen_id', '=', self.id)])
-        sumatoria = sum(calculo.amount for calculo in consulta_diario.filtered(
-            lambda j: j.journal_id.id in (journal,)))
+        consulta_diario = request.env['corte.caja.resumen'].search([('corte_caja_resumen_id', '=', self.id)])
+        sumatoria = sum(calculo.amount for calculo in consulta_diario.filtered(lambda j: j.journal_id.id in (journal,)))
         return sumatoria
 
 # Inicia Reporte
-    def download_report(self):
+    def download_report(self): 
         return self.env['ir.actions.report'].search([('report_name', '=', 'corte_caja.report_corte_caja_pdf')]).report_action(self)
 
     def total_corte_caja(self):
-        consulta_diario = self.corte_caja_resumen_ids 
-        total_corte = sum(calculo.amount for calculo in consulta_diario)
-
-        total = str(format(round(total_corte, 2), ','))
-        return total
+        monedas=self._monedas()
+        consulta_diario = self.corte_caja_ids 
+     
+        lista_totales=[]
+        for moneda in monedas:
+            total_corte = sum(calculo.amount for calculo in consulta_diario.filtered(lambda m: m.currency_id.symbol==moneda[0]))   
+            d_total={
+                'total': 'Total ' + str(moneda[0]) +' :'+ str(format(round(total_corte, 2), ',')),
+            }
+            lista_totales.append(d_total)
+        return lista_totales
 
     def encabezado_corte_caja(self):
         lista_encabezado = []
@@ -201,40 +205,70 @@ class CorteCaja(models.Model):
         lista_encabezado.append(encabezado)
         return lista_encabezado
 
+    def _monedas(self):
+        monedas_en_pagos=self.corte_caja_ids
+        consulta_diario = self.corte_caja_resumen_ids 
+        lista_monedas=[]
+        for diario in consulta_diario:
+            corte = self.corte_caja_ids.filtered(lambda d: d.journal_id.id == diario.journal_id.id)
+            corte = corte.sorted(lambda pago: pago.account_payment_line_id.id)
+            for diario in corte:
+                moneda_simbolo = diario.currency_id.symbol
+                moneda_nombre = diario.currency_id.name
+                if (moneda_simbolo,moneda_nombre) not in lista_monedas:
+                    lista_monedas.append((moneda_simbolo,moneda_nombre))
+            for moneda in monedas_en_pagos:
+                moneda_simbolo = moneda.currency_id.symbol
+                moneda_nombre = moneda.currency_id.name
+                if (moneda_simbolo,moneda_nombre) not in lista_monedas:
+                    lista_monedas.append((moneda_simbolo,moneda_nombre))
+            
+        return lista_monedas
+
     def corte_caja_pdf(self):
         consulta_diario = self.corte_caja_resumen_ids 
-
         total_corte = sum(calculo.amount for calculo in consulta_diario)
-        lista_facturas = []
+        lista_monedas=self._monedas()
+        
+        lista_diario = []
         for diario in consulta_diario:
-
-            lista_corte = []
-            corte = self.corte_caja_ids.filtered(
-                lambda d: d.journal_id.id == diario.journal_id.id)
-            corte = corte.sorted(lambda pago: pago.account_payment_line_id.id)
-
-            for diario in corte:
-                moneda = diario.currency_id.symbol
-                d_corte = {
-                    "diario_id": diario.journal_id.id,
-                    "account_payment_line_id": diario.account_payment_line_id.name,
-                    "payment_date": diario.payment_date,
-                    "circular": diario.circular,
-                    "diario_name": diario.journal_id.name,
-                    "partner_id": diario.partner_id.name,
-                    "amount":  moneda + ' ' + str(format(round(diario.amount, 2), ',')),
-                    "total": moneda + ' ' + str(format(round(diario.amount, 2), ','))
+            lista_moneda=[]
+            for moneda in lista_monedas:
+                sumatoria_por_moneda=0
+                lista_corte=[]
+                d_moneda={
+                    'moneda_id':moneda[0],
+                    'moneda_name':moneda[1],
                 }
-                lista_corte.append(d_corte)
 
-            dato_fact = {
-                "diario": diario.journal_id.name,
-                "factura": lista_corte,
-                "subtotal": moneda + ' ' + str(format(round(self._suma_diario(diario.journal_id.id), 2), ',')),
-                "total": moneda + ' ' + str(format(round(total_corte, 2), ',')),
-            }
-            lista_facturas.append(dato_fact)
-        return lista_facturas
+                corte = self.corte_caja_ids.filtered(lambda d: d.journal_id.id == diario.journal_id.id and d.currency_id.symbol==moneda[0]  )
+                corte = corte.sorted(lambda pago: pago.account_payment_line_id.id)
+                for linea in corte:
+                    sumatoria_por_moneda+=linea.amount
+                    d_corte = {
+                        "diario_id": linea.journal_id.id,
+                        "account_payment_line_id": linea.account_payment_line_id.name,
+                        "payment_date": linea.payment_date,
+                        "circular": linea.circular,
+                        "diario_name": linea.journal_id.name,
+                        "partner_id": linea.partner_id.name,
+                        "amount":  moneda[0] + ' ' + str(format(round(linea.amount, 2), ',')),
+                        "total": moneda[0] + ' ' + str(format(round(linea.amount, 2), ','))
+                    }
+                    lista_corte.append(d_corte)
+                if len(lista_corte)>0:
+                    d_moneda['lista_corte']=lista_corte
+                    d_moneda['sumatoria_por_moneda']= 'Subtotal: '+ moneda[0] + ' ' + str(format(round(sumatoria_por_moneda, 2), ','))
+                    lista_moneda.append(d_moneda)
+                dato_fact = {
+                    "diario": diario.journal_id.name,
+                    "monedas": lista_moneda,
+                    "subtotal": str(moneda[0]) + ' ' + str(format(round(self._suma_diario(diario.journal_id.id), 2), ',')),
+                    "total": str(moneda[0]) + ' ' + str(format(round(total_corte, 2), ',')),
+                 }
+            lista_diario.append(dato_fact)
+
+        return lista_diario
 
     def _listado_pagos(self):
         listado_pagos=[]
@@ -289,14 +323,14 @@ class CorteCaja(models.Model):
     def get_pagos_aplicados_factura(self,parametro):
         listado_ids=[]
         query = """
-                    SELECT ml2.id,ml2.partner_id,ml.move_name,ml2.payment_id,ml.move_id, ml2.ref, m2.date, apr.amount
-                    FROM account_move_line ml
-                    JOIN account_partial_reconcile apr on apr.debit_move_id = ml.id
-                    JOIN account_move_line ml2 on apr.credit_move_id = ml2.id
-                    JOIN account_move m2 on ml2.move_id = m2.id
-                    where ml.account_internal_type = 'receivable'
-                    and m2.date  between  %s and %s
-                    order by ml2.payment_id
+                SELECT ml2.id,ml2.partner_id,ml.move_name,ml2.payment_id,ml.move_id, ml2.ref, m2.date, apr.amount
+                FROM account_move_line ml
+                JOIN account_partial_reconcile apr on apr.debit_move_id = ml.id
+                JOIN account_move_line ml2 on apr.credit_move_id = ml2.id
+                JOIN account_move m2 on ml2.move_id = m2.id
+                where ml.account_internal_type = 'receivable'
+                and m2.date  between  %s and %s
+                order by ml2.payment_id
                 """
         self.env.cr.execute(query, (self.fecha_inicio, self.fecha_fin,))
         query_result = self.env.cr.dictfetchall()
@@ -312,28 +346,39 @@ class CorteCaja(models.Model):
     
     def listado_anticipos(self):
         facturas=self.get_pagos_aplicados_factura('pagos')
-        pagos=self.corte_caja_ids
-        listado_anticipo=[]
-        lineas_anticipo=[]
-
-        sumatoria = 0
-        for pago in pagos:
-            if pago.account_payment_line_id.id not in facturas:
-                sumatoria+=pago.amount
-                moneda = pago.account_payment_line_id.currency_id.symbol
-                d_anticipo = {
-                    "pago":pago.account_payment_line_id.name,
-                    "partner_id":pago.partner_id.name,
-                    "date":pago.payment_date,
-                    "monto": moneda + str(format(round(pago.amount, 2), ',')),
+              
+        monedas=self._monedas()
+        lista_monedas=[]
+        for moneda in monedas:
+            lineas_anticipo=[]
+            sumatoria_por_moneda=0
+            d_moneda={
+                'moneda_id':moneda[0],
+                'moneda_name':moneda[1],
                 }
-                lineas_anticipo.append(d_anticipo)
-        dato_anticipo = {
-                "total": str(format(round(sumatoria, 2), ',')),
-                "anticipos": lineas_anticipo,
-        }
-        listado_anticipo.append(dato_anticipo)
-        return listado_anticipo
+            pagos = self.corte_caja_ids.filtered(lambda p: p.currency_id.symbol==moneda[0])
+            for pago in pagos:
+                if pago.account_payment_line_id.id not in facturas:
+                    # print('PAGOS-> ',pago)
+                    sumatoria_por_moneda+=pago.amount
+                    moneda = pago.account_payment_line_id.currency_id.symbol
+                    d_anticipo = {
+                        "pago":pago.account_payment_line_id.name,
+                        "partner_id":pago.partner_id.name,
+                        "date":pago.payment_date,
+                        "monto": moneda + str(format(round(pago.amount, 2), ',')),
+                    }
+                    lineas_anticipo.append(d_anticipo)
+            if len(lineas_anticipo)>0:
+                d_moneda['lista_anticipos']=lineas_anticipo
+                d_moneda['sumatoria_por_moneda']= 'Total: '+ moneda[0] + ' ' + str(format(round(sumatoria_por_moneda, 2), ','))
+                lista_monedas.append(d_moneda)
+
+        # for moneda in lista_monedas:
+        #     print('>',moneda['moneda_id'],moneda['moneda_name'], moneda['sumatoria_por_moneda'])
+        #     for linea in moneda['lista_anticipos']:
+        #         print('     >',linea['pago'],' ',linea['partner_id'],' ',linea['monto'])
+        return lista_monedas
                 
     def _invoice_payment_states(self):
         lista_estado = []
@@ -416,7 +461,7 @@ class CorteCaja(models.Model):
                 "nota_credito": lista_nc,
             }
         lista_nota_credito.append(dato_nc)
-        print("dict_notas_credito->",lista_nota_credito)
+        # print("dict_notas_credito->",lista_nota_credito)
         return lista_nota_credito
 
 
