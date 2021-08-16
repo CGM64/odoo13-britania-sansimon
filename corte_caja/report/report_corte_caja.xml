@@ -5,7 +5,7 @@
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.external_layout">
 
-                        <div clas="page mb-5">
+                        <div class="page contenido mb-5">
 
                             <style>
                             .div-bg {
@@ -16,21 +16,15 @@
                                 border: 2px solid  #3D3D3D !important;
                                 border-radius:20px !important;
                             }
-                            .titulo{
-                                font-size: 18px;
-                            }
-                            .sub-titulo{
-                                font-size: 16px;
-                            }
-                            .contenido,.subtotal{
+                            .contenido{
                                 font-size: 11.5px;
                             }
 
                             </style>
 
 
-                            <h2 class="text-center titulo">REPORTE DE CORTE DE CAJA</h2>
-                            <div clas="encabezado" t-foreach="o.encabezado_corte_caja()" t-as="dato">
+                            <h2 class="text-center contenido">REPORTE DE CORTE DE CAJA</h2>
+                            <div class="encabezado contenido " t-foreach="o.encabezado_corte_caja()" t-as="dato">
                                 <div class="row">
                                     <div class="col-auto">
                                         <strong>Fecha de Impresión:</strong>
@@ -72,10 +66,10 @@
 
 
                             <div class="row div-bg p-1 mb-1 text-white">
-                                <div class="col-2 sub-titulo text-left ">PAGO</div>
-                                <div class="col-2 sub-titulo text-left ">FECHA</div>
-                                <div class="col-6 sub-titulo text-left">CLIENTE</div>
-                                <div class="col-2 sub-titulo text-right">MONTO</div>
+                                <div class="col-2  text-left ">PAGO</div>
+                                <div class="col-2  text-left ">FECHA</div>
+                                <div class="col-6  text-left">CLIENTE</div>
+                                <div class="col-2  text-right">MONTO</div>
                             </div>
                             <div class="detalle mt-2" t-foreach="o.corte_caja_pdf()" t-as="diario">
                                 <div class="row">
@@ -90,12 +84,12 @@
                                     <div class="row">
                                         <div class="col-3">
                                             <strong>
-                                                <p class="sub-titulo" t-esc="moneda['moneda_name']" />
+                                                <p class="" t-esc="moneda['moneda_name']" />
                                             </strong>
                                         </div>
                                     </div>
 
-                                    <div class="row contenido" t-foreach="moneda['lista_corte']" t-as="linea">
+                                    <div class="row " t-foreach="moneda['lista_corte']" t-as="linea">
                                         <div class="col-2 ">
                                             <p t-esc="linea['account_payment_line_id']" />
                                         </div>
@@ -123,7 +117,7 @@
                                     <div t-foreach="o.total_corte_caja()" t-as="total">
                                         <div class="row">
                                             <div class="col-12 text-right">
-                                                <strong class="float-right">
+                                                <strong>
                                                     <p t-esc="total['total']" />
                                                 </strong>
                                             </div>
@@ -132,22 +126,22 @@
                                 </div>
                             </div>
 
-                            <h4 class="text-left titulo">ANTICIPOS</h4>
+                            <h4 class="text-left contenido">ANTICIPOS</h4>
                             <div class="row div-bg p-1 mt-2 text-white">
-                                <div class="col-2 sub-titulo text-left ">PAGO</div>
-                                <div class="col-2 sub-titulo text-left ">FECHA</div>
-                                <div class="col-6 sub-titulo text-left">CLIENTE</div>
-                                <div class="col-2 sub-titulo text-right">MONTO</div>
+                                <div class="col-2  text-left ">PAGO</div>
+                                <div class="col-2  text-left ">FECHA</div>
+                                <div class="col-6  text-left">CLIENTE</div>
+                                <div class="col-2  text-right">MONTO</div>
                             </div>
                             <div class="anticipos" t-foreach="o.listado_anticipos()" t-as="moneda">
                                 <div class="row">
                                     <div class="col-3">
                                         <strong>
-                                            <p class="sub-titulo" t-esc="moneda['moneda_name']" />
+                                            <p class="" t-esc="moneda['moneda_name']" />
                                         </strong>
                                     </div>
                                 </div>
-                                <div class="row contenido" t-foreach="moneda['lista_anticipos']" t-as="linea">
+                                <div class="row " t-foreach="moneda['lista_anticipos']" t-as="linea">
                                     <div class="col-2 ">
                                         <p t-esc="linea['pago']" />
                                     </div>
@@ -176,7 +170,7 @@
 
                             </div>
 
-                            <h4 class="text-left titulo">RESUMEN FACTURAS</h4>
+                            <h4 class="text-left contenido">RESUMEN FACTURAS</h4>
                             <div class="" t-foreach="o.detalle_facturas()" t-as="dato">
                                 <div class="row">
                                     <div class="col-3">
@@ -193,15 +187,15 @@
 
                                 <t t-if=" dato['estado']=='No pagadas'">
                                     <div class="row div-bg p-1 mt-2 text-white">
-                                        <div class="col-3 sub-titulo text-left ">FACTURA</div>
-                                        <div class="col-2 sub-titulo text-left ">FECHA</div>
-                                        <div class="col-3 sub-titulo text-left ">CLIENTE</div>
-                                        <div class="col-2 sub-titulo text-center ">MONTO</div>
-                                        <div class="col-2 sub-titulo text-center ">SALDO</div>
+                                        <div class="col-3  text-left ">FACTURA</div>
+                                        <div class="col-2  text-left ">FECHA</div>
+                                        <div class="col-3  text-left ">CLIENTE</div>
+                                        <div class="col-2  text-center ">MONTO</div>
+                                        <div class="col-2  text-center ">SALDO</div>
                                     </div>
                                 </t>
 
-                                <div class="row contenido" t-foreach="dato['facturas']" t-as="fac">
+                                <div class="row " t-foreach="dato['facturas']" t-as="fac">
                                     <t t-if=" dato['estado']=='No pagadas'">
 
                                         <div class="col-3 p-0">
@@ -225,16 +219,16 @@
                             </div>
 
 
-                            <h4 class="text-left mt-2 titulo">FACTURAS DE OTROS DÍAS</h4>
+                            <h4 class="text-left mt-2 contenido">FACTURAS DE OTROS DÍAS</h4>
                             <div class="facturas" t-foreach="o.facturas_otros_dias()" t-as="dato">
                                 <div class="row div-bg p-1 mt-2 text-white">
-                                    <div class="col-2 sub-titulo text-left ">FACTURA</div>
-                                    <div class="col-2 sub-titulo text-left ">FECHA</div>
-                                    <div class="col-6 sub-titulo text-left">CLIENTE</div>
-                                    <div class="col-2 sub-titulo text-right">MONTO</div>
+                                    <div class="col-2  text-left ">FACTURA</div>
+                                    <div class="col-2  text-left ">FECHA</div>
+                                    <div class="col-6  text-left">CLIENTE</div>
+                                    <div class="col-2  text-right">MONTO</div>
                                 </div>
 
-                                <div class="row contenido" t-foreach="dato['facturas']" t-as="fac">
+                                <div class="row " t-foreach="dato['facturas']" t-as="fac">
                                     <div class="col-2 ">
                                         <p t-esc="fac['name']" />
                                     </div>
@@ -261,16 +255,16 @@
                                 </div>
                             </div>
 
-                            <h4 class="text-left titulo">NOTAS DE CRÉDITO</h4>
+                            <h4 class="text-left contenido">NOTAS DE CRÉDITO</h4>
                             <div class="nc" t-foreach="o.detalle_notas_credito()" t-as="dato">
                                 <div class="row div-bg p-1 mt-2 text-white">
-                                    <div class="col-2 sub-titulo text-left ">NOTA CREDITO</div>
-                                    <div class="col-2 sub-titulo text-left ">FECHA</div>
-                                    <div class="col-6 sub-titulo text-left">CLIENTE</div>
-                                    <div class="col-2 sub-titulo text-right">MONTO</div>
+                                    <div class="col-2  text-left ">NOTA CREDITO</div>
+                                    <div class="col-2  text-left ">FECHA</div>
+                                    <div class="col-6  text-left">CLIENTE</div>
+                                    <div class="col-2  text-right">MONTO</div>
                                 </div>
 
-                                <div class="row contenido" t-foreach="dato['nota_credito']" t-as="nc">
+                                <div class="row " t-foreach="dato['nota_credito']" t-as="nc">
                                     <div class="col-2 ">
                                         <p t-esc="nc['name']" />
                                     </div>
