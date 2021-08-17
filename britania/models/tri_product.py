@@ -23,5 +23,5 @@ class TriProduct(models.Model):
     group = fields.Many2one('tri.product.group', string='Grupo')
 
     _sql_constraints = [
-        ('name_uniq', 'unique (name)', "Ya existe un registro con estos datos."),
+        ('name_uniq', 'unique (default_code)', "Ya existe un registro con estos datos."),
     ]
