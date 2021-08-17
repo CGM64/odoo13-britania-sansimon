@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <menuitem id="menu_tri_product_menu_list"
+            name="Productos Triumph"
+            parent="stock.menu_stock_inventory_control"
+            groups="base.group_user"/>
+
+    <!--Menu de Productos Triumph-->
+    <record id="tri_product_view" model="ir.ui.view">
+        <field name="name">tri.product.tree.view</field>
+        <field name="model">tri.product</field>
+        <field name="arch" type="xml">
+              <tree string="Productos Triumph" import="0" editable="bottom">
+                  <field name="name"/>
+                  <field name="price"/>
+                  <field name="default_code"/>
+                  <field name="group"/>
+              </tree>
+        </field>
+    </record>
+
+    <record id="product_tri_action" model="ir.actions.act_window">
+        <field name="name">Productos Triumph</field>
+        <field name="res_model">tri.product</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea productos
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="menu_tag_product_tri"
+                name="Productos Triumph"
+                action="product_tri_action"
+                parent="britania.menu_tri_product_menu_list"
+                groups="base.group_user"/>
+
+    <!--Menu de grupo producto-->
+    <record id="tri_group_view" model="ir.ui.view">
+        <field name="name">tri.product.tree</field>
+        <field name="model">tri.product.group</field>
+        <field name="arch" type="xml">
+              <tree string="Grupos Triumph" editable="bottom">
+                  <field name="name"/>
+              </tree>
+        </field>
+    </record>
+
+    <record id="tri_group_action" model="ir.actions.act_window">
+        <field name="name">Grupos Triumph</field>
+        <field name="res_model">tri.product.group</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                  Crea grupos para los productos Triumph
+              </p>
+        </field>
+  </record>
+
+  <menuitem id="menu_tri_group_menu_list"
+                  name="Grupos de producto"
+                  action="tri_group_action"
+                  parent="britania.menu_tri_product_menu_list"
+                  groups="base.group_user"/>
+</data>
+</odoo>
