@@ -68,13 +68,13 @@ class ImportarCatalogosExcel(models.TransientModel):
 
 				if tri_product:
 					inew += 1
-					tri_product.price = line[3]
+					tri_product.standard_price = line[3]
 				else:
 					idup += 1
 					tri_group = self.env['tri.product.group'].search([('name','=',line[2])], limit=1)
 					product = self.env['tri.product'].create({
                 		"name": line[1],
                 		"default_code": line[0],
-                		"price": float(line[3]),
+                		"standard_price": float(line[3]),
                 		"group": int(tri_group.id),
             		})
