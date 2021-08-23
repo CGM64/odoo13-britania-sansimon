@@ -23,25 +23,16 @@ class TriProduct(models.Model):
     default_code = fields.Char('Referencia interna', required=True)
     standard_price = fields.Float(string="Precio")
     group = fields.Many2one('tri.product.group', string='Grupo')
-    nacionalizacion = fields.Selection(selection=[
-        ('mar','Marítimo'),
-        ('aer','Aéreo'),
-        ('cour','Courier'),
-        ], string='Medio de transporte', help='Nacionalización')
-    
-    price = fields.Float(string="Precio de venta", compute="_precio_total")
+    price_mar = fields.Float(string="Marítimo", compute="_precio_mar")
+    price_aer = fields.Float(string="Aéreo", compute="_precio_aer")
+    price_cour = fields.Float(string="Courier", compute="_precio_cour")
 
-    @api.depends('group.group_uti', 'standard_price', 'nacionalizacion')
-    def _precio_total(self):
+    @api.depends('group.group_uti', 'standard_price')
+    def _precio_mar(self):
         
         for product in self:
             nacionalizacion = 0
-            if product.nacionalizacion == 'mar':
-                nacionalizacion = 20 / 100 * product.standard_price
-            elif product.nacionalizacion == 'aer':
-                nacionalizacion = 30 / 100 * product.standard_price
-            elif product.nacionalizacion == 'cour':
-                nacionalizacion = 40 / 100 * product.standard_price
+            nacionalizacion = 20 / 100 * product.standard_price
             
             if product.group:
                 if product.group.group_uti:
@@ -52,9 +43,61 @@ class TriProduct(models.Model):
                 group_uti = 0
             
             product.update({
-                'price': product.standard_price+nacionalizacion+group_uti
+                'price_mar': product.standard_price+nacionalizacion+group_uti
+            })
+
+    @api.depends('group.group_uti', 'standard_price')
+    def _precio_aer(self):
+        
+        for product in self:
+            nacionalizacion = 0
+            nacionalizacion = 30 / 100 * product.standard_price
+            
+            if product.group:
+                if product.group.group_uti:
+                    group_uti = product.group.group_uti.porcentaje / 100 * product.standard_price
+                else:
+                    group_uti = 0
+            else:
+                group_uti = 0
+            
+            product.update({
+                'price_aer': product.standard_price+nacionalizacion+group_uti
+            })
+
+    @api.depends('group.group_uti', 'standard_price')
+    def _precio_cour(self):
+        
+        for product in self:
+            nacionalizacion = 0
+            nacionalizacion = 40 / 100 * product.standard_price
+            
+            if product.group:
+                if product.group.group_uti:
+                    group_uti = product.group.group_uti.porcentaje / 100 * product.standard_price
+                else:
+                    group_uti = 0
+            else:
+                group_uti = 0
+            
+            product.update({
+                'price_cour': product.standard_price+nacionalizacion+group_uti
             })
 
     _sql_constraints = [
         ('name_uniq', 'unique (default_code)', "Ya existe un registro con estos datos."),
     ]
+
+    def create_product(self):
+        tri_group = self.env['tri.product.group'].search([('id','=',self.group.id)], limit=1)
+        product = self.env['product.product'].create({
+            "name": self.name,
+            "sale_ok": True,
+            "purchase_ok": True,
+            "categ_id": 7,
+            "type": "product",
+            "grupo_utilidad_id": tri_group.group_uti.id,
+            "marca_id": 1,
+            "standard_price": self.standard_price,
+            "list_price": self.price_mar,
+        })
