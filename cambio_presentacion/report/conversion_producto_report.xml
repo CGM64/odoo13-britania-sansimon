@@ -13,7 +13,7 @@
             <field name="margin_left">3</field>
             <field name="margin_right">3</field>
             <!-- <field name="header_line" eval="False" /> -->
-            <field name="header_spacing">30</field>
+            <field name="header_spacing">25</field>
             <field name="dpi">90</field>
         </record>
 
@@ -34,8 +34,8 @@
                                 border-radius:20px !important;
                             }
                             .page,.titulo{
-                                background: none !important;
                                 font-size: 11.5px;
+                                background: none !important;
                             }
                             </style>
 
@@ -44,7 +44,7 @@
 
                                 </t>
                                 <t t-else="">
-                                    <h2 class="text-center titulo">CONVERSION</h2>
+                                    <h2 class="text-center mt-5 titulo">CONVERSION</h2>
                                     <div class="encabezado" t-foreach="o.reporte_pdf()" t-as="dato">
                                         <div class="row">
                                             <div class="col-2 text-left">
