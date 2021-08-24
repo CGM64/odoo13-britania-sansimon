@@ -10,7 +10,7 @@ class AccountMove(models.Model):
     _inherit = "stock.picking"
 
     def obtener_factura(self):
-        account_move = request.env['account.move'].search([('invoice_origin', '=',self.origin)], limit=1)
+        account_move = request.env['account.move'].search([('invoice_origin', 'like',self.origin+'%')], limit=1)
         result = {'serie':'','no':'','blanco':''}
         result['serie'] =  account_move.fac_serie
         result['no'] = account_move.fac_numero
