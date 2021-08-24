@@ -42,12 +42,10 @@ class CorteCaja(models.Model):
     corte_caja_resumen_ids = fields.One2many('corte.caja.resumen', 'corte_caja_resumen_id',
                                              'Resumen', copy=True, readonly=True, states={'draft': [('readonly', False)]})
     corte_caja_factura_ids = fields.One2many('corte.caja.factura', 'corte_caja_factura_id',
-                                             'Resumen', copy=True, readonly=True, states={'draft': [('readonly', False)]})
+                                             'Resumen Corte', copy=True, readonly=True, states={'draft': [('readonly', False)]})
 
-    total_corte = fields.Float(
-        string='Total', compute="_total_corte", store=True)
-    total_facturas = fields.Float(
-        string='Total', compute="_total_facturas", store=True)
+    total_corte = fields.Float(string='Total Corte', compute="_total_corte", store=True)
+    total_facturas = fields.Float(string='Total Facturas', compute="_total_facturas", store=True)
 
     @api.onchange('corte_caja_ids', 'corte_caja_resumen_ids',)
     def _total_corte(self):

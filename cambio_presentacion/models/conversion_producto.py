@@ -23,8 +23,6 @@ class ConversionProducto(models.Model):
                                  domain=lambda self: [("id", "in", self.env['conversion.factor'].search([]).mapped("conversion_factor_id").ids)])
     warehouse_id = fields.Many2one('stock.warehouse', string='Bodega',required=True,  domain=lambda self:[('id','=',self.env.ref('cambio_presentacion.stock_warehouse_desglose').id)],readonly=True, states={'draft': [('readonly', False)]})
 
-    purchase_order_id = fields.Many2one('purchase.order', string='Orden de Compra', readonly=True)
-    sale_order_id = fields.Many2one('sale.order', string='Orden de Venta', readonly=True)
     stock_location_id = fields.Many2one('stock.location', string='Ubicación de origen', required=True, readonly=True, states={'draft': [('readonly', False)]})
     date = fields.Date(string='Fecha', default=fields.Date.context_today,required=True, readonly=True, states={'draft': [('readonly', False)]})
     standard_price = fields.Float(string='Costo', readonly=True, compute="compute_costo")
@@ -45,8 +43,7 @@ class ConversionProducto(models.Model):
         ('smaller', 'Mas pequeña que la unidad de referencia')], default='reference', string='Tipo Factor', readonly=True, states={'draft': [('readonly', False)]})
 
     _sql_constraints = [('cantidad_zero', 'CHECK (amount!=0)', 'Cantidad no puede ser cero!'),
-                        ('costo_zero', 'CHECK (standard_price!=0)',
-                         'Costo unitario en detalle no puede ser cero!'),
+                        ('costo_zero', 'CHECK (standard_price!=0)','Costo unitario en detalle no puede ser cero!'),
                         ]
     
     def reporte_pdf(self):
@@ -80,7 +77,6 @@ class ConversionProducto(models.Model):
             return True
         else:
             return False
-
 
     def download_report(self):
         return self.env['ir.actions.report'].search([('report_name', '=', 'cambio_presentacion.conversion_producto_pdf_report')]).report_action(self)
@@ -368,10 +364,9 @@ class ConversionProductoDetalle(models.Model):
     unit_amount = fields.Float(string="Costo Unitario",required=True,)
     amount_total = fields.Float(string="Costo Total",required=True,)
 
-    _sql_constraints = [('cantidad_zero', 'CHECK (amount!=0)', 'Cantidad en detalle no puede ser cero!'),
-                        ('costo_unitario_zero', 'CHECK (unit_amount!=0)',
-                         'Costo unitario en detalle no puede ser cero!'),
-                        ('costo_total_zer', 'CHECK (amount_total!=0)', 'Costo total en detalle no puede ser cero!'), ]
+    _sql_constraints = [('detalle_cantidad_zero', 'CHECK (amount!=0)', 'Cantidad en detalle no puede ser cero!'),
+                        ('detalle_costo_unitario_zero', 'CHECK (unit_amount!=0)','Costo unitario en detalle no puede ser cero!'),
+                        ('detalle_costo_total_zero', 'CHECK (amount_total!=0)', 'Costo total en detalle no puede ser cero!'), ]
 
     @api.onchange('amount', 'unit_amount')
     def onchange_total_linea_detalle(self):

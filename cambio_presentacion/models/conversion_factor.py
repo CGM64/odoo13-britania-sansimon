@@ -23,8 +23,7 @@ class ConversionFactor(models.Model):
 
     factor_amount = fields.Float(string="Factor")
 
-    _sql_constraints = [('factor_zero', 'CHECK (factor!=0)',
-                         'The conversion factor cannot be 0!'), ]
+    _sql_constraints = [('factor_zero', 'CHECK (factor!=0)','The conversion factor cannot be 0!'), ]
                 
 class ProductTemplateInherit(models.Model):
     _inherit = "product.template"
