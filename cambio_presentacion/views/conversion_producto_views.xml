@@ -41,7 +41,7 @@
                     <button name="action_generar_movimientos" string="Generar Movimientos" type="object" attrs="{'invisible':[('state','!=','posted')]}"/>
                     <button name="button_draft" string="Restablecer a borrador" type="object" attrs="{'invisible':[('state','=','draft')]}"/>
                     <button name="button_cancel" string="Cancelar" type="object" attrs="{'invisible':[('state','!=','posted')]}"/>
-                    <button name="download_report" type="object" string="Descargar Reporte" class="oe_highlight" icon="fa-download" attrs="{'invisible':[('state','!=','adjustment')]}"/>
+                    <button name="download_report" type="object" string="Imprimir" class="oe_highlight" icon="fa-download" attrs="{'invisible':[('state','!=','adjustment')]}"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
