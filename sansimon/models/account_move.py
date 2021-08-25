@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, exceptions, fields, models, _
-
 from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
-
 from odoo.addons import decimal_precision as dp
-from odoo.tools import float_is_zero
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, date_utils,float_is_zero
 
 import logging
 import pytz
@@ -28,3 +26,11 @@ class AccountMove(models.Model):
             return self.env.ref('sansimon.account_invoices').report_action(self)
         elif self.journal_id.template_print in ('template_ticket'):
             return self.env.ref('sansimon.account_invoices_ticket').report_action(self)
+
+    def action_post(self):
+        rslt=super(AccountMove,self).action_post()
+        porcentaje_maximo=self.team_id.porcentaje_maximo
+        for line in self.invoice_line_ids:
+            if line.discount >porcentaje_maximo:
+                raise UserError(_("El porcentaje de descuento es mayor al porcentaje permitido en la linea del producto %s.") % (line.product_id.name))
+        return rslt
