@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import fields,models, api
+from odoo import fields,models, api, _
 from datetime import datetime, timedelta, time,date
 from odoo.http import request
 from odoo.tools.misc import format_date
@@ -29,4 +29,4 @@ class SaleOrderInherit(models.Model):
         if cont ==0:
             return super(SaleOrderInherit,self).action_confirm()
         else:
-            return Warning("El porcentaje ingresado es mayor al permitido")
+            raise UserError(_("El porcentaje de descuento es mayo al porcentaje permitido."))
