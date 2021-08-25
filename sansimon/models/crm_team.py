@@ -7,4 +7,5 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, date_utils,float_is_zero
 class CrmTeamInherit(models.Model):
     _inherit = 'crm.team'
 
-    porcentaje_maximo = fields.Float('Porcentaje', digits='Porcentaje')
+    porcentaje_maximo = fields.Float('Porcentaje Max', digits='Porcentaje',
+    help='Este es el porcentaje máximo permitido (límite de descuento) que se puede aplicar en ordenes de compra y facturas.')
