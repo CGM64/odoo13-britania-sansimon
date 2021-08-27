@@ -9,3 +9,5 @@ class CrmTeamInherit(models.Model):
 
     porcentaje_maximo = fields.Float('Porcentaje Max', digits='Porcentaje',
     help='Este es el porcentaje máximo permitido (límite de descuento) que se puede aplicar en ordenes de compra y facturas.')
+    porcentaje_maximo_lider = fields.Float('Porcentaje Max lider', digits='Porcentaje',
+    help='Este es el porcentaje máximo permitido (límite de descuento) que se puede aplicar en ordenes de compra y facturas por el lider de ventas.')

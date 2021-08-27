@@ -25,6 +25,10 @@
           <div>
             <field name="porcentaje_maximo" class="oe_inline"/>%%
           </div>
+          <label for="porcentaje_maximo_lider"/>
+          <div>
+            <field string="Porcentaje Max. lider" name="porcentaje_maximo_lider" class="oe_inline"/>%%
+          </div>
         </xpath>
       </field>
     </record>

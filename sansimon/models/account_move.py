@@ -29,7 +29,10 @@ class AccountMove(models.Model):
 
     def action_post(self):
         rslt=super(AccountMove,self).action_post()
-        porcentaje_maximo=self.team_id.porcentaje_maximo
+        if self.team_id.user_id.id == self.env.user.id:
+            porcentaje_maximo=self.team_id.porcentaje_maximo_lider
+        else:
+            porcentaje_maximo=self.team_id.porcentaje_maximo
         for line in self.invoice_line_ids:
             if line.discount >porcentaje_maximo:
                 raise UserError(_("El porcentaje de descuento es mayor al porcentaje permitido en la linea del producto %s.") % (line.product_id.name))

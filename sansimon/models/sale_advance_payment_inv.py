@@ -11,7 +11,10 @@ class SaleAdvancePaymentInv(models.TransientModel):
         rst = super(SaleAdvancePaymentInv, self).create_invoices()
         sale_orders = self.env['sale.order'].browse(self._context.get('active_ids', []))
         for sale_order in sale_orders:
-            porcentaje_maximo=sale_order.team_id.porcentaje_maximo
+            if sale_order.team_id.user_id.id == self.env.user.id:
+                porcentaje_maximo=sale_order.team_id.porcentaje_maximo_lider
+            else:
+                porcentaje_maximo=sale_order.team_id.porcentaje_maximo
             for line in sale_order.order_line:
                 if line.discount >porcentaje_maximo:
                     raise UserError(_("El porcentaje de descuento es mayor al porcentaje permitido en la linea del producto %s.") % (line.product_id.name))
