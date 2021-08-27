@@ -38,6 +38,8 @@
         'report/sale_order.xml',
         'report/sale_order_templates.xml',
         'report/stock_picking_report.xml',
+        'views/sale_order_line.xml',
+        'views/account_move_line.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
