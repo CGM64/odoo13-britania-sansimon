@@ -9,24 +9,26 @@ from odoo.http import request
 class ConversionProducto(models.Model):
     _name = "conversion.producto"
     _description = "Conversion Producto"
+    _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
+    _mail_post_access = 'read'
 
     state = fields.Selection(selection=[
         ('draft', 'Borrador'),
         ('posted', 'Convertido'),
         ('adjustment', 'Ajustado'),
         ('cancel', 'Cancelado'),
-    ], string='Estado', required=True, readonly=True, default='draft')
+    ], string='Estado',tracking=True, required=True, readonly=True, default='draft')
 
     name = fields.Char(string='Number', required=True, copy=False, readonly=True, index=True, default=lambda self: _('New'))
     user_id = fields.Many2one('res.users', string='Usuario', default=lambda self: self.env.uid)
-    product_id = fields.Many2one('product.template', string='Producto',required=True, readonly=True, states={'draft': [('readonly', False)]},
+    product_id = fields.Many2one('product.template', string='Producto',tracking=True,required=True, readonly=True, states={'draft': [('readonly', False)]},
                                  domain=lambda self: [("id", "in", self.env['conversion.factor'].search([]).mapped("conversion_factor_id").ids)])
-    warehouse_id = fields.Many2one('stock.warehouse', string='Bodega',required=True,  domain=lambda self:[('id','=',self.env.ref('cambio_presentacion.stock_warehouse_desglose').id)],readonly=True, states={'draft': [('readonly', False)]})
+    warehouse_id = fields.Many2one('stock.warehouse', string='Bodega',required=True, domain=lambda self:[('id','=',self.env.ref('cambio_presentacion.stock_warehouse_desglose').id)],readonly=True,default=lambda self:self.env.ref('cambio_presentacion.stock_warehouse_desglose').id, states={'draft': [('readonly', False)]})
 
     stock_location_id = fields.Many2one('stock.location', string='Ubicación de origen', required=True, readonly=True, states={'draft': [('readonly', False)]})
-    date = fields.Date(string='Fecha', default=fields.Date.context_today,required=True, readonly=True, states={'draft': [('readonly', False)]})
+    date = fields.Date(string='Fecha', default=fields.Date.context_today,required=True,tracking=True, readonly=True, states={'draft': [('readonly', False)]})
     standard_price = fields.Float(string='Costo', readonly=True, compute="compute_costo")
-    amount = fields.Float(string="Cantidad", readonly=True, default=1, states={'draft': [('readonly', False)]})
+    amount = fields.Float(string="Cantidad", readonly=True, default=1,tracking=True, states={'draft': [('readonly', False)]})
     unidades_requeridas = fields.Float(string="Unidades requeridas", readonly=True, compute="compute_unidades_requeridas")
     amount_total = fields.Float(string="Total", readonly=True, compute="compute_total")
     total_standard_price = fields.Float(string="Costo Total", readonly=True, compute="compute_total_costo")
@@ -35,12 +37,10 @@ class ConversionProducto(models.Model):
     conversion_producto_ids = fields.One2many('conversion.producto.detalle', 'conversion_producto_line_id',
                                               'Lineas', copy=True, ondelete="cascade", store=True, readonly=True, states={'draft': [('readonly', False)]})
 
-    # stock_picking_ids = fields.One2many('stock.picking', 'stock_picking_conversion_id', 'Recepcion', copy=True, ondelete="cascade")
-    
     factor_id = fields.Selection([
         ('bigger', 'Mas grande que la unidad de referencia.'),
         ('reference', 'Igual que la unidad de referencia.'),
-        ('smaller', 'Mas pequeña que la unidad de referencia')], default='reference', string='Tipo Factor', readonly=True, states={'draft': [('readonly', False)]})
+        ('smaller', 'Mas pequeña que la unidad de referencia')], default='reference', tracking=True,string='Tipo Factor', readonly=True, states={'draft': [('readonly', False)]})
 
     _sql_constraints = [('cantidad_zero', 'CHECK (amount!=0)', 'Cantidad no puede ser cero!'),
                         ('costo_zero', 'CHECK (standard_price!=0)','Costo unitario en detalle no puede ser cero!'),
@@ -95,6 +95,8 @@ class ConversionProducto(models.Model):
         pickings =  request.env['stock.picking'].search([('origin', '=', origin),('state','=','done')])
         if len(pickings) > 1:
             action['domain'] = [('id', 'in', pickings.ids)]
+        elif self.total_pickings==0:
+            raise UserError(_('No hay pickings asignados a esta conversión.'))
         picking_id = pickings[0]
         action['context'] = dict(self._context, default_partner_id=proveedor_desglose.id)
         return action
@@ -375,10 +377,5 @@ class ConversionProductoDetalle(models.Model):
             unit_amount = line.unit_amount
             total = amount*unit_amount
         self.amount_total = total
-
-# class StockPickingInherit(models.Model):
-#     _inherit = "stock.picking"
-
-#     stock_picking_conversion_id = fields.Many2one('conversion.producto', string='Linea Recepcion', ondelete="cascade")
 
 

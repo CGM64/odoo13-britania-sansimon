@@ -29,6 +29,7 @@
             </tree>
         </field>
     </record>
+
     <!-- VISTA FORM INICIAL DE LA CONVERSION -->
     <record id="product_conversion_view_form" model="ir.ui.view">
         <field name="name">product.conversion.view.form</field>
@@ -39,8 +40,8 @@
                     <field name="state" widget="statusbar" statusbar_visible="draft,posted,adjustment,cancel"/>
                     <button name="button_approved" string="Convertir" type="object" attrs="{'invisible':[('state','!=','draft')]}"/>
                     <button name="action_generar_movimientos" string="Generar Movimientos" type="object" attrs="{'invisible':[('state','!=','posted')]}"/>
-                    <button name="button_draft" string="Restablecer a borrador" type="object" attrs="{'invisible':[('state','=','draft')]}"/>
-                    <button name="button_cancel" string="Cancelar" type="object" attrs="{'invisible':[('state','!=','posted')]}"/>
+                    <button name="button_draft" string="Restablecer a borrador" type="object" attrs="{'invisible':['|',('state','=','draft'),('total_pickings','>',0)]}"/>
+                    <button name="button_cancel" string="Cancelar" type="object" attrs="{'invisible':['|',('state','!=','posted'),('total_pickings','>',0)]}"/>
                     <button name="download_report" type="object" string="Imprimir" class="oe_highlight" icon="fa-download" attrs="{'invisible':[('state','!=','adjustment')]}"/>
                 </header>
                 <sheet>
@@ -87,6 +88,11 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
             </form>
         </field>
     </record>
