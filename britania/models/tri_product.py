@@ -65,6 +65,6 @@ class TriProduct(models.Model):
             "default_code": self.default_code,
             "grupo_utilidad_id": tri_group.group_uti.id,
             "marca_id": 1,
-            "standard_price": self.price_mar,
+            "standard_price": 0.00,
             "list_price": self.price_mar,
         })
