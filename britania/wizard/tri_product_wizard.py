@@ -46,9 +46,6 @@ class ImportarCatalogosExcel(models.TransientModel):
 		sheet = workbook.sheet_by_index(0)
 		product_template = []
 		i = 0
-
-		inew = 0
-		idup = 0
 		for row_no in range(sheet.nrows):
 			i += 1
 			if row_no <= 0:
@@ -67,10 +64,8 @@ class ImportarCatalogosExcel(models.TransientModel):
             		})
 
 				if tri_product:
-					inew += 1
 					tri_product.standard_price = line[3]
 				else:
-					idup += 1
 					tri_group = self.env['tri.product.group'].search([('name','=',line[2])], limit=1)
 					product = self.env['tri.product'].create({
                 		"name": line[1],
@@ -78,3 +73,12 @@ class ImportarCatalogosExcel(models.TransientModel):
                 		"standard_price": float(line[3]),
                 		"group": int(tri_group.id),
             		})
+		self.update_product()
+	
+	def update_product(self):
+		product_t = self.env['tri.product'].search([])
+		if product_t:
+			for product in product_t:
+				product_p = self.env['product.product'].search([('default_code','=',product.default_code)], limit=1)
+				if product_p:
+					product_p.list_price = product.price_mar
