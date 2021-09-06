@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_conversion_factor,access_conversion_factor,model_conversion_factor,base.group_user,1,1,1,1
+access_conversion_producto,access_conversion_producto,model_conversion_producto,base.group_user,1,1,1,1
+access_conversion_producto_detalle,access_conversion_producto_detalle,model_conversion_producto_detalle,base.group_user,1,1,1,1

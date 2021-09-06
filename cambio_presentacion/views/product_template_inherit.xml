@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_only_form_inherit" model="ir.ui.view">
+        <field name="name">product.template.only_form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[5]" position="after">
+                <page name="presentacion" string="Cambiar presentacion">
+                    <tree>
+                        <field name="conversion_factor_ids" context="{'tree_view_ref': 'cambio_presentacion.view_factor_tree'}" />
+                    </tree>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="conversion_factor_view_tree" model="ir.ui.view">
+        <field name="name">conversion.factor.view.tree</field>
+        <field name="model">conversion.factor</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="conversion_factor_id" invisible="1"/>
+                <field name="product_id" options="{'no_create': True}" required="1"/>
+                <field name="factor_id" required="1"/>
+                <field name="factor_amount" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>
