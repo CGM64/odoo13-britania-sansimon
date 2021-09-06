@@ -3,7 +3,8 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from odoo.http import request
-           
+
+ALMACEN_TALLER_DEFAULT = 30
 class RepairType(models.Model):
     _name = "repair.type"
     _description = "Tipos de ordenes de reparación"
@@ -27,6 +28,17 @@ class RepairType(models.Model):
 class repairOrder(models.Model):
     _inherit = "repair.order"
 
+    @api.model
+    def _default_stock_location(self):
+        return ALMACEN_TALLER_DEFAULT
+
+    location_id = fields.Many2one(
+        'stock.location', 'Location',
+        default=_default_stock_location,
+        index=True, readonly=True, required=True,
+        help="This is the location where the product to repair is located.",
+        states={'draft': [('readonly', False)], 'confirmed': [('readonly', True)]})
+    
     @api.model
     def _get_default(self):
         type = self.env['repair.type'].search([('active', '=',True)])
@@ -70,6 +82,30 @@ class RepairLine(models.Model):
     _inherit = "repair.line"
 
     amount_total = fields.Float(string="Total", compute="_get_amount_total")
+
+    @api.onchange('type', 'repair_id')
+    def onchange_operation_type(self):
+        """ On change of operation type it sets source location, destination location
+        and to invoice field.
+        @param product: Changed operation type.
+        @param guarantee_limit: Guarantee limit of current record.
+        @return: Dictionary of values.
+        """
+        if not self.type:
+            self.location_id = False
+            self.location_dest_id = False
+        elif self.type == 'add':
+            self.onchange_product_id()
+            args = self.repair_id.company_id and [('company_id', '=', self.repair_id.company_id.id)] or []
+            warehouse = self.env['stock.warehouse'].search(args, limit=1)
+            self.location_id = ALMACEN_TALLER_DEFAULT
+            self.location_dest_id = self.env['stock.location'].search([('usage', '=', 'production')], limit=1).id
+        else:
+            self.price_unit = 0.0
+            self.tax_id = False
+            self.location_id = self.env['stock.location'].search([('usage', '=', 'production')], limit=1).id
+            self.location_dest_id = self.env['stock.location'].search([('scrap_location', '=', True)], limit=1).id
+
 
     def _get_amount_total(self):
         for line in self:

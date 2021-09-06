@@ -83,5 +83,18 @@
       </field>
     </record>
 
+    <record model="ir.ui.view" id="view_repair_order_tree_inherit">
+      <field name="name">repair.tree</field>
+      <field name="model">repair.order</field>
+      <field name="inherit_id" ref="repair.view_repair_order_tree"/>
+      <field name="arch" type="xml">
+        <data>
+          <xpath expr="//field[@name='name']" position="after">
+            <field name="create_date" string="Fecha"  widget="date"/>
+          </xpath>
+        </data>
+      </field>
+    </record>
+
   </data>
 </odoo>
