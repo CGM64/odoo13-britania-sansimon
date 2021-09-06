@@ -83,7 +83,9 @@ class ConversionProducto(models.Model):
    
     def _compute_pickings_quantity(self):
         origin=self.name
-        consulta_stock_picking = request.env['stock.picking'].search([('origin', '=',origin),('state','=','done')])
+        in_id = self.env.ref('cambio_presentacion.stock_picking_type_desglose_Recepcion').id
+        out_id = self.env.ref('cambio_presentacion.stock_picking_type_desglose_Salida').id
+        consulta_stock_picking = request.env['stock.picking'].search([('origin', '=',origin), ('state','=','done'),('picking_type_id','in',(in_id,out_id))])
         cantidad=len(consulta_stock_picking)
         self.total_pickings=cantidad
 
@@ -92,7 +94,10 @@ class ConversionProducto(models.Model):
         proveedor_desglose = self.env.ref('cambio_presentacion.res_partner_desglose')
         action = self.env.ref('cambio_presentacion.stock_picking_window').read()[0]
 
-        pickings =  request.env['stock.picking'].search([('origin', '=', origin),('state','=','done')])
+        in_id = self.env.ref('cambio_presentacion.stock_picking_type_desglose_Recepcion').id
+        out_id = self.env.ref('cambio_presentacion.stock_picking_type_desglose_Salida').id
+        pickings = request.env['stock.picking'].search([('origin', '=',origin), ('state','=','done'),('picking_type_id','in',(in_id,out_id))])
+
         if len(pickings) > 1:
             action['domain'] = [('id', 'in', pickings.ids)]
         elif self.total_pickings==0:
@@ -232,9 +237,24 @@ class ConversionProducto(models.Model):
             self.write({'state': 'posted'})
 
     def button_draft(self):
+        in_id = self.env.ref('cambio_presentacion.stock_picking_type_desglose_Recepcion').id
+        out_id = self.env.ref('cambio_presentacion.stock_picking_type_desglose_Salida').id
+        consulta_stock_picking = request.env['stock.picking'].search([('origin', '=',self.name),
+            ('state','=','done'),('picking_type_id','in',(in_id,out_id))])
+        
+        if len(consulta_stock_picking) >0:
+            raise Warning("Esta conversión ya tiene movimiento no puede modificarla.")
         self.write({'state': 'draft'})
 
     def button_cancel(self):
+        in_id = self.env.ref('cambio_presentacion.stock_picking_type_desglose_Recepcion').id
+        out_id = self.env.ref('cambio_presentacion.stock_picking_type_desglose_Salida').id
+        consulta_stock_picking = request.env['stock.picking'].search([('origin', '=',self.name),
+            ('state','=','done'),('picking_type_id','in',(in_id,out_id))])
+        
+        if len(consulta_stock_picking) >0:
+            raise Warning("Esta conversión ya tiene movimientos de inventario no la puede cancelar.")
+
         self.write({'state': 'cancel'})
 
     def _qry_productos_con_existencia(self,product_ids,stock_location_id):

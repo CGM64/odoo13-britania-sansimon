@@ -41,7 +41,7 @@
                     <button name="button_approved" string="Convertir" type="object" attrs="{'invisible':[('state','!=','draft')]}"/>
                     <button name="action_generar_movimientos" string="Generar Movimientos" type="object" attrs="{'invisible':[('state','!=','posted')]}"/>
                     <button name="button_draft" string="Restablecer a borrador" type="object" attrs="{'invisible':['|',('state','=','draft'),('total_pickings','>',0)]}"/>
-                    <button name="button_cancel" string="Cancelar" type="object" attrs="{'invisible':['|',('state','!=','posted'),('total_pickings','>',0)]}"/>
+                    <button name="button_cancel" string="Cancelar" type="object" attrs="{'invisible':['|',('state','!=','posted')]}"/>
                     <button name="download_report" type="object" string="Imprimir" class="oe_highlight" icon="fa-download" attrs="{'invisible':[('state','!=','adjustment')]}"/>
                 </header>
                 <sheet>
@@ -100,7 +100,7 @@
         <field name="name">conversion.producto.detalle.view.tree</field>
         <field name="model">conversion.producto.detalle</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <tree editable="bottom" create="false" edit="false"  >
                 <field name="conversion_producto_line_id" invisible="1"/>
                 <field name="product_id"/>
                 <field name="factor_id"/>
