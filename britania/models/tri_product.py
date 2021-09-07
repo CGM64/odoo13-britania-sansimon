@@ -72,16 +72,17 @@ class TriProduct(models.Model):
             "standard_price": 0.00,
             "list_price": self.price_mar,
         })
-        product_product = self.env['product.product'].search([('name','=',self.name)], limit=1)
+        product_product = self.env['product.template'].search([('name','=',self.name)], limit=1)
         self.update({
             'is_created': True,
             'product_template': product_product.id,
         })
-        #CREANDO PRODUCTO EN PRODUCT_PRICELIST_ITEM(TARIFA)
+        #LLAMADNDO METODO PARA CREAR PRODUCTO EN PRODUCT_PRICELIST_ITEM(TARIFA)
         self.create_pricelist_line(self.name,tipo_tarifa="Maritimo")
         self.create_pricelist_line(self.name,tipo_tarifa="Aereo")
         self.create_pricelist_line(self.name,tipo_tarifa="Courier")
 
+    #METODO PARA CREAR PRODUCTO EN PRODUCT PRODUCT
     def create_pricelist_line(self,name,tipo_tarifa):
         product_p = self.env['product.template'].search([('name','=',name)], limit=1)
         pricelist = self.env['product.pricelist'].search([('name','=',tipo_tarifa)], limit=1)
