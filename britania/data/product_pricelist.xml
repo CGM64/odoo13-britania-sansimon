@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+        <record id="product_pricelist_01" model="product.pricelist">
+            <field name="name">Maritimo</field>
+            <field name="currency_id">170</field>
+            <field name="discount_policy">with_discount</field>
+            <field name="active">true</field>
+        </record>
+        <record id="product_pricelist_02" model="product.pricelist">
+            <field name="name">Aereo</field>
+            <field name="currency_id">170</field>
+            <field name="discount_policy">with_discount</field>
+            <field name="active">true</field>
+        </record>
+        <record id="product_pricelist_03" model="product.pricelist">
+            <field name="name">Courier</field>
+            <field name="currency_id">170</field>
+            <field name="discount_policy">with_discount</field>
+            <field name="active">true</field>
+        </record>
+    </data>
+</odoo>

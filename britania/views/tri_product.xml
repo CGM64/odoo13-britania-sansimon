@@ -26,7 +26,7 @@
       <field name="arch" type="xml">
         <form string="Productos Triumph" class="o_expense_form">
           <header>
-            <button type="object" name="create_product" string="Crear producto"/>
+            <button type="object" name="create_product" string="Crear producto" attrs="{'invisible':[('is_created', '!=', False)]}"/>
           </header>
           <sheet>
             <div class="oe_title">
@@ -41,6 +41,8 @@
                       <field name="default_code" class="oe_inline"/>
                       <field name="group" class="oe_inline"/>
                       <field name="standard_price" class="oe_inline"/>
+                      <field name="is_created" invisible="1" class="oe_inline"/>
+                      <field name="product_template" class="oe_inline" readonly="1"/>
                     </group>
                   </div>
                   <div class="col-sm">
