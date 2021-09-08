@@ -19,14 +19,15 @@ class TriProductGroup(models.Model):
 class TriProduct(models.Model):
     _name = "tri.product"
     _description = "Productos Triumph."
+    _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
 
     name = fields.Char('Nombre del producto', required=True)
     default_code = fields.Char('Referencia interna', required=True)
-    standard_price = fields.Float(string="Precio")
+    standard_price = fields.Float(string="Precio",tracking=1)
     group = fields.Many2one('tri.product.group', string='Grupo')
-    price_mar = fields.Float(string="Marítimo", compute="_precios_compute")
-    price_aer = fields.Float(string="Aéreo", compute="_precios_compute")
-    price_cour = fields.Float(string="Courier", compute="_precios_compute")
+    price_mar = fields.Float(string="Marítimo", compute="_precios_compute",tracking=True)
+    price_aer = fields.Float(string="Aéreo", compute="_precios_compute",tracking=True)
+    price_cour = fields.Float(string="Courier", compute="_precios_compute",tracking=True)
     product_template = fields.Many2one('product.template', string='Producto en inventario Odoo')
     #CAMPO PARA SABER SI ESTA CREADO EN PRODUCT.PRODUCT
     is_created = fields.Boolean(default=False)

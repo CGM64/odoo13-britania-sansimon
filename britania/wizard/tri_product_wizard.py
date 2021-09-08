@@ -66,7 +66,6 @@ class ImportarCatalogosExcel(models.TransientModel):
 				if tri_product:
 					tri_product.standard_price = line[3]
 				else:
-					tri_group = self.env['tri.product.group'].search([('name','=',line[2])], limit=1)
 					product = self.env['tri.product'].create({
                 		"name": line[1],
                 		"default_code": line[0],
@@ -82,3 +81,7 @@ class ImportarCatalogosExcel(models.TransientModel):
 				product_p = self.env['product.product'].search([('default_code','=',product.default_code)], limit=1)
 				if product_p:
 					product_p.list_price = product.price_mar
+	
+	#METODO PARA CREAR PRODUCTO EN PRODUCT PRODUCT
+	def update_pricelist_line(self,id_product,id_tarifa):
+		pricelist_item = self.env['product.pricelist.item'].search([('product_tmpl_item','=',id),('pricelist_id','=',id_tarifa)], limit=1)
