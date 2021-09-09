@@ -74,10 +74,14 @@
                                         </td>
                                     </tr>
                                     <tr  class="thead-dark">
-                                        <th colspan="4">DIRECCIÓN DE ENTREGA</th>
+                                        <th colspan="2">DIRECCIÓN DE ENTREGA</th>
+                                        <th colspan="1">TELEFONO</th>
+                                        <th colspan="1">CORREO</th>
                                     </tr>
                                     <tr>
-                                        <td colspan="4"><span t-esc="o.get_direccion()" /></td>
+                                        <td colspan="2"><span t-esc="o.get_direccion()" /></td>
+                                        <td colspan="1"><span t-esc="o.partner_id.phone" /></td>
+                                        <td colspan="1"><span t-esc="o.partner_id.email" /></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -153,6 +157,14 @@
                                 </tbody>
                             </table>
                         </div>
+                        <br></br>
+                        <div class="row">
+                            <div class="container">
+                                Observaciones: <span t-field="o.note" />
+                            </div>
+                        </div>
+                        <br></br>
+                        <br></br>
                         <br></br>
                         <div class="row">
                             <div class="container">
