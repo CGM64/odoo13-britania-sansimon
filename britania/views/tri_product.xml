@@ -24,7 +24,7 @@
       <field name="name">tri.product.form</field>
       <field name="model">tri.product</field>
       <field name="arch" type="xml">
-        <form string="Productos Triumph" class="o_expense_form">
+        <form string="Productos Triumph" class="o_expense_form" edit="false" create="false">
           <header>
             <button type="object" name="create_product" string="Crear producto" attrs="{'invisible':[('is_created', '!=', False)]}"/>
           </header>
@@ -79,11 +79,11 @@
         <field name="name">tri.product.tree</field>
         <field name="model">tri.product</field>
         <field name="arch" type="xml">
-              <tree string="Productos Triumph" import="0">
-                  <field name="name"/>
-                  <field name="default_code"/>
-                  <field name="group"/>
-                  <field name="standard_price"/>
+              <tree string="Productos Triumph" import="0" create="false">
+                  <field name="name" readonly="1"/>
+                  <field name="default_code" readonly="1"/>
+                  <field name="group" readonly="1"/>
+                  <field name="standard_price" readonly="1"/>
                   <field name="price_mar" readonly="1"/>
                   <field name="price_aer" readonly="1"/>
                   <field name="price_cour" readonly="1"/>

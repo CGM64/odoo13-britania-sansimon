@@ -4,6 +4,8 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from odoo.http import request
 
+tasa_cambio = 7.8
+
 class TriProductGroup(models.Model):
     _name = "tri.product.group"
     _description = "Grupos"
@@ -38,24 +40,30 @@ class TriProduct(models.Model):
 
     @api.depends('group.group_uti', 'standard_price')
     def _precios_compute(self):
+
+        maritimo_porc = 20
+        aereo_porc = 30
+        courier_porc = 40
         
         for product in self:
             
             if product.group:
                 if product.group.group_uti:
-                    group_uti = product.group.group_uti.porcentaje / 100 * product.standard_price
+                    group_uti = (product.group.group_uti.porcentaje / 100)+1
                 else:
                     group_uti = 0
             else:
                 group_uti = 0
             
-            product.price_mar = self.calcular_totales(20, product.standard_price, group_uti)
-            product.price_aer = self.calcular_totales(30, product.standard_price, group_uti)
-            product.price_cour = self.calcular_totales(40, product.standard_price, group_uti)
+            product.price_mar = self.calcular_totales(maritimo_porc, product.standard_price, group_uti)
+            product.price_aer = self.calcular_totales(aereo_porc, product.standard_price, group_uti)
+            product.price_cour = self.calcular_totales(courier_porc, product.standard_price, group_uti)
 
     def calcular_totales(self, porcentaje, precio_standard, group):
-        nacionalizacion = porcentaje / 100 * precio_standard
-        total = precio_standard+nacionalizacion+group
+        nacionalizacion = (porcentaje / 100)+1
+        totales = precio_standard*tasa_cambio*nacionalizacion*group
+        iva = (12 / 100)+1
+        total = totales*iva
         return total
 
     def create_product(self):
@@ -70,7 +78,7 @@ class TriProduct(models.Model):
             "default_code": self.default_code,
             "grupo_utilidad_id": tri_group.group_uti.id,
             "marca_id": 1,
-            "standard_price": 0.00,
+            "standard_price": self.standard_price,
             "list_price": self.price_mar,
         })
         product_product = self.env['product.template'].search([('name','=',self.name)], limit=1)
