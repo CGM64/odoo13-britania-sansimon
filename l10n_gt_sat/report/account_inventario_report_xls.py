@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from odoo import models,api
+from odoo import models, api
 from datetime import datetime
 from odoo.http import request
+
 
 class LibroInventarioReportXls(models.AbstractModel):
     _name = 'report.l10n_gt_sat.account_inventario_report_xls'
@@ -10,172 +11,151 @@ class LibroInventarioReportXls(models.AbstractModel):
 
     workbook = None
 
-
-    def _facturas(self,fecha_inicio,fecha_fin):
+    def _costos_en_destino(self,picking_id,product_id):
         dominio = [
-            ('state', 'in', ('posted','reconciled')),
-            ('invoice_date', '>=', fecha_inicio),
-            ('invoice_date', '<=', fecha_fin),
-            ('journal_id.type', '=', 'purchase'),
-            ('journal_id.code', 'in', ('FACTU','CEXT')),
+            ('picking_ids.id', '=', picking_id),
         ]
-        facturas= request.env['account.move'].search(dominio)
-        return facturas
-
-    def _stock_valuation_layer(self,fecha_inicio,fecha_fin):
-        year = datetime.strptime(fecha_inicio, '%Y-%m-%d').strftime('%Y')
-        fecha_inicial = datetime.strptime(fecha_inicio, '%Y-%m-%d').strftime(str(year)+'-01-01')
-        fecha_final = datetime.strptime(fecha_fin, '%Y-%m-%d').strftime(str(year)+'-12-31')    
-        dominio = [
-            ('quantity', '>',0),
-            ('create_date', '>=', fecha_inicial),
-            ('create_date', '<=', fecha_final),
-        ]
-        valoracion= request.env['stock.valuation.layer'].search(dominio)
-        lista_valores=[]
-        for valor in valoracion:
-            dict_valores={
-                'stock_move_id':valor.stock_move_id,
-                'quantity':valor.quantity,
-                'value':valor.value,
-            }
-            lista_valores.append(dict_valores)
-        return lista_valores
-
-    def _purchase_order(self,fecha_inicio,fecha_fin):
-        year = datetime.strptime(fecha_inicio, '%Y-%m-%d').strftime('%Y')
-        fecha_inicial = datetime.strptime(fecha_inicio, '%Y-%m-%d').strftime(str(year)+'-01-01')
-        fecha_final = datetime.strptime(fecha_fin, '%Y-%m-%d').strftime(str(year)+'-12-31')        
-        dominio = [
-            ('state', 'in', ('done','purchase')),
-            ('date_approve', '>=', fecha_inicial),
-            ('date_approve', '<=', fecha_final),
-                    ]
-        purchase_order= request.env['purchase.order'].search(dominio)
-
-        lista_ordenes=[]
-        stock_valuation_layer= self._stock_valuation_layer(fecha_inicio,fecha_fin)
-        for orden in purchase_order:
-            lista_facturas=[]
-            lista_recepciones=[]
-            suma_facturas=0
-
-            for factura in orden.invoice_ids:
-                if factura.state =='posted':
-                    suma_facturas+=factura.amount_untaxed
-                    ordenes_compra={
-                        'factura_id':factura.id,
-                        'factura':factura.name,
-                        'orden_id':orden.id,
-                        'orden':orden.name,
-                        'fecha':orden.date_approve,
-                        'monto_orden':orden.amount_untaxed,
-                        'monto_factura':factura.amount_untaxed,
-                        'moneda':factura.currency_id.id,
-                        'tasa_cambio':factura.sat_tasa_cambio,
-                    }
-                    lista_facturas.append(ordenes_compra)
-
-            for recepcion in orden.picking_ids:
-                if recepcion.state =='done' :
-                    # print(recepcion.name)
-                    lista_valorizacion=[]
-                    for linea in recepcion.move_line_ids:
-                        valorizacion=list(filter(lambda svl: svl['stock_move_id']==linea.move_id, stock_valuation_layer))
-                        for valor in valorizacion:
-                            lista_valorizacion.append(valor['value'])
-                            # print("    recepcion-->",linea.move_id.id,valor['value'])
-
-                    orden_recepciones={
-                        'recepcion_id':recepcion.id,
-                        'recepcion':recepcion.name,
-                        'orden_id':orden.id,
-                        'orden':orden.name,
-                        'monto_recepcion':sum(lista_valorizacion),
-                    }
-                    lista_recepciones.append(orden_recepciones)
-
-            orden_compra={
-                'orden_id':orden.id,
-                'orden':orden.name,
-                'sumatoria':suma_facturas,
-                'facturas':lista_facturas,
-                'recepciones':lista_recepciones,
-            }
-            if len(orden_compra['facturas'])!=0:
-                lista_ordenes.append(orden_compra)
+        stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
+        gasto=sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id)])
+        amount_total = stock_landed_cost[0].amount_total
         
-        return lista_ordenes
+        return gasto,amount_total
+
+
+    def _ordenes_de_compra(self, fecha_inicio, fecha_fin):
+        dominio = [
+            ('state', 'in', ('purchase', 'done')),
+            ('date_order', '>=', fecha_inicio),
+            ('date_order', '<=', fecha_fin),
+            # ('name', 'in', ('P00015','P00016','P00017')),
+        ]
+        purchase_orders = request.env['purchase.order'].search(dominio)
+
+        listado_compras = []
+        for order in purchase_orders:
+            
+            orden_compra = {
+                'id': order.id,
+                'name': order.name,
+                'partner_id': order.partner_id.name,
+                'date_order': order.date_approve,
+                'partner_ref': order.partner_ref,
+            }
+
+            order_lines=[]
+            for line in order.order_line:
+                order_line = {
+                    'default_code': line.product_id.default_code,
+                    'product_id': line.product_id.id,
+                    'name': line.product_id.name,
+                    'product_qty': line.product_qty,
+                    'price_unit': line.price_unit,
+                    'price_subtotal': line.price_subtotal,
+                }        
+
+                invoices=[]
+                for invoice in order.invoice_ids:
+                    if invoice.state =='posted':
+                        order_invoices={
+                            'invoice_id':invoice.id,
+                            'name':invoice.name,
+                            'journal_id':invoice.journal_id.name,
+                            'currency_name':invoice.currency_id.name
+                        }
+                        invoices.append(order_invoices)
+                orden_compra['invoices']=invoices
+
+                pickings=[]
+                for picking in order.picking_ids:
+                    if picking.state =='done':
+                        gasto,amount_total=self._costos_en_destino(picking.id,line.product_id.id)
+                        
+                        order_pickings={
+                            'picking_id':picking.id,
+                            'name':picking.name,
+                        }
+                        order_line['gasto']=gasto
+                        order_line['amount_total']=amount_total
+
+
+                    pickings.append(order_pickings)
+                orden_compra['pickings']=pickings
+
+                order_lines.append(order_line)                    
+            orden_compra['lines']=order_lines
+
+            listado_compras.append(orden_compra)
+
+            print(listado_compras)
+        return listado_compras
 
     def generate_xlsx_report(self, workbook, data, data_report):
-        formato_celda_numerica = workbook.add_format({'num_format': '#,##0.00', 'border': 0, })
-        formato_encabezado = workbook.add_format({'bold': 1,  'border': 1,    'align': 'center', 'valign':   'vcenter','fg_color': '#1C1C1C', 'font_color': 'white'})
-        formato_fecha = workbook.add_format({'num_format': 'dd/mm/yyyy', 'border': 0})
-
+        formato_celda_numerica = workbook.add_format(
+            {'num_format': '#,##0.00', 'border': 0, })
+        formato_encabezado = workbook.add_format(
+            {'bold': 1,  'border': 1,    'align': 'center', 'valign':   'vcenter', 'fg_color': '#1C1C1C', 'font_color': 'white'})
+        formato_fecha = workbook.add_format(
+            {'num_format': 'dd/mm/yyyy', 'border': 0})
 
         self.workbook = workbook
         fecha_inicio = data['form']['fecha_inicio']
-        fecha_fin = data['form']['fecha_fin']   
+        fecha_fin = data['form']['fecha_fin']
 
-        facturas=self._facturas(fecha_inicio,fecha_fin)
-        ordenes_de_compra=self._purchase_order(fecha_inicio,fecha_fin)
-
-        lista_orden=[]
-        lista_recepcion=[]
-        for orden in ordenes_de_compra:
-            for factura_orden in orden['facturas']:
-                lista_orden.append(factura_orden)
-            for recepcion_orden in orden['recepciones']:
-                lista_recepcion.append(recepcion_orden)
+        purchase_orders=self._ordenes_de_compra(fecha_inicio, fecha_fin)
 
         sheet_inventario = workbook.add_worksheet('Inventario')
-        sheet_inventario.write(0, 0, "FACTURA",formato_encabezado)
-        sheet_inventario.write(0, 1, "TASA CAMBIO",formato_encabezado)
-        sheet_inventario.write(0, 2, "MONTO SIN IVA",formato_encabezado)
-        sheet_inventario.write(0, 3, "PROVEEDOR",formato_encabezado)
-        sheet_inventario.write(0, 4, "FECHA FACTURA",formato_encabezado)
-        sheet_inventario.write(0, 5, "ORDEN DE COMPRA",formato_encabezado)
-        sheet_inventario.write(0, 6, "MONTO ORDEN",formato_encabezado)
-        sheet_inventario.write(0, 7, "MONTO FACTURA RELACIONADA",formato_encabezado)
-        sheet_inventario.write(0, 8, "RECEPCIONES",formato_encabezado)
-        sheet_inventario.write(0, 9, "MONTO RECEPCION",formato_encabezado)
+        sheet_inventario.write(0, 0, "ORDEN DE COMPRA", formato_encabezado)
+        sheet_inventario.write(0, 1, "PROVEEDOR", formato_encabezado)
+        sheet_inventario.write(0, 2, "FECHA", formato_encabezado)
+        sheet_inventario.write(0, 3, "REFERENCIA", formato_encabezado)
+        sheet_inventario.write(0, 4, "CODIGO", formato_encabezado)
+        sheet_inventario.write(0, 5, "PRODUCTO", formato_encabezado)
+        sheet_inventario.write(0, 6, "CANTIDAD", formato_encabezado)
+        sheet_inventario.write(0, 7, "PRECIO", formato_encabezado)
+        sheet_inventario.write(0, 8, "SUB-TOTAL", formato_encabezado)
+        sheet_inventario.write(0, 9, "RECEPCION", formato_encabezado)
+        sheet_inventario.write(0, 10, "GASTOS", formato_encabezado)
+        sheet_inventario.write(0, 11, "TOTAL", formato_encabezado)
+        sheet_inventario.write(0, 12, "DIARIO", formato_encabezado)
+        sheet_inventario.write(0, 13, "MONEDA", formato_encabezado)
 
         fila=0
-        for factura in facturas:
-            fila+=1
-            sheet_inventario.write(fila, 0, factura.name)
-            sheet_inventario.write(fila, 1, factura.sat_tasa_cambio,formato_celda_numerica)
-            sheet_inventario.write(fila, 2, factura.amount_untaxed,formato_celda_numerica)
-            sheet_inventario.write(fila, 3, factura.partner_id.name)
-            sheet_inventario.write(fila, 4, factura.invoice_date,formato_fecha)
+        for order in purchase_orders:
+            for line in order['lines']:
+                fila+=1
+                sheet_inventario.write(fila, 0,order['name'],)
+                sheet_inventario.write(fila, 1,order['partner_id'])
+                sheet_inventario.write(fila, 2,order['date_order'],formato_fecha)
+                sheet_inventario.write(fila, 3,order['partner_ref'])
+                sheet_inventario.write(fila, 4,line['default_code'])
+                sheet_inventario.write(fila, 5,line['name'])
+                sheet_inventario.write(fila, 6,line['product_qty'],formato_celda_numerica)
+                sheet_inventario.write(fila, 7,line['price_unit'],formato_celda_numerica)
+                sheet_inventario.write(fila, 8,line['price_subtotal'],formato_celda_numerica)
+                
 
-            ordenes=list(filter(lambda fac: fac['factura_id']==factura.id, lista_orden))
-            for orden in ordenes:
-                order_name= orden['orden']
-                monto_orden= orden['monto_orden']
-                monto_factura= orden['monto_factura']
-    
-                sheet_inventario.write(fila, 5,order_name)
-                sheet_inventario.write(fila, 6,monto_orden,formato_celda_numerica)
-                sheet_inventario.write(fila, 7,monto_factura,formato_celda_numerica)
+                for picking in order['pickings']:
+                    sheet_inventario.write(fila, 9,picking['name'])
 
-                recepciones=list(filter(lambda o: o['orden_id']==orden['orden_id'], lista_recepcion))
-                lista_de_recepciones=[]
-                for recepcion in recepciones:
-                    lista_de_recepciones.append(recepcion['recepcion'])     
-                    sheet_inventario.write(fila, 9,recepcion['monto_recepcion'],formato_celda_numerica)
+                if 'gasto' in line:
+                    sheet_inventario.write(fila, 10,line['gasto'],formato_celda_numerica)
+                
+                if 'amount_total' in line:
+                    sheet_inventario.write(fila, 11,line['amount_total'],formato_celda_numerica)
+                
+                for invoice in order['invoices']:
+                    sheet_inventario.write(fila, 12,invoice['journal_id'])
+                    sheet_inventario.write(fila, 13,invoice['currency_name'])
 
-                caracteres="'[]"
-                for caracter in caracteres:
-                    lista_de_recepciones=str(lista_de_recepciones).replace(caracter,"")
+                    
 
-                sheet_inventario.write(fila, 8,str(lista_de_recepciones))
+                
                 
 
 
 
+                
 
 
 
-
-
+        
