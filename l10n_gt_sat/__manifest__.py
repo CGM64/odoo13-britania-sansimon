@@ -56,6 +56,7 @@
         'wizard/tags_view.xml',
         'report/purchase_order_views.xml',
         'views/res_currency_views.xml',
+        'views/sale_order_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

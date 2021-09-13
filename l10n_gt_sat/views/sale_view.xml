@@ -30,7 +30,7 @@
         <field name="inherit_id" ref="sale.view_sales_order_filter"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="replace">
-                <field name="name" string="Order" filter_domain="['|', '|', '|', ('name', 'ilike', self), ('client_order_ref', 'ilike', self), ('partner_id', 'child_of', self), ('partner_ref', '=', self)]"/>
+                <field name="name" string="Order" filter_domain="['|', '|', '|', '|', ('name', 'ilike', self), ('client_order_ref', 'ilike', self), ('partner_id', 'child_of', self), ('partner_ref', '=', self), ('partner_id.vat', 'like', self)]"/>
             </xpath>
         </field>
     </record>
