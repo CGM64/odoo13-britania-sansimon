@@ -35,8 +35,10 @@ class LibroInventarioReportXls(models.AbstractModel):
 
         dominio = [
             ('state', 'in', ('purchase', 'done',)),
-            ('picking_ids.scheduled_date', '>=', fecha_inicio),
-            ('picking_ids.scheduled_date', '<=', fecha_fin),
+            ('picking_ids.date_done', '>=', fecha_inicio),
+            ('picking_ids.date_done', '<=', fecha_fin),
+            # ('date_order', '>=', fecha_inicio),
+            # ('date_order', '<=', fecha_fin),
             # ('name', 'in', ('P00015','P00016','P00017')),
             # ('name', 'in', ('P00015','P00016')),
             # ('name', '=', 'P00162'),
