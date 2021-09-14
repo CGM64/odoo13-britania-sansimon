@@ -45,13 +45,20 @@ class LibroInventarioReportXls(models.AbstractModel):
             order_lines=[]
             for line in order.order_line:
                 order_line = {
-                    'default_code': line.product_id.default_code,
                     'product_id': line.product_id.id,
                     'name': line.product_id.name,
                     'product_qty': line.product_qty,
                     'price_unit': line.price_unit,
                     'price_subtotal': line.price_subtotal,
-                }        
+                    'gasto':None,
+                    'amount_total':None,
+                }      
+
+                if line.product_id.default_code !=False:
+                    order_line['default_code']=line.product_id.default_code
+                else:
+                    order_line['default_code']=None
+
 
                 invoices=[]
                 for invoice in order.invoice_ids:
@@ -86,7 +93,6 @@ class LibroInventarioReportXls(models.AbstractModel):
 
             listado_compras.append(orden_compra)
 
-            print(listado_compras)
         return listado_compras
 
     def generate_xlsx_report(self, workbook, data, data_report):
@@ -137,11 +143,11 @@ class LibroInventarioReportXls(models.AbstractModel):
                 for picking in order['pickings']:
                     sheet_inventario.write(fila, 9,picking['name'])
 
-                if 'gasto' in line:
-                    sheet_inventario.write(fila, 10,line['gasto'],formato_celda_numerica)
+                # if 'gasto' in line:
+                sheet_inventario.write(fila, 10,line['gasto'],formato_celda_numerica)
                 
-                if 'amount_total' in line:
-                    sheet_inventario.write(fila, 11,line['amount_total'],formato_celda_numerica)
+                # if 'amount_total' in line:
+                sheet_inventario.write(fila, 11,line['amount_total'],formato_celda_numerica)
                 
                 for invoice in order['invoices']:
                     sheet_inventario.write(fila, 12,invoice['journal_id'])
