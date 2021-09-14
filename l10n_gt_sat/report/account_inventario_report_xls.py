@@ -2,6 +2,7 @@
 from odoo import models, api
 from datetime import datetime
 from odoo.http import request
+import re
 
 
 class LibroInventarioReportXls(models.AbstractModel):
@@ -19,32 +20,35 @@ class LibroInventarioReportXls(models.AbstractModel):
         gasto=sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.quantity == quantity)])
         name = stock_landed_cost.name
         date = stock_landed_cost.date
-
-        for line in stock_landed_cost.valuation_adjustment_lines:
-            print(line.name,' - ', line.move_id.id, ' - ', line.quantity, ' - ', line.additional_landed_cost)
-
         return gasto,name,date
 
     def _ordenes_de_compra(self, fecha_inicio, fecha_fin):
+        regexLetras = "[^a-zA-Z0-9_ ,/]"
+
         dominio = [
-            ('state', 'in', ('purchase', 'done')),
-            ('date_order', '>=', fecha_inicio),
-            ('date_order', '<=', fecha_fin),
+            ('state', 'in', ('purchase', 'done',)),
+            ('picking_ids.scheduled_date', '>=', fecha_inicio),
+            ('picking_ids.scheduled_date', '<=', fecha_fin),
             # ('name', 'in', ('P00015','P00016','P00017')),
             # ('name', 'in', ('P00015','P00016')),
+            # ('name', '=', 'P00162'),
         ]
         purchase_orders = request.env['purchase.order'].search(dominio)
 
         listado_compras = []
         for order in purchase_orders:
-            
+            lista_pickings=[]
             orden_compra = {
                 'id': order.id,
                 'name': order.name,
                 'partner_id': order.partner_id.name,
-                'date_order': order.date_approve,
-                'partner_ref': order.partner_ref,
+                'date_order': order.date_approve, 
             }
+
+            if order.partner_ref != False:
+                orden_compra['partner_ref']=order.partner_ref
+            else:
+                orden_compra['partner_ref']=None
 
             order_lines=[]
             for line in order.order_line:
@@ -54,10 +58,20 @@ class LibroInventarioReportXls(models.AbstractModel):
                     'product_qty': line.product_qty,
                     'price_unit': line.price_unit,
                     'price_subtotal': line.price_subtotal,
+
+                    #landed_cost_ids ->Costos en Destino
                     'gasto':None,
                     'landed_cost_name':None,
                     'landed_cost_date':None,
                     'total':None,
+                    #picking_ids ->Recepciones
+                    'picking_name':None,
+                    'scheduled_date':None,
+                    #invoice_ids ->Facturas
+                    'invoice_id':None,
+                    'invoice_name':None,
+                    'journal_id':None,
+                    'currency_name':None,
                 }      
 
                 if line.product_id.default_code !=False:
@@ -74,6 +88,10 @@ class LibroInventarioReportXls(models.AbstractModel):
                             'journal_id':invoice.journal_id.name,
                             'currency_name':invoice.currency_id.name
                         }
+                        order_line['invoice_id']=invoice.id
+                        order_line['invoice_name']=invoice.name
+                        order_line['journal_id']=invoice.journal_id.name
+                        order_line['currency_name']=invoice.currency_id.name
                         invoices.append(order_invoices)
                 orden_compra['invoices']=invoices
 
@@ -81,6 +99,8 @@ class LibroInventarioReportXls(models.AbstractModel):
                 for picking in order.picking_ids:
                     if picking.state =='done':
                         gasto,name,date=self._costos_en_destino(picking.id,line.product_id.id,line.product_qty)
+                        if picking.name not in lista_pickings:
+                            lista_pickings.append(picking.name)
                         order_pickings={
                             'picking_id':picking.id,
                             'name':picking.name,
@@ -88,12 +108,21 @@ class LibroInventarioReportXls(models.AbstractModel):
                             'date_done':picking.date_done,
                         }
 
-                        order_line['gasto']=gasto
-                        order_line['landed_cost_name']=name
-                        order_line['total']=gasto+line.price_subtotal
-                        order_line['landed_cost_date']=date
+                        lista_modificada= re.sub(regexLetras, "", str(lista_pickings))
+                        order_line['picking_name']=lista_modificada
+                        order_line['scheduled_date']=picking.scheduled_date
 
-                    pickings.append(order_pickings)
+                        if gasto !=0:
+                            order_line['gasto']=gasto
+                        else:
+                            order_line['gasto']=None
+
+                        if name !=False:
+                            order_line['landed_cost_name']=name
+                            order_line['total']=gasto+line.price_subtotal
+                            order_line['landed_cost_date']=date
+
+                        pickings.append(order_pickings)
                 orden_compra['pickings']=pickings
 
                 order_lines.append(order_line)                    
@@ -137,8 +166,11 @@ class LibroInventarioReportXls(models.AbstractModel):
         sheet_inventario.write(0, 13, "GASTO", formato_encabezado)
         sheet_inventario.write(0, 14, "TOTAL", formato_encabezado)
 
-        sheet_inventario.write(0, 15, "DIARIO", formato_encabezado)
-        sheet_inventario.write(0, 16, "MONEDA", formato_encabezado)
+        sheet_inventario.write(0, 15, "FACTURA", formato_encabezado)
+        sheet_inventario.write(0, 16, "DIARIO", formato_encabezado)
+        sheet_inventario.write(0, 17, "MONEDA", formato_encabezado)
+
+        sheet_inventario.set_column("A:R", 25)
 
         fila=0
         for order in purchase_orders:
@@ -154,21 +186,21 @@ class LibroInventarioReportXls(models.AbstractModel):
                 sheet_inventario.write(fila, 6,line['product_qty'],formato_celda_numerica)
                 sheet_inventario.write(fila, 7,line['price_unit'],formato_celda_numerica)
                 sheet_inventario.write(fila, 8,line['price_subtotal'],formato_celda_numerica)
-                
 
-                for picking in order['pickings']:
-                    sheet_inventario.write(fila, 9,picking['name'])
-                    sheet_inventario.write(fila, 10,picking['scheduled_date'],formato_fecha)
-
-                
+                sheet_inventario.write(fila, 9, line['picking_name'])
+                sheet_inventario.write(fila, 10,line['scheduled_date'],formato_fecha)
                 sheet_inventario.write(fila, 11,line['landed_cost_name'])
                 sheet_inventario.write(fila, 12,line['landed_cost_date'],formato_fecha)
                 sheet_inventario.write(fila, 13,line['gasto'],formato_celda_numerica)                
                 sheet_inventario.write(fila, 14,line['total'],formato_celda_numerica)
+
+                sheet_inventario.write(fila, 15,line['invoice_name'])
+                sheet_inventario.write(fila, 16,line['journal_id'],formato_celda_numerica)
+                sheet_inventario.write(fila, 17,line['currency_name'],formato_celda_numerica)
                 
-                for invoice in order['invoices']:
-                    sheet_inventario.write(fila, 15,invoice['journal_id'])
-                    sheet_inventario.write(fila, 16,invoice['currency_name'])
+                
+                
+
 
                     
 
