@@ -18,8 +18,9 @@ class LibroInventarioReportXls(models.AbstractModel):
         stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
         gasto=sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id)])
         amount_total = stock_landed_cost[0].amount_total
+        name = stock_landed_cost[0].name
         
-        return gasto,amount_total
+        return gasto,amount_total,name
 
 
     def _ordenes_de_compra(self, fecha_inicio, fecha_fin):
@@ -32,6 +33,7 @@ class LibroInventarioReportXls(models.AbstractModel):
         purchase_orders = request.env['purchase.order'].search(dominio)
 
         listado_compras = []
+        producto_sin_repetir=[]
         for order in purchase_orders:
             
             orden_compra = {
@@ -75,14 +77,17 @@ class LibroInventarioReportXls(models.AbstractModel):
                 pickings=[]
                 for picking in order.picking_ids:
                     if picking.state =='done':
-                        gasto,amount_total=self._costos_en_destino(picking.id,line.product_id.id)
+                        gasto,amount_total,name=self._costos_en_destino(picking.id,line.product_id.id)
                         
                         order_pickings={
                             'picking_id':picking.id,
                             'name':picking.name,
                         }
-                        order_line['gasto']=gasto
-                        order_line['amount_total']=amount_total
+
+                        if (name,line.product_id.id) not in producto_sin_repetir:
+                            producto_sin_repetir.append((name,line.product_id.id))
+                            order_line['gasto']=gasto
+                            order_line['amount_total']=amount_total
 
 
                     pickings.append(order_pickings)
