@@ -11,17 +11,19 @@ class LibroInventarioReportXls(models.AbstractModel):
 
     workbook = None
 
-    def _costos_en_destino(self,picking_id,product_id):
+    def _costos_en_destino(self,picking_id,product_id,quantity):
         dominio = [
             ('picking_ids.id', '=', picking_id),
         ]
         stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
-        gasto=sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id)])
-        amount_total = stock_landed_cost[0].amount_total
-        name = stock_landed_cost[0].name
-        
-        return gasto,amount_total,name
+        gasto=sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.quantity == quantity)])
+        name = stock_landed_cost.name
+        date = stock_landed_cost.date
 
+        for line in stock_landed_cost.valuation_adjustment_lines:
+            print(line.name,' - ', line.move_id.id, ' - ', line.quantity, ' - ', line.additional_landed_cost)
+
+        return gasto,name,date
 
     def _ordenes_de_compra(self, fecha_inicio, fecha_fin):
         dominio = [
@@ -29,11 +31,11 @@ class LibroInventarioReportXls(models.AbstractModel):
             ('date_order', '>=', fecha_inicio),
             ('date_order', '<=', fecha_fin),
             # ('name', 'in', ('P00015','P00016','P00017')),
+            # ('name', 'in', ('P00015','P00016')),
         ]
         purchase_orders = request.env['purchase.order'].search(dominio)
 
         listado_compras = []
-        producto_sin_repetir=[]
         for order in purchase_orders:
             
             orden_compra = {
@@ -53,14 +55,15 @@ class LibroInventarioReportXls(models.AbstractModel):
                     'price_unit': line.price_unit,
                     'price_subtotal': line.price_subtotal,
                     'gasto':None,
-                    'amount_total':None,
+                    'landed_cost_name':None,
+                    'landed_cost_date':None,
+                    'total':None,
                 }      
 
                 if line.product_id.default_code !=False:
                     order_line['default_code']=line.product_id.default_code
                 else:
                     order_line['default_code']=None
-
 
                 invoices=[]
                 for invoice in order.invoice_ids:
@@ -77,18 +80,18 @@ class LibroInventarioReportXls(models.AbstractModel):
                 pickings=[]
                 for picking in order.picking_ids:
                     if picking.state =='done':
-                        gasto,amount_total,name=self._costos_en_destino(picking.id,line.product_id.id)
-                        
+                        gasto,name,date=self._costos_en_destino(picking.id,line.product_id.id,line.product_qty)
                         order_pickings={
                             'picking_id':picking.id,
                             'name':picking.name,
+                            'scheduled_date':picking.scheduled_date,
+                            'date_done':picking.date_done,
                         }
 
-                        if (name,line.product_id.id) not in producto_sin_repetir:
-                            producto_sin_repetir.append((name,line.product_id.id))
-                            order_line['gasto']=gasto
-                            order_line['amount_total']=amount_total
-
+                        order_line['gasto']=gasto
+                        order_line['landed_cost_name']=name
+                        order_line['total']=gasto+line.price_subtotal
+                        order_line['landed_cost_date']=date
 
                     pickings.append(order_pickings)
                 orden_compra['pickings']=pickings
@@ -119,16 +122,23 @@ class LibroInventarioReportXls(models.AbstractModel):
         sheet_inventario.write(0, 1, "PROVEEDOR", formato_encabezado)
         sheet_inventario.write(0, 2, "FECHA", formato_encabezado)
         sheet_inventario.write(0, 3, "REFERENCIA", formato_encabezado)
+
         sheet_inventario.write(0, 4, "CODIGO", formato_encabezado)
         sheet_inventario.write(0, 5, "PRODUCTO", formato_encabezado)
         sheet_inventario.write(0, 6, "CANTIDAD", formato_encabezado)
         sheet_inventario.write(0, 7, "PRECIO", formato_encabezado)
         sheet_inventario.write(0, 8, "SUB-TOTAL", formato_encabezado)
+
         sheet_inventario.write(0, 9, "RECEPCION", formato_encabezado)
-        sheet_inventario.write(0, 10, "GASTOS", formato_encabezado)
-        sheet_inventario.write(0, 11, "TOTAL", formato_encabezado)
-        sheet_inventario.write(0, 12, "DIARIO", formato_encabezado)
-        sheet_inventario.write(0, 13, "MONEDA", formato_encabezado)
+        sheet_inventario.write(0, 10, "FECHA RECEPCION", formato_encabezado)
+
+        sheet_inventario.write(0, 11, "COSTO EN DESTINO", formato_encabezado)
+        sheet_inventario.write(0, 12, "FECHA COSTO EN DESTINO", formato_encabezado)
+        sheet_inventario.write(0, 13, "GASTO", formato_encabezado)
+        sheet_inventario.write(0, 14, "TOTAL", formato_encabezado)
+
+        sheet_inventario.write(0, 15, "DIARIO", formato_encabezado)
+        sheet_inventario.write(0, 16, "MONEDA", formato_encabezado)
 
         fila=0
         for order in purchase_orders:
@@ -138,6 +148,7 @@ class LibroInventarioReportXls(models.AbstractModel):
                 sheet_inventario.write(fila, 1,order['partner_id'])
                 sheet_inventario.write(fila, 2,order['date_order'],formato_fecha)
                 sheet_inventario.write(fila, 3,order['partner_ref'])
+
                 sheet_inventario.write(fila, 4,line['default_code'])
                 sheet_inventario.write(fila, 5,line['name'])
                 sheet_inventario.write(fila, 6,line['product_qty'],formato_celda_numerica)
@@ -147,16 +158,17 @@ class LibroInventarioReportXls(models.AbstractModel):
 
                 for picking in order['pickings']:
                     sheet_inventario.write(fila, 9,picking['name'])
+                    sheet_inventario.write(fila, 10,picking['scheduled_date'],formato_fecha)
 
-                # if 'gasto' in line:
-                sheet_inventario.write(fila, 10,line['gasto'],formato_celda_numerica)
                 
-                # if 'amount_total' in line:
-                sheet_inventario.write(fila, 11,line['amount_total'],formato_celda_numerica)
+                sheet_inventario.write(fila, 11,line['landed_cost_name'])
+                sheet_inventario.write(fila, 12,line['landed_cost_date'],formato_fecha)
+                sheet_inventario.write(fila, 13,line['gasto'],formato_celda_numerica)                
+                sheet_inventario.write(fila, 14,line['total'],formato_celda_numerica)
                 
                 for invoice in order['invoices']:
-                    sheet_inventario.write(fila, 12,invoice['journal_id'])
-                    sheet_inventario.write(fila, 13,invoice['currency_name'])
+                    sheet_inventario.write(fila, 15,invoice['journal_id'])
+                    sheet_inventario.write(fila, 16,invoice['currency_name'])
 
                     
 
