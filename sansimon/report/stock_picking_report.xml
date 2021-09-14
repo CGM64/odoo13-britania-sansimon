@@ -74,6 +74,14 @@
                                         </td>
                                     </tr>
                                     <tr  class="thead-dark">
+                                        <th colspan="2">CLIENTE</th>
+                                        <th colspan="2">DIRECCIÓN FISCAL</th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span t-esc="o.partner_id.name" /></td>
+                                        <td colspan="2"><span t-esc="o.partner_id.display_street" /></td>
+                                    </tr>
+                                    <tr  class="thead-dark">
                                         <th colspan="2">DIRECCIÓN DE ENTREGA</th>
                                         <th colspan="1">TELEFONO</th>
                                         <th colspan="1">CORREO</th>
@@ -218,12 +226,12 @@
         <field name="page_height">279</field>
         <field name="page_width">215</field>
         <field name="orientation">Portrait</field>
-        <field name="margin_top">70</field>
+        <field name="margin_top">80</field>
         <field name="margin_bottom">10</field>
         <field name="margin_left">3</field>
         <field name="margin_right">3</field>
         <field name="header_line" eval="False" />
-        <field name="header_spacing">65</field>
+        <field name="header_spacing">75</field>
         <field name="dpi">90</field>
     </record>
 

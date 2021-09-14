@@ -32,3 +32,18 @@ class ResCompany(models.Model):
             #if record.state_id:
             #    direccion += " " + record.state_id.name
             record.display_street = direccion
+
+class ResCompany(models.Model):
+    _inherit = 'res.partner'
+    
+    display_street = fields.Char('Direccion Completa', compute='_compute_street_name')
+
+    def _compute_street_name(self):
+        direccion = ""
+        if self.partner_id.street:
+            direccion = self.partner_id.street
+        if self.partner_id.street2:
+            direccion = direccion + " " + self.partner_id.street2
+        if self.partner_id.city:
+            direccion = direccion + " " + self.partner_id.city
+        return direccion
