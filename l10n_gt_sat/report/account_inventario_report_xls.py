@@ -18,9 +18,17 @@ class LibroInventarioReportXls(models.AbstractModel):
         ]
         stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
         gasto=sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.quantity == quantity)])
-        name = stock_landed_cost.name
-        date = stock_landed_cost.date
-        return gasto,name,date
+
+        name=[]
+        date=[]
+        for line in stock_landed_cost:
+            if line.name not in name:
+                name.append(line.name)
+            if line.date not in date:
+                date.append(line.date.strftime('%d/%m/%Y'))
+                
+
+        return gasto,str(name),date
 
     def _ordenes_de_compra(self, fecha_inicio, fecha_fin):
         regexLetras = "[^a-zA-Z0-9_ ,/]"
@@ -101,6 +109,10 @@ class LibroInventarioReportXls(models.AbstractModel):
                 for picking in order.picking_ids:
                     if picking.state =='done':
                         gasto,name,date=self._costos_en_destino(picking.id,line.product_id.id,line.product_qty)
+
+                        name=re.sub(regexLetras, "", str(name))
+                        date=re.sub(regexLetras, "", str(date))
+                        
                         if picking.name not in lista_pickings:
                             lista_pickings.append(picking.name)
                         order_pickings={
@@ -170,7 +182,6 @@ class LibroInventarioReportXls(models.AbstractModel):
 
         sheet_inventario.write(0, 15, "FACTURA", formato_encabezado)
         sheet_inventario.write(0, 16, "DIARIO", formato_encabezado)
-        sheet_inventario.write(0, 17, "MONEDA", formato_encabezado)
 
         sheet_inventario.set_column("A:R", 25)
 
@@ -198,7 +209,6 @@ class LibroInventarioReportXls(models.AbstractModel):
 
                 sheet_inventario.write(fila, 15,line['invoice_name'])
                 sheet_inventario.write(fila, 16,line['journal_id'],formato_celda_numerica)
-                sheet_inventario.write(fila, 17,line['currency_name'],formato_celda_numerica)
                 
                 
                 
