@@ -35,6 +35,8 @@ class LibroInventarioReportXls(models.AbstractModel):
         ]
         purchase_orders = request.env['purchase.order'].search(dominio)
 
+        purchase_orders = purchase_orders.sorted(lambda orden: orden.id)
+
         listado_compras = []
         for order in purchase_orders:
             lista_pickings=[]
