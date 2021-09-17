@@ -18,7 +18,13 @@ class LibroInventarioReportXls(models.AbstractModel):
         ]
         stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
         gasto=sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.move_id.id==move_id)])
-        subtotal=[line.former_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.move_id.id==move_id)]
+        former_cost=[line.former_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.move_id.id==move_id)]
+
+        if len(former_cost)>0:
+            subtotal=former_cost[0]
+        else:
+            subtotal=0
+
 
         name=[]
         date=[]
@@ -31,7 +37,7 @@ class LibroInventarioReportXls(models.AbstractModel):
             if slc.date not in date:
                 date.append(slc.date.strftime('%d/%m/%Y'))
                 
-        return subtotal[0],gasto,str(name),date,str(account_move_id)
+        return subtotal,gasto,str(name),date,str(account_move_id)
 
     def _move_id(self,picking_id,product_id,quantity):
         dominio = [
