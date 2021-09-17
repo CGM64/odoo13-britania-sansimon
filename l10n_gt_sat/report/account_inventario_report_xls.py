@@ -18,16 +18,20 @@ class LibroInventarioReportXls(models.AbstractModel):
         ]
         stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
         gasto=sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.move_id.id==move_id)])
+        subtotal=[line.former_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.move_id.id==move_id)]
 
         name=[]
         date=[]
-        for line in stock_landed_cost:
-            if line.name not in name:
-                name.append(line.name)
-            if line.date not in date:
-                date.append(line.date.strftime('%d/%m/%Y'))
+        account_move_id=[]
+        for slc in stock_landed_cost:
+            if slc.name not in name:
+                name.append(slc.name)
+            if slc.account_move_id not in account_move_id:
+                account_move_id.append(slc.account_move_id.name)
+            if slc.date not in date:
+                date.append(slc.date.strftime('%d/%m/%Y'))
                 
-        return gasto,str(name),date
+        return subtotal[0],gasto,str(name),date,str(account_move_id)
 
     def _move_id(self,picking_id,product_id,quantity):
         dominio = [
@@ -89,6 +93,7 @@ class LibroInventarioReportXls(models.AbstractModel):
 
                     #landed_cost_ids ->Costos en Destino
                     'gasto':None,
+                    'subtotal':None,
                     'landed_cost_name':None,
                     'total':None,
                     #picking_ids ->Recepciones
@@ -133,12 +138,13 @@ class LibroInventarioReportXls(models.AbstractModel):
                     move_ids=self._move_id(picking.id,line.product_id.id,line.product_qty)
 
                     if len(move_ids)>0:
-                        gasto,name,date=self._costos_en_destino(picking.id,line.product_id.id,move_ids[0])
+                        subtotal,gasto,name,date,account_move_id=self._costos_en_destino(picking.id,line.product_id.id,move_ids[0])
                     else:
-                        gasto,name,date=self._costos_en_destino(picking.id,line.product_id.id,None)
+                        subtotal,gasto,name,date,account_move_id=self._costos_en_destino(picking.id,line.product_id.id,None)
 
                     name=re.sub(regexLetras, "", str(name))
                     date=re.sub(regexLetras, "", str(date))
+                    account_move_id=re.sub(regexLetras, "", str(account_move_id))
                     
                     if picking.name not in lista_pickings:
                         lista_pickings.append(picking.name)
@@ -156,17 +162,17 @@ class LibroInventarioReportXls(models.AbstractModel):
 
                     if gasto !=0:
                         order_line['gasto']=gasto
-                        order_line['total']=gasto+line.price_subtotal
+                        order_line['subtotal']=subtotal
+                        order_line['total']=gasto+subtotal
                     else:
                         order_line['gasto']=None
+                        order_line['subtotal']=None
                         order_line['total']=None
 
                     if name !=False:
                         order_line['landed_cost_name']=name
                         order_line['landed_cost_date']=date
-
-                        
-                        
+                        order_line['landed_account_move_id']=account_move_id
 
                     pickings.append(order_pickings)
                 orden_compra['pickings']=pickings
@@ -201,19 +207,17 @@ class LibroInventarioReportXls(models.AbstractModel):
         sheet_inventario.write(0, 4, "CODIGO", formato_encabezado)
         sheet_inventario.write(0, 5, "PRODUCTO", formato_encabezado)
         sheet_inventario.write(0, 6, "CANTIDAD", formato_encabezado)
-        sheet_inventario.write(0, 7, "PRECIO", formato_encabezado)
-        sheet_inventario.write(0, 8, "SUB-TOTAL", formato_encabezado)
+        sheet_inventario.write(0, 7, "RECEPCION", formato_encabezado)
+        sheet_inventario.write(0, 8, "FECHA RECEPCION", formato_encabezado)
 
-        sheet_inventario.write(0, 9, "RECEPCION", formato_encabezado)
-        sheet_inventario.write(0, 10, "FECHA RECEPCION", formato_encabezado)
+        sheet_inventario.write(0, 9, "COSTO EN DESTINO", formato_encabezado)
+        sheet_inventario.write(0, 10, "FECHA COSTO EN DESTINO", formato_encabezado)
+        sheet_inventario.write(0, 11, "SUBTOTAL", formato_encabezado)
+        sheet_inventario.write(0, 12, "GASTO", formato_encabezado)
+        sheet_inventario.write(0, 13, "TOTAL", formato_encabezado)
 
-        sheet_inventario.write(0, 11, "COSTO EN DESTINO", formato_encabezado)
-        sheet_inventario.write(0, 12, "FECHA COSTO EN DESTINO", formato_encabezado)
-        sheet_inventario.write(0, 13, "GASTO", formato_encabezado)
-        sheet_inventario.write(0, 14, "TOTAL", formato_encabezado)
-
-        sheet_inventario.write(0, 15, "FACTURA", formato_encabezado)
-        sheet_inventario.write(0, 16, "DIARIO", formato_encabezado)
+        sheet_inventario.write(0, 14, "FACTURA", formato_encabezado)
+        sheet_inventario.write(0, 15, "DIARIO", formato_encabezado)
 
         sheet_inventario.set_column("A:R", 25)
 
@@ -229,18 +233,20 @@ class LibroInventarioReportXls(models.AbstractModel):
                 sheet_inventario.write(fila, 4,line['default_code'])
                 sheet_inventario.write(fila, 5,line['name'])
                 sheet_inventario.write(fila, 6,line['product_qty'],formato_celda_numerica)
-                sheet_inventario.write(fila, 7,line['price_unit'],formato_celda_numerica)
-                sheet_inventario.write(fila, 8,line['price_subtotal'],formato_celda_numerica)
 
-                sheet_inventario.write(fila, 9, line['picking_name'])
-                sheet_inventario.write(fila, 10,line['date_done'],formato_fecha)
-                sheet_inventario.write(fila, 11,line['landed_cost_name'])
-                sheet_inventario.write(fila, 12,line['landed_cost_date'],formato_fecha)
-                sheet_inventario.write(fila, 13,line['gasto'],formato_celda_numerica)                
-                sheet_inventario.write(fila, 14,line['total'],formato_celda_numerica)
+                sheet_inventario.write(fila, 7, line['picking_name'])
+                sheet_inventario.write(fila, 8,line['date_done'],formato_fecha)
+                sheet_inventario.write(fila, 9,line['landed_cost_name'])
+                sheet_inventario.write(fila, 10,line['landed_cost_date'],formato_fecha)
+                sheet_inventario.write(fila, 11,line['subtotal'],formato_celda_numerica)                
+                sheet_inventario.write(fila, 12,line['gasto'],formato_celda_numerica)                
+                sheet_inventario.write(fila, 13,line['total'],formato_celda_numerica)
 
-                sheet_inventario.write(fila, 15,line['invoice_name'])
-                sheet_inventario.write(fila, 16,line['journal_id'],formato_celda_numerica)
+                sheet_inventario.write(fila, 14,line['invoice_name'])
+                sheet_inventario.write(fila, 15,line['journal_id'],formato_celda_numerica)
+                sheet_inventario.write(fila, 16,line['landed_account_move_id'])
+                
+
                 
                 
                 
