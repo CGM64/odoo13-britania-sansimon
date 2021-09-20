@@ -40,16 +40,16 @@
                     <group name="first" col="2">
                       <field name="default_code" class="oe_inline"/>
                       <field name="group" class="oe_inline"/>
-                      <field name="standard_price" class="oe_inline"/>
+                      <field name="standard_price" class="oe_inline" groups="britania.tri_product_inventario"/>
                       <field name="is_created" invisible="1" class="oe_inline"/>
-                      <field name="product_template" class="oe_inline" readonly="1"/>
+                      <field name="product_template" class="oe_inline"/>
                     </group>
                   </div>
                   <div class="col-sm">
                     <group name="second" col="2">
-                      <field name="price_mar" readonly="1" class="oe_inline"/>
-                      <field name="price_aer" readonly="1" class="oe_inline"/>
-                      <field name="price_cour" readonly="1" class="oe_inline"/>
+                      <field name="price_mar" class="oe_inline"/>
+                      <field name="price_aer" class="oe_inline"/>
+                      <field name="price_cour" class="oe_inline"/>
                     </group>
                   </div>
                 </div>

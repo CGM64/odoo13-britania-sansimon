@@ -67,6 +67,8 @@ class TriProduct(models.Model):
         return total
 
     def create_product(self):
+        if not self.group.group_uti:
+            raise ValidationError(_("El grupo de este producto no tiene asignado un grupo de utilidad."))
         #CREANDO PRODUCTO EN PRODUCT_PRODUCT
         tri_group = self.env['tri.product.group'].search([('id','=',self.group.id)], limit=1)
         product = self.env['product.product'].create({

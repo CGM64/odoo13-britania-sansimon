@@ -40,6 +40,7 @@
         'views/tri_product.xml',
         'wizard/tri_product_wizard.xml',
         'data/product_pricelist.xml',
+        'data/tri_product_group_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
