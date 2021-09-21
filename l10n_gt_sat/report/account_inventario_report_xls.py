@@ -46,7 +46,6 @@ class LibroInventarioReportXls(models.AbstractModel):
         move_ids=[]
         for slc in stock_landed_cost:
             for line in slc.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id):
-                if line.move_id.id
                 move_ids.append(line.move_id.id)    
 
         return move_ids
