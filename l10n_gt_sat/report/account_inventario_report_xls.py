@@ -13,15 +13,13 @@ class LibroInventarioReportXls(models.AbstractModel):
     workbook = None
 
     def _costos_en_destino(self,picking_id,product_id,move_id):
-        dominio = [
-            ('picking_ids.id', '=', picking_id),
-        ]
+        dominio = [('picking_ids.id', '=', picking_id),]
         stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
         gasto=sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.move_id.id==move_id)])
         former_cost=[line.former_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.move_id.id==move_id)]
 
         if len(former_cost)>0:
-            subtotal=former_cost[0]
+            subtotal=former_cost[0] 
         else:
             subtotal=0
 
@@ -39,15 +37,13 @@ class LibroInventarioReportXls(models.AbstractModel):
                 
         return subtotal,gasto,str(name),date,str(account_move_id)
 
-    def _move_id(self,picking_id,product_id,quantity):
-        dominio = [
-            ('picking_ids.id', '=', picking_id),
-        ]
+    def _move_id(self,picking_id,product_id):
+        dominio = [('picking_ids.id', '=', picking_id),]
         stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
 
         move_ids=[]
         for slc in stock_landed_cost:
-            for line in slc.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.quantity == quantity):
+            for line in slc.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id):
                 move_ids.append(line.move_id.id)    
 
         return move_ids
@@ -69,13 +65,13 @@ class LibroInventarioReportXls(models.AbstractModel):
             # ('name', '=', 'P00162'),
         ]
         purchase_orders = request.env['purchase.order'].search(dominio)
-
         purchase_orders = purchase_orders.sorted(lambda orden: orden.id)
 
         listado_compras = []
         for order in purchase_orders:
             lista_pickings=[]
             lista_invoices=[]
+            
             orden_compra = {
                 'id': order.id,
                 'name': order.name,
@@ -89,6 +85,7 @@ class LibroInventarioReportXls(models.AbstractModel):
                 orden_compra['partner_ref']=None
 
             order_lines=[]
+            lista_ids=[]
             for line in order.order_line:
                 order_line = {
                     'product_id': line.product_id.id,
@@ -101,6 +98,8 @@ class LibroInventarioReportXls(models.AbstractModel):
                     'gasto':None,
                     'subtotal':None,
                     'landed_cost_name':None,
+                    'landed_cost_date':None,
+                    'landed_account_move_id':None,
                     'total':None,
                     #picking_ids ->Recepciones
                     'picking_name':None,
@@ -118,70 +117,57 @@ class LibroInventarioReportXls(models.AbstractModel):
                 else:
                     order_line['default_code']=None
 
-                invoices=[]
                 for invoice in order.invoice_ids.filtered(lambda inv: inv.state=='posted'):
                     if invoice.name not in lista_invoices:
                         lista_invoices.append(invoice.name)
-              
-                    order_invoices={
-                        'invoice_id':invoice.id,
-                        'name':invoice.name,
-                        'journal_id':invoice.journal_id.name,
-                        'currency_name':invoice.currency_id.name
-                    }
 
                     lista_facturas_modificada= re.sub(regexLetras, "", str(lista_invoices))
                     order_line['invoice_id']=invoice.id
                     order_line['invoice_name']=lista_facturas_modificada
                     order_line['journal_id']=invoice.journal_id.name
                     order_line['currency_name']=invoice.currency_id.name
-                    invoices.append(order_invoices)
-                orden_compra['invoices']=invoices
 
-                pickings=[]
                 for picking in order.picking_ids.filtered(lambda pkg: pkg.state=='done' and pkg.date_done.date() >= fi and pkg.date_done.date() <= ff):
-
-                    move_ids=self._move_id(picking.id,line.product_id.id,line.product_qty)
-
-                    if len(move_ids)>0:
-                        subtotal,gasto,name,date,account_move_id=self._costos_en_destino(picking.id,line.product_id.id,move_ids[0])
-                    else:
-                        subtotal,gasto,name,date,account_move_id=self._costos_en_destino(picking.id,line.product_id.id,None)
-
-                    name=re.sub(regexLetras, "", str(name))
-                    date=re.sub(regexLetras, "", str(date))
-                    account_move_id=re.sub(regexLetras, "", str(account_move_id))
+                    print("picking",picking.name)
+                    move_ids=self._move_id(picking.id,line.product_id.id)                 
                     
-                    if picking.name not in lista_pickings:
-                        lista_pickings.append(picking.name)
-                    order_pickings={
-                        'picking_id':picking.id,
-                        'name':picking.name,
-                        'scheduled_date':picking.scheduled_date,
-                        'date_done':picking.date_done,
-                    }
+                    for id in move_ids:
+                        if id not in lista_ids:
+                            if id:
+                                subtotal,gasto,name,date,account_move_id=self._costos_en_destino(picking.id,line.product_id.id,id)
+                                lista_ids.append(id)
+                                print(' ID >',id)
+                                print(' lista_ids >',lista_ids)
+                            else:
+                                subtotal,gasto,name,date,account_move_id=self._costos_en_destino(picking.id,line.product_id.id,None)
 
-                    lista_modificada= re.sub(regexLetras, "", str(lista_pickings))
-                    order_line['picking_name']=lista_modificada
-                    order_line['scheduled_date']=picking.scheduled_date
-                    order_line['date_done']=picking.date_done
+                            name=re.sub(regexLetras, "", str(name))
+                            date=re.sub(regexLetras, "", str(date))
+                            account_move_id=re.sub(regexLetras, "", str(account_move_id))
+                            
+                            if picking.name not in lista_pickings:
+                                lista_pickings.append(picking.name)
 
-                    if gasto !=0:
-                        order_line['gasto']=gasto
-                        order_line['subtotal']=subtotal
-                        order_line['total']=gasto+subtotal
-                    else:
-                        order_line['gasto']=None
-                        order_line['subtotal']=None
-                        order_line['total']=None
+                            lista_modificada= re.sub(regexLetras, "", str(lista_pickings))
+                            order_line['picking_name']=lista_modificada
+                            order_line['scheduled_date']=picking.scheduled_date
+                            order_line['date_done']=picking.date_done
 
-                    if name !=False:
-                        order_line['landed_cost_name']=name
-                        order_line['landed_cost_date']=date
-                        order_line['landed_account_move_id']=account_move_id
+                            if gasto !=0:
+                                order_line['gasto']=gasto
+                                order_line['subtotal']=subtotal
+                                order_line['total']=gasto+subtotal
+                            else:
+                                order_line['gasto']=None
+                                order_line['subtotal']=None
+                                order_line['total']=None
 
-                    pickings.append(order_pickings)
-                orden_compra['pickings']=pickings
+                            if name !=False:
+                                order_line['landed_cost_name']=name
+                                order_line['landed_cost_date']=date
+                                order_line['landed_account_move_id']=account_move_id
+                    # else:
+                    #     
 
                 order_lines.append(order_line)                    
             orden_compra['lines']=order_lines
