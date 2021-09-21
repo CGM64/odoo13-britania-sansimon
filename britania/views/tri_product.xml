@@ -40,7 +40,7 @@
                     <group name="first" col="2">
                       <field name="default_code" class="oe_inline"/>
                       <field name="group" class="oe_inline"/>
-                      <field name="standard_price" class="oe_inline" groups="britania.tri_product_inventario"/>
+                      <field name="standard_price" class="oe_inline" groups="purchase.group_purchase_manager"/>
                       <field name="is_created" invisible="1" class="oe_inline"/>
                       <field name="product_template" class="oe_inline"/>
                     </group>
@@ -98,28 +98,73 @@
                 groups="base.group_user"/>
 
     <!--Menu de grupo producto-->
+    <record id="tri_group_action" model="ir.actions.act_window">
+      <field name="name">Grupos Triumph</field>
+      <field name="res_model">tri.product.group</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea grupos para los productos Triumph
+            </p>
+      </field>
+    </record>
+
+    <record id="tri_product_group_search_view" model="ir.ui.view">
+        <field name="name">tri.product.group.search</field>
+        <field name="model">tri.product.group</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="group_uti"/>
+            </search>
+        </field>
+    </record>
+
     <record id="tri_group_view" model="ir.ui.view">
         <field name="name">tri.product.tree</field>
         <field name="model">tri.product.group</field>
         <field name="arch" type="xml">
-              <tree string="Grupos Triumph" editable="bottom">
+              <tree string="Grupos Triumph" import="0" editable="bottom">
                   <field name="name"/>
                   <field name="group_uti"/>
-                  <field name="product_category"/>
               </tree>
         </field>
     </record>
 
-    <record id="tri_group_action" model="ir.actions.act_window">
-        <field name="name">Grupos Triumph</field>
-        <field name="res_model">tri.product.group</field>
-        <field name="view_mode">tree</field>
-        <field name="help" type="html">
-              <p class="o_view_nocontent_smiling_face">
-                  Crea grupos para los productos Triumph
-              </p>
-        </field>
-  </record>
+    <record id="tri_product_group_form" model="ir.ui.view">
+      <field name="name">tri.product.group.form</field>
+      <field name="model">tri.product.group</field>
+      <field name="arch" type="xml">
+        <form string="Grupos Triumph" class="o_expense_form" create="false">
+          <sheet>
+            <div class="oe_title">
+              <h1>
+                <field name="name" placeholder="Ejemplo: GEN" />
+              </h1>
+            </div>
+            <div class="container">
+                <div class="row">
+                  <div class="col-sm">
+                    <group name="first" col="2">
+                      <field name="group_uti" class="oe_inline"/>
+                    </group>
+                  </div>
+                  <div class="col-sm">
+                    <group name="second" col="2">
+                      <field name="product_category" class="oe_inline"/>
+                    </group>
+                  </div>
+                </div>
+              </div>
+          </sheet>
+          <div class="oe_chatter">
+              <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+              <field name="activity_ids" widget="mail_activity"/>
+              <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
 
   <menuitem id="menu_tri_group_menu_list"
                   name="Grupos de producto"

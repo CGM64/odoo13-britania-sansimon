@@ -9,10 +9,11 @@ tasa_cambio = 7.8
 class TriProductGroup(models.Model):
     _name = "tri.product.group"
     _description = "Grupos"
+    _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char('Grupo', required=True)
-    group_uti = fields.Many2one('product.grupoutilidad', string='Grupo de utilidad')
-    product_category = fields.Many2one('product.category', string='Categoria del producto')
+    name = fields.Char('Grupo', required=True,tracking=1)
+    group_uti = fields.Many2one('product.grupoutilidad', string='Grupo de utilidad',tracking=1)
+    product_category = fields.Many2one('product.category', string='Categoria del producto',tracking=1)
 
     _sql_constraints = [
         ('name_uniq', 'unique (name)', "Ya existe un registro con este nombre."),
