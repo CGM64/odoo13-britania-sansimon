@@ -109,6 +109,18 @@
       </field>
     </record>
 
+    <record id="tri_group_view" model="ir.ui.view">
+        <field name="name">tri.product.tree</field>
+        <field name="model">tri.product.group</field>
+        <field name="arch" type="xml">
+              <tree string="Grupos Triumph" import="0" editable="bottom">
+                  <field name="name"/>
+                  <field name="group_uti"/>
+                  <field name="product_category" options="{'no_create': True, 'no_edit': True}"/>
+              </tree>
+        </field>
+    </record>
+
     <record id="tri_product_group_search_view" model="ir.ui.view">
         <field name="name">tri.product.group.search</field>
         <field name="model">tri.product.group</field>
@@ -117,17 +129,6 @@
                 <field name="name"/>
                 <field name="group_uti"/>
             </search>
-        </field>
-    </record>
-
-    <record id="tri_group_view" model="ir.ui.view">
-        <field name="name">tri.product.tree</field>
-        <field name="model">tri.product.group</field>
-        <field name="arch" type="xml">
-              <tree string="Grupos Triumph" import="0" editable="bottom">
-                  <field name="name"/>
-                  <field name="group_uti"/>
-              </tree>
         </field>
     </record>
 
