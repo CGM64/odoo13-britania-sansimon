@@ -12,6 +12,8 @@ class LibroInventarioReportXls(models.AbstractModel):
 
     workbook = None
 
+    lista_aux=[]
+
     def _costos_en_destino(self,picking_id,product_id,move_id):
         dominio = [('picking_ids.id', '=', picking_id),]
         stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
@@ -44,6 +46,7 @@ class LibroInventarioReportXls(models.AbstractModel):
         move_ids=[]
         for slc in stock_landed_cost:
             for line in slc.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id):
+                if line.move_id.id
                 move_ids.append(line.move_id.id)    
 
         return move_ids
@@ -166,8 +169,6 @@ class LibroInventarioReportXls(models.AbstractModel):
                                 order_line['landed_cost_name']=name
                                 order_line['landed_cost_date']=date
                                 order_line['landed_account_move_id']=account_move_id
-                    # else:
-                    #     
 
                 order_lines.append(order_line)                    
             orden_compra['lines']=order_lines
