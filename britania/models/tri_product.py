@@ -4,8 +4,6 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from odoo.http import request
 
-tasa_cambio = 7.8
-
 class TriProductGroup(models.Model):
     _name = "tri.product.group"
     _description = "Grupos"
@@ -61,8 +59,10 @@ class TriProduct(models.Model):
             product.price_cour = self.calcular_totales(courier_porc, product.standard_price, group_uti)
 
     def calcular_totales(self, porcentaje, precio_standard, group):
+        #TASA DE CAMBIO
+        tasa_cambio = self.env['res.currency'].search([('name','=','USV')], limit=1)
         nacionalizacion = (porcentaje / 100)+1
-        totales = precio_standard*tasa_cambio*nacionalizacion*group
+        totales = precio_standard*tasa_cambio.tipo_cambio*nacionalizacion*group
         iva = (12 / 100)+1
         total = totales*iva
         return total
