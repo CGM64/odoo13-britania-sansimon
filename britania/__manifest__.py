@@ -37,6 +37,9 @@
         'views/repair_report.xml',
         'data/repair_type.xml',
         'views/account_report.xml',
+        'views/tri_product.xml',
+        'wizard/tri_product_wizard.xml',
+        'data/product_pricelist.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
