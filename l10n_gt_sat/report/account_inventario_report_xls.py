@@ -12,169 +12,145 @@ class LibroInventarioReportXls(models.AbstractModel):
 
     workbook = None
 
-    lista_aux=[]
+    # def _costos_en_destino(self, picking_id, product_id, move_id, fecha_inicio, fecha_fin):
+    #     dominio = [
+    #         ('picking_ids.id', '=', picking_id),
+    #         ('date', '>=', fecha_inicio),
+    #         ('date', '<=', fecha_fin),
+    #     ]
+    #     stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
+    #     gasto = sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(
+    #         lambda gs: gs.product_id.id == product_id and gs.move_id.id == move_id)])
+    #     former_cost = [line.former_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(
+    #         lambda gs: gs.product_id.id == product_id and gs.move_id.id == move_id)]
 
-    def _costos_en_destino(self,picking_id,product_id,move_id):
-        dominio = [('picking_ids.id', '=', picking_id),]
-        stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
-        gasto=sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.move_id.id==move_id)])
-        former_cost=[line.former_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.move_id.id==move_id)]
+    #     if len(former_cost) > 0:
+    #         valor_original = former_cost[0]
+    #     else:
+    #         valor_original = 0
 
-        if len(former_cost)>0:
-            subtotal=former_cost[0] 
+    #     name = []
+    #     date = []
+    #     account_move_id = []
+    #     for slc in stock_landed_cost:
+    #         if slc.name not in name:
+    #             name.append(slc.name)
+    #         if slc.account_move_id not in account_move_id:
+    #             account_move_id.append(slc.account_move_id.name)
+    #         if slc.date not in date:
+    #             date.append(slc.date.strftime('%d/%m/%Y'))
+
+    #     return valor_original, gasto, str(name), date, str(account_move_id)
+
+    # def _move_id(self,picking_id,product_id,quantity):
+    #     dominio = [
+    #         ('picking_ids.id', '=', picking_id),
+    #     ]
+    #     stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
+
+    #     move_ids=[]
+    #     for slc in stock_landed_cost:
+    #         for line in slc.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.quantity == quantity):
+    #             move_ids.append(line.move_id.id)
+
+    #     return move_ids
+
+    # def _stock_move_id(self, picking_id, product_id, quantity):
+    #     dominio = [
+    #         ('picking_id', '=', picking_id),
+    #         ('product_id', '=', product_id),
+    #         ('product_qty', '=', quantity),
+    #     ]
+    #     stock_move = request.env['stock.move'].search(dominio)
+
+    #     if len(stock_move) > 0:
+    #         if stock_move[0].id != False:
+    #             stock_move_id = stock_move[0].id
+    #             stock_valuation_layer = request.env['stock.valuation.layer'].search(
+    #                 [('stock_move_id', '=', stock_move_id), ('stock_valuation_layer_id', '=', False), ])
+    #             value = stock_valuation_layer.value
+    #         else:
+    #             value = 0
+    #     else:
+    #         value = 0
+    #     return value
+
+    def _stock_valuation_layer(self, stock_move_id, fecha_inicio, fecha_fin):
+        dominio = [
+            ('stock_move_id', '=', stock_move_id),
+            ('stock_valuation_layer_id', '=', False), 
+            ('create_date', '>=', fecha_inicio),
+            ('create_date', '<=', fecha_fin)]
+
+        stock_valuation_layer = request.env['stock.valuation.layer'].search(dominio)
+
+        if len(stock_valuation_layer) > 0:
+            value = stock_valuation_layer.value
+            dominio.pop(dominio.index( ('stock_valuation_layer_id', '=', False), ))
+            dominio.append(('stock_valuation_layer_id', '!=', False))
+            stock_valuation_layer = request.env['stock.valuation.layer'].search(dominio)
+            gasto = sum([line.value for line in stock_valuation_layer.filtered(lambda gs: gs.stock_move_id.id == stock_move_id)])
+            total = value + gasto
+            costo_en_destino=[]
+            for item in stock_valuation_layer:
+                if item.description not in costo_en_destino:
+                    costo_en_destino.append(item.description)
         else:
-            subtotal=0
+            value = 0
+            gasto = 0
+            total = 0
+            costo_en_destino=None
+        return value,gasto,total,str(costo_en_destino)
 
-
-        name=[]
-        date=[]
-        account_move_id=[]
-        for slc in stock_landed_cost:
-            if slc.name not in name:
-                name.append(slc.name)
-            if slc.account_move_id not in account_move_id:
-                account_move_id.append(slc.account_move_id.name)
-            if slc.date not in date:
-                date.append(slc.date.strftime('%d/%m/%Y'))
-                
-        return subtotal,gasto,str(name),date,str(account_move_id)
-
-    def _move_id(self,picking_id,product_id):
-        dominio = [('picking_ids.id', '=', picking_id),]
-        stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
-
-        move_ids=[]
-        for slc in stock_landed_cost:
-            for line in slc.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id):
-                move_ids.append(line.move_id.id)    
-
-        return move_ids
-
-    def _ordenes_de_compra(self, fecha_inicio, fecha_fin):
+    def _estructura_reporte(self, fecha_inicio, fecha_fin):
         regexLetras = "[^a-zA-Z0-9_ ,/]"
 
-        fi=datetime.strptime(fecha_inicio, '%Y-%m-%d').date()
-        ff=datetime.strptime(fecha_fin, '%Y-%m-%d').date()
+        fi = datetime.strptime(fecha_inicio, '%Y-%m-%d').date()
+        ff = datetime.strptime(fecha_fin, '%Y-%m-%d').date()
 
         dominio = [
-            ('state', 'in', ('purchase', 'done',)),
-            ('picking_ids.date_done', '>=', fecha_inicio),
-            ('picking_ids.date_done', '<=', fecha_fin),
-            # ('date_order', '>=', fecha_inicio),
-            # ('date_order', '<=', fecha_fin),
-            # ('name', 'in', ('P00015','P00016','P00017')),
-            # ('name', 'in', ('P00015','P00016')),
-            # ('name', '=', 'P00162'),
+            ('state', '=', 'done'),
+            ('date_done', '>=', fecha_inicio),
+            ('date_done', '<=', fecha_fin),
+            ('picking_type_id.barcode', '=', 'WH-RECEIPTS'),
         ]
-        purchase_orders = request.env['purchase.order'].search(dominio)
-        purchase_orders = purchase_orders.sorted(lambda orden: orden.id)
+        stock_picking = request.env['stock.picking'].search(dominio)
+        stock_picking = stock_picking.sorted(lambda orden: orden.id)
 
-        listado_compras = []
-        for order in purchase_orders:
-            lista_pickings=[]
-            lista_invoices=[]
-            
-            orden_compra = {
-                'id': order.id,
-                'name': order.name,
-                'partner_id': order.partner_id.name,
-                'date_order': order.date_approve, 
+        listado_picking = []
+        for picking in stock_picking:
+            lista_ids = []
+            recepcion = {
+                'date_done': picking.date_done,
+                'name': picking.name,
+                'partner_name': picking.partner_id.name,
+                'state': picking.state,
+                'origin': picking.origin,
             }
+            picking_lines = []
 
-            if order.partner_ref != False:
-                orden_compra['partner_ref']=order.partner_ref
-            else:
-                orden_compra['partner_ref']=None
+            for line in picking.move_ids_without_package:
+                value,gasto,total,costo_en_destino= self._stock_valuation_layer(line.id, fecha_inicio, fecha_fin)
+                print("line", line.id, ' product ', line.product_id.id,line.product_id.name, ' valor> ', value,' gasto> ',gasto)
+                if line.id not in lista_ids:
+                    lista_ids.append(line.id)
+                    picking_line = {
+                        'default_code': line.product_id.default_code,
+                        'product_name': line.product_id.name,
+                        'quantity_done': line.quantity_done,
+                    }
+                    costo_en_destino=re.sub(regexLetras, "", str(costo_en_destino))
 
-            order_lines=[]
-            lista_ids=[]
-            for line in order.order_line:
-                order_line = {
-                    'product_id': line.product_id.id,
-                    'name': line.product_id.name,
-                    'product_qty': line.product_qty,
-                    'price_unit': line.price_unit,
-                    'price_subtotal': line.price_subtotal,
+                    picking_line['value'] = value
+                    picking_line['gasto'] = gasto
+                    picking_line['total'] = total
+                    picking_line['costo_en_destino'] = costo_en_destino
 
-                    #landed_cost_ids ->Costos en Destino
-                    'gasto':None,
-                    'subtotal':None,
-                    'landed_cost_name':None,
-                    'landed_cost_date':None,
-                    'landed_account_move_id':None,
-                    'total':None,
-                    #picking_ids ->Recepciones
-                    'picking_name':None,
-                    'scheduled_date':None,
-                    'date_done':None,
-                    #invoice_ids ->Facturas
-                    'invoice_id':None,
-                    'invoice_name':None,
-                    'journal_id':None,
-                    'currency_name':None,
-                }      
+                    picking_lines.append(picking_line)
+            recepcion['lines'] = picking_lines
 
-                if line.product_id.default_code !=False:
-                    order_line['default_code']=line.product_id.default_code
-                else:
-                    order_line['default_code']=None
-
-                for invoice in order.invoice_ids.filtered(lambda inv: inv.state=='posted'):
-                    if invoice.name not in lista_invoices:
-                        lista_invoices.append(invoice.name)
-
-                    lista_facturas_modificada= re.sub(regexLetras, "", str(lista_invoices))
-                    order_line['invoice_id']=invoice.id
-                    order_line['invoice_name']=lista_facturas_modificada
-                    order_line['journal_id']=invoice.journal_id.name
-                    order_line['currency_name']=invoice.currency_id.name
-
-                for picking in order.picking_ids.filtered(lambda pkg: pkg.state=='done' and pkg.date_done.date() >= fi and pkg.date_done.date() <= ff):
-                    print("picking",picking.name)
-                    move_ids=self._move_id(picking.id,line.product_id.id)                 
-                    
-                    for id in move_ids:
-                        if id not in lista_ids:
-                            if id:
-                                subtotal,gasto,name,date,account_move_id=self._costos_en_destino(picking.id,line.product_id.id,id)
-                                lista_ids.append(id)
-                                print(' ID >',id)
-                                print(' lista_ids >',lista_ids)
-                            else:
-                                subtotal,gasto,name,date,account_move_id=self._costos_en_destino(picking.id,line.product_id.id,None)
-
-                            name=re.sub(regexLetras, "", str(name))
-                            date=re.sub(regexLetras, "", str(date))
-                            account_move_id=re.sub(regexLetras, "", str(account_move_id))
-                            
-                            if picking.name not in lista_pickings:
-                                lista_pickings.append(picking.name)
-
-                            lista_modificada= re.sub(regexLetras, "", str(lista_pickings))
-                            order_line['picking_name']=lista_modificada
-                            order_line['scheduled_date']=picking.scheduled_date
-                            order_line['date_done']=picking.date_done
-
-                            if gasto !=0:
-                                order_line['gasto']=gasto
-                                order_line['subtotal']=subtotal
-                                order_line['total']=gasto+subtotal
-                            else:
-                                order_line['gasto']=None
-                                order_line['subtotal']=None
-                                order_line['total']=None
-
-                            if name !=False:
-                                order_line['landed_cost_name']=name
-                                order_line['landed_cost_date']=date
-                                order_line['landed_account_move_id']=account_move_id
-
-                order_lines.append(order_line)                    
-            orden_compra['lines']=order_lines
-
-            listado_compras.append(orden_compra)
-
-        return listado_compras
+            listado_picking.append(recepcion)
+        return listado_picking
 
     def generate_xlsx_report(self, workbook, data, data_report):
         formato_celda_numerica = workbook.add_format(
@@ -188,71 +164,43 @@ class LibroInventarioReportXls(models.AbstractModel):
         fecha_inicio = data['form']['fecha_inicio']
         fecha_fin = data['form']['fecha_fin']
 
-        purchase_orders=self._ordenes_de_compra(fecha_inicio, fecha_fin)
+        stock_picking = self._estructura_reporte(fecha_inicio, fecha_fin)
 
         sheet_inventario = workbook.add_worksheet('Inventario')
-        sheet_inventario.write(0, 0, "ORDEN DE COMPRA", formato_encabezado)
-        sheet_inventario.write(0, 1, "PROVEEDOR", formato_encabezado)
-        sheet_inventario.write(0, 2, "FECHA", formato_encabezado)
-        sheet_inventario.write(0, 3, "REFERENCIA", formato_encabezado)
-
+        sheet_inventario.write(0, 0, "FECHA", formato_encabezado)
+        sheet_inventario.write(0, 1, "RECEPCION", formato_encabezado)
+        sheet_inventario.write(0, 2, "ORIGEN", formato_encabezado)
+        sheet_inventario.write(0, 3, "PROVEEDOR", formato_encabezado)
         sheet_inventario.write(0, 4, "CODIGO", formato_encabezado)
         sheet_inventario.write(0, 5, "PRODUCTO", formato_encabezado)
-        sheet_inventario.write(0, 6, "CANTIDAD", formato_encabezado)
-        sheet_inventario.write(0, 7, "RECEPCION", formato_encabezado)
-        sheet_inventario.write(0, 8, "FECHA RECEPCION", formato_encabezado)
+        sheet_inventario.write(0, 6, "CANT RECIBIDA", formato_encabezado)
 
-        sheet_inventario.write(0, 9, "COSTO EN DESTINO", formato_encabezado)
-        sheet_inventario.write(0, 10, "FECHA COSTO EN DESTINO", formato_encabezado)
-        sheet_inventario.write(0, 11, "SUBTOTAL", formato_encabezado)
-        sheet_inventario.write(0, 12, "GASTO", formato_encabezado)
-        sheet_inventario.write(0, 13, "TOTAL", formato_encabezado)
-
-        sheet_inventario.write(0, 14, "FACTURA", formato_encabezado)
-        sheet_inventario.write(0, 15, "DIARIO", formato_encabezado)
+        sheet_inventario.write(0, 7, "VALUE", formato_encabezado)
+        sheet_inventario.write(0, 8, "GASTO", formato_encabezado)
+        sheet_inventario.write(0, 9, "TOTAL", formato_encabezado)
+        sheet_inventario.write(0, 10, "COSTO EN DESTINO", formato_encabezado)
+        sheet_inventario.write(0, 11, "FECHA CD", formato_encabezado)
+        sheet_inventario.write(0, 12, "APUNTE CONTABLE", formato_encabezado)
 
         sheet_inventario.set_column("A:R", 25)
 
-        fila=0
-        for order in purchase_orders:
-            for line in order['lines']:
-                fila+=1
-                sheet_inventario.write(fila, 0,order['name'],)
-                sheet_inventario.write(fila, 1,order['partner_id'])
-                sheet_inventario.write(fila, 2,order['date_order'],formato_fecha)
-                sheet_inventario.write(fila, 3,order['partner_ref'])
+        fila = 0
+        for picking in stock_picking:
+            for line in picking['lines']:
+                fila += 1
 
-                sheet_inventario.write(fila, 4,line['default_code'])
-                sheet_inventario.write(fila, 5,line['name'])
-                sheet_inventario.write(fila, 6,line['product_qty'],formato_celda_numerica)
+                sheet_inventario.write(
+                    fila, 0, picking['date_done'], formato_fecha)
+                sheet_inventario.write(fila, 1, picking['name'])
+                sheet_inventario.write(fila, 2, picking['origin'])
+                sheet_inventario.write(fila, 3, picking['partner_name'])
+                sheet_inventario.write(fila, 4, line['default_code'])
+                sheet_inventario.write(fila, 5, line['product_name'])
+                sheet_inventario.write(fila, 6, line['quantity_done'], formato_celda_numerica)
 
-                sheet_inventario.write(fila, 7, line['picking_name'])
-                sheet_inventario.write(fila, 8,line['date_done'],formato_fecha)
-                sheet_inventario.write(fila, 9,line['landed_cost_name'])
-                sheet_inventario.write(fila, 10,line['landed_cost_date'],formato_fecha)
-                sheet_inventario.write(fila, 11,line['subtotal'],formato_celda_numerica)                
-                sheet_inventario.write(fila, 12,line['gasto'],formato_celda_numerica)                
-                sheet_inventario.write(fila, 13,line['total'],formato_celda_numerica)
-
-                sheet_inventario.write(fila, 14,line['invoice_name'])
-                sheet_inventario.write(fila, 15,line['journal_id'],formato_celda_numerica)
-                sheet_inventario.write(fila, 16,line['landed_account_move_id'])
-                
+                sheet_inventario.write(fila, 7, line['value'], formato_celda_numerica)
+                sheet_inventario.write(fila, 8, line['gasto'], formato_celda_numerica)
+                sheet_inventario.write(fila, 9, line['total'], formato_celda_numerica)
+                sheet_inventario.write(fila, 10, line['costo_en_destino'], formato_celda_numerica)
 
                 
-                
-                
-
-
-                    
-
-                
-                
-
-
-
-                
-
-
-
-        
