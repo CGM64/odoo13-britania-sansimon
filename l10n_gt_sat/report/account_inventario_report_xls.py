@@ -74,6 +74,12 @@ class LibroInventarioReportXls(models.AbstractModel):
     #     else:
     #         value = 0
     #     return value
+    
+    
+# select * from stock_picking where id = 7011
+# select * from stock_move where picking_id=7011
+# select * from stock_valuation_layer where stock_move_id in (17739,10749,10748)
+
 
     def _stock_valuation_layer(self, stock_move_id, fecha_inicio, fecha_fin):
         dominio = [
@@ -112,7 +118,7 @@ class LibroInventarioReportXls(models.AbstractModel):
             ('state', '=', 'done'),
             ('date_done', '>=', fecha_inicio),
             ('date_done', '<=', fecha_fin),
-            ('picking_type_id.barcode', '=', 'WH-RECEIPTS'),
+            ('purchase_id', '!=', None),
         ]
         stock_picking = request.env['stock.picking'].search(dominio)
         stock_picking = stock_picking.sorted(lambda orden: orden.id)
@@ -144,7 +150,7 @@ class LibroInventarioReportXls(models.AbstractModel):
                     picking_line['value'] = value
                     picking_line['gasto'] = gasto
                     picking_line['total'] = total
-                    picking_line['costo_en_destino'] = costo_en_destino
+                    picking_line['costo_en_destino'] = costo_en_destino.replace('None','')
 
                     picking_lines.append(picking_line)
             recepcion['lines'] = picking_lines
