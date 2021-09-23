@@ -38,7 +38,7 @@ class AccountLibroFiscalReport(models.TransientModel):
     ejercicio = fields.Integer(string='Ejercicio', default=now.year)
     vendedor = fields.Boolean(string='Vendedor', default=True)
 
-    #reporte de inventario
+    #reporte de importaciones
     fecha_inicio = fields.Date(string='Fecha inicio',default=now.today())
     fecha_fin = fields.Date(string='Fecha fin',default=now.today())
 

@@ -12,74 +12,6 @@ class LibroInventarioReportXls(models.AbstractModel):
 
     workbook = None
 
-    # def _costos_en_destino(self, picking_id, product_id, move_id, fecha_inicio, fecha_fin):
-    #     dominio = [
-    #         ('picking_ids.id', '=', picking_id),
-    #         ('date', '>=', fecha_inicio),
-    #         ('date', '<=', fecha_fin),
-    #     ]
-    #     stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
-    #     gasto = sum([line.additional_landed_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(
-    #         lambda gs: gs.product_id.id == product_id and gs.move_id.id == move_id)])
-    #     former_cost = [line.former_cost for line in stock_landed_cost.valuation_adjustment_lines.filtered(
-    #         lambda gs: gs.product_id.id == product_id and gs.move_id.id == move_id)]
-
-    #     if len(former_cost) > 0:
-    #         valor_original = former_cost[0]
-    #     else:
-    #         valor_original = 0
-
-    #     name = []
-    #     date = []
-    #     account_move_id = []
-    #     for slc in stock_landed_cost:
-    #         if slc.name not in name:
-    #             name.append(slc.name)
-    #         if slc.account_move_id not in account_move_id:
-    #             account_move_id.append(slc.account_move_id.name)
-    #         if slc.date not in date:
-    #             date.append(slc.date.strftime('%d/%m/%Y'))
-
-    #     return valor_original, gasto, str(name), date, str(account_move_id)
-
-    # def _move_id(self,picking_id,product_id,quantity):
-    #     dominio = [
-    #         ('picking_ids.id', '=', picking_id),
-    #     ]
-    #     stock_landed_cost = request.env['stock.landed.cost'].search(dominio)
-
-    #     move_ids=[]
-    #     for slc in stock_landed_cost:
-    #         for line in slc.valuation_adjustment_lines.filtered(lambda gs: gs.product_id.id == product_id and gs.quantity == quantity):
-    #             move_ids.append(line.move_id.id)
-
-    #     return move_ids
-
-    # def _stock_move_id(self, picking_id, product_id, quantity):
-    #     dominio = [
-    #         ('picking_id', '=', picking_id),
-    #         ('product_id', '=', product_id),
-    #         ('product_qty', '=', quantity),
-    #     ]
-    #     stock_move = request.env['stock.move'].search(dominio)
-
-    #     if len(stock_move) > 0:
-    #         if stock_move[0].id != False:
-    #             stock_move_id = stock_move[0].id
-    #             stock_valuation_layer = request.env['stock.valuation.layer'].search(
-    #                 [('stock_move_id', '=', stock_move_id), ('stock_valuation_layer_id', '=', False), ])
-    #             value = stock_valuation_layer.value
-    #         else:
-    #             value = 0
-    #     else:
-    #         value = 0
-    #     return value
-    
-    
-# select * from stock_picking where id = 7011
-# select * from stock_move where picking_id=7011
-# select * from stock_valuation_layer where stock_move_id in (17739,10749,10748)
-
 
     def _stock_valuation_layer(self, stock_move_id, fecha_inicio, fecha_fin):
         dominio = [
@@ -118,7 +50,9 @@ class LibroInventarioReportXls(models.AbstractModel):
             ('state', '=', 'done'),
             ('date_done', '>=', fecha_inicio),
             ('date_done', '<=', fecha_fin),
-            ('purchase_id', '!=', None),
+            # ('purchase_id', '!=', None),
+            # ('location_id.usage', '!=', 'internal'),
+            ('sale_id', '=', None),
         ]
         stock_picking = request.env['stock.picking'].search(dominio)
         stock_picking = stock_picking.sorted(lambda orden: orden.id)
@@ -137,7 +71,7 @@ class LibroInventarioReportXls(models.AbstractModel):
 
             for line in picking.move_ids_without_package:
                 value,gasto,total,costo_en_destino= self._stock_valuation_layer(line.id, fecha_inicio, fecha_fin)
-                print("line", line.id, ' product ', line.product_id.id,line.product_id.name, ' valor> ', value,' gasto> ',gasto)
+                # print("line", line.id, ' product ', line.product_id.id,line.product_id.name, ' valor> ', value,' gasto> ',gasto)
                 if line.id not in lista_ids:
                     lista_ids.append(line.id)
                     picking_line = {
@@ -185,8 +119,6 @@ class LibroInventarioReportXls(models.AbstractModel):
         sheet_inventario.write(0, 8, "GASTO", formato_encabezado)
         sheet_inventario.write(0, 9, "TOTAL", formato_encabezado)
         sheet_inventario.write(0, 10, "COSTO EN DESTINO", formato_encabezado)
-        sheet_inventario.write(0, 11, "FECHA CD", formato_encabezado)
-        sheet_inventario.write(0, 12, "APUNTE CONTABLE", formato_encabezado)
 
         sheet_inventario.set_column("A:R", 25)
 
