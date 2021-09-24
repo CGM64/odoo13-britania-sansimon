@@ -13,10 +13,15 @@ class LibroInventarioReportXls(models.AbstractModel):
     workbook = None
     
     def _sum_stock_valuation_layer(self, stock_move_ids, fecha_inicio, fecha_fin):
-        dominio = [
-            ('stock_move_id', 'in', stock_move_ids),
-            ('create_date', '>=', fecha_inicio),
-            ('create_date', '<=', fecha_fin)]
+
+        if fecha_inicio !=None and fecha_fin !=None:
+            dominio = [
+                ('stock_move_id', 'in', stock_move_ids),
+                ('create_date', '>=', fecha_inicio),
+                ('create_date', '<=', fecha_fin)]
+        else:
+            dominio = [
+                ('stock_move_id', 'in', stock_move_ids)]
 
         stock_valuation_layer = request.env['stock.valuation.layer'].search(dominio)
         total = sum([line.value for line in stock_valuation_layer])
@@ -25,15 +30,18 @@ class LibroInventarioReportXls(models.AbstractModel):
 
 
     def _stock_valuation_layer(self, stock_move_id, fecha_inicio, fecha_fin):
-        print('stock_move_id',stock_move_id)
-        dominio = [
-            ('stock_move_id', '=', stock_move_id),
-            ('stock_valuation_layer_id', '=', False), 
-            ('create_date', '>=', fecha_inicio),
-            ('create_date', '<=', fecha_fin)]
+        if fecha_inicio !=None and fecha_fin !=None:
+            dominio = [
+                ('stock_move_id', '=', stock_move_id),
+                ('stock_valuation_layer_id', '=', False), 
+                ('create_date', '>=', fecha_inicio),
+                ('create_date', '<=', fecha_fin)]
+        else:
+            dominio = [
+                ('stock_move_id', '=', stock_move_id),
+                ('stock_valuation_layer_id', '=', False)]
 
         stock_valuation_layer = request.env['stock.valuation.layer'].search(dominio)
-        print('stock_valuation_layer',stock_valuation_layer)
 
         if len(stock_valuation_layer) > 0:
             value = stock_valuation_layer.value
@@ -63,7 +71,7 @@ class LibroInventarioReportXls(models.AbstractModel):
             dominio = [
                 ('id', 'in', picking_ids),
             ]
-            print("picking_ids-->",picking_ids)
+            # print("picking_ids-->",picking_ids)
         else:
             dominio = [
                 ('state', '=', 'done'),
