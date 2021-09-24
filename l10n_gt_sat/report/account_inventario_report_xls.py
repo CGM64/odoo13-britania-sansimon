@@ -25,6 +25,7 @@ class LibroInventarioReportXls(models.AbstractModel):
 
 
     def _stock_valuation_layer(self, stock_move_id, fecha_inicio, fecha_fin):
+        print('stock_move_id',stock_move_id)
         dominio = [
             ('stock_move_id', '=', stock_move_id),
             ('stock_valuation_layer_id', '=', False), 
@@ -32,6 +33,7 @@ class LibroInventarioReportXls(models.AbstractModel):
             ('create_date', '<=', fecha_fin)]
 
         stock_valuation_layer = request.env['stock.valuation.layer'].search(dominio)
+        print('stock_valuation_layer',stock_valuation_layer)
 
         if len(stock_valuation_layer) > 0:
             value = stock_valuation_layer.value
@@ -51,20 +53,25 @@ class LibroInventarioReportXls(models.AbstractModel):
             costo_en_destino=None
         return value,gasto,total,str(costo_en_destino)
 
-    def _estructura_reporte(self, fecha_inicio, fecha_fin):
+    def _estructura_reporte(self,generar_por,picking_ids,fecha_inicio, fecha_fin):
         regexLetras = "[^a-zA-Z0-9_ ,/]"
 
-        fi = datetime.strptime(fecha_inicio, '%Y-%m-%d').date()
-        ff = datetime.strptime(fecha_fin, '%Y-%m-%d').date()
+        # fi = datetime.strptime(fecha_inicio, '%Y-%m-%d').date()
+        # ff = datetime.strptime(fecha_fin, '%Y-%m-%d').date()
 
-        dominio = [
-            ('state', '=', 'done'),
-            ('date_done', '>=', fecha_inicio),
-            ('date_done', '<=', fecha_fin),
-            # ('purchase_id', '!=', None),
-            # ('location_id.usage', '!=', 'internal'),
-            ('sale_id', '=', None),
-        ]
+        if generar_por =='picking':
+            dominio = [
+                ('id', 'in', picking_ids),
+            ]
+            print("picking_ids-->",picking_ids)
+        else:
+            dominio = [
+                ('state', '=', 'done'),
+                ('date_done', '>=', fecha_inicio),
+                ('date_done', '<=', fecha_fin),
+                ('sale_id', '=', None),
+            ]
+
         stock_picking = request.env['stock.picking'].search(dominio)
         stock_picking = stock_picking.sorted(lambda orden: orden.id)
         
@@ -127,7 +134,13 @@ class LibroInventarioReportXls(models.AbstractModel):
         fecha_inicio = data['form']['fecha_inicio']
         fecha_fin = data['form']['fecha_fin']
 
-        stock_picking = self._estructura_reporte(fecha_inicio, fecha_fin)
+        picking_ids = data['form']['picking_ids']
+        generar_por = data['form']['generar_por']
+        
+        if generar_por=='fecha':
+            stock_picking = self._estructura_reporte(generar_por,None,fecha_inicio, fecha_fin)
+        else:
+            stock_picking = self._estructura_reporte(generar_por,picking_ids,None,None)
 
         sheet_inventario = workbook.add_worksheet('Inventario')
         sheet_inventario.write(0, 0, "FECHA", formato_encabezado)

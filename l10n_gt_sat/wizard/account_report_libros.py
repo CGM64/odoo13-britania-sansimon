@@ -42,6 +42,17 @@ class AccountLibroFiscalReport(models.TransientModel):
     fecha_inicio = fields.Date(string='Fecha inicio',default=now.today())
     fecha_fin = fields.Date(string='Fecha fin',default=now.today())
 
+    generar_por = fields.Selection([
+        ('fecha', 'Fecha'),
+        ('picking', 'Recepción'),], "Generar por",
+        default='fecha', required=True,
+        )
+
+    picking_ids = fields.Many2many('stock.picking',
+                                   string='Recepciones',
+                                   domain=lambda self: [("company_id", "=", self.env.user.company_id.id)]
+                                   )
+
     def check_report(self):
         self.ensure_one()
         data = {}
@@ -59,6 +70,6 @@ class AccountLibroFiscalReport(models.TransientModel):
     def export_invetory_xls(self):
         self.ensure_one()
         data = {}
-        data['form'] = self.read(['fecha_inicio', 'fecha_fin'])[0]
+        data['form'] = self.read(['fecha_inicio', 'fecha_fin','generar_por','picking_ids'])[0]
         return self.env['ir.actions.report'].search([('report_name', '=', 'l10n_gt_sat.account_inventario_report_xls'),
                 ('report_type', '=', 'xlsx')], limit=1).report_action(self,data=data)
