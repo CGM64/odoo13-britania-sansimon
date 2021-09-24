@@ -6,15 +6,16 @@
             <field name="model">l10n_gt_sat.librofiscal.report</field>
             <field name="arch" type="xml">
                 <form string="Report Options">
-
+                    <field name="generar_por" widget="radio"/>
                     <group>
-                        <field name="generar_por" widget="radio"/>
                         <group>
                             <field name="fecha_inicio" attrs="{'invisible':[('generar_por', '!=', 'fecha')]}"/>
                         </group>
                         <group>
                             <field name="fecha_fin" attrs="{'invisible':[('generar_por', '!=', 'fecha')]}"/>
                         </group>
+                    </group>
+                    <group>
                         <field name="picking_ids" widget="many2many_tags" options="{'no_create': True}" attrs="{'invisible':[('generar_por', '!=', 'picking')]}"/>
                     </group>
 
