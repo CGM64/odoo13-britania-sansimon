@@ -71,7 +71,6 @@ class LibroInventarioReportXls(models.AbstractModel):
             dominio = [
                 ('id', 'in', picking_ids),
             ]
-            # print("picking_ids-->",picking_ids)
         else:
             dominio = [
                 ('state', '=', 'done'),
@@ -82,6 +81,7 @@ class LibroInventarioReportXls(models.AbstractModel):
 
         stock_picking = request.env['stock.picking'].search(dominio)
         stock_picking = stock_picking.sorted(lambda orden: orden.id)
+        porcentaje=0
         
         picking_a_sumar=[]
         for pick in stock_picking.move_ids_without_package:
@@ -118,13 +118,20 @@ class LibroInventarioReportXls(models.AbstractModel):
                     picking_line['total'] = total
                     picking_line['costo_en_destino'] = costo_en_destino.replace('None','')
                     
+                    
                     if float(total_general) !=0:
                         picking_line['porcentaje']= total/float(total_general)
+                        picking_line['total_general'] = total_general
+                        porcentaje+=total/float(total_general)
                     else:
                         picking_line['porcentaje']= 0
+                        picking_line['total_general'] = 0
+                        porcentaje+=total/float(total_general)
+
 
                     picking_lines.append(picking_line)
             recepcion['lines'] = picking_lines
+            recepcion['porcentaje_total'] = porcentaje
 
             listado_picking.append(recepcion)
         return listado_picking
@@ -167,24 +174,33 @@ class LibroInventarioReportXls(models.AbstractModel):
 
         sheet_inventario.set_column("A:R", 25)
 
+
+        # stock_picking_nuevo=list(filter(lambda f: f['value'] !=0))
+
         fila = 0
         for picking in stock_picking:
             for line in picking['lines']:
-                fila += 1
+                if line['total'] !=0:
+                    fila += 1
+                    sheet_inventario.write(fila, 0, picking['date_done'], formato_fecha)
+                    sheet_inventario.write(fila, 1, picking['name'])
+                    sheet_inventario.write(fila, 2, picking['origin'])
+                    sheet_inventario.write(fila, 3, picking['partner_name'])
+                    sheet_inventario.write(fila, 4, line['default_code'])
+                    sheet_inventario.write(fila, 5, line['product_name'])
+                    sheet_inventario.write(fila, 6, line['quantity_done'], formato_celda_numerica)
 
-                sheet_inventario.write(
-                    fila, 0, picking['date_done'], formato_fecha)
-                sheet_inventario.write(fila, 1, picking['name'])
-                sheet_inventario.write(fila, 2, picking['origin'])
-                sheet_inventario.write(fila, 3, picking['partner_name'])
-                sheet_inventario.write(fila, 4, line['default_code'])
-                sheet_inventario.write(fila, 5, line['product_name'])
-                sheet_inventario.write(fila, 6, line['quantity_done'], formato_celda_numerica)
+                    sheet_inventario.write(fila, 7, line['value'], formato_celda_numerica)
+                    sheet_inventario.write(fila, 8, line['gasto'], formato_celda_numerica)
+                    sheet_inventario.write(fila, 9, line['total'], formato_celda_numerica)
+                    sheet_inventario.write(fila, 10, line['porcentaje'], formato_porcentaje)
+                    sheet_inventario.write(fila, 11, line['costo_en_destino'])
+                    sheet_inventario.write(fila+1, 9, line['total_general'], formato_celda_numerica)
+                    sheet_inventario.write(fila+1, 10, picking['porcentaje_total'], formato_porcentaje)
 
-                sheet_inventario.write(fila, 7, line['value'], formato_celda_numerica)
-                sheet_inventario.write(fila, 8, line['gasto'], formato_celda_numerica)
-                sheet_inventario.write(fila, 9, line['total'], formato_celda_numerica)
-                sheet_inventario.write(fila, 10, line['porcentaje'], formato_porcentaje)
-                sheet_inventario.write(fila, 11, line['costo_en_destino'])
+
+
+
+                    
 
                 
