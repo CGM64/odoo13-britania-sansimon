@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!--Report-->
+    <template id="statement_report_document">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="doc.with_context({'lang': 'en_US'})" />
+                <div class="page">
+                </div>
+        </t>
+    </template>
+
+    <!--TEMPLATE [BANK STATEMENT REPORT]-->
+    <template id="statement_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="conciliacion_bancaria.statement_report_document"/>
+            </t>
+        </t>
+    </template>
+
+    <report id="action_statement_report"
+            model="account.bank.statement"
+            string="Conciliacion"
+            report_type="qweb-pdf"
+            name="conciliacion_bancaria.statement_report"
+            file="conciliacion_bancaria.statement_report"
+            paperformat="base.paperformat_us"
+    />
+    
+    <!--FORM BANK STATEMENT-->
+    <record id="view_account_bank_statement_form_inherit" model="ir.ui.view">
+        <field name="name">account.bank.statement.report.form</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="arch" type="xml">
+            <button name="check_confirm_bank" position="after">
+                <button name="print_bank_statement" string="Imprimir" type="object" help="Print in Pdf"/>
+            </button>
+        </field>
+
+    </record>
+
+</odoo>
