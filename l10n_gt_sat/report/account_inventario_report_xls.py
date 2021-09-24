@@ -11,6 +11,17 @@ class LibroInventarioReportXls(models.AbstractModel):
     _inherit = 'report.report_xlsx.abstract'
 
     workbook = None
+    
+    def _sum_stock_valuation_layer(self, stock_move_ids, fecha_inicio, fecha_fin):
+        dominio = [
+            ('stock_move_id', 'in', stock_move_ids),
+            ('create_date', '>=', fecha_inicio),
+            ('create_date', '<=', fecha_fin)]
+
+        stock_valuation_layer = request.env['stock.valuation.layer'].search(dominio)
+        total = sum([line.value for line in stock_valuation_layer])
+        return total
+        
 
 
     def _stock_valuation_layer(self, stock_move_id, fecha_inicio, fecha_fin):
@@ -56,6 +67,12 @@ class LibroInventarioReportXls(models.AbstractModel):
         ]
         stock_picking = request.env['stock.picking'].search(dominio)
         stock_picking = stock_picking.sorted(lambda orden: orden.id)
+        
+        picking_a_sumar=[]
+        for pick in stock_picking.move_ids_without_package:
+            if pick.id not in picking_a_sumar:
+                picking_a_sumar.append(pick.id)
+        total_general=self._sum_stock_valuation_layer(picking_a_sumar, fecha_inicio, fecha_fin)
 
         listado_picking = []
         for picking in stock_picking:
@@ -85,6 +102,11 @@ class LibroInventarioReportXls(models.AbstractModel):
                     picking_line['gasto'] = gasto
                     picking_line['total'] = total
                     picking_line['costo_en_destino'] = costo_en_destino.replace('None','')
+                    
+                    if float(total_general) !=0:
+                        picking_line['porcentaje']= total/float(total_general)
+                    else:
+                        picking_line['porcentaje']= 0
 
                     picking_lines.append(picking_line)
             recepcion['lines'] = picking_lines
@@ -99,6 +121,7 @@ class LibroInventarioReportXls(models.AbstractModel):
             {'bold': 1,  'border': 1,    'align': 'center', 'valign':   'vcenter', 'fg_color': '#1C1C1C', 'font_color': 'white'})
         formato_fecha = workbook.add_format(
             {'num_format': 'dd/mm/yyyy', 'border': 0})
+        formato_porcentaje = workbook.add_format({'num_format': '0.00%'})
 
         self.workbook = workbook
         fecha_inicio = data['form']['fecha_inicio']
@@ -118,7 +141,8 @@ class LibroInventarioReportXls(models.AbstractModel):
         sheet_inventario.write(0, 7, "VALUE", formato_encabezado)
         sheet_inventario.write(0, 8, "GASTO", formato_encabezado)
         sheet_inventario.write(0, 9, "TOTAL", formato_encabezado)
-        sheet_inventario.write(0, 10, "COSTO EN DESTINO", formato_encabezado)
+        sheet_inventario.write(0, 10, "PORCENTAJE", formato_encabezado)
+        sheet_inventario.write(0, 11, "COSTO EN DESTINO", formato_encabezado)
 
         sheet_inventario.set_column("A:R", 25)
 
@@ -139,6 +163,7 @@ class LibroInventarioReportXls(models.AbstractModel):
                 sheet_inventario.write(fila, 7, line['value'], formato_celda_numerica)
                 sheet_inventario.write(fila, 8, line['gasto'], formato_celda_numerica)
                 sheet_inventario.write(fila, 9, line['total'], formato_celda_numerica)
-                sheet_inventario.write(fila, 10, line['costo_en_destino'], formato_celda_numerica)
+                sheet_inventario.write(fila, 10, line['porcentaje'], formato_porcentaje)
+                sheet_inventario.write(fila, 11, line['costo_en_destino'])
 
                 
