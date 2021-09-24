@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="account_importaciones_report_view" model="ir.ui.view">
+        <record id="importaciones_report_view" model="ir.ui.view">
             <field name="name">Importaciones</field>
             <field name="model">l10n_gt_sat.librofiscal.report</field>
             <field name="arch" type="xml">
@@ -28,23 +28,17 @@
             </field>
         </record>
 
-        <record id="action_account_importaciones_menu" model="ir.actions.act_window">
+        <record id="action_importaciones_menu" model="ir.actions.act_window">
             <field name="name">Importaciones</field>
             <field name="res_model">l10n_gt_sat.librofiscal.report</field>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="account_importaciones_report_view"/>
+            <field name="view_id" ref="importaciones_report_view"/>
             <field name="target">new</field>
         </record>
 
-        <menuitem id="menu_account_importaciones_menu_list" name="Reporte de Importaciones" action="action_account_importaciones_menu" parent="account_reports.account_reports_partners_reports_menu"/>
+        <menuitem id="menu_account_importaciones_menu_list" 
+        name="Reporte de Importaciones"
+        action="action_importaciones_menu" 
+        parent="purchase.purchase_report"/>
     </data>
 </odoo>
-
-<!-- <field name="generar_por" widget="radio"/>
-<label for="porcentaje" attrs="{'invisible':[('tipo_aplicacion', '!=', '1_porcentaje')]}"/>
-<div attrs="{'invisible':[('tipo_aplicacion', '!=', '1_porcentaje')]}">
-    <field name="porcentaje" class="oe_inline" attrs="{
-                                  'invisible':[('tipo_aplicacion', '!=', '1_porcentaje')],
-                                  'required':[('tipo_aplicacion', '=', '1_porcentaje')]}"/>
-%%
-</div> -->
