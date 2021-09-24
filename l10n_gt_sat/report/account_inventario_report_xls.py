@@ -129,7 +129,7 @@ class LibroInventarioReportXls(models.AbstractModel):
                     else:
                         picking_line['porcentaje']= 0
                         picking_line['total_general'] = 0
-                        porcentaje+=total/float(total_general)
+                        porcentaje+=0
 
                     picking_lines.append(picking_line)
             recepcion['lines'] = picking_lines
