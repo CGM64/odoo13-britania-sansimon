@@ -27,8 +27,6 @@ class LibroInventarioReportXls(models.AbstractModel):
         total = sum([line.value for line in stock_valuation_layer])
         return total
         
-
-
     def _stock_valuation_layer(self, stock_move_id, fecha_inicio, fecha_fin):
         if fecha_inicio !=None and fecha_fin !=None:
             dominio = [
@@ -107,11 +105,16 @@ class LibroInventarioReportXls(models.AbstractModel):
                 if line.id not in lista_ids:
                     lista_ids.append(line.id)
                     picking_line = {
-                        'default_code': line.product_id.default_code,
+                        # 'default_code': line.product_id.default_code,
                         'product_name': line.product_id.name,
                         'quantity_done': line.quantity_done,
                     }
                     costo_en_destino=re.sub(regexLetras, "", str(costo_en_destino))
+                    
+                    if line.product_id.default_code !=False:
+                        picking_line['default_code'] =  line.product_id.default_code
+                    else:
+                        picking_line['default_code'] =  None
 
                     picking_line['value'] = value
                     picking_line['gasto'] = gasto
@@ -127,7 +130,6 @@ class LibroInventarioReportXls(models.AbstractModel):
                         picking_line['porcentaje']= 0
                         picking_line['total_general'] = 0
                         porcentaje+=total/float(total_general)
-
 
                     picking_lines.append(picking_line)
             recepcion['lines'] = picking_lines
