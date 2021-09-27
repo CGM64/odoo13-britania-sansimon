@@ -37,7 +37,7 @@
         </record>
 
         <menuitem id="menu_account_importaciones_menu_list" 
-        name="Reporte de Importaciones"
+        name="Importaciones"
         action="action_importaciones_menu" 
         parent="purchase.purchase_report"/>
     </data>
