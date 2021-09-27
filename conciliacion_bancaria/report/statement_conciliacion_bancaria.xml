@@ -5,10 +5,16 @@
     <template id="statement_report_document">
         <t t-call="web.external_layout">
             <t t-set="o" t-value="doc.with_context({'lang': 'en_US'})" />
-                <div class="page">
+            <div class="page">
+                <div class="detalle mt-2" t-foreach="o.conciliacion_bancaria()" t-as="dato">
                 </div>
+            </div>
         </t>
     </template>
+
+
+
+
 
     <!--TEMPLATE [BANK STATEMENT REPORT]-->
     <template id="statement_report">
@@ -19,15 +25,8 @@
         </t>
     </template>
 
-    <report id="action_statement_report"
-            model="account.bank.statement"
-            string="Conciliacion"
-            report_type="qweb-pdf"
-            name="conciliacion_bancaria.statement_report"
-            file="conciliacion_bancaria.statement_report"
-            paperformat="base.paperformat_us"
-    />
-    
+    <report id="action_statement_report" model="account.bank.statement" string="Conciliacion" report_type="qweb-pdf" name="conciliacion_bancaria.statement_report" file="conciliacion_bancaria.statement_report" paperformat="base.paperformat_us" />
+
     <!--FORM BANK STATEMENT-->
     <record id="view_account_bank_statement_form_inherit" model="ir.ui.view">
         <field name="name">account.bank.statement.report.form</field>
