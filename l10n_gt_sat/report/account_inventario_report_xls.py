@@ -7,7 +7,7 @@ import re
 
 class LibroInventarioReportXls(models.AbstractModel):
     _name = 'report.l10n_gt_sat.account_inventario_report_xls'
-    _description = 'Reporte de importaciones'
+    _description = 'Reporte Inventario XLS'
     _inherit = 'report.report_xlsx.abstract'
 
     workbook = None
@@ -123,9 +123,9 @@ class LibroInventarioReportXls(models.AbstractModel):
                     
                     
                     if float(total_general) !=0:
-                        picking_line['porcentaje']= (total/value)-1
+                        picking_line['porcentaje']= total/float(total_general)
                         picking_line['total_general'] = total_general
-                        porcentaje+=(total/value)-1
+                        porcentaje+=total/float(total_general)
                     else:
                         picking_line['porcentaje']= 0
                         picking_line['total_general'] = 0
