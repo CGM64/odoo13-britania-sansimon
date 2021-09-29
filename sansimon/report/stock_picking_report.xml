@@ -70,7 +70,7 @@
                                         </td>
                                         <td><t t-esc="fac['serie']"/>-<t t-esc="fac['no']"/></td>
                                         <td>
-                                            <span t-field="o.create_uid.name" />
+                                            <span t-field="o.sale_id.user_id.name" />
                                         </td>
                                     </tr>
                                     <tr  class="thead-dark">
