@@ -73,6 +73,7 @@ class PrintBankStatement(models.Model):
                 'saldo_inicial':account_bank_statement.balance_start,
                 'saldo_final':account_bank_statement.balance_end_real,
                 'moneda':account_bank_statement.currency_id.symbol,
+                'estado':account_bank_statement.state,
             }
 
         saldo_inicial=account_bank_statement.balance_start
@@ -81,47 +82,74 @@ class PrintBankStatement(models.Model):
         suma_circulacion=0
         suma_pagados=0
         total=0
-        contador=0
         for documento in DOCUMENTOS_BANCARIOS:
             lista_documento=[]
             suma_documento=0
             lines=filter(lambda d: d[0] ==documento, account_bank_statement_lines)
             for line in lines:
-                total+=line[1].amount
-                account_move_line=request.env['account.move.line'].search([('statement_line_id','=',line[1].id),('date','<=',account_bank_statement.date)])
-                fecha=line[1].date.strftime('%d/%m/%Y')
-                if account_move_line.date==False:
+                account_move_line=request.env['account.move.line'].search([('statement_line_id','=',line[1].id)])
+                if len(account_move_line)==0:
+                    fecha=line[1].date
+                    move_name=line[1].name
+                    monto=line[1].amount
                     if documento=='CH':
-                        suma_circulacion+=line[1].amount
-                        cheques_circulacion.append({'line_fecha':fecha,'line_name':line[1].name,'line_amount':line[1].amount,'conciliado':'N'})
+                            suma_circulacion+=line[1].amount
+                            cheques_circulacion.append({'line_fecha':fecha,'line_name':move_name,'line_amount':monto,'conciliado':'N'})
                     else:
                         suma_documento+=line[1].amount
-                        lista_documento.append({'line_fecha':fecha,'line_name':line[1].name,'line_amount':line[1].amount,'conciliado':'N'})
+                        lista_documento.append({'line_fecha':fecha,'line_name':move_name,'line_amount':monto,'conciliado':'N'})
                 else:
-                    if documento=='CH':
-                        suma_pagados+=line[1].amount
-                        suma_documento+=line[1].amount
-                        lista_documento.append({'line_fecha':fecha,'line_name':line[1].name,'line_amount':line[1].amount,'conciliado':'S'})
-                    else:
-                        suma_documento+=line[1].amount
-                        lista_documento.append({'line_fecha':fecha,'line_name':line[1].name,'line_amount':line[1].amount,'conciliado':'S'})
-                
+                    for move_line in account_move_line:
+                        if move_line.amount_currency !=0:
+                            monto=move_line.amount_currency
+                        else:
+                            monto=move_line.balance
+
+                        referencia=None
+                        if line[1].ref !=False:
+                            referencia=line[1].ref 
+
+                        total+=monto
+                        fecha=move_line.date.strftime('%d/%m/%Y')
+                        move_name=move_line.move_name +' - '+ move_line.name +' REF - '+referencia
+
+                        mes_movimiento=int(move_line.date.strftime('%m'))
+                        mes_conciliacion=int(account_bank_statement.date.strftime('%m'))
+
+                        #rev
+                        if mes_movimiento > mes_conciliacion: 
+                            if documento=='CH':
+                                suma_pagados+=move_line.balance
+                                suma_documento+=move_line.balance
+                                lista_documento.append({'line_fecha':fecha,'line_name':move_name,'line_amount':monto,'conciliado':'R'})
+                            else:
+                                suma_documento+=move_line.balance
+                                lista_documento.append({'line_fecha':fecha,'line_name':move_name,'line_amount':monto,'conciliado':'R'})
+                        else:
+                            if documento=='CH':
+                                suma_pagados+=move_line.balance
+                                suma_documento+=move_line.balance
+                                lista_documento.append({'line_fecha':fecha,'line_name':move_name,'line_amount':monto,'conciliado':'S'})
+                            else:
+                                suma_documento+=move_line.balance
+                                lista_documento.append({'line_fecha':fecha,'line_name':move_name,'line_amount':monto,'conciliado':'S'})
+            
             conciliacion[documento]=lista_documento
             conciliacion['SUM_'+documento]=suma_documento
             conciliacion['SUM_CHC']=suma_circulacion
             conciliacion['CHC']=cheques_circulacion
-            conciliacion['SALDO_CONTABLE']=total+saldo_inicial
+            conciliacion['SALDO_CONTABLE']=saldo_inicial+total
 
         conciliacion_bancaria.append(conciliacion)
 
-        print("TOTAL--->",total)
-        for conciliacion in conciliacion_bancaria:
-            print(conciliacion['banco'],'\n', conciliacion['diario'],'\n',conciliacion['fecha'],'\n',conciliacion['saldo_inicial'],'\n',conciliacion['saldo_final'])
-            for doc in DOCUMENTOS_BANCARIOS:
-                print(' DOCUMENTO>',doc)
-                for documento in conciliacion[doc]:
-                    contador+=1
-                    print(contador,' >', documento['line_fecha'],'',documento['line_name'],'',documento['line_amount'],'',documento['line_fecha'],'',documento['conciliado'])
+        # print("TOTAL--->",total)
+        # for conciliacion in conciliacion_bancaria:
+        #     print(conciliacion['banco'],'\n', conciliacion['diario'],'\n',conciliacion['fecha'],'\n',conciliacion['saldo_inicial'],'\n',conciliacion['saldo_final'])
+        #     for doc in DOCUMENTOS_BANCARIOS:
+        #         print(' DOCUMENTO>',doc)
+        #         for documento in conciliacion[doc]:
+        #             contador+=1
+        #             print(contador,' >', documento['line_fecha'],'',documento['line_name'],'',documento['line_amount'],'',documento['line_fecha'],'',documento['conciliado'])
         
         return conciliacion_bancaria
 

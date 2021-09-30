@@ -5,8 +5,11 @@
         <t t-call="web.external_layout">
             <t t-set="o" t-value="doc.with_context({'lang': 'en_US'})" />
             <div class="page">
-
+        
                 <style>
+                    .page{
+                        font-size:12px;
+                    }
                     .div-bg {
                         background-color:#3D3D3D;
                         border-radius:20px;
@@ -15,11 +18,13 @@
                         border: 2px solid  #3D3D3D !important;
                         border-radius:20px !important;
                     }
-                    .no-conciliado{
-                        color: red;
-                    }
-
                 </style>
+
+                <t t-if="o.state !='confirm'">
+                    <div style="position:absolute;opacity:0.35;z-index:1000;transform:rotate(300deg);-webkit-transform:rotate(300deg);width:150%;">
+                        <p style="font-size:100px;">BORRADOR</p>
+                    </div>
+                </t>
 
                 <div class="encabezado" t-foreach="o.conciliacion_bancaria()" t-as="conciliacion">
                     <div class="row">
@@ -64,8 +69,7 @@
 
                     <div class="row mt-3 div-bg p-1 mb-1 text-white">
                         <div class="col-2 text-center ">FECHA</div>
-                        <div class="col-6 text-center ">DESCRIPCION</div>
-                        <div class="col-1 text-center">REF</div>
+                        <div class="col-7 text-center ">DESCRIPCION</div>
                         <div class="col-3 text-center">VALOR</div>
                     </div>
 
@@ -78,29 +82,40 @@
                         </div>
 
                         <div class="row" t-foreach="conciliacion[doc[0]]" t-as="documento">
-
-
-                            <t t-if="documento['line_fecha']=='N'">
-                                <div class="col-2 text-left no-conciliado ">
+                            <t t-if="documento['conciliado']=='N'">
+                                <div class="col-2 text-left text-danger ">
                                     <p t-esc="documento['line_fecha']"/>
                                 </div>
-                                <div class="col-7 text-left no-conciliado">
+                                <div class="col-7 text-left text-danger">
                                     <p t-esc="documento['line_name']"/>
                                 </div>
 
-                                <div class="col-3 text-right no-conciliado">
+                                <div class="col-3 text-right text-danger">
                                     <p t-esc="'{0:,.2f}'.format(documento['line_amount'])"/>
                                 </div>
                             </t>
-                            <t t-else="">
-                                <div class="col-2 text-left ">
+                            <t t-if="documento['conciliado']=='R'">
+                                <div class="col-2 text-left text-primary ">
                                     <p t-esc="documento['line_fecha']"/>
                                 </div>
-                                <div class="col-7 text-left">
+                                <div class="col-7 text-left text-primary">
                                     <p t-esc="documento['line_name']"/>
                                 </div>
 
-                                <div class="col-3 text-right">
+                                <div class="col-3 text-right text-primary">
+                                    <p t-esc="'{0:,.2f}'.format(documento['line_amount'])"/>
+                                </div>
+                            </t>
+
+                            <t t-else="">
+                                <div class="col-2 text-left text-dark">
+                                    <p t-esc="documento['line_fecha']"/>
+                                </div>
+                                <div class="col-7 text-left text-dark">
+                                    <p t-esc="documento['line_name']"/>
+                                </div>
+
+                                <div class="col-3 text-right text-dark">
                                     <p t-esc="'{0:,.2f}'.format(documento['line_amount'])"/>
                                 </div>
                             </t>
@@ -212,13 +227,45 @@
                         <div class="col-5 text-right "></div>
                     </div>
 
+
+                    <!-- REFERENCIA DE LOS COLORES (SIGNIFICADO) -->
+                    <div class="row mt-3">
+                        <div class="col-2 text-right ">
+                            <div class="negro bg-dark">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-left bg-dark text-white">
+                            <p>CONCILIADO</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2 text-right ">
+                            <div class="rojo bg-danger">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-left bg-danger text-white">
+                            <p>NO CONCILIADO</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2 text-right ">
+                            <div class="azul bg-primary">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-left bg-primary text-white">
+                            <p>CONCILIADO CONTRA MES POSTERIOR</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </t>
     </template>
-
-
-
 
 
     <!--TEMPLATE [BANK STATEMENT REPORT]-->
