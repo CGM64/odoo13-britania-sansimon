@@ -70,7 +70,7 @@
                                         </td>
                                         <td><t t-esc="fac['serie']"/>-<t t-esc="fac['no']"/></td>
                                         <td>
-                                            <span t-field="o.create_uid.name" />
+                                            <span t-field="o.sale_id.user_id.name" />
                                         </td>
                                     </tr>
                                     <tr  class="thead-dark">
@@ -79,7 +79,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2"><span t-esc="o.partner_id.parent_id.name" /></td>
-                                        <td colspan="2"><span t-esc="o.partner_id.display_street" /></td>
+                                        <td colspan="2"><span t-esc="o.sale_id.partner_invoice_id.display_street" /></td>
                                     </tr>
                                     <tr  class="thead-dark">
                                         <th colspan="2">DIRECCIÓN DE ENTREGA</th>
@@ -87,7 +87,7 @@
                                         <th colspan="1">CORREO</th>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><span t-esc="o.get_direccion()" /></td>
+                                        <td colspan="2"><span t-esc="o.partner_id.display_street" /></td>
                                         <td colspan="1"><span t-esc="o.partner_id.phone" /></td>
                                         <td colspan="1"><span t-esc="o.partner_id.email" /></td>
                                     </tr>
