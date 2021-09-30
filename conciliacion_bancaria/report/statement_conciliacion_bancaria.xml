@@ -154,7 +154,7 @@
 
                     <div class="row">
                         <div class="col-4 text-left ">
-                            <p>(+) DEPOSITOS EN TRANSITO</p>
+                            <p>(+) DEPOSITOS</p>
                         </div>
                         <div class="col-3 text-right ">
                             <p t-esc="'{0:,.2f}'.format(conciliacion['SUM_DP'])"/>
