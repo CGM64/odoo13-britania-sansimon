@@ -88,6 +88,7 @@ class PrintBankStatement(models.Model):
             lines=filter(lambda d: d[0] ==documento, account_bank_statement_lines)
             for line in lines:
                 account_move_line=request.env['account.move.line'].search([('statement_line_id','=',line[1].id)])
+
                 if len(account_move_line)==0:
                     fecha=line[1].date
                     move_name=line[1].name
@@ -156,3 +157,85 @@ class PrintBankStatement(models.Model):
     def lista_documentos_bancarios(self):
         DOCUMENTOS_BANCARIOS=[('CH','CHEQUES'),('CHC','CHEQUES EN CIRCULACION'),('DP','DEPOSITOS'),('NC','NOTAS DE CREDITO'),('ND','NOTAS DE DEBITO')]
         return DOCUMENTOS_BANCARIOS
+
+
+    @api.model
+    def _get_bank_rec_report_data(self, options, journal):
+        # General data + setup
+        rslt = {}
+
+        accounts = journal.default_debit_account_id + journal.default_credit_account_id
+        company = journal.company_id
+        amount_field = 'balance' if (not journal.currency_id or journal.currency_id == journal.company_id.currency_id) else 'amount_currency'
+        states = ['posted']
+        states += options.get('all_entries') and ['draft'] or []
+
+        # Get total already accounted.
+        self._cr.execute('''
+            SELECT SUM(aml.''' + amount_field + ''')
+            FROM account_move_line aml
+            LEFT JOIN account_move am ON aml.move_id = am.id
+            WHERE aml.date <= %s AND aml.company_id = %s AND aml.account_id IN %s
+            AND am.state in %s
+        ''', [self.env.context['date_to'], journal.company_id.id, tuple(accounts.ids), tuple(states)])
+        rslt['total_already_accounted'] = self._cr.fetchone()[0] or 0.0
+
+        # Payments not reconciled with a bank statement line
+        self._cr.execute('''
+            SELECT
+                aml.id,
+                aml.name,
+                aml.ref,
+                aml.date,
+                aml.''' + amount_field + '''                    AS balance,
+                aml.payment_id
+            FROM account_move_line aml
+            LEFT JOIN res_company company                       ON company.id = aml.company_id
+            LEFT JOIN account_account account                   ON account.id = aml.account_id
+            LEFT JOIN account_account_type account_type         ON account_type.id = account.user_type_id
+            LEFT JOIN account_bank_statement_line st_line       ON st_line.id = aml.statement_line_id
+            LEFT JOIN account_payment payment                   ON payment.id = aml.payment_id
+            LEFT JOIN account_journal journal                   ON journal.id = aml.journal_id
+            LEFT JOIN account_move move                         ON move.id = aml.move_id
+            WHERE aml.date <= %s
+            AND aml.company_id = %s
+            AND CASE WHEN journal.type NOT IN ('cash', 'bank')
+                     THEN payment.journal_id
+                     ELSE aml.journal_id
+                 END = %s
+            AND account_type.type = 'liquidity'
+            AND full_reconcile_id IS NULL
+            AND (aml.statement_line_id IS NULL OR st_line.date > %s)
+            AND (company.account_bank_reconciliation_start IS NULL OR aml.date >= company.account_bank_reconciliation_start)
+            AND move.state in %s
+            ORDER BY aml.date DESC, aml.id DESC
+        ''', [self._context['date_to'], journal.company_id.id, journal.id, self._context['date_to'], tuple(states)])
+        rslt['not_reconciled_payments'] = self._cr.dictfetchall()
+
+        # Bank statement lines not reconciled with a payment
+        rslt['not_reconciled_st_positive'] = self.env['account.bank.statement.line'].search([
+            ('statement_id.journal_id', '=', journal.id),
+            ('date', '<=', self._context['date_to']),
+            ('journal_entry_ids', '=', False),
+            ('amount', '>', 0),
+            ('company_id', '=', company.id)
+        ])
+
+        rslt['not_reconciled_st_negative'] = self.env['account.bank.statement.line'].search([
+            ('statement_id.journal_id', '=', journal.id),
+            ('date', '<=', self._context['date_to']),
+            ('journal_entry_ids', '=', False),
+            ('amount', '<', 0),
+            ('company_id', '=', company.id)
+        ])
+
+        # Final
+        last_statement = self.env['account.bank.statement'].search([
+            ('journal_id', '=', journal.id),
+            ('date', '<=', self._context['date_to']),
+            ('company_id', '=', company.id)
+        ], order="date desc, id desc", limit=1)
+        rslt['last_st_balance'] = last_statement.balance_end
+        rslt['last_st_end_date'] = last_statement.date
+
+        return rslt
