@@ -122,34 +122,46 @@
                             </div>
                         </div>
                     </div>
+
+
+                    <!-- REFERENCIA DE LOS COLORES (SIGNIFICADO) -->
+                    <div class="row mt-3">
+                        <div class="col-2 text-right ">
+                            <div class="negro bg-dark">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-left bg-dark text-white">
+                            <p>CONCILIADO</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2 text-right ">
+                            <div class="rojo bg-danger">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-left bg-danger text-white">
+                            <p>NO CONCILIADO</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2 text-right ">
+                            <div class="azul bg-primary">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-left bg-primary text-white">
+                            <p>CONCILIADO CONTRA MES POSTERIOR</p>
+                        </div>
+                    </div>
+
+
+
+
                     <!--DOCUMENTOS NO CONCILIADOS  -->
                     <div style="page-break-after: always"></div>
                     <div class="resumen">
-                        <div class="row ">
-                            <div class="col-12 mt-2 text-center">
-                                <strong>DOCUMENTOS NO CONCILIADOS</strong>
-                            </div>
-                        </div>
-                        <div class="row" t-foreach="conciliacion['not_reconciled_payments']" t-as="d">
-                            <div class="col-2 text-left text-dark ">
-                                <p t-esc="d['date'].strftime('%d/%m/%Y')"/>
-                                <!-- <P t-esc="time.strftime(''%A, %d %B %Y'',time.strptime(d['date'],'%d/%m/%Y'))"/> -->
-                            </div>
-                            <div class="col-7 text-left text-dark ">
-                                <p t-esc="d['name']+' '+d['ref']"/>
-                            </div>
-                            <div class="col-3 text-right text-dark">
-                                <p t-esc="'{0:,.2f}'.format(d['balance'])"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-9 text-right ">
-                                <strong t-esc="'TOTAL NO COCILIADO'"/>
-                            </div>
-                            <div class="col-3 text-right border border-secondary">
-                                <strong t-esc="'{0:,.2f}'.format(conciliacion['no_conciliado'])"/>
-                            </div>
-                        </div>
                         <!-- RESUMEN DE LA CONCILIACION -->
                         <div class="row mt-4">
                             <div class="col-4 text-left ">
@@ -160,15 +172,6 @@
                             </div>
                             <div class="col-5 text-right "></div>
                         </div>
-                        <!-- <div class="row">
-                        <div class="col-4 text-left ">
-                            <p>(-) CHEQUES EN CIRCULACION</p>
-                        </div>
-                        <div class="col-3 text-right ">
-                            <p t-esc="'{0:,.2f}'.format(conciliacion['SUM_CHC'])"/>
-                        </div>
-                        <div class="col-5 text-right "></div>
-                    </div> -->
                         <div class="row">
                             <div class="col-4 text-left ">
                                 <p>(-) CHEQUES</p>
@@ -232,35 +235,66 @@
                             </div>
                             <div class="col-5 text-right "></div>
                         </div>
-                        <!-- REFERENCIA DE LOS COLORES (SIGNIFICADO) -->
-                        <div class="row mt-3">
-                            <div class="col-2 text-right ">
-                                <div class="negro bg-dark">
-                                    <p></p>
-                                </div>
+                        <br/>
+                        <br/>
+                        <!-- DOCUMENTOS NO CONCILIADOS -->
+                        <div class="row ">
+                            <div class="col-12 mt-2 text-center">
+                                <strong>DOCUMENTOS NO CONCILIADOS</strong>
                             </div>
-                            <div class="col-4 text-left bg-dark text-white">
-                                <p>CONCILIADO</p>
+                        </div>
+                        <div class="row" t-foreach="conciliacion['not_reconciled_payments']" t-as="d">
+                            <div class="col-2 text-left text-dark ">
+                                <p t-esc="d['date'].strftime('%d/%m/%Y')"/>
+                                <!-- <P t-esc="time.strftime(''%A, %d %B %Y'',time.strptime(d['date'],'%d/%m/%Y'))"/> -->
+                            </div>
+                            <div class="col-7 text-left text-dark ">
+                                <p t-esc="d['name']+' '+d['ref']"/>
+                            </div>
+                            <div class="col-3 text-right text-dark">
+                                <p t-esc="'{0:,.2f}'.format(d['balance'])"/>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2 text-right ">
-                                <div class="rojo bg-danger">
-                                    <p></p>
-                                </div>
+                            <div class="col-9 text-right ">
+                                <strong t-esc="'TOTAL NO COCILIADO'"/>
                             </div>
-                            <div class="col-4 text-left bg-danger text-white">
-                                <p>NO CONCILIADO</p>
+                            <div class="col-3 text-right border border-secondary">
+                                <strong t-esc="'{0:,.2f}'.format(conciliacion['no_conciliado'])"/>
+                            </div>
+                        </div>
+
+                        <!-- FIRMA -->
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                            <div class="col-4 text-left text-dark ">
+                                <p>(F)______________________________________________________</p>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                            <div class="col-4 text-left text-dark ">
+                                <p>(F)______________________________________________________</p>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-2 text-right ">
-                                <div class="azul bg-primary">
-                                    <p></p>
-                                </div>
+                            <div class="col-1 text-left text-dark ">
                             </div>
-                            <div class="col-4 text-left bg-primary text-white">
-                                <p>CONCILIADO CONTRA MES POSTERIOR</p>
+                            <div class="col-4 text-center text-dark ">
+                                <p t-esc="'Generado por: '+ str(o.env.user.name)"/>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                            <div class="col-4 text-center text-dark ">
+                                <p t-esc="'Revisado por:'"/>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
                             </div>
                         </div>
                     </div>
