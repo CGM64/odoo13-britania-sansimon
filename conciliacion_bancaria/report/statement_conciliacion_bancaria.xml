@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="statement_report_document">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="doc.with_context({'lang': 'en_US'})" />
+            <div class="page">
+                <style>
+                    .page{
+                        font-size:12px;
+                    }
+                    .div-bg {
+                        background-color:#3D3D3D;
+                        border-radius:20px;
+                    }
+                    .border-secondary{
+                        border: 2px solid  #3D3D3D !important;
+                        border-radius:20px !important;
+                    }
+                    .salto {
+                        page-break-inside: avoid !important;
+                        page-break-after: always !important;
+                    }
+                </style>
+
+                <t t-if="o.state !='confirm'">
+                    <div style="position:absolute;opacity:0.35;z-index:1000;transform:rotate(300deg);-webkit-transform:rotate(300deg);width:150%;">
+                        <p style="font-size:100px;">BORRADOR</p>
+                    </div>
+                </t>
+                <div class="encabezado" t-foreach="o.conciliacion_bancaria()" t-as="conciliacion">
+                    <div class="conciliacion">
+                        <div class="row">
+                            <div class="col-12 mt-2 text-center">
+                                <strong>CONCILIACION BANCARIA</strong>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="row">
+                                <div class="col-2">
+                                    <strong>BANCO:</strong>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="conciliacion['banco']"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    <strong>NO. CUENTA:</strong>
+                                </div>
+                                <div class="col-4">
+                                    <p t-esc="conciliacion['cuenta']"/>
+                                </div>
+                                <div class="col-2">
+                                    <strong>DIARIO:</strong>
+                                </div>
+                                <div class="col-4">
+                                    <p t-esc="conciliacion['diario']"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    <strong>FECHA:</strong>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="conciliacion['fecha']"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3 div-bg p-1 mb-1 text-white">
+                            <div class="col-2 text-center ">FECHA</div>
+                            <div class="col-7 text-center ">DESCRIPCION</div>
+                            <div class="col-3 text-center">VALOR</div>
+                        </div>
+                        <div class="detalle" t-foreach="o.lista_documentos_bancarios()" t-as="doc">
+                            <div class="row mt-3 mb-1">
+                                <div class="col-12 text-left ">
+                                    <strong t-esc="doc[1]"/>
+                                </div>
+                            </div>
+                            <div class="row" t-foreach="conciliacion[doc[0]]" t-as="documento">
+                                <t t-if="documento['conciliado']=='N'">
+                                    <div class="col-2 text-left text-danger ">
+                                        <p t-esc="documento['line_fecha']"/>
+                                    </div>
+                                    <div class="col-7 text-left text-danger">
+                                        <p t-esc="documento['line_name']"/>
+                                    </div>
+                                    <div class="col-3 text-right text-danger">
+                                        <p t-esc="'{0:,.2f}'.format(documento['line_amount'])"/>
+                                    </div>
+                                </t>
+                                <t t-if="documento['conciliado']=='R'">
+                                    <div class="col-2 text-left text-primary ">
+                                        <p t-esc="documento['line_fecha']"/>
+                                    </div>
+                                    <div class="col-7 text-left text-primary">
+                                        <p t-esc="documento['line_name']"/>
+                                    </div>
+                                    <div class="col-3 text-right text-primary">
+                                        <p t-esc="'{0:,.2f}'.format(documento['line_amount'])"/>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="col-2 text-left text-dark">
+                                        <p t-esc="documento['line_fecha']"/>
+                                    </div>
+                                    <div class="col-7 text-left text-dark">
+                                        <p t-esc="documento['line_name']"/>
+                                    </div>
+                                    <div class="col-3 text-right text-dark">
+                                        <p t-esc="'{0:,.2f}'.format(documento['line_amount'])"/>
+                                    </div>
+                                </t>
+                            </div>
+                            <div class="row">
+                                <div class="col-9 text-right ">
+                                    <strong t-esc="'TOTAL '+ str(doc[1])"/>
+                                </div>
+                                <div class="col-3 text-right border border-secondary">
+                                    <strong t-esc="'{0:,.2f}'.format(conciliacion['SUM_'+doc[0]])"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- REFERENCIA DE LOS COLORES (SIGNIFICADO) -->
+                    <div class="row mt-3">
+                        <div class="col-2 text-right ">
+                            <div class="negro bg-dark">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-left bg-dark text-white">
+                            <p>CONCILIADO</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2 text-right ">
+                            <div class="rojo bg-danger">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-left bg-danger text-white">
+                            <p>NO CONCILIADO</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2 text-right ">
+                            <div class="azul bg-primary">
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-left bg-primary text-white">
+                            <p>CONCILIADO CONTRA MES POSTERIOR</p>
+                        </div>
+                    </div>
+
+
+
+
+                    <!--DOCUMENTOS NO CONCILIADOS  -->
+                    <div style="page-break-after: always"></div>
+                    <div class="resumen">
+                        <!-- RESUMEN DE LA CONCILIACION -->
+                        <div class="row mt-4">
+                            <div class="col-4 text-left ">
+                                <strong t-esc="'SALDO MES ANTERIOR'"/>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <strong t-esc="'{0:,.2f}'.format(conciliacion['saldo_inicial'])"/>
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-left ">
+                                <p>(-) CHEQUES</p>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <p t-esc="'{0:,.2f}'.format(conciliacion['SUM_CH'])"/>
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-left ">
+                                <p>(+) DEPOSITOS</p>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <p t-esc="'{0:,.2f}'.format(conciliacion['SUM_DP'])"/>
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-left ">
+                                <p>(+) OTROS CREDITOS</p>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <p t-esc="'{0:,.2f}'.format(conciliacion['SUM_NC'])"/>
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row bt">
+                            <div class="col-4 text-left ">
+                                <p>(-) OTROS DEBITOS</p>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <p t-esc="'{0:,.2f}'.format(conciliacion['SUM_ND'])"/>
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-left ">
+                                <strong>SALDO CONTABLE</strong>
+                            </div>
+                            <div class="col-3 text-right border-top">
+                                <strong t-esc="'{0:,.2f}'.format(conciliacion['SALDO_CONTABLE'])"/>
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row bb">
+                            <div class="col-4 text-left ">
+                                <strong>SALDO SEGUN SISTEMA</strong>
+                            </div>
+                            <div class="col-3 text-right border-bottom">
+                                <strong t-esc="'{0:,.2f}'.format(conciliacion['total_already_accounted'])"/>
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-left ">
+                                <strong>DIFERENCIA CON BANCOS</strong>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <strong t-esc="'{0:,.2f}'.format(conciliacion['diferencia_sistema'])"/>
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <!-- DOCUMENTOS NO CONCILIADOS -->
+                        <div class="row ">
+                            <div class="col-12 mt-2 text-center">
+                                <strong>DOCUMENTOS NO CONCILIADOS</strong>
+                            </div>
+                        </div>
+                        <div class="row" t-foreach="conciliacion['not_reconciled_payments']" t-as="d">
+                            <div class="col-2 text-left text-dark ">
+                                <p t-esc="d['date'].strftime('%d/%m/%Y')"/>
+                                <!-- <P t-esc="time.strftime(''%A, %d %B %Y'',time.strptime(d['date'],'%d/%m/%Y'))"/> -->
+                            </div>
+                            <div class="col-7 text-left text-dark ">
+                                <p t-esc="d['name']+' '+d['ref']"/>
+                            </div>
+                            <div class="col-3 text-right text-dark">
+                                <p t-esc="'{0:,.2f}'.format(d['balance'])"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9 text-right ">
+                                <strong t-esc="'TOTAL NO COCILIADO'"/>
+                            </div>
+                            <div class="col-3 text-right border border-secondary">
+                                <strong t-esc="'{0:,.2f}'.format(conciliacion['no_conciliado'])"/>
+                            </div>
+                        </div>
+
+                        <!-- FIRMA -->
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                            <div class="col-4 text-left text-dark ">
+                                <p>(F)_____________________________________________________</p>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                            <div class="col-4 text-left text-dark ">
+                                <p>(F)_____________________________________________________</p>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                            <div class="col-4 text-center text-dark ">
+                                <p t-esc="'Generado por: '+ str(o.env.user.name)"/>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                            <div class="col-4 text-center text-dark ">
+                                <p t-esc="'Revisado por:'"/>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <!--TEMPLATE [BANK STATEMENT REPORT]-->
+    <template id="statement_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="conciliacion_bancaria.statement_report_document"/>
+            </t>
+        </t>
+    </template>
+    <report id="action_statement_report" model="account.bank.statement" string="Conciliacion" report_type="qweb-pdf" name="conciliacion_bancaria.statement_report" file="conciliacion_bancaria.statement_report" paperformat="base.paperformat_us" />
+    <!--FORM BANK STATEMENT-->
+    <record id="view_account_bank_statement_form_inherit" model="ir.ui.view">
+        <field name="name">account.bank.statement.report.form</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="arch" type="xml">
+            <button name="check_confirm_bank" position="after">
+                <button name="print_bank_statement" string="Imprimir" type="object" help="Print in Pdf"/>
+            </button>
+        </field>
+    </record>
+</odoo>
