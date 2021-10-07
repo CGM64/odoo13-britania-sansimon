@@ -251,15 +251,39 @@ class PrintBankStatement(models.Model):
         #     print(conciliacion['total_already_accounted'],'\n', conciliacion['last_st_balance'])
         #     for documento in conciliacion['not_reconciled_payments']:
         #         print(documento)
-
-
-
-# {'id': 82399, 'name': 'SUPP.OUT/2021/0424', 'ref': 'CH-10501 Trabajos realizados en baÃ±os de zona 8.', 'date': datetime.date(2021, 5, 31), 'balance': -4800.0, 'payment_id': 6305}
-        
         return conciliacion_bancaria
 
+    def conciliacion(self):
+        account_bank_statement=request.env['account.bank.statement'].search([('id','=',self.id)])
+        conciliacion={
+                'banco':account_bank_statement.journal_id.bank_id.name,
+                'diario':account_bank_statement.journal_id.name,
+                'cuenta':account_bank_statement.journal_id.bank_account_id.acc_number,
+                'fecha':account_bank_statement.date.strftime('%d/%m/%Y'),
+                'saldo_inicial':account_bank_statement.balance_start,
+                'saldo_final':account_bank_statement.balance_end_real,
+                'moneda':account_bank_statement.currency_id.symbol,
+                'estado':account_bank_statement.state,
+            }
+
+        saldo_final=account_bank_statement.balance_end_real
+        result=[]
+        result.append(self._get_bank_rec_report_data(account_bank_statement))
+        no_conciliado=0
+        for dato in result:
+            conciliacion['diferencia_sistema']=float(saldo_final)-float(dato['total_already_accounted'])            
+            conciliacion['total_already_accounted']=dato['total_already_accounted']
+            conciliacion['last_st_balance']=dato['last_st_balance']
+            conciliacion['not_reconciled_payments']=dato['not_reconciled_payments']
+            for doc in dato['not_reconciled_payments']:
+                no_conciliado+=doc['balance']
+        conciliacion['no_conciliado']=no_conciliado
+        print (conciliacion)
+        return
+           
+
+
     def lista_documentos_bancarios(self):
-        # DOCUMENTOS_BANCARIOS=[('CH','CHEQUES'),('CHC','CHEQUES NO CONCILIADOS'),('DP','DEPOSITOS'),('NC','NOTAS DE CREDITO'),('ND','NOTAS DE DEBITO')]
         DOCUMENTOS_BANCARIOS=[('CH','CHEQUES'),('DP','DEPOSITOS'),('NC','NOTAS DE CREDITO'),('ND','NOTAS DE DEBITO')]
         return DOCUMENTOS_BANCARIOS
 

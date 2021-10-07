@@ -156,11 +156,6 @@
                         </div>
                     </div>
 
-
-
-
-                    <!--DOCUMENTOS NO CONCILIADOS  -->
-                    <div style="page-break-after: always"></div>
                     <div class="resumen">
                         <!-- RESUMEN DE LA CONCILIACION -->
                         <div class="row mt-4">
@@ -235,8 +230,171 @@
                             </div>
                             <div class="col-5 text-right "></div>
                         </div>
+                        <!-- FIRMA -->
                         <br/>
                         <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                            <div class="col-4 text-left text-dark ">
+                                <p>(F)_____________________________________________________</p>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                            <div class="col-4 text-left text-dark ">
+                                <p>(F)_____________________________________________________</p>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                            <div class="col-4 text-center text-dark ">
+                                <p t-esc="'Generado por: '+ str(o.env.user.name)"/>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                            <div class="col-4 text-center text-dark ">
+                                <p t-esc="'Revisado por:'"/>
+                            </div>
+                            <div class="col-1 text-left text-dark ">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div style="page-break-after: always"></div>
+
+                <div class="" t-foreach="o.conciliacion()" t-as="conciliacion">
+                    <div class="conciliacion">
+                        <div class="row">
+                            <div class="col-12 mt-2 text-center">
+                                <strong>CONCILIACION BANCARIA</strong>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="row">
+                                <div class="col-2">
+                                    <strong>BANCO:</strong>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="conciliacion['banco']"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    <strong>NO. CUENTA:</strong>
+                                </div>
+                                <div class="col-4">
+                                    <p t-esc="conciliacion['cuenta']"/>
+                                </div>
+                                <div class="col-2">
+                                    <strong>DIARIO:</strong>
+                                </div>
+                                <div class="col-4">
+                                    <p t-esc="conciliacion['diario']"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    <strong>FECHA:</strong>
+                                </div>
+                                <div class="col-10">
+                                    <p t-esc="conciliacion['fecha']"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="resumen">
+                        <!-- RESUMEN DE LA CONCILIACION -->
+                        <div class="row mt-4">
+                            <div class="col-4 text-left ">
+                                <strong t-esc="'SALDO MES ANTERIOR'"/>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <!-- <strong t-esc="'{0:,.2f}'.format(conciliacion['saldo_inicial'])"/> -->
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-left ">
+                                <p>(-) CHEQUES</p>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <!-- <p t-esc="'{0:,.2f}'.format(conciliacion['SUM_CH'])"/> -->
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-left ">
+                                <p>(+) DEPOSITOS</p>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <!-- <p t-esc="'{0:,.2f}'.format(conciliacion['SUM_DP'])"/> -->
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-left ">
+                                <p>(+) OTROS CREDITOS</p>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <!-- <p t-esc="'{0:,.2f}'.format(conciliacion['SUM_NC'])"/> -->
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row bt">
+                            <div class="col-4 text-left ">
+                                <p>(-) OTROS DEBITOS</p>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <!-- <p t-esc="'{0:,.2f}'.format(conciliacion['SUM_ND'])"/> -->
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-left ">
+                                <strong>SALDO CONTABLE</strong>
+                            </div>
+                            <div class="col-3 text-right border-top">
+                                <!-- <strong t-esc="'{0:,.2f}'.format(conciliacion['SALDO_CONTABLE'])"/> -->
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row bb">
+                            <div class="col-4 text-left ">
+                                <strong>SALDO SEGUN SISTEMA</strong>
+                            </div>
+                            <div class="col-3 text-right border-bottom">
+                                <!-- <strong t-esc="'{0:,.2f}'.format(conciliacion['total_already_accounted'])"/> -->
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 text-left ">
+                                <strong>DIFERENCIA CON BANCOS</strong>
+                            </div>
+                            <div class="col-3 text-right ">
+                                <!-- <strong t-esc="'{0:,.2f}'.format(conciliacion['diferencia_sistema'])"/> -->
+                            </div>
+                            <div class="col-5 text-right "></div>
+                        </div>
+                        
+                        <br/>
+                        <br/>
+
+
                         <!-- DOCUMENTOS NO CONCILIADOS -->
                         <div class="row ">
                             <div class="col-12 mt-2 text-center">
