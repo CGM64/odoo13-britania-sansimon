@@ -489,7 +489,7 @@
                   </tr>
                 </t>
                 <tr>
-                  <td colspan="8" class="factura_encabezado1">TOTAL A PAGAR EN LETRAS<br/><t t-esc="o.detalle_factura()['total']['gran_total_impuestos']"/></td>
+                  <td colspan="8" class="factura_encabezado1">TOTAL A PAGAR EN LETRAS<br/><t t-esc="o.monto_letras(o.detalle_factura()['total']['gran_total_impuestos'])"/></td>
                   <td class="text-center">TOTAL</td>
                   <td class="factura_td_numeros"><span t-esc="o.detalle_factura()['total']['gran_total_impuestos']" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                 </tr>
