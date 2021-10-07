@@ -27,8 +27,6 @@ class PrintBankStatement(models.Model):
     balance_abonos = fields.Monetary('Abonos', compute='_cargos_abonos_balance')
     balance_cargos = fields.Monetary('Cargos', compute='_cargos_abonos_balance')
     
-    
-
     @api.model
     # def _get_bank_rec_report_data(self, options, journal):        
     def _get_bank_rec_report_data(self,account_bank_statement):
@@ -145,7 +143,6 @@ class PrintBankStatement(models.Model):
                         documentos.append(('NC',line))
         return documentos
 
-
     def _procesar_conciliacion(self,account_bank_statement):
         account_bank_statement_lines=self._tipo_documentos(account_bank_statement)
 
@@ -167,7 +164,6 @@ class PrintBankStatement(models.Model):
         suma_pagados=0
         total=0
         
-        lista_auxiliar=[]
         for documento in DOCUMENTOS_BANCARIOS:
             lista_documento=[]
             suma_documento=0
@@ -179,14 +175,6 @@ class PrintBankStatement(models.Model):
                     fecha=line[1].date
                     move_name=line[1].name
                     monto=line[1].amount
-                    print(line[1].id,'-', move_name,'-', monto)
-                    # if documento=='CH':
-                    #     suma_circulacion+=line[1].amount
-                    #     cheques_circulacion.append({'line_fecha':fecha,'line_name':move_name,'line_amount':monto,'conciliado':'N'})
-                        
-                    #     suma_documento+=line[1].amount
-                    #     lista_documento.append({'line_fecha':fecha,'line_name':move_name,'line_amount':monto,'conciliado':'N'})
-                    # else:
                     suma_documento+=line[1].amount
                     lista_documento.append({'line_fecha':fecha,'line_name':move_name,'line_amount':monto,'conciliado':'N'})
                 else:
@@ -230,12 +218,10 @@ class PrintBankStatement(models.Model):
             conciliacion['CHC']=cheques_circulacion
             conciliacion['SALDO_CONTABLE']=saldo_inicial+total
             
-
         result=[]
         result.append(self._get_bank_rec_report_data(account_bank_statement))
         no_conciliado=0
         for dato in result:
-            # conciliacion['diferencia_sistema']=float(dato['last_st_balance'])-float(dato['total_already_accounted'])
             conciliacion['diferencia_sistema']=float(saldo_inicial+total)-float(dato['total_already_accounted'])
             
             conciliacion['total_already_accounted']=dato['total_already_accounted']
@@ -246,14 +232,10 @@ class PrintBankStatement(models.Model):
         conciliacion['no_conciliado']=no_conciliado
            
         conciliacion_bancaria.append(conciliacion)
-
-        # for conciliacion in conciliacion_bancaria:
-        #     print(conciliacion['total_already_accounted'],'\n', conciliacion['last_st_balance'])
-        #     for documento in conciliacion['not_reconciled_payments']:
-        #         print(documento)
         return conciliacion_bancaria
 
     def conciliacion(self):
+        conciliacion_bancaria=[]
         account_bank_statement=request.env['account.bank.statement'].search([('id','=',self.id)])
         conciliacion={
                 'banco':account_bank_statement.journal_id.bank_id.name,
@@ -266,25 +248,64 @@ class PrintBankStatement(models.Model):
                 'estado':account_bank_statement.state,
             }
 
-        saldo_final=account_bank_statement.balance_end_real
         result=[]
         result.append(self._get_bank_rec_report_data(account_bank_statement))
+
         no_conciliado=0
+        saldo_banco=0
+        saldo_sistema=0
+        documentos=[]
+        _notas_credito=['NC','N/C','N/CREDITO']
+
         for dato in result:
-            conciliacion['diferencia_sistema']=float(saldo_final)-float(dato['total_already_accounted'])            
-            conciliacion['total_already_accounted']=dato['total_already_accounted']
+            saldo_banco=dato['last_st_balance']
+            saldo_sistema=dato['total_already_accounted']
             conciliacion['last_st_balance']=dato['last_st_balance']
-            conciliacion['not_reconciled_payments']=dato['not_reconciled_payments']
+            conciliacion['total_already_accounted']=dato['total_already_accounted']
+    
             for doc in dato['not_reconciled_payments']:
                 no_conciliado+=doc['balance']
+                payment_id=request.env['account.payment'].search([('id','=',doc['payment_id'])])
+
+                if payment_id.payment_type=='outbound' and payment_id.payment_method_id.code=='check_printing':
+                    documentos.append(('CH',doc))
+                elif payment_id.payment_type=='outbound' and payment_id.payment_method_id.code=='manual':
+                    documentos.append(('ND',doc))
+                elif payment_id.payment_type=='inbound' and payment_id.payment_method_id.code=='manual':
+                    cadena=doc['ref'].split(' ')
+                    documento=str(cadena[0])
+                    if documento in _notas_credito:
+                        documentos.append(('NC',doc))
+                    else:
+                        documentos.append(('DP',doc))
+
+        saldo_contable=saldo_banco - abs(no_conciliado)
         conciliacion['no_conciliado']=no_conciliado
-        print (conciliacion)
-        return
+        conciliacion['saldo_contable']=saldo_contable
+        conciliacion['diferencia_con_bancos']=saldo_contable-saldo_sistema
+ 
+        for documento in DOCUMENTOS_BANCARIOS:
+            lineas_documento=[]
+            suma_por_documento=0
+            lines=filter(lambda d: d[0] ==documento, documentos)
+            lines_sorted = sorted(lines, key=lambda l : l[1]['date'])
+            for line in lines_sorted:
+                suma_por_documento+=line[1]['balance']
+                lineas_documento.append(line[1])
+                
+            if len(lineas_documento)>0:
+                conciliacion[documento]=lineas_documento
+                conciliacion['SUM_'+documento]=suma_por_documento
+
+        conciliacion_bancaria.append(conciliacion)
+        return conciliacion_bancaria
            
-
-
     def lista_documentos_bancarios(self):
         DOCUMENTOS_BANCARIOS=[('CH','CHEQUES'),('DP','DEPOSITOS'),('NC','NOTAS DE CREDITO'),('ND','NOTAS DE DEBITO')]
+        return DOCUMENTOS_BANCARIOS
+
+    def lista_documentos_bancarios_conciliacion(self):
+        DOCUMENTOS_BANCARIOS=[('CH','CHEQUES EN CIRCULACION'),('DP','DEPOSITOS EN TRANSITO'),('NC','OTROS CREDITOS'),('ND','OTROS DEBITOS')]
         return DOCUMENTOS_BANCARIOS
 
 
