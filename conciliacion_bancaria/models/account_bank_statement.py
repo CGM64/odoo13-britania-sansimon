@@ -329,7 +329,6 @@ class PrintBankStatement(models.Model):
                     else:
                         if ('NC','OTROS CREDITOS') not in documentos:
                             documentos.append(('NC','OTROS CREDITOS'))
-        print('documentos',documentos)
         return documentos
 
    
