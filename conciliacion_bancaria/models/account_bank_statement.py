@@ -292,10 +292,9 @@ class PrintBankStatement(models.Model):
             for line in lines_sorted:
                 suma_por_documento+=line[1]['balance']
                 lineas_documento.append(line[1])
-                
-            if len(lineas_documento)>0:
-                conciliacion[documento]=lineas_documento
-                conciliacion['SUM_'+documento]=suma_por_documento
+
+            conciliacion[documento]=lineas_documento
+            conciliacion['SUM_'+documento]=suma_por_documento
 
         conciliacion_bancaria.append(conciliacion)
         return conciliacion_bancaria
@@ -305,8 +304,32 @@ class PrintBankStatement(models.Model):
         return DOCUMENTOS_BANCARIOS
 
     def lista_documentos_bancarios_conciliacion(self):
-        DOCUMENTOS_BANCARIOS=[('CH','CHEQUES EN CIRCULACION'),('DP','DEPOSITOS EN TRANSITO'),('NC','OTROS CREDITOS'),('ND','OTROS DEBITOS')]
-        return DOCUMENTOS_BANCARIOS
+        account_bank_statement=request.env['account.bank.statement'].search([('id','=',self.id)])
+        result=[]
+        result.append(self._get_bank_rec_report_data(account_bank_statement))
 
+        documentos=[]
+        _notas_credito=['NC','N/C','N/CREDITO']
+
+        for dato in result:   
+            for doc in dato['not_reconciled_payments']:
+                payment_id=request.env['account.payment'].search([('id','=',doc['payment_id'])])
+                if payment_id.payment_type=='outbound' and payment_id.payment_method_id.code=='check_printing':
+                    if ('CH','CHEQUES EN CIRCULACION') not in documentos:
+                        documentos.append(('CH','CHEQUES EN CIRCULACION'))
+                elif payment_id.payment_type=='outbound' and payment_id.payment_method_id.code=='manual':
+                    if ('ND','OTROS DEBITOS') not in documentos:
+                        documentos.append(('ND','OTROS DEBITOS'))
+                elif payment_id.payment_type=='inbound' and payment_id.payment_method_id.code=='manual':
+                    cadena=doc['ref'].split(' ')
+                    documento=str(cadena[0])
+                    if documento in _notas_credito:
+                        if ('NC','OTROS CREDITOS') not in documentos:
+                            documentos.append(('NC','OTROS CREDITOS'))
+                    else:
+                        if ('NC','OTROS CREDITOS') not in documentos:
+                            documentos.append(('NC','OTROS CREDITOS'))
+        print('documentos',documentos)
+        return documentos
 
    

@@ -428,6 +428,8 @@
                                 <strong t-esc="'{0:,.2f}'.format(conciliacion['SUM_'+doc[0]])"/>
                             </div>
                         </div>
+
+
                     </div>
 
                     <!-- FIRMA -->
