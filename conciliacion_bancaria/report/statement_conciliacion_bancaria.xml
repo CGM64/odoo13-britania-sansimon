@@ -251,7 +251,7 @@
                             <div class="col-4 text-left text-dark ">
                                 <p>(F)_____________________________________________________</p>
                             </div>
-                            <div class="col-1 text-left text-dark ">
+                            <div class="col-2 text-left text-dark ">
                             </div>
                             <div class="col-4 text-left text-dark ">
                                 <p>(F)_____________________________________________________</p>
@@ -265,7 +265,7 @@
                             <div class="col-4 text-center text-dark ">
                                 <p t-esc="'Generado por: '+ str(o.env.user.name)"/>
                             </div>
-                            <div class="col-1 text-left text-dark ">
+                            <div class="col-2 text-left text-dark ">
                             </div>
                             <div class="col-4 text-center text-dark ">
                                 <p t-esc="'Revisado por:'"/>
@@ -442,13 +442,14 @@
                     <br/>
                     <br/>
                     <div>
+
                         <div class="row">
                             <div class="col-1 text-left text-dark ">
                             </div>
                             <div class="col-4 text-left text-dark ">
                                 <p>(F)_____________________________________________________</p>
                             </div>
-                            <div class="col-1 text-left text-dark ">
+                            <div class="col-2 text-left text-dark ">
                             </div>
                             <div class="col-4 text-left text-dark ">
                                 <p>(F)_____________________________________________________</p>
@@ -456,13 +457,14 @@
                             <div class="col-1 text-left text-dark ">
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-1 text-left text-dark ">
                             </div>
                             <div class="col-4 text-center text-dark ">
                                 <p t-esc="'Elaborado por: '+ str(o.env.user.name)"/>
                             </div>
-                            <div class="col-1 text-left text-dark ">
+                            <div class="col-2 text-left text-dark ">
                             </div>
                             <div class="col-4 text-center text-dark ">
                                 <p t-esc="'Revisado por:'"/>
