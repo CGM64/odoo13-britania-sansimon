@@ -9,7 +9,7 @@ class SaleOrderInherit(models.Model):
 
     def action_confirm(self):
         rslt=super(SaleOrderInherit,self).action_confirm()
-        if self.team_id.user_id.id == self.env.user.id:
+        if self.user_has_groups('sansimon.sale_group_acceso_desc'):
             porcentaje_maximo=self.team_id.porcentaje_maximo_lider
         else:
             porcentaje_maximo=self.team_id.porcentaje_maximo
