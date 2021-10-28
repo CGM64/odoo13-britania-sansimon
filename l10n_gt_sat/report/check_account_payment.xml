@@ -439,7 +439,7 @@
         <tr>
           <td class="td_brit">&#160;</td>
           <td class="td_brit">Empresa:</td>
-          <td class="td_brit" colspan="5"><span t-field="o.company_id.name"/></td>
+          <td class="td_brit" colspan="5"><span t-field="o.company_id.company_registry"/></td>
         </tr>
         <tr>
           <td class="td_brit">&#160;</td>
