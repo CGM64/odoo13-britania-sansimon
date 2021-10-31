@@ -14,6 +14,25 @@
           <xpath expr="//field[@name='operations']/tree/field[@name='product_id']" position="replace">
             <field name="product_id" options="{'no_create': True}" domain="[('type', '!=', 'service'),('is_vehicle','=',False)]" />
           </xpath>
+
+          <xpath expr="//field[@name='user_id']" position="after">
+            <field name="tipo_orden" options="{'no_create': True, 'no_edit': True}"/>
+          </xpath>
+
+          <xpath expr="//field[@name='location_id']" position="before">
+            <field name="create_date" widget='date' readonly="1"/>
+          </xpath>
+
+          <xpath expr="//field[@name='operations']/form/group/group/field[@name='tax_id']" position="before">
+            <label for="discount" groups="product.group_discount_per_so_line"/>
+            <div name="discount" groups="product.group_discount_per_so_line">
+                <field name="discount" class="oe_inline"/> %%
+            </div>
+          </xpath>
+
+          <xpath expr="//field[@name='operations']/tree/field[@name='tax_id']" position="before">
+            <field name="discount" string="Desc.%" groups="product.group_discount_per_so_line" optional="show"/>
+          </xpath>
         </data>
       </field>
     </record>
@@ -66,22 +85,6 @@
 
   <menuitem id="menu_repair_type_menu_list" name="Tipos de ordenes de reparación" action="repair_type_action" parent="repair.repair_menu_config" groups="base.group_user" />
 
-    <!-- Colacando campo en vista reparacion-->
-    <record model="ir.ui.view" id="view_repair_line_form_bri">
-      <field name="name">repair.form.type</field>
-      <field name="model">repair.order</field>
-      <field name="inherit_id" ref="repair.view_repair_order_form"/>
-      <field name="arch" type="xml">
-        <data>
-          <xpath expr="//field[@name='user_id']" position="after">
-            <field name="tipo_orden" options="{'no_create': True, 'no_edit': True}"/>
-          </xpath>
-          <xpath expr="//field[@name='location_id']" position="before">
-            <field name="create_date" widget='date' readonly="1"/>
-          </xpath>
-        </data>
-      </field>
-    </record>
 
     <record model="ir.ui.view" id="view_repair_order_tree_inherit">
       <field name="name">repair.tree</field>

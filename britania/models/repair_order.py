@@ -99,6 +99,7 @@ class RepairLine(models.Model):
     _inherit = "repair.line"
 
     amount_total = fields.Float(string="Total", compute="_get_amount_total")
+    discount = fields.Float(string='Descuento (%)', digits='Discount', default=0.0)
 
     @api.onchange('type', 'repair_id')
     def onchange_operation_type(self):
