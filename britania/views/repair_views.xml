@@ -23,14 +23,18 @@
             <field name="create_date" widget='date' readonly="1"/>
           </xpath>
 
-          <xpath expr="//field[@name='operations']/form/group/group/field[@name='tax_id']" position="before">
+          <xpath expr="//field[@name='operations']/form/group/group/field[@name='tax_id']" position="after">
             <label for="discount" groups="product.group_discount_per_so_line"/>
             <div name="discount" groups="product.group_discount_per_so_line">
                 <field name="discount" class="oe_inline"/> %%
             </div>
           </xpath>
 
-          <xpath expr="//field[@name='operations']/tree/field[@name='tax_id']" position="before">
+          <xpath expr="//field[@name='operations']/tree/field[@name='tax_id']" position="after">
+            <field name="discount" string="Desc.%" groups="product.group_discount_per_so_line" optional="show"/>
+          </xpath>
+
+          <xpath expr="//field[@name='fees_lines']/tree/field[@name='tax_id']" position="after">
             <field name="discount" string="Desc.%" groups="product.group_discount_per_so_line" optional="show"/>
           </xpath>
         </data>
