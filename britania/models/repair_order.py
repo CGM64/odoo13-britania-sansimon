@@ -33,8 +33,9 @@ class repairOrder(models.Model):
     _inherit = "repair.order"
 
     #REVISAR
-    guarantee_limit = fields.Date(default=datetime.now())
-    pricelist_id = fields.Many2one(default=lambda self:self.env.ref('britania.product_pricelist_04').id)
+    # guarantee_limit = fields.Date(default=datetime.now())
+    guarantee_limit = fields.Date('Warranty Expiration', default=datetime.today(),states={'draft': [('readonly', True)]})
+    pricelist_id = fields.Many2one(default=lambda self:self.env.ref('britania.product_pricelist_04').id,  readonly=True)
 
     @api.model
     def _default_stock_location(self):
@@ -357,19 +358,15 @@ class RepairLine(models.Model):
             self.location_dest_id = False
         elif self.type == 'add':
             self.onchange_product_id()
-            args = self.repair_id.company_id and [
-                ('company_id', '=', self.repair_id.company_id.id)] or []
+            args = self.repair_id.company_id and [('company_id', '=', self.repair_id.company_id.id)] or []
             warehouse = self.env['stock.warehouse'].search(args, limit=1)
             self.location_id = ALMACEN_TALLER_DEFAULT
-            self.location_dest_id = self.env['stock.location'].search(
-                [('usage', '=', 'production')], limit=1).id
+            self.location_dest_id = self.env['stock.location'].search([('usage', '=', 'production')], limit=1).id
         else:
             self.price_unit = 0.0
             self.tax_id = False
-            self.location_id = self.env['stock.location'].search(
-                [('usage', '=', 'production')], limit=1).id
-            self.location_dest_id = self.env['stock.location'].search(
-                [('scrap_location', '=', True)], limit=1).id
+            self.location_id = self.env['stock.location'].search([('usage', '=', 'production')], limit=1).id
+            self.location_dest_id = self.env['stock.location'].search([('scrap_location', '=', True)], limit=1).id
 
     def _get_amount_total(self):
         for line in self:
