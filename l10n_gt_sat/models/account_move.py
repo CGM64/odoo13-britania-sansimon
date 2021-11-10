@@ -11,6 +11,7 @@ class AccountMove(models.Model):
     @api.onchange('currency_id')
     def _recalcular_isr(self):
         self._recompute_tax_lines(recompute_tax_base_amount=False)
+        self._recompute_dynamic_lines(recompute_tax_base_amount=True)
     
     def compute_isr(self,amount_currency,tipo_dte):
         sing = -1
@@ -188,12 +189,15 @@ class AccountMove(models.Model):
 
         # ==== Process taxes_map ====
         for taxes_map_entry in taxes_map.values():
-            
             #Inicia Calculo ISR
+            tasa = 1
             if taxes_map_entry['tax_line'] and taxes_map_entry['tax_line'].tax_line_id:
                 if taxes_map_entry['tax_line'].tax_line_id.amount_type == 'code' and \
                     taxes_map_entry['tax_line'].tax_line_id.impuesto_sat == 'isr':
+                    if taxes_map_entry['grouping_dict']['currency_id'] and taxes_map_entry['grouping_dict']['currency_id'] != self.company_id.currency_id.id:
+                        tasa = (taxes_map_entry['balance'] / taxes_map_entry['amount_currency'])
                     taxes_map_entry['balance'] = self.compute_isr(taxes_map_entry['tax_base_amount'],self.journal_id.tipo_documento)
+                    taxes_map_entry['amount_currency'] = (taxes_map_entry['balance']) / tasa
              #Termina Calculo ISR
             
             # Don't create tax lines with zero balance.
