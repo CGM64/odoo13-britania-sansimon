@@ -3,7 +3,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
 from odoo.http import request
-
+from datetime import datetime,date
 ALMACEN_TALLER_DEFAULT = 30
 
 
@@ -29,9 +29,12 @@ class RepairType(models.Model):
         ('name_uniq', 'unique (name)', "Ya existe un registro con este nombre!"),
     ]
 
-
 class repairOrder(models.Model):
     _inherit = "repair.order"
+
+    #REVISAR
+    guarantee_limit = fields.Date(default=datetime.now())
+    pricelist_id = fields.Many2one(default=lambda self:self.env.ref('britania.product_pricelist_04').id)
 
     @api.model
     def _default_stock_location(self):

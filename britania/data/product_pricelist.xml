@@ -19,5 +19,11 @@
             <field name="discount_policy">with_discount</field>
             <field name="active">true</field>
         </record>
+        <record id="product_pricelist_04" model="product.pricelist">
+            <field name="name">Al Costo</field>
+            <field name="currency_id">170</field>
+            <field name="discount_policy">with_discount</field>
+            <field name="active">true</field>
+        </record>
     </data>
 </odoo>
