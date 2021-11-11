@@ -32,10 +32,30 @@ class RepairType(models.Model):
 class repairOrder(models.Model):
     _inherit = "repair.order"
 
-    #REVISAR
-    # guarantee_limit = fields.Date(default=datetime.now())
+    #CALCULANDO EL COSTO PARA COLOCARLO EN EL INFORME DE REPARACIONES
     guarantee_limit = fields.Date('Warranty Expiration', default=datetime.today(),states={'draft': [('readonly', True)]})
     pricelist_id = fields.Many2one(default=lambda self:self.env.ref('britania.product_pricelist_04').id,  readonly=True)
+    costo = fields.Float(string="Costo",store=True, compute="_compute_costo")
+
+    @api.depends('pricelist_id','product_qty','fees_lines.product_id','fees_lines.product_uom_qty','fees_lines.price_unit','fees_lines.discount',)
+    def _compute_costo(self):
+        print("--------------------------------------------------")
+        print("test de que llego al _compute_standard_price ")
+        print("--------------------------------------------------")
+        costo = sum(line.costo for line in self.fees_lines)
+        print("Costo> ",costo)
+        self.costo=costo
+
+    #Función para asignar el costo a las órdenes que no tienen.
+    def asignar_costo(self):
+        print("--------------------------Entro a asignar costo--------------------------")
+        repair_orders=self.env['repair.order'].search([('costo','=',0)])
+        for order in repair_orders:
+            print("Orden de reparacion",order.name)
+            costo=0
+            for line in order.fees_lines:
+                costo+= (line.product_id.product_tmpl_id.standard_price) * (line.product_uom_qty)
+                print('     >',line.product_id.product_tmpl_id.standard_price,' Producto ', line.product_id.name, ' Tipo', line.product_id.type)
 
     @api.model
     def _default_stock_location(self):
@@ -240,14 +260,26 @@ class repairOrder(models.Model):
 
         return dict((repair.id, repair.invoice_id.id) for repair in repairs)
 
-
-
-
 class RepairFee(models.Model):
     _inherit = "repair.fee"
 
     amount_total = fields.Float(string="Total", compute="_get_amount_total")
     discount = fields.Float(string='Descuento (%)', digits='Discount', default=0.0)
+
+    costo = fields.Float(string="Costo",store=True, compute="_compute_costo")
+    
+    @api.depends('product_id','product_uom_qty','price_unit','discount',)
+    def _compute_costo(self):
+        print("---------------------------------------------")
+        print("test de que llego al _compute_costo ")
+        print("---------------------------------------------")
+        costo=0
+        for line in self:
+            costo+= ((line.product_id.product_tmpl_id.standard_price) * (line.product_uom_qty)) - ((line.discount/100) * ((line.product_id.product_tmpl_id.standard_price) * (line.product_uom_qty)))
+            print(line.product_id.product_tmpl_id.standard_price,' Producto ', line.product_id.name)
+        print("Costo Total=", costo)
+        self.costo=costo
+
 
     def _get_amount_total(self):
         for fee in self:
