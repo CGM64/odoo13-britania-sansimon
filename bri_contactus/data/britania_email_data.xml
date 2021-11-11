@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <template id="mail_template_cotizacion">
+            <div>
+                <h4 class="font-italic">Hola, <t t-esc="contact_name"/></h4>
+                <p >
+                    <br/><br/>
+                    Hemos recibido su solicitud.<br/>
+                    Pronto alguien se comunicara con usted para los detalles de la cotizacion del producto: <t t-esc="product_name"/> <br/>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam hendrerit fermentum magna.<br/>
+                    Vivamus commodo aliquam massa aliquet ultricies.<br/><br/>
+                </p>
+                <p>
+                    <br/><br/>
+                    Gracias,<br/>
+                </p>
+                <p class="text-uppercase font-weight-bolder"><b><t t-esc="company_name"/></b></p>
+            </div>
+        </template>
+    </data>
+</odoo>

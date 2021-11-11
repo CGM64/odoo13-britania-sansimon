@@ -19,6 +19,7 @@
     ],
     'data': [
         'security/ir.model.access.csv',
+        'data/britania_email_data.xml',
         'views/contact_page.xml',
         'views/crm_lead_view.xml',
         'data/britania_crm_data.xml',
