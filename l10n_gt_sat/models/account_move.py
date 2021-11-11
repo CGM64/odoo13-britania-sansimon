@@ -38,7 +38,6 @@ class AccountMove(models.Model):
             grouping_dict = taxes_map_entry['grouping_dict']
             tax_base_amount = tax_base_amount_currency = taxes_map_entry['tax_base_amount']
             amount = taxes_map_entry['amount']
-            #balance = taxes_map_entry['balance']
             impuesto = False
                         
             if not taxes_map_entry['tax_line']:
