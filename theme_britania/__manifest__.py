@@ -3,6 +3,7 @@
     'name': "Tema Britania",
     'description': """
     """,
+    'author': "Integratec",
     'category': 'Theme',
     'version': '1.0',
     'depends': ['website'],
