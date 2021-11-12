@@ -1,0 +1,194 @@
+<odoo>
+    <template id="custom_navbar" inherit_id="portal.frontend_layout">
+        <xpath expr="//div[@id='wrapwrap']/header/nav" position="replace">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand logo" href="/">
+                    <img t-att-src="'/logo.png?company=%s' % res_company.id" t-att-alt="'Logo of %s' % res_company.name" t-att-title="res_company.name"/>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarbritania" aria-controls="navbarbritania" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarbritania">
+                    <ul class="navbar-nav mr-auto text-sm">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">MOTOS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">ACCESORIOS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">ROPA</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">OWNERS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">FOR THE RIDE</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto text-sm">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Oferta</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Concesionarios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Configurar Moto</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Prueba de conducción</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contactanos">Contáctenos</a>
+                        </li>
+                        <li class="nav-item">
+                            <ul class="nav navbar-nav ml-auto text-right" id="top_menu">
+                                <li class="nav-item divider" t-ignore="true" t-if="not user_id._is_public()"/>
+                                <li class="nav-item dropdown" t-ignore="true" t-if="not user_id._is_public()">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                        <b>
+                                            <span t-esc="user_id.name[:23] + '...' if user_id.name and len(user_id.name) &gt; 25 else user_id.name"/>
+                                        </b>
+                                    </a>
+                                    <div class="dropdown-menu js_usermenu" role="menu">
+                                        <a id="o_logout" class="dropdown-item" t-attf-href="/web/session/logout?redirect=/" role="menuitem">Logout</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </xpath>
+        
+        <xpath expr="//a[@id='o_logout']" position="before">
+            <a href="/my/home" role="menuitem" class="dropdown-item">My Account</a>
+        </xpath>
+    </template>
+
+    <template id="custom_footer" inherit_id="portal.frontend_layout">
+        <xpath expr="//div[@id='wrapwrap']/footer/div" position="replace">
+            <div class="border-top border-dark mt-5 ">
+                <div class="container mt-5">
+                    <div class="row text-uppercase">
+                        <div class="col-12 col-md-3">
+                            <ul class="list-group list-group-flush text-sm font-weight-bold bg-light">
+                                <li class="list-group-item bg-light">MOTOCICLETAS</li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">ADVENTURE</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">CLASSICS</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">ROADSTERS</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">ROCKET</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <ul class="list-group list-group-flush text-sm font-weight-bold bg-light">
+                                <li class="list-group-item bg-light">MUNDO TRIUMPH</li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">VISITOR EXPERIENCE EN HINCKLEY</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">SPAIN ADVENTURE EXPERIENCE</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">NUESTRA HISTORIA</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">DRG</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">NOTICIAS Y EVENTOS</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <ul class="list-group list-group-flush text-sm font-weight-bold">
+                                <li class="list-group-item bg-light">SERVICIOS</li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">GENUINE PARTS</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">MY TRIUMPH FAQ</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">NUESTRA HISTORIA</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <ul class="list-group list-group-flush text-sm font-weight-bold">
+                                <li class="list-group-item bg-light">¡EN MARCHA!</li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">SOLICITAR PRUEBA</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">BUSCADOR DE CONCESIONARIOS</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">CONFIGURAR MOTO</a>
+                                </li>
+                                <li class="list-group-item bg-light">
+                                    <a href="#" class="text-muted">DESCARGAR CATÁLOGO</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-5 border-top border-dark">
+                    <div class="row">
+                        <div class="row mb-5">
+                            <div class="col-12 col-md-9">
+                                <div class="col-12">
+                                    <ul class="list-inline text-sm">
+                                        <li class="list-inline-item py-3">
+                                            <a href="#" class="text-muted">Contacto</a>
+                                        </li>
+                                        <li class="list-inline-item py-3">
+                                            <a href="#" class="text-muted">Política de Privacidad</a>
+                                        </li>
+                                        <li class="list-inline-item py-3">
+                                            <a href="#" class="text-muted">Cookies</a>
+                                        </li>
+                                        <li class="list-inline-item py-3">
+                                            <a href="#" class="text-muted">Términos y condiciones</a>
+                                        </li>
+                                        <li class="list-inline-item py-3">
+                                            <a href="#" class="text-muted">Mapa del sitio</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-12">
+                                    <p class="text-danger text-sm">* NOTA: Precios vigentes para modelos 2020 y 2021, en Moneda
+                                    Nacional, IVA Incluido. Aplican
+                                    restricciones. Precios pueden variar sin previo aviso. Consulte previamente a los
+                                    distribuidores
+                                    Oficiales Triumph. Algunos colores con costo adicional. Las fotografías se muestran
+                                    solo para
+                                    fines ilustrativos.</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3 py-3">
+                                <p class="text-muted text-sm">© 2021 Triumph Motorcycles</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="delete_default_copyright_footer" inherit_id="portal.frontend_layout">
+        <xpath expr="//div[@id='wrapwrap']/footer/div[@class='o_footer_copyright']" position="replace">
+            <div></div>
+        </xpath>
+    </template>
+</odoo>

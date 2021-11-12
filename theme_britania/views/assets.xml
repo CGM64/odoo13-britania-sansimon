@@ -1,9 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="assets_frontend" name="style" inherit_id="website.assets_frontend">
-        <xpath expr="link[last()]" position="after">
-            <!--link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" /-->
-            <link rel="stylesheet" type="text/css" href="/theme_britania/static/src/scss/custom.scss" />
-            <script src="/theme_britania/static/src/js/index.js"></script>
+    <template id="britania_assets_frontend" inherit_id="web_editor.assets_frontend" name="Britania Assets" priority="15">
+        <xpath expr="//link[last()]" position="after">
+            <link rel="stylesheet" type="text/css" href="/theme_britania/static/src/scss/custom.scss"/>
+        </xpath>
+        <xpath expr="//script[last()]" position="after">
+            <script type="text/javascript" src="/theme_britania/static/src/js/index.js"></script>
         </xpath>
     </template>
 </odoo>

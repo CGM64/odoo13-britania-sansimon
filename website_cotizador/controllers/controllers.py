@@ -10,7 +10,7 @@ from odoo.addons.portal.controllers.portal import CustomerPortal #, pager as por
 class WebsiteCotizador(CustomerPortal):
 
     @http.route('/cliente/cotizacion/<int:order_id>', type='http', auth='public', website=True)
-    def index(self, order_id, report_type=None, access_token=None, message=False, download=False, **kw):
+    def cliente_cotizacion(self, order_id, report_type=None, access_token=None, message=False, download=False, **kw):
         # SaleOrder = request.env['sale.order']
         # qs = SaleOrder.search([])
         # for q in qs:
@@ -71,7 +71,7 @@ class WebsiteCotizador(CustomerPortal):
         #return http.request.render('cotizacion.index')
 
     @http.route('/sitio/prueba/', type='http', auth='public', website=True)
-    def index(self, **kw):
+    def sitio_prueba(self, **kw):
         
         return request.render('website_cotizador.presentacion')
 

@@ -32,6 +32,10 @@
     right: 5%;
 }
 
+.btn-banner:hover {
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
 .fadeIn {
     animation: fadeIn ease var(--d-animation-carousel);
     -webkit-animation: fadeIn ease var(--d-animation-carousel);

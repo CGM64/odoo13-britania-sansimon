@@ -5,13 +5,13 @@
     """,
     'category': 'Theme',
     'version': '1.0',
-    'depends': ['website'],
+    'depends': ['website', 'website_theme_install'],
 
     # templates
     'data': [
-        #'views/options.xml',
-        #'views/snippets.xml',
         'views/assets.xml',
+        #'views/options.xml',
+        'views/snippets.xml',
     ],
 
     # demo pages
