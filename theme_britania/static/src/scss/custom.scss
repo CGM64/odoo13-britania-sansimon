@@ -5,3 +5,263 @@
     background: black;
     color: white;
 }
+
+:root {
+	--d-animation-carousel: 3s;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.carousel-content {
+    position: absolute;
+    bottom: 45%;
+    z-index: 2s;
+    color: white;
+    text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.6);
+}
+
+.c-content-left {
+    left: 5%;
+}
+
+.c-content-right {
+    right: 5%;
+}
+
+.fadeIn {
+    animation: fadeIn ease var(--d-animation-carousel);
+    -webkit-animation: fadeIn ease var(--d-animation-carousel);
+    -moz-animation: fadeIn ease var(--d-animation-carousel);
+    -o-animation: fadeIn ease var(--d-animation-carousel);
+    -ms-animation: fadeIn ease var(--d-animation-carousel);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+}
+}
+
+.text-p-responsive {
+    font-size: 1vw;
+}
+
+.text-h-responsive {
+    font-weight: bold;
+    font-size: 2vw;
+}
+
+.text-responsive-2 {
+    font-size: 2vw;
+}
+
+.text-responsive-3 {
+    font-size: 3vw;
+}
+
+.text-responsive-4 {
+    font-size: 4vw;
+}
+
+.text-responsive-5 {
+    font-size: 5vw;
+}
+
+.text-responsive-6 {
+    font-size: 6vw;
+}
+
+.text-responsive-7 {
+    font-size: 7vw;
+}
+
+.text-responsive-8 {
+    font-size: 8vw;
+}
+
+.text-responsive-10 {
+    font-size: 50vh;
+}
+
+
+
+/* ---- ----- ----- Contenedor Controles ----- ----- ----- */
+.contenedor-controles {
+	display: flex;
+	justify-content: end;
+	align-items: end;
+}
+
+.contenedor-controles h3 {
+	color: #fff;
+	font-size: 30px;
+}
+
+.contenedor-controles .indicadores button {
+	background: black;
+	height: 3px;
+	width: 10px;
+	cursor: pointer;
+	border: none;
+	margin-right: 2px;
+}
+
+.contenedor-controles .indicadores button:hover,
+.contenedor-controles .indicadores button.activo {
+	background: red;
+}
+
+
+/* ---- ----- ----- Contenedor Principal y Flechas ----- ----- ----- */
+.custom-carousel {
+	margin-bottom: 70px;
+}
+
+.custom-carousel .contenedor-principal {
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+
+.custom-carousel .contenedor-principal .flecha-izquierda,
+.custom-carousel .contenedor-principal .flecha-derecha {
+	position: absolute;
+	border: none;
+	background: rgba(0,0,0,0.3);
+	font-size: 40px;
+	height: 30%;
+	top: calc(60% - 25%);
+	line-height: 40px;
+	width: 50px;
+	color: #fff;
+	cursor: pointer;
+	z-index: 500;
+	transition: .2s ease all;
+}
+
+.custom-carousel .contenedor-principal .flecha-izquierda:hover,
+.custom-carousel .contenedor-principal .flecha-derecha:hover {
+	background: rgba(0,0,0, .9);
+}
+
+.custom-carousel .contenedor-principal .flecha-izquierda {
+	left: 0;
+}
+
+.custom-carousel .contenedor-principal .flecha-derecha {
+	right: 0;
+}
+
+/* ---- ----- ----- Carousel ----- ----- ----- */
+.custom-carousel .contenedor-carousel {
+	width: 100%;
+	padding: 10px 0px;
+	overflow: hidden;
+	scroll-behavior: smooth;
+}
+
+.custom-carousel .contenedor-carousel .carousel {
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+.custom-carousel .contenedor-carousel .carousel .custom-carousel-item {
+	min-width: calc(100%/3);
+    transition: .3s ease all;
+    padding: 25px;
+    /*box-shadow: 5px 5px 10px rgba(0,0,0, .3);*/
+}
+
+.custom-carousel .contenedor-carousel .carousel .custom-carousel-item.hover {
+	transform: scale(1.2);
+    z-index: 3;
+	transform-origin: center;
+}
+
+.custom-carousel .contenedor-carousel .carousel .custom-carousel-item .carousel-item-content {
+	width: 100%; 
+	vertical-align: top;
+}
+
+/* ---- ----- ----- Media Queries ----- ----- ----- */
+@media screen and (max-width: 800px) {
+	
+    .custom-carousel .contenedor-carousel {
+		overflow: visible;
+	}
+
+	.custom-carousel .contenedor-carousel .carousel {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+	}
+
+	.custom-carousel .indicadores,
+	.custom-carousel .flecha-izquierda,
+	.custom-carousel .flecha-derecha {
+		display: none;
+	}
+}
+
+/*@media (min-width: 576px) {
+    .custom-carousel .contenedor-carousel {
+		overflow: visible;
+	}
+
+	.custom-carousel .contenedor-carousel .carousel {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20px;
+	}
+
+	.custom-carousel .indicadores,
+	.custom-carousel .flecha-izquierda,
+	.custom-carousel .flecha-derecha {
+		display: none;
+	}
+}
+
+
+@media (min-width: 768px) {
+    .custom-carousel .contenedor-carousel {
+		overflow: visible;
+	}
+
+	.custom-carousel .contenedor-carousel .carousel {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20px;
+	}
+
+	.custom-carousel .indicadores,
+	.custom-carousel .flecha-izquierda,
+	.custom-carousel .flecha-derecha {
+		display: none;
+	}
+}
+
+
+@media (min-width: 992px) {
+
+	.custom-carousel .contenedor-carousel .carousel {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+	}
+}
+
+
+@media (min-width: 1200px) {
+    .custom-carousel .contenedor-carousel .carousel {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+	}
+}*/

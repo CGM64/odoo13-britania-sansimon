@@ -70,6 +70,10 @@ class WebsiteCotizador(CustomerPortal):
         return request.render('website_cotizador.index', values)
         #return http.request.render('cotizacion.index')
 
+    @http.route('/sitio/prueba/', type='http', auth='public', website=True)
+    def index(self, **kw):
+        
+        return request.render('website_cotizador.presentacion')
 
 #     @http.route('/website_cotizador/website_cotizador/objects/', auth='public')
 #     def list(self, **kw):
