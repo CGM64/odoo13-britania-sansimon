@@ -69,21 +69,3 @@ class WebsiteCotizador(CustomerPortal):
 
         return request.render('website_cotizador.index', values)
         #return http.request.render('cotizacion.index')
-
-    @http.route('/sitio/prueba/', type='http', auth='public', website=True)
-    def sitio_prueba(self, **kw):
-        
-        return request.render('website_cotizador.presentacion')
-
-#     @http.route('/website_cotizador/website_cotizador/objects/', auth='public')
-#     def list(self, **kw):
-#         return http.request.render('website_cotizador.listing', {
-#             'root': '/website_cotizador/website_cotizador',
-#             'objects': http.request.env['website_cotizador.website_cotizador'].search([]),
-#         })
-
-#     @http.route('/website_cotizador/website_cotizador/objects/<model("website_cotizador.website_cotizador"):obj>/', auth='public')
-#     def object(self, obj, **kw):
-#         return http.request.render('website_cotizador.object', {
-#             'object': obj
-#         })

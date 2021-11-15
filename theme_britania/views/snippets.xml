@@ -1,72 +1,24 @@
 <odoo>
     <template id="custom_navbar" inherit_id="portal.frontend_layout">
-        <xpath expr="//div[@id='wrapwrap']/header/nav" position="replace">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand logo" href="/">
-                    <img t-att-src="'/logo.png?company=%s' % res_company.id" t-att-alt="'Logo of %s' % res_company.name" t-att-title="res_company.name"/>
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarbritania" aria-controls="navbarbritania" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <xpath expr="//div[@id='wrapwrap']/header/nav" position="attributes">
+            <attribute name="class">navbar navbar-expand-lg navbar-dark bg-dark</attribute>
+            <!--attribute name="class" add="navbar navbar-expand-lg navbar-dark bg-dark" /-->
+        </xpath>
 
-                <div class="collapse navbar-collapse" id="navbarbritania">
-                    <ul class="navbar-nav mr-auto text-sm">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">MOTOS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">ACCESORIOS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">ROPA</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">OWNERS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">FOR THE RIDE</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto text-sm">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Oferta</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Concesionarios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Configurar Moto</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Prueba de conducción</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/contactanos">Contáctenos</a>
-                        </li>
-                        <li class="nav-item">
-                            <ul class="nav navbar-nav ml-auto text-right" id="top_menu">
-                                <li class="nav-item divider" t-ignore="true" t-if="not user_id._is_public()"/>
-                                <li class="nav-item dropdown" t-ignore="true" t-if="not user_id._is_public()">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                                        <b>
-                                            <span t-esc="user_id.name[:23] + '...' if user_id.name and len(user_id.name) &gt; 25 else user_id.name"/>
-                                        </b>
-                                    </a>
-                                    <div class="dropdown-menu js_usermenu" role="menu">
-                                        <a id="o_logout" class="dropdown-item" t-attf-href="/web/session/logout?redirect=/" role="menuitem">Logout</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+        <xpath expr="//div[@id='wrapwrap']/header/nav/div/div/ul" position="attributes">
+            <attribute name="class">navbar-nav ml-auto text-sm</attribute>
         </xpath>
-        
-        <xpath expr="//a[@id='o_logout']" position="before">
-            <a href="/my/home" role="menuitem" class="dropdown-item">My Account</a>
-        </xpath>
+
+        <!--xpath expr="//div[@id='wrapwrap']/header/nav/div/div/ul" position="before">
+            <ul class="navbar-nav mr-auto text-sm">
+                <li class="nav-item">
+                    <a role="menuitem" class="nav-link" href="#">MOTOS</a>
+                </li>
+            </ul>
+        </xpath-->
     </template>
+
+    
 
     <template id="custom_footer" inherit_id="portal.frontend_layout">
         <xpath expr="//div[@id='wrapwrap']/footer/div" position="replace">

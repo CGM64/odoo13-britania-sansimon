@@ -4,7 +4,7 @@
         <xpath expr="//link[last()]" position="after">
             <link rel="stylesheet" type="text/css" href="/theme_britania/static/src/scss/custom.scss"/>
         </xpath>
-        <xpath expr="//script[last()]" position="after">
+        <xpath expr="//script[last()]" position="before">
             <script type="text/javascript" src="/theme_britania/static/src/js/index.js"></script>
         </xpath>
     </template>
