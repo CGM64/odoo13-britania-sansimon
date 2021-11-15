@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_repair_order_new" model="ir.actions.act_window">
+            <field name="name">Análisis Taller</field>
+            <field name="context">{
+                'search_default_product': 1,
+                'search_default_createDate': 1,
+            }
+            </field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">repair.report</field>
+            <field name="view_mode">pivot,tree,kanban,graph,form</field>
+        </record>
+
+        <menuitem id="repair_menu_taller" name="Analisis Taller" parent="repair.repair_menu_reporting" action="action_repair_order_new"/>
+    </data>
+</odoo>
