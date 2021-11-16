@@ -15,19 +15,21 @@ class RepairReport(models.Model):
     def _get_done_states(self):
         return ['sale', 'done', 'paid']
 
-    name = fields.Char('Order Reference', readonly=True)
-    date = fields.Datetime('Order Date', readonly=True)
-    product_id = fields.Many2one('product.product', 'Product Variant', readonly=True)
-    partner_id = fields.Many2one('res.partner', 'Customer', readonly=True)
-    company_id = fields.Many2one('res.company', 'Company', readonly=True)
-    user_id = fields.Many2one('res.users', 'Salesperson', readonly=True)
-    product_tmpl_id = fields.Many2one('product.template', 'Product', readonly=True)
-    categ_id = fields.Many2one('product.category', 'Product Category', readonly=True)
-    nbr = fields.Integer('# of Lines', readonly=True)
-    country_id = fields.Many2one('res.country', 'Customer Country', readonly=True)
-    industry_id = fields.Many2one('res.partner.industry', 'Customer Industry', readonly=True)
-    commercial_partner_id = fields.Many2one('res.partner', 'Customer Entity', readonly=True)
-    order_id = fields.Many2one('repair.order', 'Order #', readonly=True)
+    name = fields.Char('Orden', readonly=True)
+    date = fields.Datetime('Fecha de la Orden', readonly=True)
+    # product_id = fields.Many2one('product.product', 'Variante Producto', readonly=True)
+    partner_id = fields.Many2one('res.partner', 'Cliente', readonly=True)
+    company_id = fields.Many2one('res.company', 'Compañía', readonly=True)
+    user_id = fields.Many2one('res.users', 'Comercial', readonly=True)
+    product_tmpl_id = fields.Many2one('product.template', 'Producto', readonly=True)
+    categ_id = fields.Many2one('product.category', 'Categoria', readonly=True)
+    nbr = fields.Integer('# Línea', readonly=True)
+    country_id = fields.Many2one('res.country', 'País del Cliente', readonly=True)
+    # industry_id = fields.Many2one('res.partner.industry', 'Industria del Cliente', readonly=True)
+    # commercial_partner_id = fields.Many2one('res.partner', 'Entidad del Cliente', readonly=True)
+    order_id = fields.Many2one('repair.order', '# Orden', readonly=True)
+    repair_type = fields.Many2one('repair.type', 'Tipo reparación', readonly=True)
+
     state = fields.Selection([
         ('draft', 'Quotation'),
         ('cancel', 'Cancelled'),
@@ -42,6 +44,7 @@ class RepairReport(models.Model):
     product_uom_qty = fields.Float('Cantidad Ordenada', readonly=True)
     price_unit = fields.Float('Precio Unitario', readonly=True)
     price_total = fields.Float('Total', readonly=True)
+    amount_untaxed = fields.Float('Total sin impuestos', readonly=True)
     costo = fields.Float('Costo', readonly=True)
     variacion = fields.Float('Variación', readonly=True)
 
@@ -56,8 +59,10 @@ class RepairReport(models.Model):
             l.price_unit as price_unit,
             count(*) as nbr,
             s.name as name,
+            s.amount_untaxed as amount_untaxed,
             s.create_date as date,
             s.state as state,
+            s.tipo_orden as repair_type,
             s.partner_id as partner_id,
             s.user_id as user_id,
             s.company_id as company_id,
@@ -80,6 +85,7 @@ class RepairReport(models.Model):
         from_ = """
             repair_line l
                 join repair_order s on (l.repair_id=s.id)
+                join repair_fee f on (l.repair_id=f.repair_id)
                 join res_partner partner on s.partner_id = partner.id
                     left join product_product p on (l.product_id=p.id)
                         left join product_template t on (p.product_tmpl_id=t.id)
@@ -98,6 +104,7 @@ class RepairReport(models.Model):
             s.partner_id,
             s.user_id,
             s.state,
+            s.tipo_orden,
             s.company_id,
             p.product_tmpl_id,
             partner.country_id,
