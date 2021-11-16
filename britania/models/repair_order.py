@@ -377,6 +377,21 @@ class RepairLine(models.Model):
     amount_total = fields.Float(string="Total", compute="_get_amount_total")
     discount = fields.Float(string='Descuento (%)', digits='Discount', default=0.0)
 
+    costo = fields.Float(string="Costo",store=True, compute="_compute_costo")
+    
+    @api.depends('product_id','product_uom_qty','price_unit','discount',)
+    def _compute_costo(self):
+        print("---------------------------------------------")
+        print("test de que llego al _compute_costo ")
+        print("---------------------------------------------")
+        costo=0
+        for line in self:
+            costo+= ((line.product_id.product_tmpl_id.standard_price) * (line.product_uom_qty)) - ((line.discount/100) * ((line.product_id.product_tmpl_id.standard_price) * (line.product_uom_qty)))
+            print(line.product_id.product_tmpl_id.standard_price,' Producto ', line.product_id.name)
+        print("Costo Total=", costo)
+        self.costo=costo
+
+
     @api.onchange('type', 'repair_id')
     def onchange_operation_type(self):
         """ On change of operation type it sets source location, destination location
