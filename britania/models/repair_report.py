@@ -41,9 +41,9 @@ class RepairReport(models.Model):
     product_uom = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True)
     product_uom_qty = fields.Float('Cantidad Ordenada', readonly=True)
     price_unit = fields.Float('Precio Unitario', readonly=True)
-    price_subtotal = fields.Float('Subtotal', readonly=True)
     price_total = fields.Float('Total', readonly=True)
     costo = fields.Float('Costo', readonly=True)
+    variacion = fields.Float('Variación', readonly=True)
 
     def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
         with_ = ("WITH %s" % with_clause) if with_clause else ""
@@ -51,10 +51,8 @@ class RepairReport(models.Model):
         select_ = """
             min(l.id) as id,
             l.product_id as product_id,
-            s.amount_total as price_total,
             t.uom_id as product_uom,
             sum(l.product_uom_qty / u.factor * u2.factor) as product_uom_qty,
-            (l.price_unit *  sum(l.product_uom_qty / u.factor * u2.factor)) as price_subtotal,
             l.price_unit as price_unit,
             count(*) as nbr,
             s.name as name,
@@ -69,10 +67,10 @@ class RepairReport(models.Model):
             partner.country_id as country_id,
             partner.industry_id as industry_id,
             partner.commercial_partner_id as commercial_partner_id,
-            sum(p.weight * l.product_uom_qty / u.factor * u2.factor) as weight,
-            sum(p.volume * l.product_uom_qty / u.factor * u2.factor) as volume,
             l.discount as discount,
             l.costo as costo,
+            (l.price_unit * sum(l.product_uom_qty / u.factor * u2.factor)) - ((l.discount/100) *(l.price_unit *  l.product_uom_qty)) - l.costo as variacion,
+            (l.price_unit *  sum(l.product_uom_qty / u.factor * u2.factor)) - ((l.discount/100) *(l.price_unit *  sum(l.product_uom_qty / u.factor * u2.factor))) as price_total,
             s.id as order_id
         """
 
@@ -109,6 +107,7 @@ class RepairReport(models.Model):
             s.amount_total,
             l.costo,
             l.price_unit,
+            l.product_uom_qty,
             s.id %s
         """ % (groupby)
 
