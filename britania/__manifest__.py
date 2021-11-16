@@ -40,6 +40,7 @@
         'views/tri_product.xml',
         'wizard/tri_product_wizard.xml',
         'data/product_pricelist.xml',
+        'data/res_partner_data.xml',
         'views/fleet_vehicle.xml',
     ],
     # only loaded in demonstration mode
