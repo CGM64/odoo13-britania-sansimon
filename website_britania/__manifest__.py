@@ -20,7 +20,10 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': [
+        'website',
+        'website_theme_install',
+        ],
 
     # always loaded
     'data': [

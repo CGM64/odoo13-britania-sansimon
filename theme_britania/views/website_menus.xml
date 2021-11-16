@@ -1,0 +1,19 @@
+<odoo>
+    <template id="website_custom_menu">
+        <div id="custom_container_menu" class="h-100vh d-flex align-items-center justify-content-center" style="width:100%; background: #fff;">
+        MENU DE PRUEBA
+        </div>
+    </template>
+    <template id="website_custom_submenu" inherit_id="website.submenu">
+        <xpath expr="//li[@t-if='submenu.is_visible and not has_visible_submenu']" position="inside">
+            <t t-if="submenu.desplegable">
+                <t t-call="theme_britania.website_custom_menu"></t>
+            </t>
+        </xpath>
+        <xpath expr="//li[@t-if='has_visible_submenu']//a" position="replace">
+            <a t-attf-class="#{link_class or ''} dropdown-toggle #{submenu.is_mega_menu and 'o_mega_menu_toggle'}" data-toggle="dropdown" t-att-href="submenu.url or '#'">
+                <span t-field="submenu.name"/>
+            </a>
+        </xpath>
+    </template>
+</odoo>

@@ -1,7 +1,31 @@
 <odoo>
   <data>
+    <record id="website_custom_menu_form" model="ir.ui.view">
+      <field name="name">website.custom.menu.form</field>
+      <field name="model">website.menu</field>
+      <field name="inherit_id" ref="website.website_menus_form_view" />
+      <field name="arch" type="xml">
+        <xpath expr="//form/sheet/group" position="after">
+          <group>
+            <field name="desplegable" />
+            <!--field name="tipo_submenu" /-->
+          </group>
+        </xpath>
+      </field>
+    </record>
+    <record id="website_custom_menu_tree" model="ir.ui.view">
+      <field name="name">website.custom.menu.tree</field>
+      <field name="model">website.menu</field>
+      <field name="inherit_id" ref="website.menu_tree" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='is_mega_menu']" position="after">
+          <field name="desplegable" />
+          <!--field name="tipo_submenu" /-->
+        </xpath>
+      </field>
+    </record>
     <!-- explicit list view definition -->
-<!--
+    <!--
     <record model="ir.ui.view" id="website_britania.list">
       <field name="name">WebsiteBritania list</field>
       <field name="model">website_britania.website_britania</field>
@@ -16,7 +40,7 @@
 -->
 
     <!-- actions opening views on models -->
-<!--
+    <!--
     <record model="ir.actions.act_window" id="website_britania.action_window">
       <field name="name">WebsiteBritania window</field>
       <field name="res_model">website_britania.website_britania</field>
@@ -25,7 +49,7 @@
 -->
 
     <!-- server action to the one above -->
-<!--
+    <!--
     <record model="ir.actions.server" id="website_britania.action_server">
       <field name="name">WebsiteBritania server</field>
       <field name="model_id" ref="model_website_britania_website_britania"/>
@@ -41,20 +65,18 @@
 -->
 
     <!-- Top menu item -->
-<!--
+    <!--
     <menuitem name="WebsiteBritania" id="website_britania.menu_root"/>
 -->
     <!-- menu categories -->
-<!--
+    <!--
     <menuitem name="Menu 1" id="website_britania.menu_1" parent="website_britania.menu_root"/>
     <menuitem name="Menu 2" id="website_britania.menu_2" parent="website_britania.menu_root"/>
 -->
     <!-- actions -->
-<!--
-    <menuitem name="List" id="website_britania.menu_1_list" parent="website_britania.menu_1"
-              action="website_britania.action_window"/>
-    <menuitem name="Server to list" id="website_britania" parent="website_britania.menu_2"
-              action="website_britania.action_server"/>
+    <!--
+    <menuitem name="List" id="website_britania.menu_1_list" parent="website_britania.menu_1" action="website_britania.action_window"/>
+    <menuitem name="Server to list" id="website_britania" parent="website_britania.menu_2" action="website_britania.action_server"/>
 -->
   </data>
 </odoo>

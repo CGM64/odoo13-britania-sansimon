@@ -1,0 +1,16 @@
+<templates id="template" xml:space="preserve">
+    <t t-extend="wysiwyg.widgets.link">
+        <t t-jquery=".form-group.row.o_url_input:not(d-none)" t-operation="after">
+            <div class="form-group form-check">
+                <input t-att-checked="widget.data.desplegable ? 'checked' : undefined" type="checkbox" class="form-check-input" id="desplegableInput" />
+                <label class="form-check-label" for="desplegableInput">¿Menu desplegable?</label>
+            </div>
+            <!--div class="form-group">
+                    <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Preference</label>
+                    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+                        t-for
+                    </select>
+                </div-->
+        </t>
+    </t>
+</templates>
