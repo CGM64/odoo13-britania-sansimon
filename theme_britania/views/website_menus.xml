@@ -11,7 +11,7 @@
             </t>
         </xpath>
         <xpath expr="//li[@t-if='has_visible_submenu']//a" position="replace">
-            <a t-attf-class="#{link_class or ''} dropdown-toggle #{submenu.is_mega_menu and 'o_mega_menu_toggle'}" data-toggle="dropdown" t-att-href="submenu.url or '#'">
+            <a t-if="submenu.desplegable" t-attf-class="#{link_class or ''} dropdown-toggle #{submenu.is_mega_menu and 'o_mega_menu_toggle'}" data-toggle="dropdown" t-att-href="submenu.url or '#'">
                 <span t-field="submenu.name"/>
             </a>
         </xpath>

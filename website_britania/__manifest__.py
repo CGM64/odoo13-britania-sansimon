@@ -10,7 +10,7 @@
         Long description of module's purpose
     """,
 
-    'author': "My Company",
+    'author': "Integratec",
     'website': "http://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
@@ -31,6 +31,7 @@
         'views/web_example.xml',
         'views/views.xml',
         'views/templates.xml',
+        'views/assets.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

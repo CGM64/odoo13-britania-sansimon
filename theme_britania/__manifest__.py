@@ -14,11 +14,10 @@
 
     # templates
     'data': [
-        #'views/website_menu_views.xml',
-        #'views/website_menus.xml',
         'views/assets.xml',
-        #'views/custom_options.xml',
         'views/snippets.xml',
+        'views/website_menus.xml',
+        'views/website_menu_views.xml',
     ],
 
     # demo pages

@@ -1,0 +1,8 @@
+<odoo>
+    <!--======================== Inclusion of JS Files ======================-->
+    <template id="website_britania_assets_wysiwyg" inherit_id="web_editor.assets_wysiwyg">
+        <xpath expr="script[last()]" position="after">
+            <script type="text/javascript" src="/website_britania/static/src/js/wysiwyg/custom_menu_save_data.js"/>
+        </xpath>
+    </template>
+</odoo>

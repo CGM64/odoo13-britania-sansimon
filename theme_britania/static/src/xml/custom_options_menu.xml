@@ -2,7 +2,7 @@
     <t t-extend="wysiwyg.widgets.link">
         <t t-jquery=".form-group.row.o_url_input:not(d-none)" t-operation="after">
             <div class="form-group form-check">
-                <input t-att-checked="widget.data.desplegable ? 'checked' : undefined" type="checkbox" class="form-check-input" id="desplegableInput" />
+                <input t-att-checked="widget.data.desplegable ? 'checked' : undefined" type="checkbox" name="desplegable" class="form-check-input" id="desplegableInput" />
                 <label class="form-check-label" for="desplegableInput">¿Menu desplegable?</label>
             </div>
             <!--div class="form-group">
