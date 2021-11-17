@@ -1,17 +1,155 @@
 <odoo>
-    <template id="website_custom_menu">
-        <div id="custom_container_menu" class="h-100vh d-flex align-items-center justify-content-center" style="width:100%; background: #fff;">
-        MENU DE PRUEBA
-        </div>
-    </template>
     <template id="website_custom_submenu" inherit_id="website.submenu">
-        <xpath expr="//li[@t-if='submenu.is_visible and not has_visible_submenu']" position="inside">
-            <t t-if="submenu.desplegable">
-                <t t-call="theme_britania.website_custom_menu"></t>
-            </t>
+        <xpath expr="//li[@t-if='has_visible_submenu']//ul" position="inside">
+            <div class="collapse" id="collapseMotos">
+                <div class="row">
+                    <div class="col-12 col-md-3">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">An item</li>
+                            <li class="list-group-item">A second item</li>
+                            <li class="list-group-item">A third item</li>
+                            <li class="list-group-item">A fourth item</li>
+                            <li class="list-group-item">And a fifth one</li>
+                        </ul>
+                        <ul class="list-group list-group-flush mt-3">
+                            <li class="list-group-item">An item</li>
+                            <li class="list-group-item">A second item</li>
+                            <li class="list-group-item">A third item</li>
+                            <li class="list-group-item">A fourth item</li>
+                            <li class="list-group-item">And a fifth one</li>
+                        </ul>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <h3 class="border-bottom mt-4 pb-3 text-muted">SPECIAL EDITIONS</h3>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="border-bottom mt-4 pb-3 text-muted">SPECIAL EDITIONS</h3>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="border-bottom mt-4 pb-3 text-muted">SPECIAL EDITIONS</h3>
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-3">
+                                <div class="card border-0">
+                                    <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/street%20twin%20ec1/base%20images/street-twin-goldline-nav-770x433.jpg" alt="" class="card-img-top" />
+                                    <div class="card-body">
+                                        <h5>Street Twin EC1 Edition</h5>
+                                        <p>Precio desde: 10.050,00 €</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//li[@t-if='submenu.is_visible and not has_visible_submenu']" position="attributes">
+            <attribute name="t-attf-class">#{item_class or ''} #{'te_dynamic_ept' if submenu.desplegable else ''} </attribute>
         </xpath>
         <xpath expr="//li[@t-if='has_visible_submenu']//a" position="replace">
-            <a t-if="submenu.desplegable" t-attf-class="#{link_class or ''} dropdown-toggle #{submenu.is_mega_menu and 'o_mega_menu_toggle'}" data-toggle="dropdown" t-att-href="submenu.url or '#'">
+            <a t-if="not submenu.desplegable" class="nav-link" data-toggle="collapse" href="#collapseMotos" aria-expanded="false" aria-controls="collapseMotos" role="button">
+                <span t-field="submenu.name"/>
+            </a>
+            <a t-else="" t-attf-class="#{link_class or ''} dropdown-toggle #{submenu.is_mega_menu and 'o_mega_menu_toggle'}" data-toggle="dropdown" t-att-href="submenu.url or '#'">
                 <span t-field="submenu.name"/>
             </a>
         </xpath>

@@ -16,8 +16,8 @@
     'data': [
         'views/assets.xml',
         'views/snippets.xml',
-        'views/website_menus.xml',
         'views/website_menu_views.xml',
+        'views/website_menus.xml',
     ],
 
     # demo pages
