@@ -44,9 +44,9 @@ class RepairReport(models.Model):
     product_uom_qty = fields.Float('Cantidad Ordenada', readonly=True)
     price_unit = fields.Float('Precio Unitario', readonly=True)
     price_total = fields.Float('Total', readonly=True)
-    amount_untaxed = fields.Float('Total sin impuestos', readonly=True)
+    price_subtotal = fields.Float('Total sin impuestos', readonly=True)
     costo = fields.Float('Costo', readonly=True)
-    variacion = fields.Float('Variación', readonly=True)
+    variacion = fields.Float('Margen', readonly=True)
 
     def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
         with_ = ("WITH %s" % with_clause) if with_clause else ""
@@ -59,7 +59,7 @@ class RepairReport(models.Model):
             l.price_unit as price_unit,
             count(*) as nbr,
             s.name as name,
-            s.amount_untaxed as amount_untaxed,
+            s.price_subtotal as price_subtotal,
             s.create_date as date,
             s.state as state,
             s.tipo_orden as repair_type,
