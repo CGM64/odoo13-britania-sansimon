@@ -5,26 +5,23 @@ odoo.define('website_britania.custom_menu_content', function (require) {
     var qweb = core.qweb;
     var _t = core._t;
 
-    console.log("ARRANCA");
 
     editMenuDialog.EditMenuDialog.include({
         
         _onEditMenuButtonClick: function (ev) {
             var $menu = $(ev.currentTarget).closest('[data-menu-id]');
             var menuID = $menu.data('menu-id');
-            console.log(menuID);
             var menu = this.flat[menuID];
             if (menu) {
                 var dialog = new weWidgetsMenuEntryDialog(this, {}, null, _.extend({
                     menuType: menu.fields['is_mega_menu'] ? 'mega' : undefined,
                 }, menu.fields));
-                console.log("LINE 19: dialog");
-                console.log(dialog);
                 dialog.on('save', this, link => {
                     _.extend(menu.fields, {
                         'name': link.text,
                         'url': link.url,
                         'desplegable': link.desplegable,
+                        'is_mega_menu': link.desplegable,
                     });
                     $menu.find('.js_menu_label').first().text(menu.fields['name']);
                 });
@@ -39,8 +36,7 @@ odoo.define('website_britania.custom_menu_content', function (require) {
             var dialog = new weWidgetsMenuEntryDialog(this, {}, null, {
                 menuType: menuType,
             });
-            console.log("LINE 40 dialog");
-            console.log(dialog);
+            
             dialog.on('save', this, link => {
                 var newMenu = {
                     'fields': {
@@ -48,7 +44,7 @@ odoo.define('website_britania.custom_menu_content', function (require) {
                         'name': link.text,
                         'url': link.url,
                         'new_window': link.isNewWindow,
-                        'is_mega_menu': menuType === 'mega',
+                        'is_mega_menu': link.desplegable, //menuType === 'mega',
                         'sequence': 0,
                         'parent_id': false,
                         'desplegable': link.desplegable,

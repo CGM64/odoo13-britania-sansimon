@@ -21,11 +21,13 @@
     <template id="custom_carousel" inherit_id="website.s_carousel">
         <xpath expr="//div[hasclass('s_carousel')]/div[hasclass('carousel-inner')]" position="replace">
             <div class="carousel-inner">
-                <div class="carousel-item active" data-interval="5000" style="min-height: 0px;">
+                <div class="carousel-item active oe_custom_bg" data-interval="5000" style="min-height: 0px;">
                     <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/rocket%203%20r%20221/model%20page/my22-rocket-221-hpr-1920x1080.jpg" class="d-block w-100 " alt="..." />
                     <div class="carousel-content c-content-left w-50 text-break">
-                        <h1 class="text-h-responsive fadeIn">ROCKET 3 R 221 SPECIAL EDITION</h1>
-                        <p class="text-p-responsive fadeIn">La edición especial rinde homenaje a sus insuperables
+                        <div class="s_title pb8">
+                            <h1 class="s_title_default text-h-responsive fadeIn">ROCKET 3 R 221 SPECIAL EDITION</h1>
+                        </div>
+                        <p class="lead text-p-responsive fadeIn">La edición especial rinde homenaje a sus insuperables
                         prestaciones y
                         par motor máximo de 221
                         Newton metro.</p>
@@ -35,23 +37,27 @@
                     </div>
                 </div>
 
-                <div class="carousel-item" data-interval="5000">
+                <div class="carousel-item oe_custom_bg" data-interval="5000">
                     <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/adventure-touring/tiger-1200-tease-2021/beat%204/hpr-b4-triumph_tiger_1200-1920x1080%203.jpg" class="d-block w-100" alt="..." />
                     <div class="carousel-content c-content-right text-right w-50 text-break">
-                        <h1 class="text-h-responsive fadeIn">PURO DISEÑO CON UN ÚNICO PROPÓSITO</h1>
-                        <p class="text-p-responsive fadeIn">Pruebas oficiales del prototipo de la nueva Tiger 1200.</p>
+                        <div class="s_title pb8">
+                            <h1 class="s_title_default text-h-responsive fadeIn">PURO DISEÑO CON UN ÚNICO PROPÓSITO</h1>
+                        </div>
+                        <p class="lead text-p-responsive fadeIn">Pruebas oficiales del prototipo de la nueva Tiger 1200.</p>
                         <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
                             <a href="#" class="btn btn-danger text-p-responsive">DESCUBRIR MÁS</a>
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item" data-interval="5000">
+                <div class="carousel-item oe_custom_bg" data-interval="5000">
                     <video preload="none" playsinline="true" muted="true" loop="loop" poster="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/gold%20lines%20my22/special_edition_my22_t120_black_details_nh_0045.jpg" itemprop="video" itemscope="true" autoplay="true" itemtype="http://schema.org/VideoObject" class="d-block w-100 ">
                         <source src="https://images.triumphmotorcycles.co.uk/media-library/files/central-marketing-team/videos/family%20videos/goldlinehpr.mp4" type="video/mp4" />
                     </video>
                     <div class="carousel-content c-content-left w-50 text-break">
-                        <h1 class="text-h-responsive fadeIn">BONNEVILLE GOLD LINE EDITION</h1>
-                        <p class="text-p-responsive fadeIn">Un precioso iconos clásico con detalles pintados a mano...</p>
+                        <div class="s_title pb8">
+                            <h1 class="s_title_default text-h-responsive fadeIn">BONNEVILLE GOLD LINE EDITION</h1>
+                        </div>
+                        <p class="lead text-p-responsive fadeIn">Un precioso iconos clásico con detalles pintados a mano...</p>
                         <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
                             <a href="#" class="btn btn-danger text-p-responsive">DESCUBRIR MÁS</a>
                         </div>
