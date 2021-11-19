@@ -1,10 +1,13 @@
 <odoo>
     <template id="bri_custom_submenu">
         <section id="bri_custom_menu" class="dropdown-menu bri_custom_submenu o_mega_menu">
-            
+
         </section>
     </template>
     <template id="website_custom_submenu" inherit_id="website.submenu">
+        <xpath expr="//li/div[@t-if='submenu.is_mega_menu']" position="attributes">
+            <attribute name="t-attf-class">dropdown-menu o_mega_menu #{submenu.mega_menu_classes} #{'' if submenu.tipo_submenu else 'o_mega_menu-small dropdown-menu-center'}  </attribute>
+        </xpath>
         <xpath expr="//li[@t-if='submenu.is_visible and not has_visible_submenu']" position="inside">
             <t t-if="submenu.desplegable">
                 <t t-call="theme_britania.bri_custom_submenu" />

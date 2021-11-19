@@ -8,10 +8,11 @@ class WebsiteMenu(models.Model):
     _inherit = 'website.menu'
 
     desplegable = fields.Boolean(string="¿Es desplegable?", default=False) 
-    tipo_submenu = fields.Selection(selection=[
-        ('Lista','lista'),
-        ('Cuadricula','cuadricula'),
-    ],string="Tipo de Menu")
+    tipo_submenu = fields.Boolean(string="¿Mega menu extendido?", default=False)
+    # tipo_submenu = fields.Selection(selection=[
+    #     ('Lista','lista'),
+    #     ('Cuadricula','cuadricula'),
+    # ],string="Tipo de Menu")
 
     def write(self,vals):
         return super(WebsiteMenu, self).write(vals)

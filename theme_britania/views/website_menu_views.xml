@@ -7,7 +7,7 @@
             <xpath expr="//form/sheet/group" position="after">
                 <group>
                     <field name="desplegable" />
-                    <!--field name="tipo_submenu" /-->
+                    <field name="tipo_submenu" />
                 </group>
             </xpath>
         </field>
@@ -19,7 +19,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='is_mega_menu']" position="after">
                 <field name="desplegable" />
-                <!--field name="tipo_submenu" /-->
+                <field name="tipo_submenu" />
             </xpath>
         </field>
     </record>

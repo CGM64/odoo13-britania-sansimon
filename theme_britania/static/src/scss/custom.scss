@@ -1,168 +1,14 @@
-:root {
-	--d-animation-carousel: 3s;
+
+/* ---- ----- -----  MEGA MENU ----- ----- ----- */
+.o_mega_menu-small {
+	width: 80% !important;
+	margin: auto;
 }
 
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+.dropdown-menu-center {
+	left: 0 !important;
+	right: 0 !important;
 }
-
-.dropdown-menu {
-	max-height: 100vh !important;
-}
-
-.carousel-content {
-    position: absolute;
-    bottom: 45%;
-    z-index: 2;
-    color: white;
-    text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.6);
-}
-
-.carousel-control-prev {
-	// width: 5%;
-	left: 90%;
-}
-
-// .carousel-control-next {
-// 	width: 5%;
-// }
-
-.carousel-control-next,
-.carousel-control-prev {
-	width: 5% !important;
-	background: rgba(0, 0, 0, 0.1);
-}
-
-.carousel-control-next:hover,
-.carousel-control-prev:hover {
-	background: rgba(0, 0, 0, 0.7);
-}
-
-.carousel {
-	overflow: hidden;
-}
-
-.carousel-item,
-img {
-	min-height: 0 !important;
-}
-
-span .text-navbar {
-	transform: rotate(90deg);
-}
-
-.carousel-control-next-icon::before
-.carousel-control-prev-icon::before {
-	margin-left: 3% !important;
-}
-
-.loading {
-	width: 0.3%;
-	height: 0px;
-	background: red;
-	z-index: 10;
-	position: absolute;
-	right: 5%;
-	top: 50%;
-}
-
-.loading-animated {
-	animation: loading alternate ease var(--d-animation-carousel) infinite;
-    -webkit-animation: loading alternate ease var(--d-animation-carousel) infinite;
-    -moz-animation: loading alternate ease var(--d-animation-carousel) infinite;
-    -o-animation: loading alternate ease var(--d-animation-carousel) infinite;
-    -ms-animation: loading alternate ease var(--d-animation-carousel) infinite;
-}
-
-.c-content-left {
-    left: 10%;
-}
-
-.c-content-right {
-    right: 15%;
-}
-
-.text-sm {
-    font-size: 0.7rem;
-}
-
-.fadeIn {
-    animation: fadeIn ease var(--d-animation-carousel);
-    -webkit-animation: fadeIn ease var(--d-animation-carousel);
-    -moz-animation: fadeIn ease var(--d-animation-carousel);
-    -o-animation: fadeIn ease var(--d-animation-carousel);
-    -ms-animation: fadeIn ease var(--d-animation-carousel);
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity:0;
-    }
-    100% {
-        opacity:1;
-	}
-}
-
-@keyframes loading {
-    0% {
-        height:0;
-		top: 50%;
-    }
-    100% {
-		top: -2%;
-        height: 120vh;
-	}
-}
-
-.btn-banner:hover {
-	background-color: rgba(0, 0, 0, 0.6);
-	color: white;
-}
-
-.text-p-responsive {
-    font-size: 1vw;
-}
-
-.text-h-responsive {
-    font-weight: bold;
-    font-size: 2vw;
-}
-
-.text-responsive-2 {
-    font-size: 2vw;
-}
-
-.text-responsive-3 {
-    font-size: 3vw;
-}
-
-.text-responsive-4 {
-    font-size: 4vw;
-}
-
-.text-responsive-5 {
-    font-size: 5vw;
-}
-
-.text-responsive-6 {
-    font-size: 6vw;
-}
-
-.text-responsive-7 {
-    font-size: 7vw;
-}
-
-.text-responsive-8 {
-    font-size: 8vw;
-}
-
-.text-responsive-10 {
-    font-size: 50vh;
-}
-
-
 
 /* ---- ----- ----- Contenedor Controles ----- ----- ----- */
 .contenedor-controles {
@@ -283,11 +129,7 @@ span .text-navbar {
 }
 
 @media screen and (max-width: 768px) {
-	.carousel-control-prev, .loading {
-		display: none;
-	}
-
-    .custom-carousel .contenedor-carousel {
+	.custom-carousel .contenedor-carousel {
 		overflow: visible;
 	}
 
@@ -302,4 +144,15 @@ span .text-navbar {
 	.custom-carousel .flecha-derecha {
 		display: none;
 	}
+}
+
+.snippet_three_buttons_bar {
+
+    &.opt_shadow img {
+        box-shadow: 0 2px 5px rgba(51, 51, 51, 0.4);
+    }
+    &.opt_grey_bg {
+        border: none;
+        background-color: #FFF;
+    }
 }

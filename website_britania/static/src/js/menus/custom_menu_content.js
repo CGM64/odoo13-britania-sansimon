@@ -22,6 +22,7 @@ odoo.define('website_britania.custom_menu_content', function (require) {
                         'url': link.url,
                         'desplegable': link.desplegable,
                         'is_mega_menu': link.desplegable,
+                        'tipo_submenu': link.tipo_submenu,
                     });
                     $menu.find('.js_menu_label').first().text(menu.fields['name']);
                 });
@@ -48,6 +49,7 @@ odoo.define('website_britania.custom_menu_content', function (require) {
                         'sequence': 0,
                         'parent_id': false,
                         'desplegable': link.desplegable,
+                        'tipo_submenu': link.tipo_submenu,
                     },
                     'children': [],
                     'is_homepage': false,
