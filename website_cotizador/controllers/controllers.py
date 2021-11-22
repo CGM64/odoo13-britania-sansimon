@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 from datetime import date
+#import random
+
 from odoo import http, fields, _
 from odoo.exceptions import AccessError, MissingError
 from odoo.http import request
 from odoo.addons.portal.controllers.mail import _message_post_helper
 from odoo.osv import expression
 from odoo.addons.portal.controllers.portal import CustomerPortal #, pager as portal_pager, get_records_page
+
+
 
 class WebsiteCotizador(CustomerPortal):
 
@@ -69,3 +73,6 @@ class WebsiteCotizador(CustomerPortal):
 
         return request.render('website_cotizador.index', values)
         #return http.request.render('cotizacion.index')
+        pass
+
+    

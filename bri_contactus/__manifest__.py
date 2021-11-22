@@ -26,6 +26,8 @@
         'views/website_view.xml',
         'views/crm_views.xml',
         'data/crm_medio_data.xml',
+
+        'views/validation_page.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'installable': True,
