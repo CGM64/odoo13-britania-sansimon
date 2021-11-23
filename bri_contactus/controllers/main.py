@@ -128,5 +128,7 @@ class WebsiteSale(WebsiteForm):
         lead = leads.search([
             ("opp_token", "=", request.params.get('token')),
         ])
-        lead.message_post(subject="Confirmación recibida", body="Confirmación de datos validos por parte del cliente")
+        if lead:
+            lead.write({ "opp_token", 'COMPLETED'})
+            lead.message_post(subject="Confirmación recibida", body="Confirmación de datos validos por parte del cliente")
         return request.render("bri_contactus.validation_page")
