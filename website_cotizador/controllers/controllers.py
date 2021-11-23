@@ -75,4 +75,20 @@ class WebsiteCotizador(CustomerPortal):
         #return http.request.render('cotizacion.index')
         pass
 
-    
+
+    @http.route('/view/cotizacion/<int:order_id>', type='http', auth='public', website=True)
+    def cliente_cotizacion(self, **kw):
+        company = request.env.company
+        values = {
+            'facebook': company.social_facebook,
+            'twitter': company.social_twitter,
+            'instagram': company.social_instagram,
+            #'whatsapp': company.social_whatsapp,
+            'phone': company.phone,
+            'street': company.street,
+            'email': company.email,
+            'name': company.name,
+        }
+        #return "hola"
+        return request.render('website_cotizador.bri_view_cotizador',values)
+        pass
