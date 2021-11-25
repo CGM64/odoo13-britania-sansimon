@@ -260,11 +260,11 @@
 
             <div class="container mt-5">
                 
-                <div class="card text-light p-0 border-0" style="background-color: black;">
+                <div class="card text-light p-0 border-0">
                     <!--div class="card-header text-center">
                         Triumph
                     </div-->
-                    <div class="card-body p-0">
+                    <div class="card-body p-0" style="background-color: black !important; color: white !important">
                         <div class="row">
                             <div class="col-12 col-md-6 px-5 py-3">
                                 <h1 class="text-uppercase">for the ride</h1>
@@ -340,7 +340,7 @@
                                         <label for="checkbox_cgv" class="col-form-label col-sm-5">Acepto</label>
                                         <input type="checkbox" id="checkbox_cgv" class="custom-control-input" required="" />
                                         <label for="checkbox_cgv" class="custom-control-label">
-                                            <a id="terms" target="_BLANK" data-toggle="modal" data-target="#politicasModal" style="">Política de Privacidad</a>
+                                            <a class="text-reset" id="terms" target="_BLANK" data-toggle="modal" data-target="#politicasModal" style="cursor:pointer;">Política de Privacidad</a>
                                         </label>
                                     </div>
 
@@ -352,7 +352,10 @@
                                     </div>
                                     
                                 </form>
-        
+                                <div class="d-flex justify-content-between">
+                                    <span>Britania Motors</span>
+                                    <span>PBX: 2384 8030</span>
+                                </div>
                             </div>
                             <div class="d-none d-md-block col-12 col-md-6 p-0">
                                 <div class="h-100 d-flex align-items-center justify-content-center"
@@ -364,7 +367,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--div class="card-footer d-flex justify-content-between">
+                    <!--div class="d-flex justify-content-between">
                         <span>Britania Motors</span>
                         <span>PBX: 2384 8030</span>
                     </div-->

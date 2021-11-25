@@ -1,6 +1,7 @@
 from odoo import models ,fields , api
 import werkzeug.urls
 import random
+import uuid
 
 class CrmLead(models.Model):
     _inherit = 'crm.lead'
@@ -15,8 +16,9 @@ class CrmLead(models.Model):
     token_url = fields.Char(compute='_generate_url', string='URL para validar la oportunidad')
 
     def _generate_token(self):
-        chars ='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
-        return ''.join(random.SystemRandom().choice(chars) for _ in range(25))
+        # chars ='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+        # return ''.join(random.SystemRandom().choice(chars) for _ in range(25))
+        return str(uuid.uuid4())
         # self.opp_token = ''.join(random.SystemRandom().choice(chars) for _ in range(25))
         pass
 

@@ -14,7 +14,7 @@ from odoo.addons.sale.controllers.portal import CustomerPortal #, pager as porta
 class WebsiteCotizador(CustomerPortal):
 
     #@http.route('/cliente/cotizacion/<int:order_id>', type='http', auth='public', website=True)
-    @http.route(['/my/orders/<int:order_id>'], type='http', auth='public', methods=['GET'], website=True)
+    @http.route('/my/orders/<int:order_id>', type='http', auth='public', methods=['GET'], website=True)
     def portal_order_page(self, order_id, report_type=None, access_token=None, message=False, download=False, **kw):
         # company = request.env.company
         # base_url = request.env ['ir.config_parameter'].sudo().get_param('web.base.url')

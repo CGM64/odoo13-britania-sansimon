@@ -19,6 +19,7 @@ from odoo.osv import expression
 from odoo import api, models
 from odoo.addons.website_crm.controllers.main import WebsiteForm
 from odoo.tools import ustr, pycompat
+#from odoo.addons.base.models.ir_attachment import IrAttachment
 
 class WebsiteSale(WebsiteForm):
 
@@ -74,7 +75,6 @@ class WebsiteSale(WebsiteForm):
                     '''
                         ## RECORDATORIO ##
                         Obtener la oportunidad de una manera mas eficiente
-                        Revisar el metodo de generacion de token
                     '''
                     # Token en la oportunidad
                     leads = request.env["crm.lead"].sudo()
@@ -104,12 +104,13 @@ class WebsiteSale(WebsiteForm):
                         'token_url': lead.token_url,
                     }, engine='ir.qweb')
                     #mail_body = request.env['mail.thread']._replace_local_links(render_template)
-                    email = request.env['ir.mail_server'].sudo().search([('name','=','pruebas')])
+                    #email = request.env['ir.mail_server'].sudo().search([('name','=','pruebas')])
                     
                     mail_values = {
                         'body_html': render_template,# mail_body,
                         'subject': _('Confirmación de la cotización.'),
-                        'email_from': email.smtp_user,
+                        'email_from': request.env.user.email_formatted,
+                        #'email_from': email.smtp_user,
                         'email_to': record.get('email_from'),
                     }
                     request.env['mail.mail'].sudo().create(mail_values).send()
@@ -120,15 +121,12 @@ class WebsiteSale(WebsiteForm):
 
     @http.route('/lead_verify/', type='http', auth="public", methods=['GET'], website=True)
     def lead_verify(self, *args):
-        '''
-            ## RECORDATORIO ##
-            Añadir validacion para verificar una unica vez los datos del cliente
-        '''
         leads = request.env["crm.lead"].sudo()
         lead = leads.search([
             ("opp_token", "=", request.params.get('token')),
         ])
         if lead:
-            lead.write({ "opp_token", 'COMPLETED'})
+            lead.write({ "opp_token": 'COMPLETED'})
             lead.message_post(subject="Confirmación recibida", body="Confirmación de datos validos por parte del cliente")
+        #lead.message_post(subject="Confirmación recibida", body="Confirmación de datos validos por parte del cliente")
         return request.render("bri_contactus.validation_page")
