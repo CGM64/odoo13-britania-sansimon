@@ -43,11 +43,15 @@ class WebsiteSale(WebsiteForm):
         medio_c =  request.env['crm.medio.contacto']
         lista_medios_c = medio_c.sudo().search([])
 
+        company = request.env.company
+        
         values = {
             'medios': lista_medio,
             'depto' : lista_dp,
             'fleet' : lista_fleet,
             'medio_c' : lista_medios_c,
+            'name': company.name,
+            'phone': company.phone,
         }
 
         return request.render("bri_contactus.bri_contactenos", values)
