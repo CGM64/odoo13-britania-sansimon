@@ -418,6 +418,8 @@ class AccountMove(models.Model):
                     move.sat_fac_numero = move.name[move.name.find("-")+1:len(move.name)]
 
             for line in move.line_ids:
+                if line.product_id and line.product_id.name == 'CON Anticipo':
+                    continue
                 if line.currency_id:
                     currencies.add(line.currency_id)
 
