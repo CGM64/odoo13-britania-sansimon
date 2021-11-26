@@ -4,7 +4,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from odoo.http import request
 
-class repairOrderLine(models.Model):
+class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
     
     total_undiscounted = fields.Monetary(string="Total sin descuento", compute="_total_sin_descuento")
@@ -19,7 +19,7 @@ class repairOrderLine(models.Model):
                 'total_undiscounted': total,
             })
 
-class repairOrder(models.Model):
+class SaleOrder(models.Model):
     _inherit = "sale.order"
     
     total_discount = fields.Monetary(string="Descuento", compute="_amount_discount")

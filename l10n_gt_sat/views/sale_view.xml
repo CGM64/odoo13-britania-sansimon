@@ -9,6 +9,9 @@
             <xpath expr="//field[@name='order_line']/tree//field[@name='price_unit']" position="replace">
                 <field name="price_unit" readonly="1" />
             </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='discount']" position="replace">
+                <field name="discount" readonly="1" />
+            </xpath>
         </field>
     </record>
 
@@ -20,6 +23,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='order_line']/tree//field[@name='price_unit']" position="replace">
                 <field name="price_unit" readonly="0" />
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='discount']" position="replace">
+                <field name="discount" readonly="0" />
             </xpath>
         </field>
     </record>

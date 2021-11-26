@@ -250,6 +250,7 @@ class AccountBankStatementImport(models.TransientModel):
         fecha_primera_linea = None
         mes = None
         anio = None
+        sign = 1
 
         for line in recordlist:
             if encabezado:
@@ -260,14 +261,15 @@ class AccountBankStatementImport(models.TransientModel):
 
                 if not line:
                     continue
+                sign = 1 if nueva_linea[4] == 'C' else -1
                 vals_line['sequence'] = len(transactions) + 1
                 vals_line['date'] = datetime.strptime(nueva_linea[0], '%d/%m/%Y').strftime(DEFAULT_SERVER_DATE_FORMAT)
                 vals_line['name'] = nueva_linea[2] + ": " + str(nueva_linea[3])
                 vals_line['ref'] = nueva_linea[10]
-                vals_line['amount'] = float(nueva_linea[5].replace(",",""))
+                vals_line['amount'] = float(nueva_linea[5].replace(",","")) * sign
                 if segunda_linea:
                     segunda_linea = False
-                    saldo_inicial = float(nueva_linea[6].replace(",","")) - vals_line['amount']
+                    saldo_inicial = float(nueva_linea[6].replace(",","")) - (vals_line['amount'])
                     fecha_primera_linea = vals_line['date']
                     if fecha_primera_linea:
                             fecha_primera_linea = datetime.strptime(fecha_primera_linea, DEFAULT_SERVER_DATE_FORMAT)
