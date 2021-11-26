@@ -65,10 +65,10 @@ class AccountMove(models.Model):
 
             precio_sin_descuento = detalle.price_unit
             desc = round((100-detalle.discount) / 100, 10)
-            precio_con_descuento = round(precio_sin_descuento * desc,2)
+            precio_con_descuento = precio_sin_descuento * desc
 
-            precio_sin_descuento = round(precio_sin_descuento / tasa,2)
-            precio_con_descuento = round(precio_con_descuento / tasa,2)
+            precio_sin_descuento = precio_sin_descuento / tasa
+            precio_con_descuento = precio_con_descuento / tasa
 
             descuento = round((precio_sin_descuento * detalle.quantity) - (precio_con_descuento * detalle.quantity),4)
 
