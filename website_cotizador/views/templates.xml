@@ -470,25 +470,25 @@
                                     <t t-call="website_cotizador.contenido_cotizacion"></t>
                                     <div class="row mt-3 mb-3">
                                         <div class="col-12 col-md-4">
-                                            <a t-if="sale_order.has_to_be_signed(True)" role="button" class="btn btn-success btn-block mb8  mt-3" data-toggle="modal" data-target="#modalaccept" href="#">
+                                            <a t-if="sale_order.has_to_be_signed(True)" role="button" class="btn btn-danger btn-block mb8  mt-3" data-toggle="modal" data-target="#modalaccept" href="#">
                                                 <i class="fa fa-check" />
                                                 <t t-if="sale_order.has_to_be_paid(True)">Firmar y pagar</t>
                                                 <t t-else="">Aceptar y firmar</t>
                                             </a>
-                                            <a t-elif="sale_order.has_to_be_paid(True)" role="button" id="o_sale_portal_paynow" data-toggle="modal" data-target="#modalaccept" href="#" t-att-class="'btn-block mb8  mt-3 %s' % ('btn btn-light' if sale_order.transaction_ids else 'btn btn-success')">
+                                            <a t-elif="sale_order.has_to_be_paid(True)" role="button" id="o_sale_portal_paynow" data-toggle="modal" data-target="#modalaccept" href="#" t-att-class="'btn-block mb8  mt-3 %s' % ('btn btn-light' if sale_order.transaction_ids else 'btn btn-danger')">
                                                 <i class="fa fa-check" />
                                                 <t t-if="not sale_order.signature">Aceptar y pagar</t>
                                                 <t t-else="">Pagar ahora</t>
                                             </a>
                                         </div>
                                         <div class="col-12 col-md-4">
-                                            <a class="btn btn-secondary btn-block o_download_btn mt-3" t-att-href="sale_order.get_portal_url(report_type='pdf', download=True)" title="Download">
+                                            <a class="btn btn-dark btn-block o_download_btn mt-3" t-att-href="sale_order.get_portal_url(report_type='pdf', download=True)" title="Download">
                                                 <i class="fa fa-download" />
                                                 Descargar
                                             </a>
                                         </div>
                                         <div class="col-12 col-md-4">
-                                            <a class="btn btn-secondary btn-block o_print_btn o_portal_invoice_print mt-3" t-att-href="sale_order.get_portal_url(report_type='pdf')" id="print_invoice_report" title="Print" target="_blank">
+                                            <a class="btn btn-dark btn-block o_print_btn o_portal_invoice_print mt-3" t-att-href="sale_order.get_portal_url(report_type='pdf')" id="print_invoice_report" title="Print" target="_blank">
                                                 <i class="fa fa-print" />
                                                 Imprimir
                                             </a>

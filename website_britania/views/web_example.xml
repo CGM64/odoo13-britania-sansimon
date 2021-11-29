@@ -10,7 +10,7 @@
                             <div class="carousel-content c-content-left w-50 text-break">
                                 <h1 class="text-h-responsive fadeIn">ROCKET 3 R 221 SPECIAL EDITION</h1>
                                 <p class="text-p-responsive fadeIn">La edición especial rinde homenaje a sus insuperables prestaciones y par motor máximo de 221 Newton metro.</p>
-                                <button class="btn btn-danger text-p-responsive fadeIn">DESCUBRIR MÁS</button>
+                                <button class="btn btn-danger fadeIn">DESCUBRIR MÁS</button>
                             </div>
                         </div>
 
@@ -19,7 +19,7 @@
                             <div class="carousel-content c-content-right text-right w-50 text-break">
                                 <h1 class="text-h-responsive fadeIn">PURO DISEÑO CON UN ÚNICO PROPÓSITO</h1>
                                 <p class="text-p-responsive fadeIn">Pruebas oficiales del prototipo de la nueva Tiger 1200.</p>
-                                <button class="btn btn-danger text-p-responsive fadeIn">DESCUBRIR MÁS</button>
+                                <button class="btn btn-danger fadeIn">DESCUBRIR MÁS</button>
                             </div>
                         </div>
                         <div class="carousel-item" data-interval="5000">
@@ -30,7 +30,7 @@
                             <div class="carousel-content c-content-left w-50 text-break">
                                 <h1 class="text-h-responsive fadeIn">BONNEVILLE GOLD LINE EDITION</h1>
                                 <p class="text-p-responsive fadeIn">Un precioso iconos clásico con detalles pintados a mano...</p>
-                                <button class="btn btn-danger text-p-responsive fadeIn">DESCUBRIR MÁS</button>
+                                <button class="btn btn-danger fadeIn">DESCUBRIR MÁS</button>
                             </div>
                         </div>
                     </div>

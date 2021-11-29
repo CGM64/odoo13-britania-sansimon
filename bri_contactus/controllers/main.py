@@ -59,11 +59,15 @@ class WebsiteSale(WebsiteForm):
     @http.route('/website_form/<string:model_name>', type='http', auth="public", methods=['POST'], website=True)
     def website_form(self, model_name, **kwargs):
         return_value = super(WebsiteForm, self).website_form(model_name, **kwargs)
-        
-        #print("TEMPLATE DE RETORNO #################################################################")
+        #print("########################################## PRINT")
         #print(return_value)
-
-        template = request.env.ref('bri_contactus.mail_template_cotizacion')
+        #print(type(return_value))
+        ## print(return_value.read().decode('utf-8'))
+        #rs = return_value.decode('utf-8')
+        #print(rs)
+        #j = json.loads(return_value)
+        #print(j)
+        template = request.env.ref('bri_contactus.confirmate_data_user_email')
         if template:
             model_record = request.env['ir.model'].sudo().search([('model','=',model_name),('website_form_access','=',True)])
             if model_record and hasattr(request.env[model_name], 'phone_format'):
@@ -94,30 +98,17 @@ class WebsiteSale(WebsiteForm):
                     ])
 
                     lead.write({'opp_token': leads._generate_token()})
-                    # print(lead.opp_token)
-                    #print(lead.token_url)
-
+                    
                     # Envio de correos
-                    Fleet = request.env['fleet.vehicle.model']
-                    fleet = Fleet.sudo().search([('brand_id', '=',67),('is_publish','=',True), ('id','=',record.get('modelo'))])
-                    render_template = template.render({
-                        'contact_name': record.get('contact_name'),
-                        'company': company[0],
-                        'base_url': request.env ['ir.config_parameter'].sudo().get_param('web.base.url'),
-                        'product_name': fleet.name,
-                        'token_url': lead.token_url,
-                    }, engine='ir.qweb')
                     #mail_body = request.env['mail.thread']._replace_local_links(render_template)
-                    #email = request.env['ir.mail_server'].sudo().search([('name','=','pruebas')])
+                    email = request.env['ir.mail_server'].sudo().search([('name','=','correo.contacto')])
                     
                     mail_values = {
-                        'body_html': render_template,# mail_body,
-                        'subject': _('Confirmación de la cotización.'),
-                        'email_from': request.env.user.email_formatted,
-                        #'email_from': email.smtp_user,
-                        'email_to': record.get('email_from'),
+                        #'email_from': request.env.user.email_formatted,
+                        'email_from': email.smtp_user,
                     }
-                    request.env['mail.mail'].sudo().create(mail_values).send()
+                    template.write(mail_values)
+                    template.with_context().send_mail(lead.id, force_send=True, raise_exception=True)
                     lead.message_post(subject="Correo de confirmación enviado", body="Envío de correo de confirmación de datos validos")
                     pass
         

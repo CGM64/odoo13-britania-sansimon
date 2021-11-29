@@ -34,7 +34,10 @@ class WebsiteCotizador(CustomerPortal):
         #     'base_url': base_url,
         # }
         #response = super(WebsiteCotizador, self).portal_order_page(order_id=order_id, **kw)
+        #return response
         order_sudo = self._document_check_access('sale.order', order_id, access_token=access_token)
+        if report_type in ('html', 'pdf', 'text'):
+            return self._show_report(model=order_sudo, report_type=report_type, report_ref='sale.action_report_saleorder', download=download)
         if order_sudo:
             now = fields.Date.today().isoformat()
             session_obj_date = request.session.get('view_quote_%s' % order_sudo.id)

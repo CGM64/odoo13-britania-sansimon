@@ -3,6 +3,7 @@
 
 {
     'name': 'Britania formulario de contacto',
+    'author': "Integratec",
     'category': 'Website',
     'summary': 'Formulario de contacto',
     'version': '1.0',
