@@ -112,7 +112,7 @@
       <field name="arch" type="xml">
         <data>
             <xpath expr="//button[@name='action_repair_cancel']" position="after">
-                <button name="asignar_costo" class="oe_highlight" string="Asignar Costos" type="object" invisible='1'/>
+                <button name="asignar_costo" class="oe_highlight" string="Asignar Costos" type="object" invisible='0'/>
             </xpath>
         </data>
       </field>

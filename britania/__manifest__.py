@@ -42,6 +42,7 @@
         'data/product_pricelist.xml',
         'data/res_partner_data.xml',
         'views/fleet_vehicle.xml',
+        'views/repair_report_analisis.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
