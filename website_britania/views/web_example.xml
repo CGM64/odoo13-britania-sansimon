@@ -7,7 +7,7 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active" data-interval="5000">
                             <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/rocket%203%20r%20221/model%20page/my22-rocket-221-hpr-1920x1080.jpg" class="d-block w-100 " alt="..." />
-                            <div class="carousel-content c-content-left w-50 text-break">
+                            <div class="carousel-content c-content-left w-50 text-break animate__animated animate__fadeInUp">
                                 <h1 class="text-h-responsive fadeIn">ROCKET 3 R 221 SPECIAL EDITION</h1>
                                 <p class="text-p-responsive fadeIn">La edición especial rinde homenaje a sus insuperables prestaciones y par motor máximo de 221 Newton metro.</p>
                                 <button class="btn btn-danger fadeIn">DESCUBRIR MÁS</button>
@@ -16,7 +16,7 @@
 
                         <div class="carousel-item" data-interval="5000">
                             <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/adventure-touring/tiger-1200-tease-2021/beat%204/hpr-b4-triumph_tiger_1200-1920x1080%203.jpg" class="d-block w-100" alt="..." />
-                            <div class="carousel-content c-content-right text-right w-50 text-break">
+                            <div class="carousel-content c-content-right text-right w-50 text-break animate__animated animate__fadeInUp">
                                 <h1 class="text-h-responsive fadeIn">PURO DISEÑO CON UN ÚNICO PROPÓSITO</h1>
                                 <p class="text-p-responsive fadeIn">Pruebas oficiales del prototipo de la nueva Tiger 1200.</p>
                                 <button class="btn btn-danger fadeIn">DESCUBRIR MÁS</button>
@@ -27,7 +27,7 @@
                                 <source src="https://images.triumphmotorcycles.co.uk/media-library/files/central-marketing-team/videos/family%20videos/goldlinehpr.mp4" type="video/mp4" />
                             </video>
                             <!--meta itemprop="thumbnail" content="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/gold%20lines%20my22/special_edition_my22_t120_black_details_nh_0045.jpg" /-->
-                            <div class="carousel-content c-content-left w-50 text-break">
+                            <div class="carousel-content c-content-left w-50 text-break animate__animated animate__fadeInUp">
                                 <h1 class="text-h-responsive fadeIn">BONNEVILLE GOLD LINE EDITION</h1>
                                 <p class="text-p-responsive fadeIn">Un precioso iconos clásico con detalles pintados a mano...</p>
                                 <button class="btn btn-danger fadeIn">DESCUBRIR MÁS</button>
@@ -63,7 +63,7 @@
 
                 <!---->
                 <div class="container">
-                    <h3 class="mt-5 text-center">FEATURED MOTORCYCLES</h3>
+                    <h3 class="mt-5 text-center wow animate__animated animate__bounce">FEATURED MOTORCYCLES</h3>
                 </div>
 
                 <!-- GALERIA-->

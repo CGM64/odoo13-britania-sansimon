@@ -261,6 +261,7 @@
             </t>
         </template>
 
+        
         <template id="bri_view_cotizador">
             <t t-call="website.layout">
                 <t t-set="title">Cotizacion</t>
@@ -272,70 +273,7 @@
                         </div>
                     </div>
 
-                    <!--CAROUSEL-->
-                    <div id="myCarousel" class="s_carousel s_carousel_default carousel slide" data-interval="10000">
-                        <!-- Indicators -->
-                        <ol class="carousel-indicators">
-                            <li data-target="#myCarousel" data-slide-to="0" class="active" />
-                            <li data-target="#myCarousel" data-slide-to="1" />
-                            <li data-target="#myCarousel" data-slide-to="2" />
-                        </ol>
-                        <!-- Content -->
-                        <div class="carousel-inner bg-dark">
-                            <div class="carousel-item active oe_custom_bg" data-interval="5000">
-                                <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/rocket%203%20r%20221/model%20page/my22-rocket-221-hpr-1920x1080.jpg" class="d-block w-100 " alt="..." />
-                                <div class="carousel-content py-4 c-content-left w-75 text-break">
-                                    <div class="s_title pb8">
-                                        <h1 class="s_title_default text-h-responsive fadeIn">ROCKET 3 R 221 SPECIAL EDITION</h1>
-                                    </div>
-                                    <p class="lead text-p-responsive fadeIn">La edición especial rinde homenaje a sus insuperables
-                                        prestaciones y
-                                        par motor máximo de 221
-                                        Newton metro.</p>
-                                    <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
-                                        <a href="#" class="btn btn-danger text-btn-responsive btn-responsive">DESCUBRIR MÁS</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="carousel-item oe_custom_bg" data-interval="5000">
-                                <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/adventure-touring/tiger-1200-tease-2021/beat%204/hpr-b4-triumph_tiger_1200-1920x1080%203.jpg" class="d-block w-100" alt="..." />
-                                <div class="carousel-content py-4 c-content-right w-75 text-break">
-                                    <div class="s_title pb8">
-                                        <h1 class="s_title_default text-h-responsive fadeIn">PURO DISEÑO CON UN ÚNICO PROPÓSITO</h1>
-                                    </div>
-                                    <p class="lead text-p-responsive fadeIn">Pruebas oficiales del prototipo de la nueva Tiger 1200.</p>
-                                    <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
-                                        <a href="#" class="btn btn-danger text-btn-responsive btn-responsive">DESCUBRIR MÁS</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="carousel-item oe_custom_bg" data-interval="5000">
-                                <video preload="none" playsinline="true" muted="true" loop="loop" poster="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/gold%20lines%20my22/special_edition_my22_t120_black_details_nh_0045.jpg" itemprop="video" itemscope="true" autoplay="true" itemtype="http://schema.org/VideoObject" class="d-block w-100 ">
-                                    <source src="https://images.triumphmotorcycles.co.uk/media-library/files/central-marketing-team/videos/family%20videos/goldlinehpr.mp4" type="video/mp4" />
-                                </video>
-                                <div class="carousel-content py-4 c-content-left w-75 text-break">
-                                    <div class="s_title pb8">
-                                        <h1 class="s_title_default text-h-responsive fadeIn">BONNEVILLE GOLD LINE EDITION</h1>
-                                    </div>
-                                    <p class="lead text-p-responsive fadeIn">Un precioso iconos clásico con detalles pintados a mano...</p>
-                                    <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
-                                        <a href="#" class="btn btn-danger text-btn-responsive btn-responsive">DESCUBRIR MÁS</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Controls -->
-                        <div class="loading loading-animated"></div>
-                        <div class="carousel-control-prev" data-target="#myCarousel" data-slide="prev" role="img" aria-label="Previous" title="Previous">
-                            <span class="carousel-control-prev-icon" />
-                            <span class="sr-only">Previous</span>
-                        </div>
-                        <div class="carousel-control-next" data-target="#myCarousel" data-slide="next" role="img" aria-label="Next" title="Next">
-                            <span class="carousel-control-next-icon" />
-                            <span class="sr-only">Next</span>
-                        </div>
-                    </div>
+                    <t t-call="theme_britania.custom_carousel"></t>
 
                     <!--SELECTORES-->
                     <div class="container mt-5">
@@ -356,7 +294,7 @@
                                 <div class="container mt-5 p-5">
                                     <div class="row">
                                         <div class="col-12 col-md-7">
-                                            <h1 class="display-3 font-weight-bold text-uppercase">for the ride</h1>
+                                            <h1 class="display-3 font-weight-bold text-uppercase wow animate__animated animate__fadeInLeft" data-wow-delay="0.2s" style="text-shadow: 4px 3px 4px rgba(0, 0, 0, 0.5);">for the ride</h1>
                                             <div class="img-for-the-ride">
                                                 <img src="https://f.hubspotusercontent10.net/hubfs/1794060/CS7_NK_ANGLE_RHS%20(1).png" alt="" width="100%" />
                                             </div>
@@ -382,8 +320,8 @@
                                                 </div>
                                                 <div class="col-12 col-lg-1"></div>
                                                 <div class="col-12 col-lg-5">
-                                                    <div class="rounded-circle p-0 m-0 text-uppercase bg-dark text-light text-center d-flex align-items-center justify-content-center" style="width: 20vw; height: 20vw;">
-                                                        <p class="" style="padding: 0; margin: 0; font-size: 4vw;">Ficha tecnica</p>
+                                                    <div class="rounded-circle p-0 m-0 text-uppercase bg-dark text-light text-center d-flex align-items-center justify-content-center wow animate__animated animate__jackInTheBox" data-wow-delay="0.4s" style="width: 10vw; height: 10vw;">
+                                                        <p class="" style="padding: 0; margin: 0; font-size: 2vw;">Ficha tecnica</p>
                                                     </div>
                                                 </div>
                                             </div>

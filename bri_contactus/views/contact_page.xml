@@ -422,7 +422,10 @@
                     <div id="contenedor" class="w-100">
                         <div class="" style="">
                             <img src="/bri_contactus/static/src/image/thank_you_lg.jpg" style="width:auto;" />
-                            <span class="display-4 w-100 text-center" style="position: absolute; top:6.5rem; left:0;">Tu solicitud fue enviada con éxito</span>
+                            <div class="w-100 text-center" style="position: absolute; top:6.5rem; left:0;">
+                                <span class="text-center" style="font-size: 6vw;">Tu solicitud fue enviada con éxito</span>
+                                <a class="btn btn-danger text-center" href="/">Seguir explorando</a>
+                            </div>
                         </div>
                         <!--picture>
                             <source media="(min-width:1200px)" srcset="/bri_contactus/static/src/image/thank_you_lg.jpg" />
