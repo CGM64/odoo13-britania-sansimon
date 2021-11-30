@@ -46,52 +46,56 @@ class RepairReport(models.Model):
     price_total = fields.Float('Total', readonly=True)
     price_subtotal = fields.Float('Total sin impuestos', readonly=True)
     costo = fields.Float('Costo', readonly=True)
-    variacion = fields.Float('Margen', readonly=True)
+    margen = fields.Float('Margen', readonly=True)
 
     def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
         with_ = ("WITH %s" % with_clause) if with_clause else ""
 
         select_ = """
-            min(l.id) as id,
-            l.product_id as product_id,
-            t.uom_id as product_uom,
+            min(ro.id) as id,
             sum(l.product_uom_qty / u.factor * u2.factor) as product_uom_qty,
-            l.price_unit as price_unit,
             count(*) as nbr,
-            s.name as name,
-            s.price_subtotal as price_subtotal,
-            s.create_date as date,
-            s.state as state,
-            s.tipo_orden as repair_type,
-            s.partner_id as partner_id,
-            s.user_id as user_id,
-            s.company_id as company_id,
-            extract(epoch from avg(date_trunc('day',s.create_date)-date_trunc('day',s.create_date)))/(24*60*60)::decimal(16,2) as delay,
-            t.categ_id as categ_id,
+            extract(epoch from avg(date_trunc('day',ro.create_date)-date_trunc('day',ro.create_date)))/(24*60*60)::decimal(16,2) as delay,
             p.product_tmpl_id,
+            l.product_id as product_id,
+            l.name as name,
+            l.price_unit as price_unit,
+            l.price_subtotal as price_subtotal,
+            l.create_date as date,
+            l.discount as discount,
+            l.costo as costo,
+            ro.id as order_id,
+            ro.state as state,
+            ro.tipo_orden as repair_type,
+            ro.partner_id as partner_id,
+            ro.user_id as user_id,
+            ro.company_id as company_id,
+            t.uom_id as product_uom,
+            t.categ_id as categ_id,
             partner.country_id as country_id,
             partner.industry_id as industry_id,
             partner.commercial_partner_id as commercial_partner_id,
-            l.discount as discount,
-            l.costo as costo,
-            (l.price_unit * sum(l.product_uom_qty / u.factor * u2.factor)) - ((l.discount/100) *(l.price_unit *  l.product_uom_qty)) - l.costo as variacion,
-            (l.price_unit *  sum(l.product_uom_qty / u.factor * u2.factor)) - ((l.discount/100) *(l.price_unit *  sum(l.product_uom_qty / u.factor * u2.factor))) as price_total,
-            s.id as order_id
+            (l.price_unit * sum(l.product_uom_qty / u.factor * u2.factor)) - ((l.discount/100) *(l.price_unit *  l.product_uom_qty)) - l.costo as margen,
+            (l.price_unit *  sum(l.product_uom_qty / u.factor * u2.factor)) - ((l.discount/100) *(l.price_unit *  sum(l.product_uom_qty / u.factor * u2.factor))) as price_total
         """
 
         for field in fields.values():
             select_ += field
 
         from_ = """
-            repair_line l
-                join repair_order s on (l.repair_id=s.id)
-                join repair_fee f on (l.repair_id=f.repair_id)
-                join res_partner partner on s.partner_id = partner.id
-                    left join product_product p on (l.product_id=p.id)
+            repair_order ro join
+            (select id,name,repair_id,product_id,product_uom_qty,price_unit,product_uom,price_subtotal,
+            invoice_line_id,invoiced,create_uid,create_date,write_uid,write_date,discount,costo from repair_fee
+            union 
+            select id,name,repair_id,product_id,product_uom_qty,price_unit,product_uom,price_subtotal,
+            invoice_line_id,invoiced,create_uid,create_date,write_uid,write_date,discount,costo from repair_line) l 
+            on ro.id =l.repair_id
+
+            join res_partner partner on ro.partner_id = partner.id
+                left join product_product p on (l.product_id=p.id)
                         left join product_template t on (p.product_tmpl_id=t.id)
-                left join uom_uom u on (u.id=l.product_uom)
+                left join uom_uom u on (u.id=ro.product_uom)
                 left join uom_uom u2 on (u2.id=t.uom_id)
-                left join product_pricelist pp on (s.pricelist_id = pp.id)
                 %s
         """ % from_clause
         
@@ -99,23 +103,23 @@ class RepairReport(models.Model):
             l.product_id,
             t.uom_id,
             t.categ_id,
-            s.name,
-            s.create_date,
-            s.partner_id,
-            s.user_id,
-            s.state,
-            s.tipo_orden,
-            s.company_id,
+            l.price_unit,
+            l.name, 
+            l.price_subtotal,
+            l.create_date,
+            l.discount,
+            l.costo,
+            l.product_uom_qty,
+            ro.id,
+            ro.state,
+            ro.tipo_orden,
+            ro.partner_id,
+            ro.user_id,
+            ro.company_id,
             p.product_tmpl_id,
             partner.country_id,
             partner.industry_id,
-            partner.commercial_partner_id,
-            l.discount,
-            s.amount_total,
-            l.costo,
-            l.price_unit,
-            l.product_uom_qty,
-            s.id %s
+            partner.commercial_partner_id %s
         """ % (groupby)
 
         return '%s (SELECT %s FROM %s WHERE l.product_id IS NOT NULL GROUP BY %s)' % (with_, select_, from_, groupby_)
