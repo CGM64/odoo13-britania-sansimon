@@ -75,7 +75,7 @@ class RepairReport(models.Model):
             partner.country_id as country_id,
             partner.industry_id as industry_id,
             partner.commercial_partner_id as commercial_partner_id,
-            (l.price_unit * sum(l.product_uom_qty / u.factor * u2.factor)) - ((l.discount/100) *(l.price_unit *  l.product_uom_qty)) - l.costo as margen,
+            l.price_subtotal - l.costo as margen,
             (l.price_unit *  sum(l.product_uom_qty / u.factor * u2.factor)) - ((l.discount/100) *(l.price_unit *  sum(l.product_uom_qty / u.factor * u2.factor))) as price_total
         """
 
@@ -85,7 +85,7 @@ class RepairReport(models.Model):
         from_ = """
             repair_order ro join
             (select id,name,repair_id,product_id,product_uom_qty,price_unit,product_uom,price_subtotal,
-            invoice_line_id,invoiced,create_uid,create_date,write_uid,write_date,discount,costo from repair_fee
+            invoice_line_id,invoiced,create_uid,create_date,write_uid,write_date,discount,0 costo from repair_fee
             union 
             select id,name,repair_id,product_id,product_uom_qty,price_unit,product_uom,price_subtotal,
             invoice_line_id,invoiced,create_uid,create_date,write_uid,write_date,discount,costo from repair_line) l 
