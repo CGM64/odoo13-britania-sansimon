@@ -469,7 +469,7 @@
                                     </div>
                                     <t t-call="website_cotizador.contenido_cotizacion"></t>
                                     <div class="row mt-3 mb-3">
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-3">
                                             <a t-if="sale_order.has_to_be_signed(True)" role="button" class="btn btn-danger btn-block mb8  mt-3" data-toggle="modal" data-target="#modalaccept" href="#">
                                                 <i class="fa fa-check" />
                                                 <t t-if="sale_order.has_to_be_paid(True)">Firmar y pagar</t>
@@ -481,13 +481,19 @@
                                                 <t t-else="">Pagar ahora</t>
                                             </a>
                                         </div>
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-3">
+                                            <a class="btn btn-dark btn-block o_download_btn mt-3" role="button" data-toggle="modal" data-target="#modaldecline" href="#">
+                                                <i class="fa fa-times"/>
+                                                Rechazar
+                                            </a>
+                                        </div>
+                                        <div class="col-12 col-md-3">
                                             <a class="btn btn-dark btn-block o_download_btn mt-3" t-att-href="sale_order.get_portal_url(report_type='pdf', download=True)" title="Download">
                                                 <i class="fa fa-download" />
                                                 Descargar
                                             </a>
                                         </div>
-                                        <div class="col-12 col-md-4">
+                                        <div class="col-12 col-md-3">
                                             <a class="btn btn-dark btn-block o_print_btn o_portal_invoice_print mt-3" t-att-href="sale_order.get_portal_url(report_type='pdf')" id="print_invoice_report" title="Print" target="_blank">
                                                 <i class="fa fa-print" />
                                                 Imprimir
@@ -496,18 +502,18 @@
                                         <t t-if="not sale_order.is_expired and sale_order.state in ['draft', 'sent']">
                                             <div t-if="sale_order.remaining_validity_days &gt; 0" class="col-12 col-md-4">
                                                 <small>
-                                                    <b class="text-muted">This offer expires in</b>
+                                                    <b class="text-muted">Esta oferta vence en</b>
                                                 </small>
                                                 <div class="day_counter">
                                                     <i class="fa fa-clock-o" aria-label="Dates" title="Dates"></i>
                                                     <t t-esc="sale_order.remaining_validity_days" />
-                                                    <t t-if="sale_order.remaining_validity_days &gt; 1">days</t>
-                                                    <t t-else="">day</t>
+                                                    <t t-if="sale_order.remaining_validity_days &gt; 1">dias</t>
+                                                    <t t-else="">día</t>
                                                 </div>
                                             </div>
                                             <div t-if="sale_order.amount_undiscounted - sale_order.amount_untaxed &gt; 0.01" class="col-12 col-md-4">
                                                 <small>
-                                                    <b class="text-muted">Your advantage</b>
+                                                    <b class="text-muted">Tu ventaja</b>
                                                 </small>
                                                 <small>
                                                     <b t-field="sale_order.amount_undiscounted" t-options='{"widget": "monetary", "display_currency": sale_order.pricelist_id.currency_id}' style="text-decoration: line-through" class="d-block mt-1" data-id="amount_undiscounted" />
@@ -520,7 +526,7 @@
                                                     <small>
                                                         (
                                                         <span t-field="sale_order.amount_total" data-id="total_amount" />
-                                                        Incl. tax)
+                                                        Incl. impuesto)
                                                     </small>
                                                 </t>
                                             </div>
@@ -767,23 +773,23 @@
                         <form id="accept" method="POST" t-att-data-order-id="sale_order.id" t-att-data-token="sale_order.access_token" class="js_accept_json modal-content js_website_submit_form">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                             <header class="modal-header">
-                                <h4 class="modal-title">Validate Order</h4>
+                                <h4 class="modal-title">Validar orden</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
                             </header>
                             <main class="modal-body" id="sign-dialog">
                                 <p>
-                                    <span>By signing this proposal, I agree to the following terms:</span>
+                                    <span>Al firmar esta propuesta, acepto los siguientes términos:</span>
                                     <ul>
                                         <li>
-                                            <span>Accepted on the behalf of:</span>
+                                            <span>Aceptado en nombre de:</span>
                                             <b t-field="sale_order.partner_id.commercial_partner_id" />
                                         </li>
                                         <li>
-                                            <span>For an amount of:</span>
+                                            <span>Por una cantidad de:</span>
                                             <b data-id="total_amount" t-field="sale_order.amount_total" />
                                         </li>
                                         <li t-if="sale_order.payment_term_id">
-                                            <span>With payment terms:</span>
+                                            <span>Con condiciones de pago:</span>
                                             <b t-field="sale_order.payment_term_id.note" />
                                         </li>
                                     </ul>
@@ -799,32 +805,32 @@
                     <div class="modal-dialog" t-if="not sale_order.has_to_be_signed(True) and sale_order.has_to_be_paid(True)">
                         <div class="modal-content">
                             <header class="modal-header">
-                                <h4 class="modal-title">Validate Order</h4>
+                                <h4 class="modal-title">Validar orden</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
                             </header>
                             <main class="modal-body" id="sign-dialog">
                                 <p>
-                                    <span>By paying this proposal, I agree to the following terms:</span>
+                                    <span>Al pagar esta propuesta, acepto los siguientes términos:</span>
                                     <ul>
                                         <li>
-                                            <span>Accepted on the behalf of:</span>
+                                            <span>Aceptado en nombre de:</span>
                                             <b t-field="sale_order.partner_id.commercial_partner_id" />
                                         </li>
                                         <li>
-                                            <span>For an amount of:</span>
+                                            <span>Por una cantidad de:</span>
                                             <b data-id="total_amount" t-field="sale_order.amount_total" />
                                         </li>
                                         <li t-if="sale_order.payment_term_id">
-                                            <span>With payment terms:</span>
+                                            <span>Con condiciones de pago:</span>
                                             <b t-field="sale_order.payment_term_id.note" />
                                         </li>
                                     </ul>
                                 </p>
                                 <div t-if="pms or acquirers" id="payment_method" class="text-left">
-                                    <h3 class="mb24">Pay with</h3>
+                                    <h3 class="mb24">Pagar con</h3>
                                     <t t-call="payment.payment_tokens_list">
                                         <t t-set="mode" t-value="'payment'" />
-                                        <t t-set="submit_txt">Pay &amp; Confirm</t>
+                                        <t t-set="submit_txt">Pagar &amp; Confirmar</t>
                                         <t t-set="icon_class" t-value="'fa-lock'" />
                                         <t t-set="form_action" t-value="sale_order.get_portal_url(suffix='/transaction/token')" />
                                         <t t-set="prepare_tx_url" t-value="sale_order.get_portal_url(suffix='/transaction/')" />
@@ -842,21 +848,21 @@
                         <form id="decline" method="POST" t-attf-action="/my/orders/#{sale_order.id}/decline?access_token=#{sale_order.access_token}" class="modal-content">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                             <header class="modal-header">
-                                <h4 class="modal-title">Reject This Quotation</h4>
+                                <h4 class="modal-title">Rechazar esta cotización</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
                             </header>
                             <main class="modal-body">
                                 <p>
-                                    Tell us why you are refusing this quotation, this will help us improve our services.
+                                    Díganos por qué rechaza esta cotización, esto nos ayudará a mejorar nuestros servicios.
                                 </p>
-                                <textarea rows="4" name="decline_message" required="" placeholder="Your feedback..." class="form-control" />
+                                <textarea rows="4" name="decline_message" required="" placeholder="Tu comentario..." class="form-control" />
                             </main>
                             <footer class="modal-footer">
                                 <button type="submit" t-att-id="sale_order.id" class="btn btn-danger">
                                     <i class="fa fa-times"></i>
-                                    Reject
+                                    Rechazar
                                 </button>
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
                             </footer>
                         </form>
                     </div>
@@ -865,16 +871,16 @@
                 <!-- status messages -->
                 <div t-if="message == 'sign_ok'" class="alert alert-success alert-dismissable d-print-none" role="status">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">&amp;times;</button>
-                    <strong>Thank You!</strong>
+                    <strong>¡Gracias!</strong>
                     <br />
-                    <t t-if="message == 'sign_ok' and sale_order.state in ['sale', 'done']">Your order has been confirmed.</t>
-                    <t t-elif="message == 'sign_ok' and sale_order.has_to_be_paid()">Your order has been signed but still needs to be paid to be confirmed.</t>
-                    <t t-else="">Your order has been signed.</t>
+                    <t t-if="message == 'sign_ok' and sale_order.state in ['sale', 'done']">Su pedido ha sido confirmado.</t>
+                    <t t-elif="message == 'sign_ok' and sale_order.has_to_be_paid()">Su pedido ha sido firmado pero aún debe pagarse para ser confirmado.</t>
+                    <t t-else="">Su pedido ha sido firmado.</t>
                 </div>
 
                 <div t-if="message == 'cant_reject' and sale_order.has_to_be_signed()" class="alert alert-danger alert-dismissable d-print-none" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">&amp;times;</button>
-                    Your order is not in a state to be rejected.
+                    Su pedido no está en condiciones de ser rechazado.
                 </div>
 
                 <t t-if="sale_order.transaction_ids">
@@ -886,19 +892,19 @@
 
                 <div t-if="sale_order.state == 'cancel'" class="alert alert-danger alert-dismissable d-print-none" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="close">&amp;times;</button>
-                    <strong>This quotation has been canceled.</strong>
+                    <strong>Esta cotización ha sido cancelada.</strong>
                     <a role="button" href="#discussion">
                         <i class="fa fa-comment" />
-                        Contact us to get a new quotation.
+                        Contáctenos para obtener una nueva cotización.
                     </a>
                 </div>
 
                 <div t-if="sale_order.is_expired" class="alert alert-warning alert-dismissable d-print-none" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="close">&amp;times;</button>
-                    <strong>This offer expired!</strong>
+                    <strong>¡Esta oferta expiró!</strong>
                     <a role="button" href="#discussion">
                         <i class="fa fa-comment" />
-                        Contact us to get a new quotation.
+                        Contáctenos para obtener una nueva cotización.
                     </a>
                 </div>
             </div>

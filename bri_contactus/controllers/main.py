@@ -59,14 +59,7 @@ class WebsiteSale(WebsiteForm):
     @http.route('/website_form/<string:model_name>', type='http', auth="public", methods=['POST'], website=True)
     def website_form(self, model_name, **kwargs):
         return_value = super(WebsiteForm, self).website_form(model_name, **kwargs)
-        #print("########################################## PRINT")
-        #print(return_value)
-        #print(type(return_value))
-        ## print(return_value.read().decode('utf-8'))
-        #rs = return_value.decode('utf-8')
-        #print(rs)
-        #j = json.loads(return_value)
-        #print(j)
+        
         template = request.env.ref('bri_contactus.confirmate_data_user_email')
         if template:
             model_record = request.env['ir.model'].sudo().search([('model','=',model_name),('website_form_access','=',True)])
@@ -80,21 +73,26 @@ class WebsiteSale(WebsiteForm):
                     record = data.get('record', {})
                     company = request.env.company
                     print(company.id)
-                    '''
-                        ## RECORDATORIO ##
-                        Obtener la oportunidad de una manera mas eficiente
-                    '''
+                    
                     # Token en la oportunidad
                     leads = request.env["crm.lead"].sudo()
+
+                    rs = return_value.get_data().decode('utf-8')
+                    j = json.loads(rs)
+                    id = j.get("id")
+
+                    # lead = leads.search([
+                    #     ("contact_name", "=", record.get('contact_name')),
+                    #     ("email_from", "=", record.get('email_from')),
+                    #     ("type", "=", record.get('type')),
+                    #     ("phone", "=", record.get('phone')),
+                    #     ("won_status", "=", 'pending'),
+                    #     ("medio_conocio", "=", record.get('medio_conocio')),
+                    #     ("modelo", "=", record.get('modelo')),
+                    #     ("medio_contacto", "=", record.get('medio_contacto')),
+                    # ])
                     lead = leads.search([
-                        ("contact_name", "=", record.get('contact_name')),
-                        ("email_from", "=", record.get('email_from')),
-                        ("type", "=", record.get('type')),
-                        ("phone", "=", record.get('phone')),
-                        ("won_status", "=", 'pending'),
-                        ("medio_conocio", "=", record.get('medio_conocio')),
-                        ("modelo", "=", record.get('modelo')),
-                        ("medio_contacto", "=", record.get('medio_contacto')),
+                        ("id", "=", id)
                     ])
 
                     lead.write({'opp_token': leads._generate_token()})
