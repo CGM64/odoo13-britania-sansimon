@@ -43,7 +43,7 @@ class RepairReport(models.Model):
     product_uom = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True)
     product_uom_qty = fields.Float('Cantidad Ordenada', readonly=True)
     price_unit = fields.Float('Precio Unitario', readonly=True)
-    price_total = fields.Float('Total', readonly=True)
+    price_total = fields.Float('Precio Total', readonly=True)
     price_subtotal = fields.Float('Total sin impuestos', readonly=True)
     costo = fields.Float('Costo', readonly=True)
     margen = fields.Float('Margen', readonly=True)
