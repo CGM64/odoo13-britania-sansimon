@@ -16,25 +16,7 @@ class WebsiteCotizador(CustomerPortal):
     #@http.route('/cliente/cotizacion/<int:order_id>', type='http', auth='public', website=True)
     @http.route('/my/orders/<int:order_id>', type='http', auth='public', methods=['GET'], website=True)
     def portal_order_page(self, order_id, report_type=None, access_token=None, message=False, download=False, **kw):
-        # company = request.env.company
-        # base_url = request.env ['ir.config_parameter'].sudo().get_param('web.base.url')
-        # values = {
-        #     'facebook': company.social_facebook,
-        #     'twitter': company.social_twitter,
-        #     'instagram': company.social_instagram,
-        #     #'whatsapp': company.social_whatsapp,
-        #     'youtube': company.social_youtube,
-        #     'github': company.social_github,
-        #     'linkedin': company.social_linkedin,
-        #     'phone': company.phone,
-        #     'street': company.street,
-        #     'email': company.email,
-        #     'name': company.name,
-        #     'company_id': company.id,
-        #     'base_url': base_url,
-        # }
-        #response = super(WebsiteCotizador, self).portal_order_page(order_id=order_id, **kw)
-        #return response
+        
         order_sudo = self._document_check_access('sale.order', order_id, access_token=access_token)
         if report_type in ('html', 'pdf', 'text'):
             return self._show_report(model=order_sudo, report_type=report_type, report_ref='sale.action_report_saleorder', download=download)
@@ -101,8 +83,7 @@ class WebsiteCotizador(CustomerPortal):
         else:
             history = request.session.get('my_orders_history', [])
         #values.update(get_records_pager(history, order_sudo))
-
-        #return "hola"
+        
         return request.render('website_cotizador.bri_view_cotizador',values)
         pass    
 

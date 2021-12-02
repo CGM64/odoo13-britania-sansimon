@@ -6,9 +6,23 @@
             <attribute name="class">navbar navbar-expand-lg navbar-dark bg-dark</attribute>
         </xpath>
 
+        <!-- <xpath expr="//div[@id='wrapwrap']/header/nav/div/a/span/img" position="attributes">
+            <attribute name="src">/bri_contactus/static/src/image/logo-negativo.svg</attribute>
+        </xpath> -->
+
         <!--xpath expr="//div[@id='wrapwrap']/header/nav/div/div/ul" position="attributes">
             <attribute name="class">navbar-nav ml-auto text-sm</attribute>
         </xpath-->
+    </template>
+
+    <template id="bri_logo_negativo" inherit_id="website.layout">
+        <xpath expr="//header//a[hasclass('navbar-brand')]" position="replace">
+            <a href="/" class="navbar-brand logo">
+                <span role="img" t-att-aria-label="'Logo of %s' % website.name" t-att-title="website.name" >
+                    <img src="/bri_contactus/static/src/image/logo-negativo.svg" style="width: 10rem;" alt="" />
+                </span>
+            </a>
+        </xpath>
     </template>
 
     <template id="custom_carousel" inherit_id="website.s_carousel">

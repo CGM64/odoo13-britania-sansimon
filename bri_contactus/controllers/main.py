@@ -69,10 +69,6 @@ class WebsiteSale(WebsiteForm):
                 except:
                     pass
                 else:
-                    # print(data)
-                    record = data.get('record', {})
-                    company = request.env.company
-                    print(company.id)
                     
                     # Token en la oportunidad
                     leads = request.env["crm.lead"].sudo()
@@ -80,17 +76,7 @@ class WebsiteSale(WebsiteForm):
                     rs = return_value.get_data().decode('utf-8')
                     j = json.loads(rs)
                     id = j.get("id")
-
-                    # lead = leads.search([
-                    #     ("contact_name", "=", record.get('contact_name')),
-                    #     ("email_from", "=", record.get('email_from')),
-                    #     ("type", "=", record.get('type')),
-                    #     ("phone", "=", record.get('phone')),
-                    #     ("won_status", "=", 'pending'),
-                    #     ("medio_conocio", "=", record.get('medio_conocio')),
-                    #     ("modelo", "=", record.get('modelo')),
-                    #     ("medio_contacto", "=", record.get('medio_contacto')),
-                    # ])
+                    
                     lead = leads.search([
                         ("id", "=", id)
                     ])
@@ -98,7 +84,6 @@ class WebsiteSale(WebsiteForm):
                     lead.write({'opp_token': leads._generate_token()})
                     
                     # Envio de correos
-                    #mail_body = request.env['mail.thread']._replace_local_links(render_template)
                     email = request.env['ir.mail_server'].sudo().search([('name','=','correo.contacto')])
                     
                     mail_values = {
@@ -110,7 +95,7 @@ class WebsiteSale(WebsiteForm):
                     lead.message_post(subject="Correo de confirmación enviado", body="Envío de correo de confirmación de datos validos")
                     pass
         
-        return return_value #super(WebsiteForm, self).website_form(model_name, **kwargs)
+        return return_value
 
     @http.route('/lead_verify/', type='http', auth="public", methods=['GET'], website=True)
     def lead_verify(self, *args):

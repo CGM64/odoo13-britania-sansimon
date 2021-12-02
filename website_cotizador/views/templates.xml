@@ -266,12 +266,7 @@
             <t t-call="website.layout">
                 <t t-set="title">Cotizacion</t>
                 <div class="oe_structure">
-                    <!--HEADER-->
-                    <div class="w-100 text-center mb-2" style="background-color: black;">
-                        <div class="container text-center">
-                            <img class="p-3" t-att-src="'%s/logo?company=%s' % (base_url,company_id or 0)" t-att-alt="'%s' % name" style="height: 10vh;" />
-                        </div>
-                    </div>
+                    <!--CAROUSEL-->
 
                     <t t-call="theme_britania.custom_carousel"></t>
 
