@@ -583,12 +583,20 @@
                     <div class="container ">
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <div class="container py-5 mb-lg-5">
+                                <div class="container py-5 pb-lg-2 mb-lg-3">
                                     <div class="row">
                                         <div class="col-12 col-md-7">
                                             <h1 class="display-3 font-weight-bold text-uppercase wow animate__animated animate__fadeInLeft" data-wow-delay="0.2s" style="text-shadow: 4px 3px 4px rgba(0, 0, 0, 0.5);">for the ride</h1>
-                                            <div class="img-for-the-ride">
+                                            <!-- <div class="img-for-the-ride">
                                                 <img src="https://f.hubspotusercontent10.net/hubfs/1794060/CS7_NK_ANGLE_RHS%20(1).png" alt="" width="90%" />
+                                            </div> -->
+                                            <div class="main-gallery js-flickity mb-4 mb-lg-2" data-flickity-options='{ "cellAlign": "left", "contain": true, "autoPlay": 3000, "freeScroll": false, "wrapAround": true }'>
+                                                <div class="gallery-cell">
+                                                    <img src="/website_cotizador/static/src/img/CS7_NK_ANGLE_RHS.png" alt="" style="width: 90% !important;" />
+                                                </div>
+                                                <div class="gallery-cell">
+                                                    <img src="/website_cotizador/static/src/img/CS7_NK_ANGLE_RHS.png" alt="" style="width: 90% !important;" />
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-5">
@@ -761,7 +769,7 @@
                                     <p class="text-primary text-center text-uppercase">LIBRE DE KILOMETRAJE</p>
                                     <div class="row">
                                         <div class="col-12 col-md-6 d-block">
-                                            <h1 class="text-center bri-b p-0 m-0">$ 11,200</h1>
+                                            <h1 class="display-4 text-center bri-b p-0 m-0">$ 11,200</h1>
                                             <div class="bg-primary text-white p-5">
                                                 <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
                                                 <h2 class="text-center">3 VECES MÁS FÁCIL</h2>
@@ -786,7 +794,7 @@
                                             </ul>
                                         </div>
                                         <div class="col-12 col-md-6 d-block">
-                                            <h1 class="text-center bri-b p-0 m-0">Q 87,360</h1>
+                                            <h1 class="display-4 text-center bri-b p-0 m-0">Q 87,360</h1>
                                             <div class="bg-primary text-white p-5">
                                                 <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
                                                 <h2 class="text-center">3 VECES MÁS FÁCIL</h2>
@@ -854,9 +862,10 @@
                     </div>
 
                     <!--BANER MAPA-->
-                    <div class="w-100 mt-5">
-                        <div class="container banner-map">
-                            <img src="https://triumphmadrid.es/wp-content/uploads/2014/10/fbtriumph.jpg" alt="" width="100%" />
+                    <div class="w-100">
+                        <div class="container banner-map p-0">
+                            <img src="/website_cotizador/static/src/img/concesionario.jpeg" alt="TRIUMPH SALA DE VENTAS, MOTOS" width="100%" />
+                            <div class="blur-banner-map h-100 w-100"></div>
                         </div>
                     </div>
 

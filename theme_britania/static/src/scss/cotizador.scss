@@ -1,6 +1,14 @@
 .banner-map {
-    background: rgb(255,255,255);
-    background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,1) 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+.blur-banner-map{
+  position: absolute;
+  bottom: 0 ;
+  z-index: 10;
+  background: rgb(255,255,255);
+  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,1) 100%);
 }
 
 .btn-line {
@@ -25,6 +33,19 @@
     z-index: 1000;
     -webkit-box-shadow: 7px 6px 5px 0px rgba(0,0,0,0.8); 
     box-shadow: 7px 6px 5px 0px rgba(0,0,0,0.8);
+}
+
+// ================ CAROUSEL MOBILE ==================
+.gallery {
+  background: #eee;
+}
+
+.gallery-cell {
+  width: 100%;
+  height: auto;
+  /* background-image: url(../img/CS7_NK_ANGLE_RHS.png);
+  background-size:cover; */
+  
 }
 
 @media (min-width: 768px){
