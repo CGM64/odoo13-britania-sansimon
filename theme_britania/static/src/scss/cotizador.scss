@@ -1,3 +1,38 @@
+.without-border {
+  position: relative;
+}
+
+.bri-line {
+  position: absolute;
+  z-index: 1 !important;
+  background-color: $o-view-background-color;
+  transform: scale(1.01);
+}
+
+.line-left {
+  height: 100% !important;
+  width: 5px !important;
+  left: -3px;
+}
+
+.line-top {
+  height: 5px !important;
+  width: 100% !important;
+  top: -3px;
+}
+
+.line-right {
+  height: 100% !important;
+  width: 5px !important;
+  right: -3px;
+}
+
+.line-bottom {
+  height: 5px !important;
+  width: 100% !important;
+  bottom: -3px;
+}
+
 .banner-map {
   overflow: hidden;
   position: relative;
@@ -36,16 +71,12 @@
 }
 
 // ================ CAROUSEL MOBILE ==================
-.gallery {
-  background: #eee;
+.swiper {
+  width: 100%;
 }
 
-.gallery-cell {
-  width: 100%;
-  height: auto;
-  /* background-image: url(../img/CS7_NK_ANGLE_RHS.png);
-  background-size:cover; */
-  
+.swiper-pagination-bullet-active {
+  background: black !important;
 }
 
 @media (min-width: 768px){
@@ -58,16 +89,14 @@
 
 
 @media screen and (min-width: 768px) {
-	.img-for-the-ride {
-        position: relative;
-        max-width:100%;
-        height:auto;
-    }
-    
-    .img-for-the-ride img {
-        position:absolute;
-        top: -80px;
-        max-width:100%;
-        height:auto
-    }
+	.contenedor-relativo {
+    position: relative;
+  }
+
+  .contenedor-relativo h1 {
+    position: absolute;
+    top: -10px;
+    max-width: 100%;
+    height: auto;
+  }
 }

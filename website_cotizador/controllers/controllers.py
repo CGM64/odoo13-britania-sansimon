@@ -63,6 +63,25 @@ class WebsiteCotizador(CustomerPortal):
             'company_id': company.id,
             'base_url': base_url,
         }
+        print("========================#### PRINT ####=========================")
+        print(order_sudo)
+        print(order_sudo.amount_total)
+        print(order_sudo.order_line.name)
+        print(order_sudo.order_line.name)
+        print(order_sudo.order_line.product_id.id)
+
+        producto = request.env["product.product"].sudo().search([
+            ("id", "=", order_sudo.order_line.product_id.id)
+        ])
+        producto[0]._get_active_pricelist()
+        print(producto[0].id)
+        for price in producto[0].sale_pricelists:
+            print(vars(price))
+            print(price.name, price.product_price)
+
+
+
+
         if order_sudo.company_id:
             values['res_company'] = order_sudo.company_id
 

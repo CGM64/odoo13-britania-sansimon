@@ -585,18 +585,19 @@
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <div class="container py-5 pb-lg-2 mb-lg-3">
                                     <div class="row">
-                                        <div class="col-12 col-md-7">
+                                        <div class="col-12 col-md-7 contenedor-relativo">
                                             <h1 class="display-3 font-weight-bold text-uppercase wow animate__animated animate__fadeInLeft" data-wow-delay="0.2s" style="text-shadow: 4px 3px 4px rgba(0, 0, 0, 0.5);">for the ride</h1>
-                                            <!-- <div class="img-for-the-ride">
-                                                <img src="https://f.hubspotusercontent10.net/hubfs/1794060/CS7_NK_ANGLE_RHS%20(1).png" alt="" width="90%" />
-                                            </div> -->
-                                            <div class="main-gallery js-flickity mb-4 mb-lg-2" data-flickity-options='{ "cellAlign": "left", "contain": true, "autoPlay": 3000, "freeScroll": false, "wrapAround": true }'>
-                                                <div class="gallery-cell">
-                                                    <img src="/website_cotizador/static/src/img/CS7_NK_ANGLE_RHS.png" alt="" style="width: 90% !important;" />
+
+                                            <div class="swiper">
+                                                <div class="swiper-wrapper">
+                                                    <div class="swiper-slide">
+                                                        <img src="/website_cotizador/static/src/img/CS7_NK_ANGLE_RHS.png" alt="" style="width: 90%;" />
+                                                    </div>
+                                                    <div class="swiper-slide">
+                                                        <img src="/website_cotizador/static/src/img/CS7_NK_ANGLE_RHS.png" alt="" style="width: 90%;" />
+                                                    </div>
                                                 </div>
-                                                <div class="gallery-cell">
-                                                    <img src="/website_cotizador/static/src/img/CS7_NK_ANGLE_RHS.png" alt="" style="width: 90% !important;" />
-                                                </div>
+                                                <div class="swiper-pagination"></div>
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-5">
@@ -687,8 +688,12 @@
                             </div>
                             <div class="tab-pane fade" id="detalles" role="tabpanel" aria-labelledby="detalles-tab">
                                 <div class="container mt-5 px-5">
-                                    <div class="row border border-danger">
-                                        <div class="col-6 col-md-4 py-3 border border-primary">
+                                    <div class="row without-border">
+                                        <div class="bri-line line-left"></div>
+                                        <div class="bri-line line-top"></div>
+                                        <div class="bri-line line-right"></div>
+                                        <div class="bri-line line-bottom"></div>
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
                                             <div class="icon text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
                                                     <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
@@ -700,76 +705,96 @@
                                 válvulas y doble árbol de
                                 levas en cabeza (DOHC)</p>
                                         </div>
-                                        <div class="col-6 col-md-4 py-3 border border-primary">
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
                                             <div class="icon text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
                                                     <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
                                                 </svg>
                                             </div>
-                                            <h4 class="bri-b text-center">Motor:</h4>
-                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">Tricilíndrico en línea con
-                                refrigeración líquida, 12
-                                válvulas y doble árbol de
-                                levas en cabeza (DOHC)</p>
+                                            <h4 class="bri-b text-center">Potencia Par máximo:</h4>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                81 CV (60 kW)
+                                                a 10.250 rpm
+                                                <br />
+                                                64 Nm a 6.250 rpm
+                                            </p>
                                         </div>
-                                        <div class="col-6 col-md-4 py-3 border border-primary">
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
                                             <div class="icon text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
                                                     <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
                                                 </svg>
                                             </div>
-                                            <h4 class="bri-b text-center">Motor:</h4>
-                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">Tricilíndrico en línea con
-                                refrigeración líquida, 12
-                                válvulas y doble árbol de
-                                levas en cabeza (DOHC)</p>
+                                            <h4 class="bri-b text-center">Caja y transmisón</h4>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                6 velocidades
+                                            </p>
                                         </div>
-                                        <div class="col-6 col-md-4 py-3 border border-primary">
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
                                             <div class="icon text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
                                                     <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
                                                 </svg>
                                             </div>
-                                            <h4 class="bri-b text-center">Motor:</h4>
-                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">Tricilíndrico en línea con
-                                refrigeración líquida, 12
-                                válvulas y doble árbol de
-                                levas en cabeza (DOHC)</p>
+                                            <h4 class="bri-b text-center">Peso motocicleta</h4>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                189 kg
+                                            </p>
                                         </div>
-                                        <div class="col-6 col-md-4 py-3 border border-primary">
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
                                             <div class="icon text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
                                                     <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
                                                 </svg>
                                             </div>
-                                            <h4 class="bri-b text-center">Motor:</h4>
-                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">Tricilíndrico en línea con
-                                refrigeración líquida, 12
-                                válvulas y doble árbol de
-                                levas en cabeza (DOHC)</p>
+                                            <h4 class="bri-b text-center">Altura sin espejos:</h4>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                1089 mm
+                                            </p>
                                         </div>
-                                        <div class="col-6 col-md-4 py-3 border border-primary">
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
                                             <div class="icon text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
                                                     <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
                                                 </svg>
                                             </div>
-                                            <h4 class="bri-b text-center">Motor:</h4>
-                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">Tricilíndrico en línea con
-                                refrigeración líquida, 12
-                                válvulas y doble árbol de
-                                levas en cabeza (DOHC)</p>
+                                            <h4 class="bri-b text-center">Altura del asiento:</h4>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                805 mm
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="cotizacion" role="tabpanel" aria-labelledby="cotizacion-tab">
                                 <div class="container mt-5 px-5">
-                                    <p class="h2 text-primary text-center bri-b text-uppercase">2 AÑOS DE GARANTÍA</p>
-                                    <p class="text-primary text-center text-uppercase">LIBRE DE KILOMETRAJE</p>
+                                    <div class="row">
+                                        <div class="col-12 col-md-6 d-none d-md-block">
+                                            <h1 class="display-1 text-center bri-b p-0 m-0">
+                                                $ 11,200
+                                            </h1>
+                                        </div>
+                                        <div class="col-12 col-md-6 d-block d-md-none">
+                                            <h1 class="display-4 text-center bri-b p-0 m-0" style="font-size: 3.5rem !important;">
+                                                $ 11,200
+                                            </h1>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <h1 class="display-1 text-center bri-b p-0 m-0 d-none d-md-block">
+                                                Q
+                                                <t t-esc="sale_order.amount_total" />
+                                            </h1>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <p class="h2 text-primary text-center bri-b text-uppercase">2 AÑOS DE GARANTÍA</p>
+                                            <p class="text-primary text-center text-uppercase">LIBRE DE KILOMETRAJE</p>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-12 col-md-6 d-block">
-                                            <h1 class="display-4 text-center bri-b p-0 m-0">$ 11,200</h1>
+                                            <!-- <h1 class="display-4 text-center bri-b p-0 m-0 d-lg-none">$ 11,200</h1> -->
                                             <div class="bg-primary text-white p-5">
                                                 <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
                                                 <h2 class="text-center">3 VECES MÁS FÁCIL</h2>
@@ -779,7 +804,7 @@
                                                 <h2 class="text-right">$ 3,696</h2>
                                                 <ul>
                                                     <li>33% Se divide en 33 bajas cuotas
-                                        mensuales de:</li>
+                                                        mensuales de:</li>
                                                 </ul>
                                                 <h2 class="text-right">$ 188</h2>
                                                 <ul>
@@ -794,7 +819,10 @@
                                             </ul>
                                         </div>
                                         <div class="col-12 col-md-6 d-block">
-                                            <h1 class="display-4 text-center bri-b p-0 m-0">Q 87,360</h1>
+                                            <h1 class="display-4 text-center bri-b p-0 m-0 d-block d-md-none" style="font-size: 3.5rem !important;">
+                                                Q
+                                                <t t-esc="sale_order.amount_total" />
+                                            </h1>
                                             <div class="bg-primary text-white p-5">
                                                 <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
                                                 <h2 class="text-center">3 VECES MÁS FÁCIL</h2>
@@ -804,7 +832,7 @@
                                                 <h2 class="text-right">Q 27,720</h2>
                                                 <ul>
                                                     <li>33% Se divide en 33 bajas cuotas
-                                        mensuales de:</li>
+                                                        mensuales de:</li>
                                                 </ul>
                                                 <h2 class="text-right">Q 1,410</h2>
                                                 <ul>

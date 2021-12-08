@@ -9,15 +9,39 @@
             <link rel="stylesheet" type="text/scss" href="/theme_britania/static/src/scss/custom.scss"/>
             <!-- ====================== FRAMEWORKS CSS =========================================== -->
             <link rel="stylesheet" type="text/scss" href="/theme_britania/static/src/scss/animate.scss"/>
-            <link rel="stylesheet" media="screen" href="/theme_britania/static/src/scss/flickity.css"/>
+            <!-- <link rel="stylesheet" media="screen" href="/theme_britania/static/src/scss/flickity.css"/> -->
+            <link rel="stylesheet" href="/theme_britania/static/src/scss/swiper-bundle.min.css" />
         </xpath>
         <xpath expr="script[last()]" position="after">
             <script type="text/javascript" src="/theme_britania/static/src/js/general/index.js" />
             <!-- ====================== FRAMEWORKS JS ============================================ -->
-            <script type="text/javascript" src="/theme_britania/static/src/js/general/flickity.js" />
+            <!-- <script type="text/javascript" src="/theme_britania/static/src/js/general/flickity.js" /> -->
+            <script src="/theme_britania/static/src/js/general/swiper-bundle.min.js"></script>
             <script type="text/javascript" src="/theme_britania/static/src/js/general/wow.js" />
             <script>
                 let s = new WOW().init();
+                const swiper = new Swiper('.swiper', {
+                    direction: 'horizontal',
+                    loop: true,
+                    autoHeight: true,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        type: 'bullets',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    scrollbar: {
+                        el: '.swiper-scrollbar',
+                    },
+                    autoplay: {
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    },
+                });
+            
             </script>
         </xpath>
     </template>
