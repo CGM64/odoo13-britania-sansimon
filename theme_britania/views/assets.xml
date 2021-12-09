@@ -24,6 +24,7 @@
                     direction: 'horizontal',
                     loop: true,
                     autoHeight: true,
+                    allowTouchMove: true,
                     pagination: {
                         el: '.swiper-pagination',
                         type: 'bullets',

@@ -39,6 +39,25 @@ class WebsiteCotizador(CustomerPortal):
                 )
         company = request.env.company
         base_url = request.env ['ir.config_parameter'].sudo().get_param('web.base.url')
+
+        producto = request.env["product.product"].sudo().search([
+            ("product_tmpl_id", "=", order_sudo.order_line.product_id.product_tmpl_id.id)
+        ])
+
+        tarifa_dolar = ''
+        tarifa_publica = ''
+        nombre_producto = order_sudo.order_line.product_id.name
+
+        for price in producto[0].sale_pricelists:
+            context = price._context.copy()
+            context.update({'product_id' : producto.id})
+            price.with_context(context)._get_product_price()
+            if price.name == 'Tarifa en Dolares':
+                tarifa_dolar = price.product_price.replace(' ', '')
+            elif price.name == 'Tarifa pública':
+                tarifa_publica = price.product_price.replace(' ', '')
+            #print(price.name, price.product_price)
+        
         values = {
             'sale_order': order_sudo,
             'message': message,
@@ -62,25 +81,10 @@ class WebsiteCotizador(CustomerPortal):
             'name': company.name,
             'company_id': company.id,
             'base_url': base_url,
+            'tarifa_dolar': tarifa_dolar,
+            'tarifa_publica': tarifa_publica,
+            'nombre_producto': nombre_producto
         }
-        print("========================#### PRINT ####=========================")
-        print(order_sudo)
-        print(order_sudo.amount_total)
-        print(order_sudo.order_line.name)
-        print(order_sudo.order_line.name)
-        print(order_sudo.order_line.product_id.id)
-
-        producto = request.env["product.product"].sudo().search([
-            ("id", "=", order_sudo.order_line.product_id.id)
-        ])
-        producto[0]._get_active_pricelist()
-        print(producto[0].id)
-        for price in producto[0].sale_pricelists:
-            print(vars(price))
-            print(price.name, price.product_price)
-
-
-
 
         if order_sudo.company_id:
             values['res_company'] = order_sudo.company_id

@@ -771,18 +771,20 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6 d-none d-md-block">
                                             <h1 class="display-1 text-center bri-b p-0 m-0">
-                                                $ 11,200
+                                                <!-- Tarifa en dolares en pantallas medianas o mas grandes -->
+                                                <t t-esc="tarifa_dolar" />
                                             </h1>
                                         </div>
                                         <div class="col-12 col-md-6 d-block d-md-none">
                                             <h1 class="display-4 text-center bri-b p-0 m-0" style="font-size: 3.5rem !important;">
-                                                $ 11,200
+                                                <!-- Tarifa en dolares en pantallas de movil -->
+                                                <t t-esc="tarifa_dolar" />
                                             </h1>
                                         </div>
                                         <div class="col-12 col-md-6">
                                             <h1 class="display-1 text-center bri-b p-0 m-0 d-none d-md-block">
-                                                Q
-                                                <t t-esc="sale_order.amount_total" />
+                                                <!-- Tarifa en quetzales en pantallas medianas o mas grandes -->
+                                                <t t-esc="tarifa_publica" />
                                             </h1>
                                         </div>
                                     </div>
@@ -820,8 +822,8 @@
                                         </div>
                                         <div class="col-12 col-md-6 d-block">
                                             <h1 class="display-4 text-center bri-b p-0 m-0 d-block d-md-none" style="font-size: 3.5rem !important;">
-                                                Q
-                                                <t t-esc="sale_order.amount_total" />
+                                                <!-- Tarifa en quetzales en pantallas de movil -->
+                                                <t t-esc="tarifa_publica" />
                                             </h1>
                                             <div class="bg-primary text-white p-5">
                                                 <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
