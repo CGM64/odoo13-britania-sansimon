@@ -598,26 +598,22 @@
                                                     </div>
                                                 </div>
                                                 <div class="swiper-pagination"></div>
+                                                <!-- If we need navigation buttons -->
+                                                <div class="swiper-button-prev d-none d-md-block"></div>
+                                                <div class="swiper-button-next d-none d-md-block"></div>
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-5">
                                             <p class="text-justify">
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repudiandae vitae dignissimos
-                                quia nobis
-                                iusto, deserunt dicta corrupti culpa beatae? Sit voluptas possimus, excepturi asperiores
-                                esse
-                                repellendus a autem delectus recusandae!
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repudiandae vitae dignissimos
-                                quia nobis
-                                iusto, deserunt dicta corrupti culpa beatae? Sit voluptas possimus, excepturi asperiores
-                                esse
-                                repellendus a autem delectus recusandae!
-                            </p>
+                                                <t t-if="fleet_vehicle.descripcion_vehiculo" t-esc="fleet_vehicle.descripcion_vehiculo"></t>
+                                            </p>
                                             <div class="row mt-5">
                                                 <div class="col-6">
-                                                    <h1 class="text-uppercase bri-b">Cuota</h1>
-                                                    <p class="text-uppercase bri-b p-0 m-0">desde</p>
-                                                    <h1 class="text-uppercase bri-b">$ 450.00</h1>
+                                                    <h1 t-if="fleet_vehicle.cuota_desde" class="text-uppercase bri-b">Cuota</h1>
+                                                    <p t-if="fleet_vehicle.cuota_desde" class="text-uppercase bri-b p-0 m-0">desde</p>
+                                                    <h1 t-if="fleet_vehicle.cuota_desde" class="text-uppercase bri-b">
+                                                        <t t-esc="fleet_vehicle.cuota_desde"></t>
+                                                    </h1>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="text-uppercase text-center">
@@ -638,7 +634,19 @@
                             <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
                                 <div class="container mt-5 px-5">
                                     <div class="row">
-                                        <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                        <!-- <t t-if="fleet_vehicle.informacion" t-raw="fleet_vehicle.informacion" widget="html"></t> -->
+                                        <t t-foreach="caracteristicas" t-as="c">
+                                            <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                <h1 class="text-uppercase text-justify bri-b">
+                                                    <t t-esc="c['titulo']"></t>
+                                                </h1>
+                                                <p class="text-justify">
+                                                    <t t-esc="c['descripcion']"></t>
+                                                </p>
+                                            </div>
+                                          </t>
+                                        
+                                        <!-- <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
                                             <h1 class="text-uppercase text-justify bri-b">TRIDENT 660</h1>
                                             <p class="text-justify">Lo tiene todo: precio ajustado, carácter, agilidad,
                                 prestaciones emocionantes... a la nueva Trident
@@ -682,7 +690,7 @@
                                 categoría, las ventajas del motor tricilíndrico y un
                                 intervalo de mantenimiento de 16.000 km, la
                                 Trident 660 es la elección perfecta.</p>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
@@ -700,10 +708,9 @@
                                                 </svg>
                                             </div>
                                             <h4 class="bri-b text-center">Motor:</h4>
-                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">Tricilíndrico en línea con
-                                refrigeración líquida, 12
-                                válvulas y doble árbol de
-                                levas en cabeza (DOHC)</p>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                <t t-if="fleet_vehicle.descripcion_motor" t-raw="fleet_vehicle.descripcion_motor"></t>
+                                            </p>
                                         </div>
                                         <div class="col-6 col-md-4 py-5 border border-primary">
                                             <div class="icon text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
@@ -713,10 +720,7 @@
                                             </div>
                                             <h4 class="bri-b text-center">Potencia Par máximo:</h4>
                                             <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                81 CV (60 kW)
-                                                a 10.250 rpm
-                                                <br />
-                                                64 Nm a 6.250 rpm
+                                                <t t-if="fleet_vehicle.potencia_par_maximo" t-raw="fleet_vehicle.potencia_par_maximo"></t>
                                             </p>
                                         </div>
                                         <div class="col-6 col-md-4 py-5 border border-primary">
@@ -727,7 +731,7 @@
                                             </div>
                                             <h4 class="bri-b text-center">Caja y transmisón</h4>
                                             <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                6 velocidades
+                                                <t t-if="fleet_vehicle.caja_y_transmicion" t-raw="fleet_vehicle.caja_y_transmicion"></t>
                                             </p>
                                         </div>
                                         <div class="col-6 col-md-4 py-5 border border-primary">
@@ -738,7 +742,7 @@
                                             </div>
                                             <h4 class="bri-b text-center">Peso motocicleta</h4>
                                             <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                189 kg
+                                                <t t-if="fleet_vehicle.peso_motocicleta" t-raw="fleet_vehicle.peso_motocicleta"></t>
                                             </p>
                                         </div>
                                         <div class="col-6 col-md-4 py-5 border border-primary">
@@ -749,7 +753,7 @@
                                             </div>
                                             <h4 class="bri-b text-center">Altura sin espejos:</h4>
                                             <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                1089 mm
+                                                <t t-if="fleet_vehicle.altura_sin_espejos" t-raw="fleet_vehicle.altura_sin_espejos"></t>
                                             </p>
                                         </div>
                                         <div class="col-6 col-md-4 py-5 border border-primary">
@@ -760,7 +764,7 @@
                                             </div>
                                             <h4 class="bri-b text-center">Altura del asiento:</h4>
                                             <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                805 mm
+                                                <t t-if="fleet_vehicle.altura_del_asiento" t-raw="fleet_vehicle.altura_del_asiento"></t>
                                             </p>
                                         </div>
                                     </div>
@@ -797,7 +801,7 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6 d-block">
                                             <!-- <h1 class="display-4 text-center bri-b p-0 m-0 d-lg-none">$ 11,200</h1> -->
-                                            <div class="bg-primary text-white p-5">
+                                            <!-- <div class="bg-primary text-white p-5">
                                                 <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
                                                 <h2 class="text-center">3 VECES MÁS FÁCIL</h2>
                                                 <ul>
@@ -814,7 +818,11 @@
                                                 </ul>
                                                 <h2 class="text-right">$ 3,696</h2>
                                                 <p>o renueva tu motocicleta por una nueva*’</p>
+                                            </div> -->
+                                            <div class="bg-primary text-white p-5">
+                                                <t t-if="fleet_vehicle.cotizacion_dolar" t-raw="fleet_vehicle.cotizacion_dolar" widget="html"></t>
                                             </div>
+                                            
                                             <ul class="list-unstyled text-muted pt-3 text-sm">
                                                 <li>* Cuotas no incluyen seguro</li>
                                                 <li>* Aplican restricciones, precios sujetos a taza de cambio del día.</li>
@@ -826,6 +834,10 @@
                                                 <t t-esc="tarifa_publica" />
                                             </h1>
                                             <div class="bg-primary text-white p-5">
+                                                <t t-if="fleet_vehicle.cotizacion_quetzal" t-raw="fleet_vehicle.cotizacion_quetzal" widget="html"></t>
+                                            </div>
+                                            
+                                            <!-- <div class="bg-primary text-white p-5">
                                                 <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
                                                 <h2 class="text-center">3 VECES MÁS FÁCIL</h2>
                                                 <ul>
@@ -842,7 +854,7 @@
                                                 </ul>
                                                 <h2 class="text-right">Q 27,720</h2>
                                                 <p>o renueva tu motocicleta por una nueva*’</p>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>

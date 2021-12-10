@@ -60,7 +60,7 @@ class WebsiteSale(WebsiteForm):
     def website_form(self, model_name, **kwargs):
         return_value = super(WebsiteForm, self).website_form(model_name, **kwargs)
         
-        template = request.env.ref('bri_contactus.confirmate_data_user_email')
+        template = request.env.ref('bri_contactus.confirmate_data_user_email').sudo()
         if template:
             model_record = request.env['ir.model'].sudo().search([('model','=',model_name),('website_form_access','=',True)])
             if model_record and hasattr(request.env[model_name], 'phone_format'):
@@ -91,7 +91,7 @@ class WebsiteSale(WebsiteForm):
                         'email_from': email.smtp_user,
                     }
                     template.write(mail_values)
-                    template.with_context().send_mail(lead.id, force_send=True, raise_exception=True)
+                    template.with_context().sudo().send_mail(lead.id, force_send=True, raise_exception=True)
                     lead.message_post(subject="Correo de confirmación enviado", body="Envío de correo de confirmación de datos validos")
                     pass
         
