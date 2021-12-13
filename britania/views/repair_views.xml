@@ -104,7 +104,7 @@
     </record>
 
 
-
+<!-- 
       <record model="ir.ui.view" id="view_repair_order_form_inherit">
       <field name="name">repair.form</field>
       <field name="model">repair.order</field>
@@ -116,7 +116,7 @@
             </xpath>
         </data>
       </field>
-    </record>
+    </record> -->
 
   </data>
 </odoo>
