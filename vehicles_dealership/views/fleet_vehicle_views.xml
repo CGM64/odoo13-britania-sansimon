@@ -86,6 +86,21 @@
             </group>
           </page>
 
+          <page string="Color" name="color_vehicle">
+            <group string="Colores">
+              <!-- CAMPOS DE LA VISTA PARA EL COTIZADOR -->
+              <div class="o_dropdown_kanban dropdown">
+                <div class="o_kanban_card_manage_settings row">
+                  <div role="menuitem" aria-haspopup="true" class="col-8">
+                    <ul class="oe_kanban_colorpicker" data-field="model_color.color" role="menu" />
+                  </div>
+                </div>
+              </div>
+              <!-- <field name="model_color.image_vehicle_color" widget="image" class="oe_avatar"/> -->
+              <field name="fleet_model_ids" />
+            </group>
+          </page>
+
         </xpath>
       </field>
     </record>
@@ -113,6 +128,23 @@
         <field name="manager_id" position="after">
           <field name="is_publish" />
         </field>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="view_fleet_vehicle_model_color">
+      <field name="name">view.fleet.vehicle.model.color</field>
+      <field name="model">fleet.vehicle.model.color</field>
+      <field name="priority" eval="16" />
+      <field name="arch" type="xml">
+        <form string="Color modelo form">
+          <group>
+            <separator string="Recolor de vehículo" />
+            <field name="name" />
+            <field name="color_name" />
+            <field name="image_vehicle_color" />
+          </group>
+        </form>
       </field>
     </record>
 

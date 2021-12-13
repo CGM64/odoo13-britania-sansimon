@@ -76,7 +76,11 @@
 }
 
 .swiper-pagination-bullet-active {
-  background: black !important;
+  border: 1px solid skyblue;
+  transform: scale(2);
+  box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 9px 2px rgba(0,0,0,0.75);
 }
 
 @media (min-width: 768px){
@@ -99,4 +103,8 @@
     max-width: 100%;
     height: auto;
   }
+}
+
+.swiper-slide > img {
+  width: 90% !important;
 }

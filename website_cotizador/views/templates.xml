@@ -590,12 +590,13 @@
 
                                             <div class="swiper">
                                                 <div class="swiper-wrapper">
-                                                    <div class="swiper-slide">
+                                                    <t t-foreach="fleet_vehicle.fleet_model_ids" t-as="img">
+                                                        <div class="swiper-slide" t-attf-data-color="{{img.color_name}}" widget="image" t-field="img.image_vehicle_color" t-options="{'widget': 'image'}" />
+                                                    </t>
+                                                    <!-- <div class="swiper-slide" widget="image" t-field="fleet_vehicle.model_color.image_vehicle_color" t-options="{'widget': 'image'}" /> -->
+                                                    <!-- <div class="swiper-slide">
                                                         <img src="/website_cotizador/static/src/img/CS7_NK_ANGLE_RHS.png" alt="" style="width: 90%;" />
-                                                    </div>
-                                                    <div class="swiper-slide">
-                                                        <img src="/website_cotizador/static/src/img/CS7_NK_ANGLE_RHS.png" alt="" style="width: 90%;" />
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <div class="swiper-pagination"></div>
                                                 <!-- If we need navigation buttons -->

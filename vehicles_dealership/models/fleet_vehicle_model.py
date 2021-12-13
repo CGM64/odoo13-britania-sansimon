@@ -57,5 +57,7 @@ class FleetVehicle(models.Model):
     <h2 class="" style="text-align: right;">Q 0,000.00</h2>
     <p>o renueva tu motocicleta por una nueva*’</p>
     """)
+    #model_color = fields.Many2one("fleet.vehicle.model.color", store=True)
+    fleet_model_ids = fields.One2many("fleet.vehicle.model.color","fleet_model_id")
     informacion = fields.Text(string="Información general", required=False, copy=True)
     # ================================================================================
