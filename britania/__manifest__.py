@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','repair','stock'],
+    'depends': ['account','repair','stock'],
 
     # always loaded
     'data': [
@@ -39,10 +39,11 @@
         'views/account_report.xml',
         'views/tri_product.xml',
         'wizard/tri_product_wizard.xml',
+        'wizard/tri_servicios_wizard.xml',
         'data/product_pricelist.xml',
         'data/res_partner_data.xml',
         'views/fleet_vehicle.xml',
-        'views/repair_report_analisis.xml',
+        'views/repair_report_analisis.xml',        
     ],
     # only loaded in demonstration mode
     'demo': [
