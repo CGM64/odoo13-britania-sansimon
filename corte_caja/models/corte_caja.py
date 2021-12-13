@@ -12,6 +12,7 @@ import datetime
 class CorteCaja(models.Model):
     _name = "corte.caja"
     _description = "Corte de Caja"
+    _order = 'create_date desc'
 
     state = fields.Selection([
         ('draft', 'Borrador'),

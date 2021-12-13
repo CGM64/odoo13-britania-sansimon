@@ -34,7 +34,6 @@ class repairOrder(models.Model):
 
     #CALCULANDO EL COSTO PARA COLOCARLO EN EL INFORME DE REPARACIONES
     guarantee_limit = fields.Date('Warranty Expiration', default=datetime.today(),states={'draft': [('readonly', True)]})
-    pricelist_id = fields.Many2one(default=lambda self:self.env.ref('britania.product_pricelist_04').id,  readonly=True)
 
     # costo = fields.Float(string="Costo",store=True, compute="_compute_costo")
     # @api.depends('pricelist_id','product_qty','fees_lines.product_id','fees_lines.product_uom_qty','fees_lines.price_unit','fees_lines.discount',)
@@ -274,7 +273,7 @@ class repairOrder(models.Model):
 class RepairFee(models.Model):
     _inherit = "repair.fee"
 
-    amount_total = fields.Float(string="Total", compute="_get_amount_total")
+    amount_total = fields.Float(string="Monto Total", compute="_get_amount_total")
     discount = fields.Float(string='Descuento (%)', digits='Discount', default=0.0)
     costo = fields.Float(string="Costo",store=True, compute="_compute_costo_repair_fee")
     
@@ -380,19 +379,15 @@ class RepairFee(models.Model):
 class RepairLine(models.Model):
     _inherit = "repair.line"
 
-    amount_total = fields.Float(string="Total", compute="_get_amount_total")
+    amount_total = fields.Float(string="Monto Total", compute="_get_amount_total")
     discount = fields.Float(string='Descuento (%)', digits='Discount', default=0.0)
     costo = fields.Float(string="Costo",store=True, compute="_compute_costo")
     
     @api.depends('product_id','product_uom_qty','price_unit','discount',)
     def _compute_costo(self):
-        print("---------------------------------------------")
-        print("test de que llego al _compute_costo")
-        print("---------------------------------------------")
-        print("self", self)
         for line in self:
             line.costo = ((line.product_id.product_tmpl_id.standard_price) * (line.product_uom_qty)) - ((line.discount/100) * ((line.product_id.product_tmpl_id.standard_price) * (line.product_uom_qty)))
-            print("linea >", line.id, line.product_id.product_tmpl_id.standard_price,' Producto ', line.product_id.name," Costo Total=",line.costo)      
+ 
 
     @api.onchange('type', 'repair_id')
     def onchange_operation_type(self):
