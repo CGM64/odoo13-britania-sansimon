@@ -136,3 +136,6 @@
   page-break-inside: avoid;
   page-break-after: always;
 }
+.qr {
+  max-height: 60px;
+}
