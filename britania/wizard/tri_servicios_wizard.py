@@ -74,7 +74,7 @@ class ImportarTriumphServicios(models.TransientModel):
         return anio
 
     def buscar_modelo(self, modelo_name):
-        modelo = self.env['fleet.vehicle.model'].search([('brand_id','=',67),('name','=',modelo_name)])
+        modelo = self.env['fleet.vehicle.model'].search([('brand_id','=',67),('name','ilike',modelo_name)])
         if not modelo:
             modelo = self.env['fleet.vehicle.model'].create({
                 'name': modelo_name,

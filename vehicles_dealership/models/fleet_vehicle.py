@@ -95,7 +95,7 @@ class ProductTemplate(models.Model):
 
     _inherit = 'product.template'
 
-    is_vehicle = fields.Boolean(string="Vehicle")
+    is_vehicle = fields.Boolean(string="Vehiculo")
 
 
 class ProductProduct(models.Model):
