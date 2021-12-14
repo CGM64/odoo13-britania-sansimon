@@ -75,6 +75,11 @@
   width: 100%;
 }
 
+.swiper-pagination {
+  background: rgba(0,0,0,0.8);
+  padding: 2%;
+}
+
 .swiper-pagination-bullet-active {
   border: 1px solid skyblue;
   transform: scale(2);

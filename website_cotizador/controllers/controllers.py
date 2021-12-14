@@ -59,14 +59,9 @@ class WebsiteCotizador(CustomerPortal):
         fleet_vehicle = request.env["fleet.vehicle"].sudo().search([
             ("product_id","=",producto[0].id)
         ])
-        print(fleet_vehicle[0].id)
-        print(fleet_vehicle[0].model_id.id)
         fleet_vehicle_model = request.env["fleet.vehicle.model"].sudo().search([
             ("id","=",fleet_vehicle[0].model_id.id)
         ])
-        print("========================= ### PRINT ### =======================")
-        print(producto[0].id)
-        print(fleet_vehicle_model.cotizacion_dolar)
         caracteristicas = []
         if fleet_vehicle_model and fleet_vehicle_model[0].informacion:
             string_raw = fleet_vehicle_model[0].informacion
@@ -100,10 +95,12 @@ class WebsiteCotizador(CustomerPortal):
             'youtube': company.social_youtube,
             'github': company.social_github,
             'linkedin': company.social_linkedin,
+            'ficha_tecnica_url': '/web/binary/ficha_tecnica?model=fleet.vehicle.model&field=ficha_tecnica&id='+ str(fleet_vehicle_model.id),
             'phone': company.phone,
             'street': company.street,
+            'city': company.city,
             'email': company.email,
-            'name': company.name,
+            'name': company.company_registry,
             'company_id': company.id,
             'base_url': base_url,
             'tarifa_dolar': tarifa_dolar,

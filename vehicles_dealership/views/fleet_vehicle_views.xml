@@ -64,10 +64,12 @@
         </xpath>
         <xpath expr="//form/sheet/notebook/page" position="after">
 
-          <page string="Cotizador" name="Cotizador">
+          <page string="Datos técnicos" name="datos_tecnicos">
             <group string="Datos">
               <!-- CAMPOS DE LA VISTA PARA EL COTIZADOR -->
               <field name="cuota_desde" />
+              <field name="ficha_tecnica" filename="nombre_ficha_tecnica" />
+              <field name="nombre_ficha_tecnica" invisible="1" />
               <field name="descripcion_motor" />
               <field name="potencia_par_maximo" />
               <field name="caja_y_transmicion" />
@@ -76,17 +78,23 @@
               <field name="altura_del_asiento" />
               <!-- ======================================= -->
             </group>
-            <group string="Descripciones">
+          </page>
+
+          <page string="Información general" name="informacion_general">
+            <group string="Descripciones" col="2">
               <field name="descripcion_vehiculo" />
               <field name="informacion" placeholder="Título &lt;separador&gt; Descripcion &lt;nuevo&gt;Título &lt;separador&gt; Descripcion &lt;nuevo&gt;..." />
             </group>
-            <group string="Desglose de pago">
+          </page>
+
+          <page string="Desglose de pago" name="formas_de_pago">
+            <group string="Desglose de pago" col="2">
               <field name="cotizacion_dolar" widget="html" />
               <field name="cotizacion_quetzal" widget="html" />
             </group>
           </page>
 
-          <page string="Color" name="color_vehicle">
+          <page string="Variantes de color" name="color_vehicle">
             <group string="Colores">
               <!-- CAMPOS DE LA VISTA PARA EL COTIZADOR -->
               <div class="o_dropdown_kanban dropdown">

@@ -8,7 +8,7 @@ class FleetVehicle(models.Model):
 
     _name = "fleet.vehicle.model.color"
     
-    name = fields.Char(string="Nombre del color", placeholder="Nombre")
+    name = fields.Char(string="Nombre del color", placeholder="Nombre", required=True)
     #color = fields.Integer(string="Indice del color")
     color_name = fields.Selection([
         ('red', 'Red'),
@@ -34,5 +34,5 @@ class FleetVehicle(models.Model):
         return base64.b64encode(open(image_path, 'rb').read())
         pass
 
-    image_vehicle_color = fields.Image(default=_default_image)
-    fleet_model_id = fields.Many2one("fleet.vehicle.model", store=True)
+    image_vehicle_color = fields.Image(required=True)
+    fleet_model_id = fields.Many2one("fleet.vehicle.model", store=True, required=True)
