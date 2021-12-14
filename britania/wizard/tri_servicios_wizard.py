@@ -84,6 +84,7 @@ class ImportarTriumphServicios(models.TransientModel):
 
     def crear_servicio(self, dato):
         year = self.buscar_anio(dato['year'])
+        print(dato['modelo'])
         modelo_vehiculo = self.buscar_modelo(dato['modelo'])
         producto = self.env['product.product'].search([('default_code','=',dato['codigo_servicio'])])
         if producto:
