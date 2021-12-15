@@ -67,6 +67,7 @@
           <page string="Datos técnicos" name="datos_tecnicos">
             <group string="Datos">
               <!-- CAMPOS DE LA VISTA PARA EL COTIZADOR -->
+              <field name="imagen_portada" />
               <field name="cuota_desde" />
               <field name="ficha_tecnica" filename="nombre_ficha_tecnica" />
               <field name="nombre_ficha_tecnica" invisible="1" />
@@ -97,14 +98,6 @@
           <page string="Variantes de color" name="color_vehicle">
             <group string="Colores">
               <!-- CAMPOS DE LA VISTA PARA EL COTIZADOR -->
-              <div class="o_dropdown_kanban dropdown">
-                <div class="o_kanban_card_manage_settings row">
-                  <div role="menuitem" aria-haspopup="true" class="col-8">
-                    <ul class="oe_kanban_colorpicker" data-field="model_color.color" role="menu" />
-                  </div>
-                </div>
-              </div>
-              <!-- <field name="model_color.image_vehicle_color" widget="image" class="oe_avatar"/> -->
               <field name="fleet_model_ids" />
             </group>
           </page>

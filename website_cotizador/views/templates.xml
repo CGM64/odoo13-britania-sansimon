@@ -266,9 +266,13 @@
             <t t-call="website.layout">
                 <t t-set="title">Cotizacion</t>
                 <div class="oe_structure">
-                    <!--CAROUSEL-->
 
-                    <t t-call="theme_britania.custom_carousel"></t>
+                    <!-- ENCABEZADO -->
+                    <div class="container">
+                        <div class="jumbotron jumbotron-fluid p-0 m-0">
+                            <div class="panel-image text-center" t-field="fleet_vehicle.imagen_portada" t-options="{'widget': 'image'}" />
+                        </div>
+                    </div>
 
                     <!--COTIZACION-->
                     <!--div class="tab-pane fade" id="cotizacion" role="tabpanel" aria-labelledby="cotizacion-tab">
@@ -591,12 +595,9 @@
                                             <div class="swiper">
                                                 <div class="swiper-wrapper">
                                                     <t t-foreach="fleet_vehicle.fleet_model_ids" t-as="img">
-                                                        <div class="swiper-slide" t-attf-data-color="{{img.color_name}}" widget="image" t-field="img.image_vehicle_color" t-options="{'widget': 'image'}" />
+                                                    <!-- <t t-foreach="fleet_model_color" t-as="img"> -->
+                                                        <div class="swiper-slide text-center" t-attf-data-color="{{img.color_name}}" t-field="img.image_vehicle_color" t-options="{'widget': 'image'}" />
                                                     </t>
-                                                    <!-- <div class="swiper-slide" widget="image" t-field="fleet_vehicle.model_color.image_vehicle_color" t-options="{'widget': 'image'}" /> -->
-                                                    <!-- <div class="swiper-slide">
-                                                        <img src="/website_cotizador/static/src/img/CS7_NK_ANGLE_RHS.png" alt="" style="width: 90%;" />
-                                                    </div> -->
                                                 </div>
                                                 <div class="swiper-pagination"></div>
                                                 <!-- Si se necestian botones de navegacion -->
@@ -604,7 +605,7 @@
                                                 <div class="swiper-button-next d-none d-md-block"></div> -->
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-5">
+                                        <div class="col-12 col-md-5 mt-2">
                                             <p class="text-justify">
                                                 <t t-if="fleet_vehicle.descripcion_vehiculo" t-esc="fleet_vehicle.descripcion_vehiculo"></t>
                                             </p>
@@ -617,7 +618,7 @@
                                                     </h1>
                                                 </div>
                                                 <div class="col-6">
-                                                    <a t-if="fleet_vehicle.ficha_tecnica" t-attf-href="ficha_tecnica_url" target="_blank" class="text-uppercase text-center" aria-label="Download" title="Download">
+                                                    <a t-if="fleet_vehicle.ficha_tecnica" t-attf-href="{{ficha_tecnica_url}}" target="_blank" class="text-uppercase text-center" aria-label="Download" title="Download">
                                                         <div class="text-primary">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-newspaper" viewBox="0 0 16 16">
                                                                 <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5v-11zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5H12z" />

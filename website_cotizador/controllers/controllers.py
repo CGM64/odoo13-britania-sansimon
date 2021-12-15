@@ -62,6 +62,7 @@ class WebsiteCotizador(CustomerPortal):
         fleet_vehicle_model = request.env["fleet.vehicle.model"].sudo().search([
             ("id","=",fleet_vehicle[0].model_id.id)
         ])
+
         caracteristicas = []
         if fleet_vehicle_model and fleet_vehicle_model[0].informacion:
             string_raw = fleet_vehicle_model[0].informacion

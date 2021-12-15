@@ -41,6 +41,10 @@
                         delay: 3000,
                         disableOnInteraction: false,
                     },
+                    effect: 'fade',
+                    fadeEffect: {
+                        crossFade: true
+                    },
                 });
             
             </script>

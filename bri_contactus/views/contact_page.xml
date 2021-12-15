@@ -338,10 +338,12 @@
 
                                     <div class="form-group row form-field o_website_form_required_custom">
                                         <label for="checkbox_cgv" class="col-form-label col-sm-5">Acepto</label>
-                                        <input type="checkbox" id="checkbox_cgv" class="custom-control-input" required="" />
-                                        <label for="checkbox_cgv" class="custom-control-label">
-                                            <a class="text-reset" id="terms" target="_BLANK" data-toggle="modal" data-target="#politicasModal" style="cursor:pointer;">Política de Privacidad</a>
-                                        </label>
+                                        <div class="col-sm-7 px-3">
+                                            <input type="checkbox" id="checkbox_cgv" class="custom-control-input" required="" />
+                                            <label for="checkbox_cgv" class="custom-control-label">
+                                                <a class="text-reset" id="terms" target="_BLANK" data-toggle="modal" data-target="#politicasModal" style="cursor:pointer;">Política de Privacidad</a>
+                                            </label>
+                                        </div>
                                     </div>
 
                                     <div class="form-group row">
@@ -352,15 +354,19 @@
                                     </div>
                                     
                                 </form>
-                                <div class="d-flex justify-content-between">
-                                    <span><t t-esc="name" /></span>
-                                    <span>PBX: <t t-esc="phone" /></span>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 p-0 m-0 text-left">
+                                        <span class="p-0 m-0"><t t-esc="name" /></span>
+                                    </div>
+                                    <div class="col-12 col-md-6 p-0 m-0 text-left text-md-right">
+                                        <span class="p-0 m-0">PBX: <t t-esc="phone" /></span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="d-none d-md-block col-12 col-md-6 p-0">
                                 <div class="h-100 d-flex justify-content-center"
                                     style="background-image: url(https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/scrambler%201200/image%20updates%20-%20june%202019/scrambler1200xe2019j311366x768.png); background-position-x: center; background-size: cover;">
-                                    <div class="p-3 rounded shadow-lg mt-5 d-flex align-items-center justify-content-center" style="background-color: black; max-height: 7vw;">
+                                    <div class="p-3 rounded shadow-lg mt-5 d-flex align-items-center justify-content-center" style="background-color: black; max-height: 5rem;">
                                         <img src="/bri_contactus/static/src/image/logo-negativo.svg" style="width: 10rem;" alt="" />
                                     </div>
                                 </div>
@@ -407,24 +413,17 @@
         <field name="key">website_form.contactus_thanks</field>
         <field name="arch" type="xml">
             <t name="Thanks!" t-name="website_form.contactus_thanks">
-                <style>
-
-                  #contenedor{
-                  background-color: #000000;
-                  color: #fff
-                  }
-
-                    img{
-                        max-width: 100%
-                    }
-                </style>
+                
                 <t t-call="website.layout">
-                    <div id="contenedor" class="w-100">
-                        <div class="" style="">
-                            <img src="/bri_contactus/static/src/image/thank_you_lg.jpg" style="width:auto;" />
-                            <div class="w-100 text-center" style="position: absolute; top:6.5rem; left:0;">
-                                <span class="text-center" style="font-size: 6vw;">Tu solicitud fue enviada con éxito</span>
-                                <a class="btn btn-danger text-center" href="/">Seguir explorando</a>
+                    <div class="w-100 container bg-dark">
+                        <div class="" style="position: relative;">
+                            <img src="/bri_contactus/static/src/image/thank_you_lg.jpg" class="w-100" />
+                            <div class="w-100 text-center" style="position: absolute; top:calc(0.2rem + 1vw); left:0;">
+                            <!-- <div class="w-100 text-center h-100" style="height:500px;background-image: url(/bri_contactus/static/src/image/thank_you_lg.jpg);background-attachment:fixed;background-position:center;"> -->
+                                <span class="text-center h1">
+                                    Tu solicitud fue enviada con éxito <br/>
+                                    <a class="btn btn-danger text-center" href="/">Seguir explorando</a>
+                                </span>
                             </div>
                         </div>
                         <!--picture>
@@ -433,7 +432,8 @@
                             <source media="(min-width:767px)" srcset="/bri_contactus/static/src/image/thank-you-tablet.jpg" />
                             <img src="/bri_contactus/static/src/image/thank_you_lg.jpg" style="width:auto;" />
                         </picture-->
-                        <div class="d-flex align-items-center justify-content-between p-3">
+                        <!-- <t t-esc="object.company_id.name"></t> -->
+                        <div class="container d-flex align-items-center justify-content-between p-3">
                             <span class="h2 p-0 m-0">Britania Motors</span>
                             <span class="h2 p-0 m-0">PBX: 2384 8030</span>
                             <!--span><t t-esc="name" /></span-->

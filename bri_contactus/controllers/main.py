@@ -50,7 +50,7 @@ class WebsiteSale(WebsiteForm):
             'depto' : lista_dp,
             'fleet' : lista_fleet,
             'medio_c' : lista_medios_c,
-            'name': company.name,
+            'name': company.company_registry,
             'phone': company.phone,
         }
 
