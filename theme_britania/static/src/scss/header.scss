@@ -6,23 +6,8 @@
 // 	min-height: 100vh !important;
 // }
 
-.carousel-content {
-    position: absolute;
-    bottom: 30%;
-    color: white;
-    text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.6);
-
-    &.c-content-left {
-        left: 10%;
-    }
-    
-    &.c-content-right {
-        right: 15%;
-    }
-}
-
 .btn-responsive {
-	padding: 0.8vw;
+	padding: 0.8rem;
 }
 
 .carousel-control-prev {
@@ -128,16 +113,16 @@ span .text-navbar {
 }
 
 .text-btn-responsive {
-    font-size: 1vw;
+    font-size: 0.8rem;
 }
 
 .text-p-responsive {
-    font-size: 2vw;
+    font-size: 1.3rem;
 }
 
 .text-h-responsive {
     font-weight: bold;
-    font-size: 3vw;
+    font-size: 3rem;
 }
 
 .text-responsive-2 {
@@ -208,4 +193,25 @@ span .text-navbar {
 		font-weight: bold;
 		font-size: initial;
 	}
+}
+
+@media screen and (min-width: 768px) {
+    .container-item {
+        position: relative;
+    }
+
+    .carousel-content {
+        position: absolute;
+        top: 4.7rem;
+        color: white;
+        text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.6);
+    
+        &.c-content-left {
+            left: 10%;
+        }
+        
+        &.c-content-right {
+            right: 15%;
+        }
+    }
 }

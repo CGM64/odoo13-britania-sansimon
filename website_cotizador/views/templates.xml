@@ -264,270 +264,15 @@
 
         <template id="bri_view_cotizador">
             <t t-call="website.layout">
-                <t t-set="title">Cotizacion</t>
+                <t t-set="additional_title">Cotización | <t t-esc="fleet_vehicle.name" /></t>
                 <div class="oe_structure">
 
                     <!-- ENCABEZADO -->
-                    <div class="container">
+                    <div t-if="fleet_vehicle.imagen_portada" class="container">
                         <div class="jumbotron jumbotron-fluid p-0 m-0">
                             <div class="panel-image text-center" t-field="fleet_vehicle.imagen_portada" t-options="{'widget': 'image'}" />
                         </div>
                     </div>
-
-                    <!--COTIZACION-->
-                    <!--div class="tab-pane fade" id="cotizacion" role="tabpanel" aria-labelledby="cotizacion-tab">
-                        <div class="container mt-5 p-5">
-                            <div class="row">
-                                <div class="col-12 col-md-7">
-                                    <h1 class="display-3 font-weight-bold text-uppercase">for the ride</h1>
-                                    <div class="img-for-the-ride">
-                                        <img src="https://f.hubspotusercontent10.net/hubfs/1794060/CS7_NK_ANGLE_RHS%20(1).png" alt="" width="100%" />
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-5">
-                                    <p>
-                                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repudiandae vitae dignissimos
-                                        quia nobis
-                                        iusto, deserunt dicta corrupti culpa beatae? Sit voluptas possimus, excepturi asperiores
-                                        esse
-                                        repellendus a autem delectus recusandae!
-                                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repudiandae vitae dignissimos
-                                        quia nobis
-                                        iusto, deserunt dicta corrupti culpa beatae? Sit voluptas possimus, excepturi asperiores
-                                        esse
-                                        repellendus a autem delectus recusandae!
-                                    </p>
-                                    <div class="row mt-5">
-                                        <div class="col-12 col-md-6">
-                                            <h5 class="display-4 text-uppercase font-weight-bold">Cuota</h5>
-                                            <p class="display-5 text-uppercase p-0 m-0">desde</p>
-                                            <h5 class="display-4 text-uppercase">$ 450.00</h5>
-                                        </div>
-                                        <div class="col-12 col-md-6">
-                                            <div class="rounded-circle p-0 m-0 text-uppercase bg-dark text-light text-center d-flex align-items-center justify-content-center" style="width: 30vh; height: 30vh;">
-                                                <p class="h3" style="padding: 0; margin: 0;">Ficha tecnica</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <t t-call="website_cotizador.contenido_cotizacion"></t>
-                            <div class="row mt-3 mb-3">
-                                <div class="col-12 col-md-3">
-                                    <a t-if="sale_order.has_to_be_signed(True)" role="button" class="btn btn-danger btn-block mb8  mt-3" data-toggle="modal" data-target="#modalaccept" href="#">
-                                        <i class="fa fa-check" />
-                                        <t t-if="sale_order.has_to_be_paid(True)">Firmar y pagar</t>
-                                        <t t-else="">Aceptar y firmar</t>
-                                    </a>
-                                    <a t-elif="sale_order.has_to_be_paid(True)" role="button" id="o_sale_portal_paynow" data-toggle="modal" data-target="#modalaccept" href="#" t-att-class="'btn-block mb8  mt-3 %s' % ('btn btn-light' if sale_order.transaction_ids else 'btn btn-danger')">
-                                        <i class="fa fa-check" />
-                                        <t t-if="not sale_order.signature">Aceptar y pagar</t>
-                                        <t t-else="">Pagar ahora</t>
-                                    </a>
-                                </div>
-                                <div class="col-12 col-md-3">
-                                    <a class="btn btn-dark btn-block o_download_btn mt-3" role="button" data-toggle="modal" data-target="#modaldecline" href="#">
-                                        <i class="fa fa-times"/>
-                                        Rechazar
-                                    </a>
-                                </div>
-                                <div class="col-12 col-md-3">
-                                    <a class="btn btn-dark btn-block o_download_btn mt-3" t-att-href="sale_order.get_portal_url(report_type='pdf', download=True)" title="Download">
-                                        <i class="fa fa-download" />
-                                        Descargar
-                                    </a>
-                                </div>
-                                <div class="col-12 col-md-3">
-                                    <a class="btn btn-dark btn-block o_print_btn o_portal_invoice_print mt-3" t-att-href="sale_order.get_portal_url(report_type='pdf')" id="print_invoice_report" title="Print" target="_blank">
-                                        <i class="fa fa-print" />
-                                        Imprimir
-                                    </a>
-                                </div>
-                                <t t-if="not sale_order.is_expired and sale_order.state in ['draft', 'sent']">
-                                    <div t-if="sale_order.remaining_validity_days &gt; 0" class="col-12 col-md-4">
-                                        <small>
-                                            <b class="text-muted">Esta oferta vence en</b>
-                                        </small>
-                                        <div class="day_counter">
-                                            <i class="fa fa-clock-o" aria-label="Dates" title="Dates"></i>
-                                            <t t-esc="sale_order.remaining_validity_days" />
-                                            <t t-if="sale_order.remaining_validity_days &gt; 1">dias</t>
-                                            <t t-else="">día</t>
-                                        </div>
-                                    </div>
-                                    <div t-if="sale_order.amount_undiscounted - sale_order.amount_untaxed &gt; 0.01" class="col-12 col-md-4">
-                                        <small>
-                                            <b class="text-muted">Tu ventaja</b>
-                                        </small>
-                                        <small>
-                                            <b t-field="sale_order.amount_undiscounted" t-options='{"widget": "monetary", "display_currency": sale_order.pricelist_id.currency_id}' style="text-decoration: line-through" class="d-block mt-1" data-id="amount_undiscounted" />
-                                        </small>
-                                        <t t-if="sale_order.amount_untaxed == sale_order.amount_total">
-                                            <h4 t-field="sale_order.amount_total" class="text-success" data-id="total_amount" />
-                                        </t>
-                                        <t t-else="">
-                                            <h4 t-field="sale_order.amount_untaxed" class="text-success mb-0" data-id="total_untaxed" />
-                                            <small>
-                                                (
-                                                <span t-field="sale_order.amount_total" data-id="total_amount" />
-                                                Incl. impuesto)
-                                            </small>
-                                        </t>
-                                    </div>
-                                </t>
-                            </div>
-
-                            <section id="details" style="page-break-inside: auto;" class="mt32">
-                                <h3 id="details">Precio</h3>
-
-                                <t t-set="display_discount" t-value="True in [line.discount > 0 for line in sale_order.order_line]" />
-
-                                <table class="table table-sm" id="sales_order_table">
-                                    <thead class="bg-100">
-                                        <tr>
-                                            <th class="text-left">Producto</th>
-                                            <th class="text-right">Cantidad</th>
-                                            <th t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">Precio Unitario</th>
-                                            <th t-if="display_discount" t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
-                                                <span>Desc.%</span>
-                                            </th>
-                                            <th t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
-                                                <span>Impuesto</span>
-                                            </th>
-                                            <th class="text-right">
-                                                <span groups="account.group_show_line_subtotals_tax_excluded">Monto</span>
-                                                <span groups="account.group_show_line_subtotals_tax_included">Precio Total</span>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="sale_tbody">
-
-                                        <t t-set="current_subtotal" t-value="0" />
-
-                                        <t t-foreach="sale_order.order_line" t-as="line">
-
-                                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded" />
-                                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included" />
-
-                                            <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
-                                                <t t-if="not line.display_type">
-                                                    <td id="product_name">
-                                                        <span t-field="line.name" />
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <div id="quote_qty">
-                                                            <span t-field="line.product_uom_qty" />
-                                                            <span t-field="line.product_uom" groups="uom.group_uom" />
-                                                        </div>
-                                                    </td>
-                                                    <td t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
-                                                        <div t-if="line.discount &gt;= 0" t-field="line.price_unit" t-att-style="line.discount and 'text-decoration: line-through' or None" t-att-class="(line.discount and 'text-danger' or '') + ' text-right'" />
-                                                        <div t-if="line.discount">
-                                                            <t t-esc="(1-line.discount / 100.0) * line.price_unit" t-options='{"widget": "float", "decimal_precision": "Product Price"}' />
-                                                        </div>
-                                                    </td>
-                                                    <td t-if="display_discount" t-attf-class="text-right {{ 'd-none d-sm-table-cell' if report_type == 'html' else '' }}">
-                                                        <strong t-if="line.discount &gt; 0" class="text-info">
-                                                            <t t-esc="((line.discount % 1) and '%s' or '%d') % line.discount" />
-                                                            %
-                                                        </strong>
-                                                    </td>
-                                                    <td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
-                                                        <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_id))" />
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <span class="oe_order_line_price_subtotal" t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded" />
-                                                        <span class="oe_order_line_price_total" t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included" />
-                                                    </td>
-                                                </t>
-                                                <t t-if="line.display_type == 'line_section'">
-                                                    <td colspan="99">
-                                                        <span t-field="line.name" />
-                                                    </td>
-                                                    <t t-set="current_section" t-value="line" />
-                                                    <t t-set="current_subtotal" t-value="0" />
-                                                </t>
-                                                <t t-if="line.display_type == 'line_note'">
-                                                    <td colspan="99">
-                                                        <span t-field="line.name" />
-                                                    </td>
-                                                </t>
-                                            </tr>
-
-                                            <t t-if="current_section and (line_last or sale_order.order_line[line_index+1].display_type == 'line_section')">
-                                                <tr class="is-subtotal text-right">
-                                                    <td colspan="99">
-                                                        <strong class="mr16">Subtotal</strong>
-                                                        <span t-esc="current_subtotal" t-options='{"widget": "monetary", "display_currency": sale_order.pricelist_id.currency_id}' />
-                                                    </td>
-                                                </tr>
-                                            </t>
-                                        </t>
-                                    </tbody>
-                                </table>
-
-                                <div id="total" class="row" name="total" style="page-break-inside: avoid;">
-                                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
-                                        <table class="table table-sm">
-                                            <tr class="border-black" style="border-bottom:1px solid #dddddd;">
-                                                <td>
-                                                    <strong>Subtotal</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <span data-id="total_untaxed" t-field="sale_order.amount_untaxed" t-options='{"widget": "monetary","display_currency": sale_order.pricelist_id.currency_id}' />
-                                                </td>
-                                            </tr>
-                                            <t t-foreach="sale_order.amount_by_group" t-as="amount_by_group">
-                                                <tr style="border-bottom:1px solid #dddddd;">
-                                                    <t t-if="amount_by_group[3] == 1 and sale_order.amount_untaxed == amount_by_group[2]">
-                                                        <td>
-                                                            <span t-esc="amount_by_group[0]" />
-                                                            <span>
-                                                                &amp;nbsp;
-                                                                <span>on</span>
-                                                                &amp;nbsp;
-                                                                <t t-esc="amount_by_group[2]" t-options='{"widget": "monetary", "display_currency": sale_order.pricelist_id.currency_id}' />
-                                                            </span>
-                                                        </td>
-                                                        <td class="text-right">
-                                                            <span t-esc="amount_by_group[1]" t-options='{"widget": "monetary", "display_currency": sale_order.pricelist_id.currency_id}' />
-                                                        </td>
-                                                    </t>
-                                                    <t t-else="">
-                                                        <td>
-                                                            <span t-esc="amount_by_group[0]" />
-                                                        </td>
-                                                        <td class="text-right">
-                                                            <span t-esc="amount_by_group[1]" t-options='{"widget": "monetary", "display_currency": sale_order.pricelist_id.currency_id}' />
-                                                        </td>
-                                                    </t>
-                                                </tr>
-                                            </t>
-                                            <tr class="border-black">
-                                                <td>
-                                                    <strong>Total</strong>
-                                                </td>
-                                                <td class="text-right">
-                                                    <span data-id="total_amount" t-field="sale_order.amount_total" t-options='{"widget": "monetary", "display_currency": sale_order.pricelist_id.currency_id}' />
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </section>
-
-                            <section t-if="sale_order.signature" id="signature" name="Signature">
-                                <div class="row mt-4" name="signature">
-                                    <div t-attf-class="#{'col-3' if report_type != 'html' else 'col-sm-7 col-md-4'} ml-auto text-center">
-                                        <h5>Firma</h5>
-                                        <img t-att-src="image_data_uri(sale_order.signature)" style="max-height: 6rem; max-width: 100%;" />
-                                        <p t-field="sale_order.signed_by" />
-                                    </div>
-                                </div>
-                            </section>
-
-                        </div>
-                    </div-->
 
                     <!--SELECTORES-->
                     <div class="bg-primary btn-line mt-4">
@@ -541,7 +286,6 @@
                                                 <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
                                             </svg>
                                         </div>
-
                                     </a>
                                 </li>
                                 <li class="nav-item text-uppercase" role="presentation">
@@ -595,7 +339,6 @@
                                             <div class="swiper">
                                                 <div class="swiper-wrapper">
                                                     <t t-foreach="fleet_vehicle.fleet_model_ids" t-as="img">
-                                                    <!-- <t t-foreach="fleet_model_color" t-as="img"> -->
                                                         <div class="swiper-slide text-center" t-attf-data-color="{{img.color_name}}" t-field="img.image_vehicle_color" t-options="{'widget': 'image'}" />
                                                     </t>
                                                 </div>
@@ -636,7 +379,6 @@
                             <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
                                 <div class="container mt-5 px-5">
                                     <div class="row">
-                                        <!-- <t t-if="fleet_vehicle.informacion" t-raw="fleet_vehicle.informacion" widget="html"></t> -->
                                         <t t-foreach="caracteristicas" t-as="c">
                                             <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
                                                 <h1 class="text-uppercase text-justify bri-b">
@@ -647,52 +389,7 @@
                                                 </p>
                                             </div>
                                           </t>
-                                        
-                                        <!-- <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                            <h1 class="text-uppercase text-justify bri-b">TRIDENT 660</h1>
-                                            <p class="text-justify">Lo tiene todo: precio ajustado, carácter, agilidad,
-                                prestaciones emocionantes... a la nueva Trident
-                                660 no le falta de nada. Las ventajas de su motor
-                                tricilíndrico te esperan...</p>
-                                        </div>
-                                        <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                            <h1 class="text-uppercase text-justify bri-b">ESTILO</h1>
-                                            <p class="text-justify">El inconfundible estilo minimalista y el aplomo de
-                                esta Triumph elevan los conceptos de carácter y
-                                estilo a nuevas cotas.</p>
-                                        </div>
-                                        <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                            <h1 class="text-uppercase text-justify bri-b">TRIPLE VENTAJA</h1>
-                                            <p class="text-justify">El motor tricilíndrico de 660 cc consigue el
-                                equilibrio perfecto entre par motor a pocas vueltas
-                                y potencia a máximo régimen para poner en tus
-                                manos una rápida respuesta y unas excelentes
-                                prestaciones.</p>
-                                        </div>
-                                        <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                            <h1 class="text-uppercase text-justify bri-b">MANEJABILIDAD</h1>
-                                            <p class="text-justify">Extremadamente maniobrable, ágil y divertida en
-                                marcha, la Trident ofrece la mejor experiencia de
-                                conducción gracias a su precisa parte ciclo, su
-                                avanzado equipamiento y su baja altura de
-                                asiento.</p>
-                                        </div>
-                                        <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                            <h1 class="text-uppercase text-justify bri-b">TECNOLOGÍA</h1>
-                                            <p class="text-justify">La tecnología más avanzada, como el panel de
-                                instrumentos TFT, iluminación de LED, dos modos
-                                de conducción, ABS y control de tracción
-                                desconectable para aportar mayor seguridad y
-                                control al motorista.</p>
-                                        </div>
-                                        <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                            <h1 class="text-uppercase text-justify bri-b">EXCEPCIONAL RELACIÓN CALIDAD-PRECIO</h1>
-                                            <p class="text-justify">Con un precio extremadamente competitivo, la
-                                tecnología y prestaciones más avanzadas de su
-                                categoría, las ventajas del motor tricilíndrico y un
-                                intervalo de mantenimiento de 16.000 km, la
-                                Trident 660 es la elección perfecta.</p>
-                                        </div> -->
+
                                     </div>
                                 </div>
                             </div>
@@ -802,25 +499,6 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12 col-md-6 d-block">
-                                            <!-- <h1 class="display-4 text-center bri-b p-0 m-0 d-lg-none">$ 11,200</h1> -->
-                                            <!-- <div class="bg-primary text-white p-5">
-                                                <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
-                                                <h2 class="text-center">3 VECES MÁS FÁCIL</h2>
-                                                <ul>
-                                                    <li>33% De enganche inicial de:</li>
-                                                </ul>
-                                                <h2 class="text-right">$ 3,696</h2>
-                                                <ul>
-                                                    <li>33% Se divide en 33 bajas cuotas
-                                                        mensuales de:</li>
-                                                </ul>
-                                                <h2 class="text-right">$ 188</h2>
-                                                <ul>
-                                                    <li>33% Pago final de:</li>
-                                                </ul>
-                                                <h2 class="text-right">$ 3,696</h2>
-                                                <p>o renueva tu motocicleta por una nueva*’</p>
-                                            </div> -->
                                             <div class="bg-primary text-white p-5">
                                                 <t t-if="fleet_vehicle.cotizacion_dolar" t-raw="fleet_vehicle.cotizacion_dolar" widget="html"></t>
                                             </div>
@@ -838,25 +516,6 @@
                                             <div class="bg-primary text-white p-5">
                                                 <t t-if="fleet_vehicle.cotizacion_quetzal" t-raw="fleet_vehicle.cotizacion_quetzal" widget="html"></t>
                                             </div>
-                                            
-                                            <!-- <div class="bg-primary text-white p-5">
-                                                <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
-                                                <h2 class="text-center">3 VECES MÁS FÁCIL</h2>
-                                                <ul>
-                                                    <li>33% De enganche inicial de:</li>
-                                                </ul>
-                                                <h2 class="text-right">Q 27,720</h2>
-                                                <ul>
-                                                    <li>33% Se divide en 33 bajas cuotas
-                                                        mensuales de:</li>
-                                                </ul>
-                                                <h2 class="text-right">Q 1,410</h2>
-                                                <ul>
-                                                    <li>33% Pago final de:</li>
-                                                </ul>
-                                                <h2 class="text-right">Q 27,720</h2>
-                                                <p>o renueva tu motocicleta por una nueva*’</p>
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -867,37 +526,42 @@
                     <!--REDES-->
                     <div class="w-100 text-center py-2 py-lg-5">
                         <div class="container text-center">
-                            <a t-if="instagram" t-attf-href="{{instagram}}" class="btn" style="color: black;" target="_blank">
+                            <a t-if="'social_instagram' in company_id.fields_get() and company_id.social_instagram" t-attf-href="{{company_id.social_instagram}}" class="btn" style="color: black;" target="_blank">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
                                     <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
                                 </svg>
                             </a>
-                            <a t-if="facebook" t-attf-href="{{facebook}}" class="btn" style="color: black;" target="_blank">
+                            <a t-if="'social_facebook' in company_id.fields_get() and company_id.social_facebook" t-attf-href="{{company_id.social_facebook}}" class="btn" style="color: black;" target="_blank">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
                                     <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
                                 </svg>
                             </a>
-                            <a t-if="whatsapp" t-attf-href="{{twitter}}" class="btn" style="color: black;" target="_blank">
+                            <a t-if="'social_waze' in company_id.fields_get() and company_id.social_waze" t-attf-href="{{company_id.social_waze}}" class="btn" style="color: black;" target="_blank">
+                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+                                    <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                                </svg> -->
+                            </a>
+                            <a t-if="'social_whatsapp' in company_id.fields_get() and company_id.social_whatsapp" t-attf-href="{{company_id.social_whatsapp}}" class="btn" style="color: black;" target="_blank">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
                                     <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
                                 </svg>
                             </a>
-                            <a t-if="twitter" t-attf-href="{{twitter}}" class="btn" style="color: black;" target="_blank">
+                            <a t-if="'social_twitter' in company_id.fields_get() and company_id.social_twitter" t-attf-href="{{company_id.social_twitter}}" class="btn" style="color: black;" target="_blank">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
                                     <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
                                 </svg>
                             </a>
-                            <a t-if="youtube" t-attf-href="{{youtube}}" class="btn" style="color: black;" target="_blank">
+                            <a t-if="'social_youtube' in company_id.fields_get() and company_id.social_youtube" t-attf-href="{{company_id.social_youtube}}" class="btn" style="color: black;" target="_blank">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-youtube" viewBox="0 0 16 16">
                                     <path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z" />
                                 </svg>
                             </a>
-                            <a t-if="github" t-attf-href="{{github}}" class="btn" style="color: black;" target="_blank">
+                            <a t-if="'social_github' in company_id.fields_get() and company_id.social_github" t-attf-href="{{company_id.social_github}}" class="btn" style="color: black;" target="_blank">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
                                     <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
                                 </svg>
                             </a>
-                            <a t-if="linkedin" t-attf-href="{{linkedin}}" class="btn" style="color: black;" target="_blank">
+                            <a t-if="'social_linkedin' in company_id.fields_get() and company_id.social_linkedin" t-attf-href="{{company_id.social_linkedin}}" class="btn" style="color: black;" target="_blank">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16">
                                     <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
                                 </svg>
@@ -914,191 +578,35 @@
                     </div>
 
                     <!--FOOTER-->
-                    <footer class="w-100 text-center mt-2" style="background-color: black;">
-                        <div class="container d-flex justify-content-between align-items-center">
-                            <h3 class="text-capitalize text-light bri-b">
-                                <t t-esc="name" />
-                            </h3>
-                            <div class="d-block text-light text-right py-3">
-                                <!-- <p style="padding: 0; margin: 0;"> -->
-                                    <!--Tel: +502 2384 8030<br /-->
-                                    <!-- "Tel: "
-                                    <t t-esc="phone" />
-                                    <br /> -->
-                                    <!--Email: info@britania.gt<br /-->
-                                    <!-- Email:
-                                    <t t-esc="email" />
-                                    <br /> -->
-                                    <!--5 avenida 16-48 zona 10, Guatemala City-->
-                                    <!-- <t t-esc="street" />
-                                    <br />
-                                </p> -->
-                                <div style="padding: 0; margin: 0;">
+                    <div class="w-100 bg-dark mt-2">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 col-md-6 text-left d-flex align-items-center">
+                                    <span class="h3 py-2 p-md-0 m-0 text-capitalize text-light bri-b">
+                                        <t t-esc="company_id.company_registry" />
+                                    </span>
+                                </div>
+                                <div class="col-12 col-md-6 text-light text-left text-md-right py-3">
                                     <!--Tel: +502 2384 8030<br /-->
                                     <span class="p-0 m-0">Tel: </span>
-                                    <t t-esc="phone" />
+                                    <t t-esc="company_id.phone" />
                                     <br />
                                     <!--Email: info@britania.gt<br /-->
                                     <span class="p-0 m-0">Email: </span>
-                                    <t t-esc="email" />
+                                    <t t-esc="company_id.email" />
                                     <br />
                                     <!--5 avenida 16-48 zona 10, Guatemala City-->
-                                    <t t-esc="street" />, <t t-esc="city" />
+                                    <t t-esc="company_id.street" />, <t t-esc="company_id.city" />
                                     <br />
                                 </div>
                             </div>
                         </div>
-                    </footer>
+                    </div>
 
                 </div>
             </t>
         </template>
 
-        <template id="contenido_cotizacion">
-            <div id="quote_content" class="col-12 col-lg justify-content-end">
-
-                <!-- modal relative to the actions sign and pay -->
-                <div role="dialog" class="modal fade" id="modalaccept">
-                    <div class="modal-dialog" t-if="sale_order.has_to_be_signed(True)">
-                        <form id="accept" method="POST" t-att-data-order-id="sale_order.id" t-att-data-token="sale_order.access_token" class="js_accept_json modal-content js_website_submit_form">
-                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                            <header class="modal-header">
-                                <h4 class="modal-title">Validar orden</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
-                            </header>
-                            <main class="modal-body" id="sign-dialog">
-                                <p>
-                                    <span>Al firmar esta propuesta, acepto los siguientes términos:</span>
-                                    <ul>
-                                        <li>
-                                            <span>Aceptado en nombre de:</span>
-                                            <b t-field="sale_order.partner_id.commercial_partner_id" />
-                                        </li>
-                                        <li>
-                                            <span>Por una cantidad de:</span>
-                                            <b data-id="total_amount" t-field="sale_order.amount_total" />
-                                        </li>
-                                        <li t-if="sale_order.payment_term_id">
-                                            <span>Con condiciones de pago:</span>
-                                            <b t-field="sale_order.payment_term_id.note" />
-                                        </li>
-                                    </ul>
-                                </p>
-                                <t t-call="portal.signature_form">
-                                    <t t-set="call_url" t-value="sale_order.get_portal_url(suffix='/accept')" />
-                                    <t t-set="default_name" t-value="sale_order.partner_id.name" />
-                                </t>
-                            </main>
-                        </form>
-                    </div>
-
-                    <div class="modal-dialog" t-if="not sale_order.has_to_be_signed(True) and sale_order.has_to_be_paid(True)">
-                        <div class="modal-content">
-                            <header class="modal-header">
-                                <h4 class="modal-title">Validar orden</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
-                            </header>
-                            <main class="modal-body" id="sign-dialog">
-                                <p>
-                                    <span>Al pagar esta propuesta, acepto los siguientes términos:</span>
-                                    <ul>
-                                        <li>
-                                            <span>Aceptado en nombre de:</span>
-                                            <b t-field="sale_order.partner_id.commercial_partner_id" />
-                                        </li>
-                                        <li>
-                                            <span>Por una cantidad de:</span>
-                                            <b data-id="total_amount" t-field="sale_order.amount_total" />
-                                        </li>
-                                        <li t-if="sale_order.payment_term_id">
-                                            <span>Con condiciones de pago:</span>
-                                            <b t-field="sale_order.payment_term_id.note" />
-                                        </li>
-                                    </ul>
-                                </p>
-                                <div t-if="pms or acquirers" id="payment_method" class="text-left">
-                                    <h3 class="mb24">Pagar con</h3>
-                                    <t t-call="payment.payment_tokens_list">
-                                        <t t-set="mode" t-value="'payment'" />
-                                        <t t-set="submit_txt">Pagar &amp; Confirmar</t>
-                                        <t t-set="icon_class" t-value="'fa-lock'" />
-                                        <t t-set="form_action" t-value="sale_order.get_portal_url(suffix='/transaction/token')" />
-                                        <t t-set="prepare_tx_url" t-value="sale_order.get_portal_url(suffix='/transaction/')" />
-                                        <t t-set="access_token" t-value="sale_order.access_token" />
-                                    </t>
-                                </div>
-                            </main>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- modal relative to the action reject -->
-                <div role="dialog" class="modal fade" id="modaldecline">
-                    <div class="modal-dialog">
-                        <form id="decline" method="POST" t-attf-action="/my/orders/#{sale_order.id}/decline?access_token=#{sale_order.access_token}" class="modal-content">
-                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                            <header class="modal-header">
-                                <h4 class="modal-title">Rechazar esta cotización</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&amp;times;</button>
-                            </header>
-                            <main class="modal-body">
-                                <p>
-                                    Díganos por qué rechaza esta cotización, esto nos ayudará a mejorar nuestros servicios.
-                                </p>
-                                <textarea rows="4" name="decline_message" required="" placeholder="Tu comentario..." class="form-control" />
-                            </main>
-                            <footer class="modal-footer">
-                                <button type="submit" t-att-id="sale_order.id" class="btn btn-danger">
-                                    <i class="fa fa-times"></i>
-                                    Rechazar
-                                </button>
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                            </footer>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- status messages -->
-                <div t-if="message == 'sign_ok'" class="alert alert-success alert-dismissable d-print-none" role="status">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">&amp;times;</button>
-                    <strong>¡Gracias!</strong>
-                    <br />
-                    <t t-if="message == 'sign_ok' and sale_order.state in ['sale', 'done']">Su pedido ha sido confirmado.</t>
-                    <t t-elif="message == 'sign_ok' and sale_order.has_to_be_paid()">Su pedido ha sido firmado pero aún debe pagarse para ser confirmado.</t>
-                    <t t-else="">Su pedido ha sido firmado.</t>
-                </div>
-
-                <div t-if="message == 'cant_reject' and sale_order.has_to_be_signed()" class="alert alert-danger alert-dismissable d-print-none" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">&amp;times;</button>
-                    Su pedido no está en condiciones de ser rechazado.
-                </div>
-
-                <t t-if="sale_order.transaction_ids">
-                    <t t-call="payment.payment_confirmation_status">
-                        <t t-set="payment_tx_id" t-value="sale_order.get_portal_last_transaction()" />
-                        <t t-set="reference" t-value="sale_order.reference" />
-                    </t>
-                </t>
-
-                <div t-if="sale_order.state == 'cancel'" class="alert alert-danger alert-dismissable d-print-none" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="close">&amp;times;</button>
-                    <strong>Esta cotización ha sido cancelada.</strong>
-                    <a role="button" href="#discussion">
-                        <i class="fa fa-comment" />
-                        Contáctenos para obtener una nueva cotización.
-                    </a>
-                </div>
-
-                <div t-if="sale_order.is_expired" class="alert alert-warning alert-dismissable d-print-none" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="close">&amp;times;</button>
-                    <strong>¡Esta oferta expiró!</strong>
-                    <a role="button" href="#discussion">
-                        <i class="fa fa-comment" />
-                        Contáctenos para obtener una nueva cotización.
-                    </a>
-                </div>
-            </div>
-        </template>
         <!--
         <template id="object">
           <h1><t t-esc="object.display_name"/></h1>

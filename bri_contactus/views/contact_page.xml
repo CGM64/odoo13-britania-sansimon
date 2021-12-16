@@ -261,9 +261,6 @@
             <div class="container mt-5">
                 
                 <div class="card text-light p-0 border-0">
-                    <!--div class="card-header text-center">
-                        Triumph
-                    </div-->
                     <div class="card-body p-0" style="background-color: black !important; color: white !important">
                         <div class="row">
                             <div class="col-12 col-md-6 px-5 py-3">
@@ -373,10 +370,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--div class="d-flex justify-content-between">
-                        <span>Britania Motors</span>
-                        <span>PBX: 2384 8030</span>
-                    </div-->
                 </div>
 
             </div>
@@ -419,7 +412,6 @@
                         <div class="" style="position: relative;">
                             <img src="/bri_contactus/static/src/image/thank_you_lg.jpg" class="w-100" />
                             <div class="w-100 text-center" style="position: absolute; top:calc(0.2rem + 1vw); left:0;">
-                            <!-- <div class="w-100 text-center h-100" style="height:500px;background-image: url(/bri_contactus/static/src/image/thank_you_lg.jpg);background-attachment:fixed;background-position:center;"> -->
                                 <span class="text-center h1">
                                     Tu solicitud fue enviada con éxito <br/>
                                     <a class="btn btn-danger text-center" href="/">Seguir explorando</a>
@@ -432,12 +424,15 @@
                             <source media="(min-width:767px)" srcset="/bri_contactus/static/src/image/thank-you-tablet.jpg" />
                             <img src="/bri_contactus/static/src/image/thank_you_lg.jpg" style="width:auto;" />
                         </picture-->
-                        <!-- <t t-esc="object.company_id.name"></t> -->
-                        <div class="container d-flex align-items-center justify-content-between p-3">
-                            <span class="h2 p-0 m-0">Britania Motors</span>
-                            <span class="h2 p-0 m-0">PBX: 2384 8030</span>
-                            <!--span><t t-esc="name" /></span-->
-                            <!--span>PBX: <t t-esc="phone" /></span-->
+                        <div class="container p-3">
+                            <div class="row">
+                                <div class="col-12 col-md-6 p-0 m-0">
+                                    <span class="h2 p-0 m-0"><t t-esc="res_company.company_registry" /></span>
+                                </div>
+                                <div class="col-12 col-md-6 p-0 m-0 text-left text-md-right">
+                                    <span class="h2 p-0 m-0">PBX: <t t-esc="res_company.phone" /></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </t>

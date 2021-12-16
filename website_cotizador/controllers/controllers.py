@@ -88,21 +88,8 @@ class WebsiteCotizador(CustomerPortal):
             'focus': order_sudo.order_line[0],
             'fleet_vehicle': fleet_vehicle_model,
             'caracteristicas': caracteristicas,
-            'facebook': company.social_facebook,
-            'twitter': company.social_twitter,
-            'instagram': company.social_instagram,
-            #'whatsapp': company.social_whatsapp,
-            #'waze': company.social_waze,
-            'youtube': company.social_youtube,
-            'github': company.social_github,
-            'linkedin': company.social_linkedin,
             'ficha_tecnica_url': '/web/binary/ficha_tecnica?model=fleet.vehicle.model&field=ficha_tecnica&id='+ str(fleet_vehicle_model.id),
-            'phone': company.phone,
-            'street': company.street,
-            'city': company.city,
-            'email': company.email,
-            'name': company.company_registry,
-            'company_id': company.id,
+            'company_id': company,
             'base_url': base_url,
             'tarifa_dolar': tarifa_dolar,
             'tarifa_publica': tarifa_publica,
@@ -112,12 +99,6 @@ class WebsiteCotizador(CustomerPortal):
         if order_sudo.company_id:
             values['res_company'] = order_sudo.company_id
 
-        
-        # if order_sudo.state in ('draft', 'sent', 'cancel'):
-        #     history = request.session.get('my_quotations_history', [])
-        # else:
-        #     history = request.session.get('my_orders_history', [])
-        # #values.update(get_records_pager(history, order_sudo))
         
         return request.render('website_cotizador.bri_view_cotizador',values)
         pass

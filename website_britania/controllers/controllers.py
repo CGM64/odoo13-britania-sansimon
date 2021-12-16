@@ -3,9 +3,9 @@
 
 from odoo import http
 
-class WebsiteBritania(http.Controller):
-    
-    @http.route('/sitio/prueba/', type='http', auth='public', website=True)
-    def sitio_prueba(self, **kw):
+# class WebsiteBritania(http.Controller):
+
+#     @http.route('/', type='http', auth='public', website=True)
+#     def bri_home_page(self, **kw):
         
-        return http.request.render('website_britania.presentacion')
+#         return http.request.render('website_britania.bri_home_page')
