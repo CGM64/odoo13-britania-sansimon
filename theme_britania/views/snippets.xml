@@ -29,7 +29,7 @@
         <xpath expr="//div[hasclass('s_carousel')]/div[hasclass('carousel-inner')]" position="replace">
             <div class="carousel-inner bg-dark">
                 <div class="carousel-item active oe_custom_bg" data-interval="5000">
-                    <div class="container container-item">
+                    <div class="container container-item" style="max-width:100% !important;">
                         <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/rocket%203%20r%20221/model%20page/my22-rocket-221-hpr-1920x1080.jpg" class="d-block w-100 " alt="..." />
                         <div class="carousel-content py-4 c-content-left w-75 text-break wow animate__animated animate__fadeInUp">
                             <div class="s_title pb8">
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="carousel-item oe_custom_bg" data-interval="5000">
-                    <div class="container container-item">
+                    <div class="container container-item" style="max-width:100% !important;">
                         <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/adventure-touring/tiger-1200-tease-2021/beat%204/hpr-b4-triumph_tiger_1200-1920x1080%203.jpg" class="d-block w-100" alt="..." />
                         <div class="carousel-content py-4 c-content-right w-75 text-break wow animate__animated animate__fadeInUp">
                             <div class="s_title pb8">
@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <div class="carousel-item oe_custom_bg" data-interval="5000">
-                    <div class="container container-item">
+                    <div class="container container-item" style="max-width:100% !important;">
                         <video preload="none" playsinline="true" muted="true" loop="loop" poster="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/gold%20lines%20my22/special_edition_my22_t120_black_details_nh_0045.jpg" itemprop="video" itemscope="true" autoplay="true" itemtype="http://schema.org/VideoObject" class="d-block w-100 ">
                             <source src="https://images.triumphmotorcycles.co.uk/media-library/files/central-marketing-team/videos/family%20videos/goldlinehpr.mp4" type="video/mp4" />
                         </video>

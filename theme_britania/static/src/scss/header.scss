@@ -215,3 +215,15 @@ span .text-navbar {
         }
     }
 }
+
+@media screen and (min-width: 1200px) {
+    .carousel-content {
+        top: 14rem;
+    }
+}
+
+@media screen and (min-width: 2000px) {
+    .carousel-content {
+        top: 30rem;
+    }
+}
