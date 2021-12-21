@@ -97,6 +97,8 @@ class WebsiteCotizador(CustomerPortal):
         }
 
         if order_sudo.company_id:
+            print("###################################")
+            print(order_sudo.company_id)
             values['res_company'] = order_sudo.company_id
 
         
