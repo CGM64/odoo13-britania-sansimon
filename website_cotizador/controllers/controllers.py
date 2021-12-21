@@ -36,6 +36,8 @@ class WebsiteCotizador(CustomerPortal):
                     partner_ids=order_sudo.user_id.sudo().partner_id.ids,
                 )
         company = request.env.company
+        print("----------------------------- ")
+        print(company)
         base_url = request.env ['ir.config_parameter'].sudo().get_param('web.base.url')
 
         producto = request.env["product.product"].sudo().search([
