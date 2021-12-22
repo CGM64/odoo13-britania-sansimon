@@ -56,9 +56,6 @@ class FleetVehicle(models.Model):
         new_vehicle = super(FleetVehicle, self.with_context(create_fleet_vehicle=True)).create(vals)
         ctx.update({"from_vehicle_create": True})
 
-        print("fleet.vehicle Estoy en el create")
-        print(ctx)
-
         if new_vehicle.product_id:
             new_vehicle.product_id.with_context(ctx).write({
                 'name': new_vehicle.name,
@@ -74,9 +71,6 @@ class FleetVehicle(models.Model):
         res = super(FleetVehicle, self).write(vals)
         update_prod_vals = {}
         ctx.update({"from_vehicle_write": True})
-
-        print("fleet.vehicle Estoy en el write")
-        print(ctx)
 
         for vehicle in self:
             if vehicle.product_id:
