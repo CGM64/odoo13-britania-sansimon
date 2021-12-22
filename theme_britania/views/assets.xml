@@ -7,6 +7,7 @@
             <link rel="stylesheet" type="text/scss" href="/theme_britania/static/src/scss/cotizador.scss"/>
             <link rel="stylesheet" type="text/scss" href="/theme_britania/static/src/scss/header.scss"/>
             <link rel="stylesheet" type="text/scss" href="/theme_britania/static/src/scss/custom.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/theme_britania/static/src/scss/icons.scss"/>
             <!-- ====================== FRAMEWORKS CSS =========================================== -->
             <link rel="stylesheet" type="text/scss" href="/theme_britania/static/src/scss/animate.scss"/>
             <!-- <link rel="stylesheet" media="screen" href="/theme_britania/static/src/scss/flickity.css"/> -->
