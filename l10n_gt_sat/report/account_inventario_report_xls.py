@@ -156,10 +156,10 @@ class LibroInventarioReportXls(models.AbstractModel):
             recepcion['lines'] = picking_lines
             recepcion['porcentaje_total'] = porcentaje
             recepcion['porcentaje_incremento'] = porcentaje_incremento
-            print("-------->porcentaje_incremento", porcentaje_incremento)
-
             listado_picking.append(recepcion)
-        return listado_picking
+        return listado_picking,porcentaje_incremento
+
+
 
     def generate_xlsx_report(self, workbook, data, data_report):
         formato_celda_numerica = workbook.add_format({'num_format': '#,##0.00', 'border': 0, })
@@ -170,8 +170,6 @@ class LibroInventarioReportXls(models.AbstractModel):
         numerico_general = workbook.add_format({'num_format': '#,##0.00', 'border': 0, 'fg_color': '#1C1C1C', 'font_color': 'white'})
         porcentaje_general = workbook.add_format({'num_format': '0.00%','fg_color': '#1C1C1C', 'font_color': 'white'})
 
-
-
         self.workbook = workbook
         fecha_inicio = data['form']['fecha_inicio']
         fecha_fin = data['form']['fecha_fin']
@@ -180,9 +178,9 @@ class LibroInventarioReportXls(models.AbstractModel):
         generar_por = data['form']['generar_por']
         
         if generar_por=='fecha':
-            stock_picking = self._estructura_reporte(generar_por,None,fecha_inicio, fecha_fin)
+            stock_picking,porcentaje_incremento = self._estructura_reporte(generar_por,None,fecha_inicio, fecha_fin)
         else:
-            stock_picking = self._estructura_reporte(generar_por,picking_ids,None,None)
+            stock_picking,porcentaje_incremento= self._estructura_reporte(generar_por,picking_ids,None,None)
 
         sheet_inventario = workbook.add_worksheet('Inventario')
         sheet_inventario.write(0, 0, "FECHA", formato_encabezado)
@@ -202,9 +200,7 @@ class LibroInventarioReportXls(models.AbstractModel):
 
         sheet_inventario.set_column("A:R", 25)
 
-
         # stock_picking_nuevo=list(filter(lambda f: f['value'] !=0))
-
         fila = 0
         for picking in stock_picking:
             for line in picking['lines']:
@@ -222,7 +218,7 @@ class LibroInventarioReportXls(models.AbstractModel):
                     sheet_inventario.write(fila, 8, line['gasto'], formato_celda_numerica)
                     sheet_inventario.write(fila, 9, line['total'], formato_celda_numerica)
 
-                    sheet_inventario.write(fila, 10, picking['porcentaje_incremento'], formato_porcentaje)
+                    sheet_inventario.write(fila, 10, porcentaje_incremento, formato_porcentaje)
                     sheet_inventario.write(fila, 11, line['costo_en_destino'])
                     sheet_inventario.write(fila, 12, line['participacion'], formato_porcentaje)
 
