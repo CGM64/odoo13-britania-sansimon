@@ -151,6 +151,7 @@
             attachment_use="False"
         />
 
+        <!-- REPORTE DE IMPORTACIONES -->
           <report
             id="account_inventario_report_xls"
             model="report.l10n_gt_sat.account_inventario_report_xls"
