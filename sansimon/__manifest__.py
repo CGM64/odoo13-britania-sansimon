@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'account','stock','connect_mssql','l10n_gt','stock_account'],
+    'depends': ['account','stock','connect_mssql','l10n_gt','stock_account'],
 
     # always loaded
     'data': [
