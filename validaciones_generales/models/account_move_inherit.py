@@ -14,7 +14,7 @@ class AccountMovInherit(models.Model):
 
     def action_post(self):
         self.ensure_one()
-        if self.journal_id.name=='Facturas FEL':
+        if  self.journal_id.fel_setting_id.id!=False  and self.journal_id.tipo_operacion=='FACT' and self.journal_id.tipo_documento in('FACT','NCRE'):
             for line in self.invoice_line_ids:
                 # if line.tax_ids.id==False:
                 if len(line.tax_ids)==0:
