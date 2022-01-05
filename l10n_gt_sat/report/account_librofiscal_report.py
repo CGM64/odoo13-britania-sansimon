@@ -156,6 +156,8 @@ class AccountCommonJournalReport(models.TransientModel):
                     libro_resumido_linea = {}
                     libro_resumido_linea['no_linea'] = 0
                     libro_resumido_linea['dia'] = documento.invoice_date
+                    libro_resumido_linea['fecha'] = documento.invoice_date.strftime('%d/%m/%Y')
+
 
                     if day_to_year in libro_resumido:
                         libro_resumido_linea = libro_resumido[day_to_year]
@@ -200,6 +202,8 @@ class AccountCommonJournalReport(models.TransientModel):
             prueba = sorted(libro_resumido.items())
             tipo_libro['resumido'] = prueba
 
+            
+
             tipo_libro['resumen'] = concepto_iva
             #tipo_libro['top_documentos'] = sorted(lista_top_documentos.items(), key = lambda kv:kv[1]['sat_servicio'], reverse = True)[:10]
             lista_top_documentos = sorted(lista_top_documentos.items(), key = lambda kv:kv[1]['sat_base'], reverse = True)
@@ -241,7 +245,7 @@ class AccountCommonJournalReport(models.TransientModel):
             libro_fiscal.append(tipo_libro)
 
 
-
+        print('libro_fiscal',libro_fiscal)
         return libro_fiscal
 
         #docs = self.env['account.move'].search([('journal_id', '=', journal.id)], limit=1):

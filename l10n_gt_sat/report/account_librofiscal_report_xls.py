@@ -9,7 +9,7 @@ class LibroFiscalReportXls(models.AbstractModel):
 
     workbook = None
 
-    def _get_libro_ventas(self, libro, sheet_libro, fila, columna, format1, date_format, vendedor):
+    def _get_libro_ventas(self, libro, sheet_libro, fila, columna, format1, date_format, vendedor,tipo):
         sheet_libro.set_column(columna,columna,4)
         sheet_libro.set_column(columna + 1,columna + 1,8)
         sheet_libro.set_column(columna + 2,columna + 2,12)
@@ -49,28 +49,55 @@ class LibroFiscalReportXls(models.AbstractModel):
 
         fila += 1
 
-        for f in libro['facturas']:
-            sheet_libro.write(fila, columna, f.no_linea)
-            sheet_libro.write(fila, columna + 1, f.journal_id.code)
-            sheet_libro.write(fila, columna + 2, f.invoice_date, date_format)
-            sheet_libro.write(fila, columna + 3, f.sat_fac_serie)
-            sheet_libro.write(fila, columna + 4, f.sat_fac_numero)
-            sheet_libro.write(fila, columna + 5, f.partner_id.vat if f.state not in ('cancel') else '')
-            sheet_libro.write(fila, columna + 6, f.partner_id.name if f.state not in ('cancel') else 'Anulado')
-            sheet_libro.write(fila, columna + 7, 0, self.fnumerico)
-            sheet_libro.write(fila, columna + 8, 0, self.fnumerico)
-            sheet_libro.write(fila, columna + 9, f.sat_exportacion_in_ca, self.fnumerico)
-            sheet_libro.write(fila, columna + 10, f.sat_servicio, self.fnumerico)
-            sheet_libro.write(fila, columna + 11, f.sat_bien, self.fnumerico)
-            sheet_libro.write(fila, columna + 12, f.sat_subtotal, self.fnumerico)
-            sheet_libro.write(fila, columna + 13, f.sat_iva, self.fnumerico)
-            sheet_libro.write(fila, columna + 14, f.sat_amount_total, self.fnumerico)
-            if vendedor:
-                sheet_libro.write(fila, columna + 15, f.invoice_user_id.name)
-            fila += 1
+        print("tipo--->",tipo)
+
+        if tipo =='detallado':
+            for f in libro['facturas']:
+                sheet_libro.write(fila, columna, f.no_linea)
+                sheet_libro.write(fila, columna + 1, f.journal_id.code)
+                sheet_libro.write(fila, columna + 2, f.invoice_date, date_format)
+                sheet_libro.write(fila, columna + 3, f.sat_fac_serie)
+                sheet_libro.write(fila, columna + 4, f.sat_fac_numero)
+                sheet_libro.write(fila, columna + 5, f.partner_id.vat if f.state not in ('cancel') else '')
+                sheet_libro.write(fila, columna + 6, f.partner_id.name if f.state not in ('cancel') else 'Anulado')
+                sheet_libro.write(fila, columna + 7, 0, self.fnumerico)
+                sheet_libro.write(fila, columna + 8, 0, self.fnumerico)
+                sheet_libro.write(fila, columna + 9, f.sat_exportacion_in_ca, self.fnumerico)
+                sheet_libro.write(fila, columna + 10, f.sat_servicio, self.fnumerico)
+                sheet_libro.write(fila, columna + 11, f.sat_bien, self.fnumerico)
+                sheet_libro.write(fila, columna + 12, f.sat_subtotal, self.fnumerico)
+                sheet_libro.write(fila, columna + 13, f.sat_iva, self.fnumerico)
+                sheet_libro.write(fila, columna + 14, f.sat_amount_total, self.fnumerico)
+                if vendedor:
+                    sheet_libro.write(fila, columna + 15, f.invoice_user_id.name)
+                fila += 1
+        else:
+            for f in libro['resumido']:
+                print("f--->",f[1])
+                sheet_libro.write(fila, columna, fila)
+                sheet_libro.write(fila, columna + 1,'' )
+                sheet_libro.write(fila, columna + 2, f[1]['dia'], date_format)
+                sheet_libro.write(fila, columna + 3, '')
+                sheet_libro.write(fila, columna + 4, '')
+                sheet_libro.write(fila, columna + 5, '')
+                sheet_libro.write(fila, columna + 6, '')
+                sheet_libro.write(fila, columna + 7, f[1]['sat_exento'], self.fnumerico)
+                sheet_libro.write(fila, columna + 8, f[1]['sat_importa_out_ca'], self.fnumerico)
+                sheet_libro.write(fila, columna + 9, f[1]['sat_importa_in_ca'], self.fnumerico)
+                sheet_libro.write(fila, columna + 10, f[1]['sat_servicio'], self.fnumerico)
+                sheet_libro.write(fila, columna + 11, f[1]['sat_bien'], self.fnumerico)
+                sheet_libro.write(fila, columna + 12, f[1]['sat_subtotal'], self.fnumerico)
+                sheet_libro.write(fila, columna + 13, f[1]['sat_iva'], self.fnumerico)
+                sheet_libro.write(fila, columna + 14, f[1]['sat_amount_total'], self.fnumerico)
+                # if vendedor:
+                #     sheet_libro.write(fila, columna + 15, f.invoice_user_id.name)
+                fila += 1
+
+
+
+
 
         r = libro['resumen']
-
         sheet_libro.write(fila, columna + 9, r['sat_exportacion_in_ca'], self.money)
         sheet_libro.write(fila, columna + 10, r['servicio'], self.money)
         sheet_libro.write(fila, columna + 11, r['bien'], self.money)
@@ -268,11 +295,12 @@ class LibroFiscalReportXls(models.AbstractModel):
             sheet_libro.write(2, 0, "Del: " + libro['del'] + "Al: " + libro['del'], self.bold)
 
             vendedor = data['form']['vendedor']
+            tipo=data['form']['tipo']
 
             fila = 5
             columna = 0
 
             if libro['libro'] == 'sale':
-                sheet_libro = self._get_libro_ventas(libro, sheet_libro, fila, columna, format1, date_format, vendedor)
+                sheet_libro = self._get_libro_ventas(libro, sheet_libro, fila, columna, format1, date_format, vendedor,tipo)
             else:
                 sheet_libro = self._get_libro_compras(libro, sheet_libro, fila, columna, format1, date_format)
