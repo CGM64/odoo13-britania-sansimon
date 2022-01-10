@@ -19,7 +19,7 @@
                 'team_id',
                 'user_id',
                 'medio_conocio',
-                'depto',
+                'medio_contacto',
                 'modelo',
             ]"/>
         </function>

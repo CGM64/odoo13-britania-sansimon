@@ -1,3 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_fleet_model_year,access_fleet_model_year,model_fleet_model_year,base.group_user,1,1,1,1
 access_fleet_model_repair,access_fleet_model_repair,model_fleet_model_repair,base.group_user,1,1,1,1
+access_repair_type,access_repair_type,model_repair_type,base.group_user,1,0,0,0
+access_repair_type_adm,access_repair_type_administrator,model_repair_type,base.group_system,1,1,1,1
+access_tri_product_group,access_tri_product_group,model_tri_product_group,base.group_user,1,1,1,1
+access_tri_product,access_tri_product,model_tri_product,base.group_user,1,1,1,1
+access_repair_report,access_repair_report,model_repair_report,base.group_user,1,1,1,1

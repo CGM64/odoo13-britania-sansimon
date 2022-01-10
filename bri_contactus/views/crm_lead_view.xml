@@ -8,8 +8,10 @@
     <field name="arch" type="xml">
       <field name="tag_ids" position="after">
         <field name="medio_conocio"/>
-        <field name="depto"/>
         <field name="modelo"/>
+      </field>
+      <field name="phone" position="after">
+        <field name="medio_contacto" options="{'no_create': True, 'no_edit': True}"/>
       </field>
       <xpath expr="//field[@name='name']" position="before">
         <div class="oe_right">

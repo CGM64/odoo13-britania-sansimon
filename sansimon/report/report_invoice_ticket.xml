@@ -7,6 +7,7 @@
       <t t-call="sansimon.external_layout_simple_page">
         <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
         <div class="page">
+          <link rel="stylesheet" href="/sansimon/static/src/css/report.css" />
           <div class="oe_structure"/>
           <div class="container text-black">
             <div class="row">
@@ -48,6 +49,11 @@
                 <span>Vendedor:
                   <strong><span t-field="doc.invoice_user_id.name"/></strong>
                 </span><br/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 text-center">
+                    <img t-if="doc.generate_qr()" t-att-src="'data:image/png;base64,%s' % to_text(doc.generate_qr())" class="qr" />
               </div>
             </div>
             <div class="row">
@@ -167,7 +173,7 @@
         <div class="o_boxed_header text-black">
           <div class="row">
             <div class="col-12 text-center">
-              <strong><span class="mt0" t-field="company.name"/></strong><br/>
+              <strong><span class="mt0" t-field="company.company_registry"/></strong><br/>
               <span class="mt0" t-field="company.display_street"/><br/>
               <span class="mt0">Teléfono:
               </span><span class="mt0" t-field="company.phone"/><br/>

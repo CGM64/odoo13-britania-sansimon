@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'account','stock','connect_mssql','l10n_gt','stock_account'],
+    'depends': ['account','stock','connect_mssql','l10n_gt','stock_account'],
 
     # always loaded
     'data': [
@@ -37,6 +37,10 @@
         #'data/stock_account_data.xml',
         'report/sale_order.xml',
         'report/sale_order_templates.xml',
+        'report/stock_picking_report.xml',
+        'views/sale_order_line.xml',
+        'views/account_move_line.xml',
+        'data/sale_group_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

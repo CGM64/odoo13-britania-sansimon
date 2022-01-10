@@ -20,6 +20,9 @@
                 <field name="user_id" position="after">
                     <field name="default_code" filter_domain="[('default_code', 'ilike', self)]"/>
                 </field>
+                <field name="name" position="replace">
+                    <field name="name" filter_domain="['|', '|', '|', ('display_name', 'ilike', self), ('ref', '=', self), ('email', 'ilike', self), ('vat', 'like', self)]"/>
+                </field>
             </field>
         </record>
     </data>

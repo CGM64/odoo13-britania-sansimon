@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 class ProductDai(models.Model):
     _name = 'product.dai'
@@ -43,3 +43,22 @@ class ProductTemplate(models.Model):
 		])
 
     tag_ids = fields.Many2many('product.tag', 'product_template_tags', 'tag_id', 'product_id', string='Etiquetas', help="Clasifique sus productos con etiquetas personalizadas.")
+
+    @api.constrains('default_code')
+    def _check_unique_default_code(self):
+        if not self:
+            return
+
+        if not self.default_code:
+            return
+
+        if self.default_code == "":
+            return
+
+        self._cr.execute('''
+            SELECT default_code
+            FROM product_template
+            WHERE default_code = %s AND id <> %s
+        ''', (self.default_code,self.id))
+        if self._cr.fetchone():
+            raise ValidationError(_("El codigo de producto debe ser unico."))

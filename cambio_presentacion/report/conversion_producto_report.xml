@@ -1,0 +1,132 @@
+<odoo>
+    <data>
+
+        <record id="conversion_producto_paper_format" model="report.paperformat">
+            <field name="name">Media Carta</field>
+            <!-- <field name="default" eval="True" /> -->
+            <field name="format">custom</field>
+            <field name="page_height">140</field>
+            <field name="page_width">215</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <!-- <field name="header_line" eval="False" /> -->
+            <field name="header_spacing">25</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report id="conversion_producto_report" model="conversion.producto" string="Conversion (PDF)" report_type="qweb-pdf" name="cambio_presentacion.conversion_producto_pdf_report" file="cambio_presentacion.conversion_producto_pdf_report" paperformat="conversion_producto_paper_format" />
+
+        <template id="conversion_producto_pdf_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <style>
+                            .div-bg {
+                                background-color:#3D3D3D;
+                                border-radius:20px;
+                            }
+                            .border-secondary{
+                                border: 2px solid  #3D3D3D !important;
+                                border-radius:20px !important;
+                            }
+                            .page,.titulo{
+                                font-size: 11.5px;
+                                background: none !important;
+                            }
+                            </style>
+
+                            <div class="encabezado" t-foreach="o.reporte_pdf()" t-as="contador">
+                                <t t-if="contador == False">
+
+                                </t>
+                                <t t-else="">
+                                    <h2 class="text-center mt-5 titulo">CONVERSION</h2>
+                                    <div class="encabezado" t-foreach="o.reporte_pdf()" t-as="dato">
+                                        <div class="row">
+                                            <div class="col-2 text-left">
+                                                <strong>Fecha de Impresión:</strong>
+                                            </div>
+                                            <div class="col-2 text-left">
+                                                <p t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y')"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                <strong>Usuario:</strong>
+                                            </div>
+                                            <div class="col-auto">
+                                                <p t-esc="dato['user_name']" />
+                                            </div>
+                                            <div class="col-auto">
+                                                <strong>Origen:</strong>
+                                            </div>
+                                            <div class="col-auto">
+                                                <p t-esc="dato['conversion_name']" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                <strong>Fecha:</strong>
+                                            </div>
+                                            <div class="col-auto">
+                                                <p t-esc="dato['date']" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row div-bg mt-2 p-1 mb-1 text-white">
+                                        <div class="col-2 text-left ">BODEGA</div>
+                                        <div class="col-6 text-left ">PRODUCTO</div>
+                                        <div class="col-2 text-right">SALIDA</div>
+                                        <div class="col-2 text-right">ENTRADA</div>
+                                    </div>
+
+                                    <div class="detalle mt-1" t-foreach="o.reporte_pdf()" t-as="dato">
+                                        <h2 class="text-left titulo">SALIDA</h2>
+                                        <div class="row">
+                                            <div class="col-2 text-left">
+                                                <p t-esc="dato['warehouse_name']" />
+                                            </div>
+                                            <div class="col-6 text-left">
+                                                <p t-esc="dato['product_name']" />
+                                            </div>
+                                            <div class="col-2 text-right">
+                                                <p t-esc="dato['unidades_requeridas']" />
+                                            </div>
+                                            <div class="col-2 text-right">
+                                                <!-- <p t-esc="dato['unidades_requeridas']" /> -->
+                                            </div>
+                                        </div>
+
+                                        <h2 class="text-left titulo">ENTRADA</h2>
+                                        <div class="row" t-foreach="dato['detalle']" t-as="detalle">
+                                            <div class="col-2 text-left">
+                                                <p t-esc="detalle['warehouse_name']" />
+                                            </div>
+                                            <div class="col-6 text-left">
+                                                <p t-esc="detalle['product_name']" />
+                                            </div>
+                                            <div class="col-2 text-right">
+                                                <!-- <p t-esc="detalle['amount']" /> -->
+                                            </div>
+                                            <div class="col-2 text-right">
+                                                <p t-esc="detalle['amount']" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </t>
+                            </div>
+
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

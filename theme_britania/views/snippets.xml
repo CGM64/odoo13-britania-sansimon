@@ -1,0 +1,353 @@
+<odoo>
+
+    <!-- ===================== CAMBIOS DE APARIENCIA ===================== -->
+    <template id="custom_navbar" inherit_id="portal.frontend_layout">
+        <xpath expr="//div[@id='wrapwrap']/header/nav" position="attributes">
+            <attribute name="class">navbar navbar-expand-lg navbar-dark bg-dark</attribute>
+        </xpath>
+
+        <!-- <xpath expr="//div[@id='wrapwrap']/header/nav/div/a/span/img" position="attributes">
+            <attribute name="src">/bri_contactus/static/src/image/logo-negativo.svg</attribute>
+        </xpath> -->
+
+        <!--xpath expr="//div[@id='wrapwrap']/header/nav/div/div/ul" position="attributes">
+            <attribute name="class">navbar-nav ml-auto text-sm</attribute>
+        </xpath-->
+    </template>
+
+    <template id="bri_logo_negativo" inherit_id="website.layout">
+        <xpath expr="//header//a[hasclass('navbar-brand')]" position="replace">
+            <a href="/" class="navbar-brand logo">
+                <span role="img" t-att-aria-label="'Logo of %s' % website.name" t-att-title="website.name">
+                    <img src="/bri_contactus/static/src/image/logo-negativo.svg" style="width: 10rem;" alt="" />
+                </span>
+            </a>
+        </xpath>
+    </template>
+
+    <template id="custom_carousel" inherit_id="website.s_carousel">
+        <xpath expr="//div[hasclass('s_carousel')]/div[hasclass('carousel-inner')]" position="replace">
+            <div class="carousel-inner bg-dark">
+                <div class="carousel-item active oe_custom_bg" data-interval="5000">
+                    <div class="container container-item p-0 m-0" style="max-width:100% !important;">
+                        <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/2022%20special%20editions/rocket%203%20r%20221/model%20page/my22-rocket-221-hpr-1920x1080.jpg" class="d-block w-100 " alt="..." />
+                        <div class="carousel-content py-4 c-content-left w-75 text-break wow animate__animated animate__fadeInUp">
+                            <div class="s_title pb8">
+                                <h1 class="s_title_default text-h-responsive fadeIn">ROCKET 3 R 221 SPECIAL EDITION</h1>
+                            </div>
+                            <p class="lead text-p-responsive fadeIn">La edición especial rinde homenaje a sus insuperables
+                            prestaciones y
+                            par motor máximo de 221
+                            Newton metro.</p>
+                            <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
+                                <a href="#" class="btn btn-danger text-btn-responsive btn-responsive">DESCUBRIR MÁS</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item oe_custom_bg" data-interval="5000">
+                    <div class="container container-item p-0 m-0" style="max-width:100% !important;">
+                        <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/adventure-touring/tiger-1200-tease-2021/beat%204/hpr-b4-triumph_tiger_1200-1920x1080%203.jpg" class="d-block w-100" alt="..." />
+                        <div class="carousel-content py-4 c-content-right w-75 text-break wow animate__animated animate__fadeInUp">
+                            <div class="s_title pb8">
+                                <h1 class="s_title_default text-h-responsive fadeIn">PURO DISEÑO CON UN ÚNICO PROPÓSITO</h1>
+                            </div>
+                            <p class="lead text-p-responsive fadeIn">Pruebas oficiales del prototipo de la nueva Tiger 1200.</p>
+                            <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
+                                <a href="#" class="btn btn-danger text-btn-responsive btn-responsive">DESCUBRIR MÁS</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item oe_custom_bg" data-interval="5000">
+                    <div class="container container-item p-0 m-0" style="max-width:100% !important;">
+                        <video preload="none" playsinline="true" muted="true" loop="loop" poster="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/modern-classics/gold%20lines%20my22/special_edition_my22_t120_black_details_nh_0045.jpg" itemprop="video" itemscope="true" autoplay="true" itemtype="http://schema.org/VideoObject" class="d-block w-100 ">
+                            <source src="https://images.triumphmotorcycles.co.uk/media-library/files/central-marketing-team/videos/family%20videos/goldlinehpr.mp4" type="video/mp4" />
+                        </video>
+                        <div class="carousel-content py-4 c-content-left w-75 text-break wow animate__animated animate__fadeInUp">
+                            <div class="s_title pb8">
+                                <h1 class="s_title_default text-h-responsive fadeIn">BONNEVILLE GOLD LINE EDITION</h1>
+                            </div>
+                            <p class="lead text-p-responsive fadeIn">Un precioso iconos clásico con detalles pintados a mano...</p>
+                            <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
+                                <a href="#" class="btn btn-danger text-btn-responsive btn-responsive">DESCUBRIR MÁS</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('s_carousel')]/div[hasclass('carousel-inner')]" position="after">
+            <div class="loading loading-animated"></div>
+        </xpath>
+    </template>
+
+    <template id="custom_footer" inherit_id="portal.frontend_layout">
+        <xpath expr="//div[@id='wrapwrap']/footer/div" position="replace">
+            <div class="border-top border-dark mt-5 ">
+                <div class="container mt-5">
+                    <div class="row text-uppercase">
+                        <div class="col-12 col-md-3">
+                            <ul class="list-group list-group-flush text-sm font-weight-bold">
+                                <li class="list-group-item">MOTOCICLETAS</li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">ADVENTURE</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">CLASSICS</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">ROADSTERS</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">ROCKET</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <ul class="list-group list-group-flush text-sm font-weight-bold">
+                                <li class="list-group-item">MUNDO TRIUMPH</li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">VISITOR EXPERIENCE EN HINCKLEY</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">SPAIN ADVENTURE EXPERIENCE</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">NUESTRA HISTORIA</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">DRG</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">NOTICIAS Y EVENTOS</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <ul class="list-group list-group-flush text-sm font-weight-bold">
+                                <li class="list-group-item">SERVICIOS</li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">GENUINE PARTS</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">MY TRIUMPH FAQ</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">NUESTRA HISTORIA</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <ul class="list-group list-group-flush text-sm font-weight-bold">
+                                <li class="list-group-item">¡EN MARCHA!</li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">SOLICITAR PRUEBA</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">BUSCADOR DE CONCESIONARIOS</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">CONFIGURAR MOTO</a>
+                                </li>
+                                <li class="list-group-item">
+                                    <a href="#" class="text-muted">DESCARGAR CATÁLOGO</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="container mt-5 border-top border-dark">
+                    <div class="row mb-5">
+                        <div class="col-12 col-md-9">
+                            <div class="row">
+                                <div class="col-12">
+                                    <ul class="list-inline text-sm">
+                                        <li class="list-inline-item py-3">
+                                            <a href="#" class="text-muted">Contacto</a>
+                                        </li>
+                                        <li class="list-inline-item py-3">
+                                            <a href="#" class="text-muted">Política de Privacidad</a>
+                                        </li>
+                                        <li class="list-inline-item py-3">
+                                            <a href="#" class="text-muted">Cookies</a>
+                                        </li>
+                                        <li class="list-inline-item py-3">
+                                            <a href="#" class="text-muted">Términos y condiciones</a>
+                                        </li>
+                                        <li class="list-inline-item py-3">
+                                            <a href="#" class="text-muted">Mapa del sitio</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-12">
+                                    <p class="text-danger text-sm">* NOTA: Precios vigentes para modelos 2020 y 2021, en Moneda
+                                    Nacional, IVA Incluido. Aplican
+                                    restricciones. Precios pueden variar sin previo aviso. Consulte previamente a los
+                                    distribuidores
+                                    Oficiales Triumph. Algunos colores con costo adicional. Las fotografías se muestran
+                                    solo para
+                                    fines ilustrativos.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-3 py-3">
+                            <p class="text-muted text-sm">© 2021 Triumph Motorcycles</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="delete_default_copyright_footer" inherit_id="portal.frontend_layout">
+        <xpath expr="//div[@id='wrapwrap']/footer/div[@class='o_footer_copyright']" position="replace">
+            <div></div>
+        </xpath>
+    </template>
+
+    <!-- =================================================================== -->
+
+    <!-- ===================== SNIPPETS PROPIOS ===================== -->
+
+    <template id="snippet_three_buttons_bar" name="Tres Botones en línea">
+        <section class="snippet_three_buttons_bar w-100 bg-dark d-flex align-items-center">
+            <div class="container text-center">
+                <div class="row w-100">
+                    <div class="col-12 col-md-4 py-3 btn-banner d-flex justify-content-center">
+                        <a href="#" class="text-light text-decoration-none text-uppercase d-flex align-items-center">
+                            <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/icon grid/icon-dealer.svg?la=es-MX" style="max-height: 30px; max-width: 30px;" />
+                            <span class="ml-2">Buscador de Concesionarios</span>
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-4 py-3 btn-banner d-flex justify-content-center">
+                        <a href="#" class="text-light text-decoration-none text-uppercase d-flex align-items-center">
+                            <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/icon grid/icon-test-drive.svg?la=es-MX" style="max-height: 30px; max-width: 30px;" />
+                            <span class="ml-2">RESERVA TU PRUEBA DE CONDUCCI&#211;N</span>
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-4 py-3 btn-banner d-flex justify-content-center">
+                        <a href="#" class="text-light text-decoration-none text-uppercase d-flex align-items-center">
+                            <img src="https://images.triumphmotorcycles.co.uk/media-library/images/motorcycles/icon grid/icon-offers.svg?la=es-MX" style="max-height: 30px; max-width: 30px;" />
+                            <span class="ml-2">OFERTAS</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="snippet_two_col_cards" name="Cards en dos columnas">
+        <section class="container mt-2">
+            <div class="row">
+                <div class="col-12 col-md-6 mt-3">
+                    <div class="card">
+                        <img src="https://images.triumphmotorcycles.co.uk/media-library/images/central%20marketing%20team/for%20the%20ride/experiences/spain%20adventure%20experience/home-spain-tae-card-1-770x770.jpg" alt="" class="car-img-top" />
+                        <div class="card-body">
+                            <h2>Spain Adventure Experience</h2>
+                            <p>Experimenta todas las emociones de la conducción off-road </p>
+                            <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
+                                <a href="#" class="btn btn-dark py-2">DESCUBRIR MÁS</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 mt-3">
+                    <div class="card">
+                        <img src="https://images.triumphmotorcycles.co.uk/media-library/images/home/hompage%20images/crosslinks/assen-2019-moto2-championship-hero-500x325-opt.jpg" alt="" class="car-img-top" />
+                        <div class="card-body">
+                            <h2>MOTO2™</h2>
+                            <p>Triumph será el proveedor exclusivo de motores del Mundial de Moto2™.</p>
+                            <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
+                                <a href="#" class="btn btn-dark py-2">DESCUBRIR MÁS</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 mt-3">
+                    <div class="card">
+                        <img src="https://images.triumphmotorcycles.co.uk/media-library/images/home/hompage%20images/crosslinks/te-1-725x512-opt.jpg" alt="" class="car-img-top" />
+                        <div class="card-body">
+                            <h2>PROJECT TRIUMPH TE-1</h2>
+                            <p>Sentando las bases de la futura moto eléctrica británica.</p>
+                            <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
+                                <a href="#" class="btn btn-dark py-2">DESCUBRIR MÁS</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="snippet_simple_card" name="Cards simples">
+        <section class="card">
+            <img src="https://images.triumphmotorcycles.co.uk/media-library/images/central%20marketing%20team/for%20the%20ride/experiences/spain%20adventure%20experience/home-spain-tae-card-1-770x770.jpg" alt="" class="car-img-top" />
+            <div class="card-body">
+                <h2>Spain Adventure Experience</h2>
+                <p>Experimenta todas las emociones de la conducción off-road </p>
+                <div class="s_btn pt16 pb16 fadeIn" data-name="Button">
+                    <a href="#" class="btn btn-dark py-2">DESCUBRIR MÁS</a>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- =================================================================== -->
+
+    <!-- ===================== AÑADIR SNIPPETS AL EDITOR ===================== -->
+
+    <template id="place_into_bar_custom_snippets" inherit_id="website.snippets" name="Visualizacion en la barra">
+        <xpath expr="//div[@id='snippet_structure']/div[hasclass('o_panel_body')]" position="inside">
+            <t t-snippet="theme_britania.snippet_three_buttons_bar" />
+        </xpath>
+        <xpath expr="//div[@id='snippet_structure']/div[hasclass('o_panel_body')]" position="inside">
+            <t t-snippet="theme_britania.snippet_two_col_cards" />
+        </xpath>
+        <xpath expr="//div[@id='snippet_structure']/div[hasclass('o_panel_body')]" position="inside">
+            <t t-snippet="theme_britania.snippet_simple_card" />
+        </xpath>
+    </template>
+
+    <!-- =================================================================== -->
+
+    <!-- ===================== AÑADIR OPCIONES A SNIPPETS ===================== -->
+
+    <template id="options_s_britania" name="Opciones de prueba de snippets" inherit_id="website.snippet_options">
+        <xpath expr="//div[@data-js='background']" position="after">
+            <div data-selector=".snippet_three_buttons_bar">
+                <we-collapse-area>
+                    <we-toggler>
+                        <i class="fa fa-fw fa-magic" />
+                        Show extra info
+                    </we-toggler>
+                    <we-collapse>
+                        <we-button data-select-class="opt_shadow">Shadow Images</we-button>
+                        <we-button data-select-class="opt_grey_bg">Grey Bg</we-button>
+                        <we-button data-select-class="">None</we-button>
+                    </we-collapse>
+                </we-collapse-area>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="options_carousel_britania" name="Opciones de prueba de snippets" inherit_id="website.snippet_options">
+        <xpath expr="//div[@data-js='background']" position="after">
+            <div data-selector=".carousel-content">
+                <we-collapse-area>
+                    <we-toggler>
+                        <i class="fa fa-fw fa-magic" />
+                        Alineación del contenido
+                    </we-toggler>
+                    <we-collapse>
+                        <we-button data-select-class="text-md-right">Derecha</we-button>
+                        <we-button data-select-class="">Izquierda</we-button>
+                    </we-collapse>
+                </we-collapse-area>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- =================================================================== -->
+</odoo>

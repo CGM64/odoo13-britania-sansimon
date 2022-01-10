@@ -5,6 +5,16 @@ from odoo.exceptions import UserError, ValidationError
 from . import letras
 from datetime import date,timedelta
 import logging
+import pytz
+try:
+    import qrcode
+except ImportError:
+    qrcode = None
+try:
+    import base64
+except ImportError:
+    base64 = None
+from io import BytesIO
 class AccountMove(models.Model):
     _inherit = "account.move"
 
@@ -34,78 +44,33 @@ class AccountMove(models.Model):
         if line_id:
             if line_id.product_id.is_vehicle:
                 vehiculo = self.env['fleet.vehicle'].sudo().search([('product_id','=',line_id.product_id.id)])
-                combustible = ''
-                if vehiculo.fuel_type == 'gasoline':
-                    combustible = 'Gasolina'
-                elif vehiculo.fuel_type == 'diesel':
-                    combustible = 'Diesel'
-                elif vehiculo.fuel_type == 'lpg':
-                    combustible = 'GLP'
-                elif vehiculo.fuel_type == 'electric':
-                    combustible = 'Electrico'
-                elif combustible == 'hybrid':
-                    combustible = 'Hibrido'
-                if vehiculo and tipo == 1:
-                    resultado = {
-                    'tipo_vehiculo':'Tipo vehiculo : {}'.format(vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''),
-                    'transmision':'Transmision : {}'.format('Automatica' if vehiculo.transmission == 'automatic' else 'Manual'),
-                    'marca':'Marca: {}'.format(vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''),
-                    'modelo':'Modelo: {}'.format(vehiculo.model_year),
-                    'cc':'CC: {}'.format(vehiculo.cc),
-                    'asientos':'Asientos: {}'.format(vehiculo.seats),
-                    'linea':'Linea: {}'.format(vehiculo.model_id.name if vehiculo.model_id else ''),
-                    'vin':'VIN/CHASIS: {}'.format(vehiculo.vin_sn),
-                    'motor':'Motor: {}'.format(vehiculo.motor),
-                    'cilindros':'Cilindros: {}'.format(vehiculo.cilindros),
-                    'color':'Color: {}'.format(vehiculo.color),
-                    'tipo_combustible':'Combustible {}'.format(combustible),
-                    'doors':'Puertas: {}'.format(vehiculo.doors),
-                    'Ejes':'Ejes : {}'.format(str(vehiculo.ejes) if vehiculo.ejes else ''),
-                    'tonelaje':'Tonelaje : {}'.format(str(vehiculo.tonelaje) if vehiculo.tonelaje else 0),
-                    'Aduana':'Aduana: {}'.format(vehiculo.aduana if vehiculo.aduana else ''),
-                    'Poliza':'Poliza: {}'.format(vehiculo.poliza if vehiculo.poliza else ''),
-                    }
+                combustible = {'gasoline':'Gasolina','diesel':'Diesel','lpg':'GLP','electric':'Electrico','hybrid':'Hibrido'}
+                resultado = {
+                'Tipo vehiculo':'Tipo vehiculo : {}'.format(vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''),
+                'Transmision':'Transmision : {}'.format('Automatica' if vehiculo.transmission == 'automatic' else 'Manual'),
+                'Marca':'Marca : {}'.format(vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''),
+                'Modelo':'Modelo : {}'.format(vehiculo.model_year),
+                'CC':'CC : {}'.format(vehiculo.cc),
+                'Asientos':'Asientos : {}'.format(vehiculo.seats),
+                'Linea':'Linea : {}'.format(vehiculo.model_id.name if vehiculo.model_id else ''),
+                'VIN/CHASIS':'VIN/CHASIS : {}'.format(vehiculo.vin_sn),
+                'Motor':'Motor : {}'.format(vehiculo.motor),
+                'Cilindros':'Cilindros : {}'.format(vehiculo.cilindros),
+                'Color':'Color : {}'.format(vehiculo.color),
+                'Combustible':'Combustible : {}'.format(combustible[vehiculo.fuel_type]),
+                'Puertas':'Puertas : {}'.format(vehiculo.doors),
+                'Ejes':'Ejes : {}'.format(str(vehiculo.ejes) if vehiculo.ejes else ''),
+                'Tonelaje':'Tonelaje : {}'.format(str(vehiculo.tonelaje) if vehiculo.tonelaje else 0),
+                }
+                if vehiculo.aduana and vehiculo.aduana != '':
+                    resultado['Aduana'] = 'Aduana: {}'.format(vehiculo.aduana if vehiculo.aduana else False)
+
+                if vehiculo.poliza and vehiculo.poliza != '':
+                    resultado['Poliza'] = 'Poliza: {}'.format(vehiculo.poliza if vehiculo.poliza else False)
+                if tipo==1:
                     return resultado
-                elif vehiculo and tipo != 1:
-                    resultado = """
-TIPO VEHICULO   : %s
-TRANSMISION        : %s
-MARCA     : %s
-MODELO    : %s
-CC    : %s
-ASIENTOS   : %s
-LINEA    : %s
-VIN/CHASIS        : %s
-MOTOR  : %s
-CILINDROS  : %s
-COLOR        : %s
-COMBUSTIBLE       : %s
-PUERTAS    : %s
-EJESasd    : %s
-TONELAJEasd    : %s
-ADUANA : %s
-POLIZA : %s
-"""
-                return (resultado % (
-                    vehiculo.tipo_vehiculo.capitalize() if vehiculo.tipo_vehiculo else ''
-                    ,'Automatica' if vehiculo.transmission == 'automatic' else 'Manual'
-                    ,vehiculo.model_id.brand_id.name if vehiculo.model_id and vehiculo.model_id.brand_id else ''
-                    ,vehiculo.model_year
-                    ,vehiculo.cc
-                    ,vehiculo.seats
-                    ,vehiculo.model_id.name if vehiculo.model_id else ''
-                    ,vehiculo.vin_sn
-                    ,vehiculo.motor
-                    ,vehiculo.cilindros
-                    ,vehiculo.color
-                    ,combustible
-                    ,vehiculo.doors
-                    ,vehiculo.ejes
-                    ,str(vehiculo.tonelaje)
-                    ,vehiculo.aduana if vehiculo.aduana else ''
-                    ,vehiculo.poliza if vehiculo.poliza else ''))
-
-
+                elif tipo!=1:
+                    return '\n'.join(str(x) for x in resultado.values())
 
     #Funcion encargada de devolver un monto dado numericamente a un monto en letras
     def monto_letras(self,importe):
@@ -147,6 +112,35 @@ POLIZA : %s
             resultado['fel_numero'] = factura_referencia.fac_numero
         return resultado
 
+    def generate_qr(self):
+        if qrcode and base64:
+            if self.fel_firma:
+                qr = qrcode.QRCode(
+                    version=1,
+                    error_correction=qrcode.constants.ERROR_CORRECT_L,
+                    box_size=10,
+                    border=4,
+                )
+                if self.partner_id.vat:
+                    nit_emisor = self.partner_id.vat
+                else:
+                    nit_emisor = 'CF'
+                if self.fel_url:
+                    qr.add_data(self.fel_url)
+                else:
+                    qr.add_data('https://felpub.c.sat.gob.gt/verificador-web/publico/vistas/verificacionDte.jsf?tipo=autorizacion&numero={}&emisor={}&receptor={}&monto={}'.format(self.fel_firma,self.company_id.vat.replace('-',''),nit_emisor.replace('-',''),self.amount_total))
+                qr.make(fit=True)
+
+                img = qr.make_image()
+                temp = BytesIO()
+                img.save(temp, format="PNG")
+                qr_image = base64.b64encode(temp.getvalue())
+                return qr_image
+            else:
+                return False
+        else:
+            return False
+
     def linea_blanco(self, contador):
         linea_blanco = {
             'linea': contador,
@@ -179,30 +173,18 @@ POLIZA : %s
         o = self
 
         lineas = []
-        pagina = []
+        pagina = {}
+        detalle = []
+        total = {}
         i=0
         nlinea = 0
         linea={}
-        gran_total = gran_subtotal = gran_total_impuestos = 0
-        for l in o.invoice_line_ids.filtered(lambda l: l.price_total > 0):
+        gran_total = gran_subtotal = gran_total_impuestos = total_descuento = total_sin_descuento = 0
+        get_fac_doc = self.get_detalle_factura()
+
+        for linea_factura in get_fac_doc['detalle']:
+            l = linea_factura['dato_linea']
             if l.quantity > 0:
-                tasa = l.sat_tasa_cambio
-                precio_sin_descuento = l.price_unit * tasa
-                linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
-                linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * l.quantity)
-                precio_unitario = l.price_unit * (100-l.discount) / 100
-                precio_unitario = precio_unitario * tasa
-                descuento = round(precio_sin_descuento * l.quantity - precio_unitario * l.quantity,4)
-                linea["Descuento"] = '{:.6f}'.format(descuento)
-                precio_unitario_base = l.price_subtotal / l.quantity
-                total_linea = round(precio_unitario * l.quantity,6)
-                #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
-                total_linea_base = round(total_linea / (self.sat_iva_porcentaje/100+1),6)
-                #total_impuestos = total_linea - total_linea_base
-                total_impuestos = round(total_linea_base * (self.sat_iva_porcentaje/100),6)
-                gran_total += total_linea
-                gran_subtotal += total_linea_base
-                gran_total_impuestos += total_impuestos
                 #El siguiente ciclo es para cepara la descripcion en varias lineas si supera la logintud de 30 caracteres
                 mostrar_contenido = True #Variable que me sirve solo para mostrar contenido en la primera linea, cuando la descripcion supera la linea
                 if l.product_id.is_vehicle:
@@ -213,15 +195,16 @@ POLIZA : %s
                         linea['linea'] = i
                         linea['blanco'] = False
                         linea['default_code'] = l.product_id.default_code  if mostrar_contenido else ''
-                        linea['quantity'] = '{0:,.0f}'.format(l.quantity) if mostrar_contenido else ''
+                        linea['quantity'] = '{0:,.2f}'.format(l.quantity) if mostrar_contenido else ''
                         linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
                         linea['name'] = descripcion[d]
-                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_unitario) if mostrar_contenido else ''
-                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(total_linea) if mostrar_contenido else ''
+                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(linea_factura['precio_sin_descuento']) if mostrar_contenido else ''
+                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(linea_factura['total_linea_sin_descuento']) if mostrar_contenido else ''
+                        linea['discount'] = str('{0:,.2f}'.format(l.discount))+"%" if mostrar_contenido else ''
                         lineas.append(linea)
                         nlinea = i % num_linea_x_pagina
                         if nlinea == 0:
-                            pagina.append(lineas)
+                            detalle.append(lineas)
                             lineas = []
                         mostrar_contenido = False
 
@@ -232,21 +215,26 @@ POLIZA : %s
                         linea['linea'] = i
                         linea['blanco'] = False
                         linea['default_code'] = l.product_id.default_code  if mostrar_contenido else ''
-                        linea['quantity'] = '{0:,.0f}'.format(l.quantity) if mostrar_contenido else ''
+                        linea['quantity'] = '{0:,.2f}'.format(l.quantity) if mostrar_contenido else ''
                         linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
                         linea['name'] = nueva_linea_desc
-                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(precio_unitario) if mostrar_contenido else ''
-                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(total_linea) if mostrar_contenido else ''
+                        linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(linea_factura['precio_sin_descuento']) if mostrar_contenido else ''
+                        linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(linea_factura['total_linea_sin_descuento']) if mostrar_contenido else ''
+                        linea['discount'] = str('{0:,.2f}'.format(l.discount))+"%" if mostrar_contenido else ''
                         lineas.append(linea)
                         nlinea = i % num_linea_x_pagina
                         #self.nueva_linea(linea['name'])
                         #print("Numero de linea (%s)  ---   (%s)   texto-largo(%s)(%s)" % (str(i), str(nlinea), len(linea['name']), linea['name']))
                         if nlinea == 0:
-                            pagina.append(lineas)
+                            detalle.append(lineas)
                             lineas = []
                         mostrar_contenido = False
+        tot = get_fac_doc['totales']
+        total['gran_total'] = tot['total_sin_descuento']
+        total['gran_subtotal'] = tot['total_descuento']
+        total['gran_total_impuestos'] = tot['total_total']
         if len(lineas) >= 0:
-            pagina.append(lineas)
+            detalle.append(lineas)
 
 
         for x in range(nlinea, num_linea_x_pagina):
@@ -259,34 +247,10 @@ POLIZA : %s
         #
         #     for a in p:
         #         print(a)
+        pagina['detalle'] = detalle
+        pagina['total'] = total
+
         return pagina
-
-
-    def get_total_invoice(self):
-        gran_total = gran_subtotal = gran_total_impuestos = 0
-        linea={}
-        for l in self.invoice_line_ids.filtered(lambda l: l.price_total > 0):
-            if l.quantity > 0:
-                tasa = l.sat_tasa_cambio
-                precio_sin_descuento = l.price_unit * tasa
-                linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
-                linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * l.quantity)
-                precio_unitario = l.price_unit * (100-l.discount) / 100
-                precio_unitario = precio_unitario * tasa
-                descuento = round(precio_sin_descuento * l.quantity - precio_unitario * l.quantity,4)
-                linea["Descuento"] = '{:.6f}'.format(descuento)
-                precio_unitario_base = l.price_subtotal / l.quantity
-                total_linea = round(precio_unitario * l.quantity,6)
-                #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
-                total_linea_base = round(total_linea / (self.sat_iva_porcentaje/100+1),6)
-                #total_impuestos = total_linea - total_linea_base
-                total_impuestos = round(total_linea_base * (self.sat_iva_porcentaje/100),6)
-                gran_total += total_linea
-                gran_subtotal += total_linea_base
-                gran_total_impuestos += total_impuestos
-
-        return float('{:.2f}'.format(gran_total))
-
 
 
 

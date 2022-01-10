@@ -150,6 +150,21 @@
             file="Libro_Fiscal"
             attachment_use="False"
         />
+
+        <!-- REPORTE DE IMPORTACIONES -->
+          <report
+            id="account_inventario_report_xls"
+            model="report.l10n_gt_sat.account_inventario_report_xls"
+            string="Libro Inventario XLS"
+            report_type="xlsx"
+            name="l10n_gt_sat.account_inventario_report_xls"
+            file="Libro_Inventario"
+            attachment_use="False"
+        />
+
+
+
+
         <report
           id="libro_contable_diario_xlsx"
           model="report.l10n_gt_sat.libro_contable_diario_xlsx"

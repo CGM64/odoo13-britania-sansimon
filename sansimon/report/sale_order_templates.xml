@@ -11,7 +11,7 @@
                   <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
               </div>
               <div class="col-8  text-center">
-                <h4 class="mt0" t-field="company.name"/>
+                <h4 class="mt0" t-field="company.company_registry"/>
                 <h6 class="mt0" t-field="company.display_street"/>
                 <h6 class="mt0">
                   <span>Teléfono: </span><span t-field="company.phone"/><span>, Nit: </span><span t-field="company.vat"/>
@@ -179,23 +179,44 @@
               </div>
 
               <div class="oe_structure"/>
-
+              
+            <link rel="stylesheet" href="/sansimon/static/src/css/sale_order.css"/>
               <p t-field="doc.note" />
               <p t-if="doc.payment_term_id.note">
                   <span t-field="doc.payment_term_id.note"/>
               </p>
-              <p id="fiscal_position_remark" t-if="doc.fiscal_position_id and doc.fiscal_position_id.sudo().note">
+              <p id="fiscal_position_remark" class="letra_peq" t-if="doc.fiscal_position_id and doc.fiscal_position_id.sudo().note">
                   <strong>Fiscal Position Remark:</strong>
                   <span t-field="doc.fiscal_position_id.sudo().note"/>
               </p>
-              <div class="row">
-                <div class="col-12">Cuentas Bancarias:</div>
+              <div class="row letra_peq">
+                <div class="col-6">
+                <span>Validez de la oferta 48 horas</span>
+                <br/>
+                <span>Precios sujetos a cambio sin previo aviso</span>
+                <br/>
+                <span>Mientras duren existencias</span>
+                <br/>
+                <span>Si su pago es en dolares se aplicara el tipo de cambio a Q. </span><span t-esc="doc.get_currencyUSD()"/>
+                <br/>
+                </div>
+                <div class="col-6">
+                <span>Cuentas Bancarias:</span>
+                <br/>
+                <span>Banco Industrial:     </span><span>No. 000490041-1</span>
+                <br/>
+                <span>BAM:                  </span><span>No. 001000012-2</span>
+                <br/>
+                <span>Banrural:             </span><span>No. 3-445-60827-5</span>
+                </div>
               </div>
-              <div class="row">
-                <div class="col-2"><span>Banco Industrial: </span></div>
-                <div class="col-2"><span>No. 000490041-1</span></div>
-                <div class="col-2"><span>BAM: </span></div>
-                <div class="col-2"><span>No. 001000012-2</span></div>
+              <div class="row letra_peq">
+                <div class="col-12">
+                <br/>
+                <span>Si su pago lo realiza con cheque tiene un recargo del 5%</span>
+                <br/>
+                <span> Cheque emitirlo a nombre de: Industrial Mercantil San Simon, S.A.</span>
+                </div>
               </div>
           </div>
       </t>

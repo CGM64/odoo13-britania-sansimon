@@ -1,2 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_codigo_marca,access_codigo_marca,model_codigo_marca,base.group_user,1,1,1,1
+access_fleet_vehicle_model_color,access_fleet_vehicle_model_color,model_fleet_vehicle_model_color,base.group_user,1,1,1,1
+access_fleet_vehicle_model_color_public,access_fleet_vehicle_model_color_public,model_fleet_vehicle_model_color,,1,0,0,0
+access_fleet_vehicle_model_public,access_fleet_vehicle_model_public,model_fleet_vehicle_model,,1,0,0,0

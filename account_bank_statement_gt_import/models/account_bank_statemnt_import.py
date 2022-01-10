@@ -33,6 +33,7 @@ class ResBank(models.Model):
         ('BAM','Banco Agromercantil'),
         ('BI','Banco Industrial'),
         ('G&T','Banco G&T Continental'),
+        ('BANRURAL','BANRURAL'),
         ], string='Plantilla extracto bancario')
 
 class AccountJournal(models.Model):
@@ -69,6 +70,8 @@ class AccountBankStatementImport(models.TransientModel):
             transactions, anio, mes, saldo_inicial, saldo_final = self._getTransaccionBIM(data_file)
         elif cuenta_bancaria.bank_id.template_extractos == 'G&T':
             transactions, anio, mes, saldo_inicial, saldo_final = self._getTransaccionGYT(data_file)
+        elif cuenta_bancaria.bank_id.template_extractos == 'BANRURAL':
+            transactions, anio, mes, saldo_inicial, saldo_final = self._getTransaccionBANRURAL(data_file)
         else:
             raise UserError(_("No existe formato configurado para este banco."))
 
@@ -141,7 +144,7 @@ class AccountBankStatementImport(models.TransientModel):
                 info['columna_credito'] = encabezado.find('Credito')
                 info['columna_saldo'] = encabezado.find('Saldo')
                 info['columna_agencia'] = encabezado.find('Agencia') + 1
-                
+
         return transactions, anio, mes, saldo_inicial, saldo_final
 
 
@@ -162,7 +165,7 @@ class AccountBankStatementImport(models.TransientModel):
         numero_linea = 0
         for line in recordlist:
             numero_linea += 1
-            if not line:
+            if not line.strip():
                 continue
             if numero_linea > 9:
                 vals_line = {}
@@ -171,8 +174,8 @@ class AccountBankStatementImport(models.TransientModel):
                 vals_line['date'] = datetime.strptime(nueva_linea[0], '%d-%m-%Y').strftime(DEFAULT_SERVER_DATE_FORMAT)
                 vals_line['name'] = nueva_linea[1] + ": " + nueva_linea[2]+ ' ' + nueva_linea[3]
                 vals_line['ref'] = nueva_linea[2]
-                debe = nueva_linea[4] if nueva_linea[4] else "0.0"
-                haber = nueva_linea[5] if nueva_linea[5] else "0.0"
+                debe = nueva_linea[5] if nueva_linea[5] else "0.0"
+                haber = nueva_linea[4] if nueva_linea[4] else "0.0"
                 vals_line['amount'] = float(debe) - float(haber)
                 fecha_primera_linea = vals_line['date']
 
@@ -228,6 +231,52 @@ class AccountBankStatementImport(models.TransientModel):
                             anio = fecha_primera_linea.year
 
                 saldo_final = nueva_linea[8]
+
+                transactions.append(vals_line)
+        return transactions, anio, mes, saldo_inicial, saldo_final
+
+
+    def _getTransaccionBANRURAL(self, data_file):
+
+        recordlist = data_file.decode('windows-1252').split(u'\n')
+        transactions = []
+        vals_line = {'name': []}
+        total = 0.0
+
+        encabezado = False
+        saldo_inicial = 0.0
+        saldo_final = 0.0
+        segunda_linea = True
+        fecha_primera_linea = None
+        mes = None
+        anio = None
+        sign = 1
+
+        for line in recordlist:
+            if encabezado:
+                encabezado = False
+            else:
+                vals_line = {}
+                nueva_linea = line.split(';')
+
+                if not line:
+                    continue
+                sign = 1 if nueva_linea[4] == 'C' else -1
+                vals_line['sequence'] = len(transactions) + 1
+                vals_line['date'] = datetime.strptime(nueva_linea[0], '%d/%m/%Y').strftime(DEFAULT_SERVER_DATE_FORMAT)
+                vals_line['name'] = nueva_linea[2] + ": " + str(nueva_linea[3])
+                vals_line['ref'] = nueva_linea[10]
+                vals_line['amount'] = float(nueva_linea[5].replace(",","")) * sign
+                if segunda_linea:
+                    segunda_linea = False
+                    saldo_inicial = float(nueva_linea[6].replace(",","")) - (vals_line['amount'])
+                    fecha_primera_linea = vals_line['date']
+                    if fecha_primera_linea:
+                            fecha_primera_linea = datetime.strptime(fecha_primera_linea, DEFAULT_SERVER_DATE_FORMAT)
+                            mes = fecha_primera_linea.month
+                            anio = fecha_primera_linea.year
+
+                saldo_final = nueva_linea[6].replace(",","")
 
                 transactions.append(vals_line)
         return transactions, anio, mes, saldo_inicial, saldo_final

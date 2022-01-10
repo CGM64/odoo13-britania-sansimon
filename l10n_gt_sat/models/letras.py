@@ -27,7 +27,7 @@ UNIDADES = (
 )
 
 DECENAS = (
-    'VENTI',
+    'VEINTI',
     'TREINTA ',
     'CUARENTA ',
     'CINCUENTA ',

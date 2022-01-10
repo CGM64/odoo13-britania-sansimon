@@ -4,85 +4,148 @@
     <record id="vehicle_inherit_fleet_vehicle_view_form" model="ir.ui.view">
       <field name="name">vehicle.inherit.fleet.vehicle.form</field>
       <field name="model">fleet.vehicle</field>
-      <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+      <field name="inherit_id" ref="fleet.fleet_vehicle_view_form" />
       <field name="arch" type="xml">
         <xpath expr="//field[@name='residual_value']" position="after">
-          <field name="tonelaje"/>
-          <field name="tipo_vehiculo"/>
-          <field name="codigo_marca"/>
+          <field name="tonelaje" />
+          <field name="tipo_vehiculo" />
+          <field name="codigo_marca" />
         </xpath>
         <!--<xpath expr="//form/sheet/group/group[4]" position="after">
           <group string=
         </xpath>-->
         <xpath expr="//field[@name='transmission']" position="after">
-          <field name="motor"/>
-          <field name="chasis"/>
-          <field name="cilindros"/>
-          <field name="cc"/>
+          <field name="motor" />
+          <field name="chasis" />
+          <field name="cilindros" />
+          <field name="cc" />
         </xpath>
         <xpath expr="//field[@name='model_year']" position="after">
-          <field name="ejes"/>
+          <field name="ejes" />
         </xpath>
         <xpath expr="//form/sheet/group/group[4]" position="before">
           <group string="Informacion de importacion">
-            <field name="aduana"/>
-            <field name="poliza"/>
-            <field name="currency_id" readonly="0"/>
-            <field name="pedido"/>
-        </group>
+            <field name="aduana" />
+            <field name="poliza" />
+            <field name="currency_id" readonly="0" />
+            <field name="pedido" />
+          </group>
+        </xpath>
+        <xpath expr="//field[@name='model_id']" position="attributes">
+          <attribute name="options">{'no_create_edit': True, 'no_create':True, 'no_open':True}</attribute>
         </xpath>
       </field>
     </record>
 
     <record id="fleet_vehicle_view_tree_inherit" model="ir.ui.view">
-        <field name="name">Flota de vehiculos inherit</field>
-        <field name="model">fleet.vehicle</field>
-        <field name="inherit_id" ref="fleet.fleet_vehicle_view_tree"/>
-        <field name="arch" type="xml">
-            <field name="model_id" position="after">
-                <field name="pedido" />
-            </field>
+      <field name="name">Flota de vehiculos inherit</field>
+      <field name="model">fleet.vehicle</field>
+      <field name="inherit_id" ref="fleet.fleet_vehicle_view_tree" />
+      <field name="arch" type="xml">
+        <field name="model_id" position="after">
+          <field name="pedido" />
         </field>
+      </field>
     </record>
 
 
     <record id="fleet_vehicle_model_view_inherit" model="ir.ui.view">
-        <field name="name">Flota de vehiculos modelo inherit</field>
-        <field name="model">fleet.vehicle.model</field>
-        <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form"/>
-        <field name="arch" type="xml">
-           <xpath expr="//form/sheet/div/h2" position="after">
-              
-                <label for="codigo" class="oe_edit_only"/>
-                <h2>
-                    <field name="codigo" placeholder="Codigo"/>
-                </h2>
-              
-           </xpath>
-        </field>
+      <field name="name">Flota de vehiculos modelo inherit</field>
+      <field name="model">fleet.vehicle.model</field>
+      <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//form/sheet/div/h2" position="after">
+
+          <label for="codigo" class="oe_edit_only" />
+          <h2>
+            <field name="codigo" placeholder="Codigo" />
+          </h2>
+
+        </xpath>
+        <xpath expr="//form/sheet/notebook/page" position="after">
+
+          <page string="Datos técnicos" name="datos_tecnicos">
+            <group string="Datos">
+              <!-- CAMPOS DE LA VISTA PARA EL COTIZADOR -->
+              <field name="imagen_portada" />
+              <field name="cuota_desde" />
+              <field name="ficha_tecnica" filename="nombre_ficha_tecnica" />
+              <field name="nombre_ficha_tecnica" invisible="1" />
+              <field name="descripcion_motor" />
+              <field name="potencia_par_maximo" />
+              <field name="caja_y_transmicion" />
+              <field name="peso_motocicleta" />
+              <field name="altura_sin_espejos" />
+              <field name="altura_del_asiento" />
+              <!-- ======================================= -->
+            </group>
+          </page>
+
+          <page string="Información general" name="informacion_general">
+            <group string="Descripciones" col="2">
+              <field name="descripcion_vehiculo" />
+              <field name="informacion" placeholder="Título &lt;separador&gt; Descripcion &lt;nuevo&gt;Título &lt;separador&gt; Descripcion &lt;nuevo&gt;..." />
+            </group>
+          </page>
+
+          <page string="Desglose de pago" name="formas_de_pago">
+            <group string="Desglose de pago" col="2">
+              <field name="cotizacion_dolar" widget="html" />
+              <field name="cotizacion_quetzal" widget="html" />
+            </group>
+          </page>
+
+          <page string="Variantes de color" name="color_vehicle">
+            <group string="Colores">
+              <!-- CAMPOS DE LA VISTA PARA EL COTIZADOR -->
+              <field name="fleet_model_ids" />
+            </group>
+          </page>
+
+        </xpath>
+      </field>
     </record>
 
     <record id="fleet_vehicle_view_Kanban_inherit" model="ir.ui.view">
-        <field name="name">Flota de vehiculos Kanban inherit</field>
-        <field name="model">fleet.vehicle</field>
-        <field name="inherit_id" ref="fleet.fleet_vehicle_view_kanban"/>
-        <field name="arch" type="xml">
-            <xpath expr='//kanban/templates/t/div/div/ul' position="inside">
-                <li>
-                  <t t-if="record.pedido.raw_value"><field name="pedido"/></t>
-                </li>
-            </xpath>
-        </field>
+      <field name="name">Flota de vehiculos Kanban inherit</field>
+      <field name="model">fleet.vehicle</field>
+      <field name="inherit_id" ref="fleet.fleet_vehicle_view_kanban" />
+      <field name="arch" type="xml">
+        <xpath expr='//kanban/templates/t/div/div/ul' position="inside">
+          <li>
+            <t t-if="record.pedido.raw_value">
+              <field name="pedido" />
+            </t>
+          </li>
+        </xpath>
+      </field>
     </record>
 
     <record id="view_fleet_vehicle_model_btn" model="ir.ui.view">
       <field name="name">fleet.vehicle.model.buttom</field>
       <field name="model">fleet.vehicle.model</field>
-      <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form"/>
+      <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form" />
       <field name="arch" type="xml">
         <field name="manager_id" position="after">
-          <field name="is_publish"/>
+          <field name="is_publish" />
         </field>
+      </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="view_fleet_vehicle_model_color">
+      <field name="name">view.fleet.vehicle.model.color</field>
+      <field name="model">fleet.vehicle.model.color</field>
+      <field name="priority" eval="16" />
+      <field name="arch" type="xml">
+        <form string="Color modelo form">
+          <group>
+            <separator string="Recolor de vehículo" />
+            <field name="name" />
+            <field name="color_name" />
+            <field name="image_vehicle_color" />
+          </group>
+        </form>
       </field>
     </record>
 

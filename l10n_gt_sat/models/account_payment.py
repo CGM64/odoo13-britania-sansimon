@@ -15,11 +15,7 @@ class AccountPayment(models.Model):
 
     partner_ref = fields.Char(string='Cod. Cliente', related='partner_id.default_code')
 
-    @api.onchange('amount', 'currency_id')
-    def _onchange_amount(self):
-
-        res = super(AccountPayment, self)._onchange_amount()
-
+    def monto_letras(self):
         enletras = letras
         cantidadenletras = enletras.to_word(self.amount)
         if self.currency_id.name == 'USD':
@@ -27,10 +23,11 @@ class AccountPayment(models.Model):
         elif self.currency_id.name == 'EUR':
             cantidadenletras = cantidadenletras.resultado('QUETZALES','EUROS')
         self.check_amount_in_words = cantidadenletras
-        return res
+        return cantidadenletras
 
-    def _check_fill_line(self, amount_str):
-            return amount_str and (amount_str + ' ').ljust(65, '*') or ''
+    def check_fill_line(self):
+        amount_str = self.monto_letras()
+        return amount_str and (amount_str + ' ').ljust(65, '*') or ''
 
     def do_print_checks(self):
         for payment in self:

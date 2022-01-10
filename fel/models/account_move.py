@@ -11,6 +11,7 @@ from . import fel
 import logging
 import pytz
 
+
 _logger = logging.getLogger(__name__)
 
 class AccountMove(models.Model):
@@ -24,6 +25,8 @@ class AccountMove(models.Model):
                                     domain="[('company_id', '=', company_id),('state', '=', 'posted'),('type', '=', 'out_invoice'),('partner_id', '=', partner_id)]",)
 
     fecha_certificacion = fields.Datetime(string='Fecha certificacion',copy=False,readonly=True)
+
+    fel_url = fields.Char('URL Firma', copy=False, readonly=True, track_visibility='onchange')
 
     def getNitFelFormat(self, nit):
         if nit:
@@ -92,7 +95,11 @@ class AccountMove(models.Model):
         #Items
         items = []
         gran_total = gran_subtotal = gran_total_impuestos = 0
-        for detalle in factura.invoice_line_ids.filtered(lambda l: l.price_total > 0):
+
+        get_fac_doc = self.get_detalle_factura()
+
+        for linea_factura in get_fac_doc['detalle']:
+            detalle = linea_factura['dato_linea']
             descripcion = detalle.name
             if 'is_vehicle' in self.env['product.product']._fields:
                 if detalle.product_id.is_vehicle:
@@ -102,41 +109,24 @@ class AccountMove(models.Model):
             linea["Cantidad"] = detalle.quantity
             linea["UnidadMedida"] = detalle.product_uom_id.name
             linea["Descripcion"] = descripcion
-            tasa = detalle.sat_tasa_cambio
-            precio_sin_descuento = detalle.price_unit * tasa
-            linea["PrecioUnitario"] = '{:.6f}'.format(precio_sin_descuento)
-            linea["Precio"] = '{:.6f}'.format(precio_sin_descuento * detalle.quantity)
-            precio_unitario = detalle.price_unit * (100-detalle.discount) / 100
-            precio_unitario = precio_unitario * tasa
-            descuento = round(precio_sin_descuento * detalle.quantity - precio_unitario * detalle.quantity,4)
-            linea["Descuento"] = '{:.6f}'.format(descuento)
 
-            #Impuestos
-            precio_unitario_base = detalle.price_subtotal / detalle.quantity
-            total_linea = round(precio_unitario * detalle.quantity,6)
-            #total_linea_base = round(precio_unitario_base * detalle.quantity,6)
-            total_linea_base = round(total_linea / (factura.sat_iva_porcentaje/100+1),6)
-            #total_impuestos = total_linea - total_linea_base
-            total_impuestos = round(total_linea_base * (factura.sat_iva_porcentaje/100),6)
+
+            linea["PrecioUnitario"] = '{:.6f}'.format(linea_factura['precio_sin_descuento'])
+            linea["Precio"] = '{:.6f}'.format(linea_factura['total_linea_sin_descuento'])
+            linea["Descuento"] = '{:.6f}'.format(linea_factura['descuento'])
 
             if tipo_documento not in ("NABN"):
                 linea["NombreCorto"] = "IVA"
                 linea["CodigoUnidadGravable"] = "2" if factura.journal_id.tipo_operacion == 'EXPO' else "1"
-                linea["MontoGravable"] = '{:.6f}'.format(total_linea_base)
-                linea["MontoImpuesto"] = '{:.6f}'.format(total_impuestos)
-            linea["Total"] = '{:.6f}'.format(total_linea)
-
-            gran_total += total_linea
-            gran_subtotal += total_linea_base
-            gran_total_impuestos += total_impuestos
-
-
+                linea["MontoGravable"] = '{:.6f}'.format(linea_factura['total_linea_base'])
+                linea["MontoImpuesto"] = '{:.6f}'.format(linea_factura['total_linea_impuestos'])
+            linea["Total"] = '{:.6f}'.format(linea_factura['total_con_descuento'])
 
             items.append(linea)
         documento["Items"] = items
-        documento["gran_total_impuestos"] = '{:.6f}'.format(gran_total_impuestos)
-        documento["TotalMontoImpuesto"] = '{:.6f}'.format(gran_total_impuestos)
-        documento["GranTotal"] = '{:.6f}'.format(gran_total)
+        tot = get_fac_doc['totales']
+        documento["TotalMontoImpuesto"] = '{:.6f}'.format(tot['total_impuestos'])
+        documento["GranTotal"] = '{:.6f}'.format(tot['total_total'])
 
         documento["Adenda"] = factura.name
 
@@ -261,6 +251,12 @@ class AccountMove(models.Model):
             factura.fac_numero = fel_certificacion_response["numero"]
             factura.fecha_certificacion = fel_certificacion_response["fecha"]
             msg = "https://report.feel.com.gt/ingfacereport/ingfacereport_documento?uuid="+fel_certificacion_response["uuid"]
+            print("DOCUMENTO: ",documento)
+            if self.partner_id.vat:
+                nit_emisor = self.partner_id.vat
+            else:
+                nit_emisor = 'CF'
+            factura.fel_url = 'https://felpub.c.sat.gob.gt/verificador-web/publico/vistas/verificacionDte.jsf?tipo=autorizacion&numero={}&emisor={}&receptor={}&monto={}'.format(self.fel_firma,self.company_id.vat.replace('-',''),nit_emisor.replace('-',''),self.amount_total)
             factura.message_post(subject='FEL', body=msg)
 
     def firmar_factura(self, documento, batch, anulacion):

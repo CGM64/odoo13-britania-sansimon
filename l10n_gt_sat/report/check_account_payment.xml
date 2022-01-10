@@ -81,7 +81,7 @@
             </tr>
             <tr style="height:30px;">
               <td></td>
-	      <td colspan="2"><small><span t-esc="page['amount_in_word']"/></small></td>
+	      <td colspan="2"><small><span t-esc="o.check_fill_line()"/></small></td>
             </tr>
             <tr style="height:35px;">
               <td></td>
@@ -129,7 +129,7 @@
             </tr>
             <tr style="height:25px;">
               <td></td>
-              <td colspan="2"><span t-esc="page['amount_in_word']"/></td>
+              <td colspan="2"><span t-esc="o.check_fill_line()"/></td>
             </tr>
             <tr style="height:35px;">
               <td></td>
@@ -177,7 +177,7 @@
           </tr>
           <tr style="height:25px;">
             <td></td>
-            <td colspan="2"><span t-esc="page['amount_in_word']"/></td>
+            <td colspan="2"><span t-esc="o.check_fill_line()"/></td>
           </tr>
           <tr style="height:35px;">
             <td></td>
@@ -228,7 +228,7 @@
           </tr>
           <tr style="height:25px;">
             <td></td>
-            <td colspan="2"><span t-esc="page['amount_in_word']"/></td>
+            <td colspan="2"><span t-esc="o.check_fill_line()"/></td>
           </tr>
           <tr style="height:20px;">
             <td><![CDATA[&nbsp;]]></td>
@@ -439,7 +439,7 @@
         <tr>
           <td class="td_brit">&#160;</td>
           <td class="td_brit">Empresa:</td>
-          <td class="td_brit" colspan="5"><span t-field="o.company_id.name"/></td>
+          <td class="td_brit" colspan="5"><span t-field="o.company_id.company_registry"/></td>
         </tr>
         <tr>
           <td class="td_brit">&#160;</td>
