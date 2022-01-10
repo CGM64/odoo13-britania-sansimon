@@ -36,17 +36,18 @@ class WebsiteCotizador(CustomerPortal):
                     partner_ids=order_sudo.user_id.sudo().partner_id.ids,
                 )
         company = request.env.company
-        print("----------------------------- ")
-        print(company)
+
         base_url = request.env ['ir.config_parameter'].sudo().get_param('web.base.url')
 
         producto = request.env["product.product"].sudo().search([
-            ("product_tmpl_id", "=", order_sudo.order_line.product_id.product_tmpl_id.id)
+            ("product_tmpl_id", "=", order_sudo.order_line[0].product_id.product_tmpl_id.id)
         ])
 
         tarifa_dolar = ''
         tarifa_publica = ''
-        nombre_producto = order_sudo.order_line.product_id.name
+        signo_t_dolar = ''
+        signo_t_publica = ''
+        nombre_producto = order_sudo.order_line[0].product_id.name
 
         for price in producto[0].sale_pricelists:
             context = price._context.copy()
@@ -54,17 +55,33 @@ class WebsiteCotizador(CustomerPortal):
             price.with_context(context)._get_product_price()
             if price.name == 'Tarifa en Dolares':
                 tarifa_dolar = price.product_price.replace(' ', '')
+                signo_t_dolar = price.product_price[0]
+                tarifa_dolar = price.product_price.replace(signo_t_dolar, '')
             elif price.name == 'Tarifa pública':
                 tarifa_publica = price.product_price.replace(' ', '')
+                signo_t_publica = price.product_price[0]
+                tarifa_publica = price.product_price.replace(signo_t_publica, '')
             #print(price.name, price.product_price)
 
         fleet_vehicle = request.env["fleet.vehicle"].sudo().search([
             ("product_id","=",producto[0].id)
         ])
-        fleet_vehicle_model = request.env["fleet.vehicle.model"].sudo().search([
-            ("id","=",fleet_vehicle[0].model_id.id)
-        ])
 
+        for fleet in fleet_vehicle:
+            if fleet.model_id.id:
+                fleet_vehicle = fleet
+                break
+
+        fleet_vehicle_model = False
+        ficha_tecnica_url = '#'
+
+        if fleet_vehicle.model_id.id:
+            fleet_vehicle_model = request.env["fleet.vehicle.model"].sudo().search([
+                ("id","=",fleet_vehicle[0].model_id.id)
+            ])
+            fleet_vehicle_model = fleet_vehicle_model[0]
+            ficha_tecnica_url = '/web/binary/ficha_tecnica?model=fleet.vehicle.model&field=ficha_tecnica&id='+ str(fleet_vehicle_model[0].id)
+        
         caracteristicas = []
         if fleet_vehicle_model and fleet_vehicle_model[0].informacion:
             string_raw = fleet_vehicle_model[0].informacion
@@ -88,17 +105,17 @@ class WebsiteCotizador(CustomerPortal):
             'focus': order_sudo.order_line[0],
             'fleet_vehicle': fleet_vehicle_model,
             'caracteristicas': caracteristicas,
-            'ficha_tecnica_url': '/web/binary/ficha_tecnica?model=fleet.vehicle.model&field=ficha_tecnica&id='+ str(fleet_vehicle_model.id),
+            'ficha_tecnica_url': ficha_tecnica_url,
             'company_id': company,
             'base_url': base_url,
             'tarifa_dolar': tarifa_dolar,
+            'signo_t_dolar': signo_t_dolar,
             'tarifa_publica': tarifa_publica,
+            'signo_t_publica': signo_t_publica,
             'nombre_producto': nombre_producto
         }
 
         if order_sudo.company_id:
-            print("###################################")
-            print(order_sudo.company_id)
             values['res_company'] = order_sudo.company_id
 
         

@@ -5,14 +5,14 @@
             <t t-call="website.layout">
                 <t t-set="additional_title">
                     Cotización |
-                    <t t-esc="fleet_vehicle.name" />
+                    <t t-if="fleet_vehicle" t-esc="fleet_vehicle.name" />
                 </t>
                 <div class="oe_structure">
 
                     <!-- ENCABEZADO -->
-                    <div t-if="fleet_vehicle.imagen_portada" class="container">
+                    <div t-if="fleet_vehicle and fleet_vehicle.imagen_portada" class="container">
                         <div class="jumbotron jumbotron-fluid p-0 m-0">
-                            <div class="panel-image text-center" t-field="fleet_vehicle.imagen_portada" t-options="{'widget': 'image'}" />
+                            <div class="panel-image text-center" t-if="fleet_vehicle" t-field="fleet_vehicle.imagen_portada" t-options="{'widget': 'image'}" />
                         </div>
                     </div>
 
@@ -78,7 +78,7 @@
                                         <div class="col-12 col-md-7 contenedor-relativo">
                                             <h1 class="display-3 font-weight-bold text-uppercase wow animate__animated animate__fadeInLeft" data-wow-delay="0.2s" style="text-shadow: 4px 3px 4px rgba(0, 0, 0, 0.5);">for the ride</h1>
 
-                                            <div class="swiper">
+                                            <div t-if="fleet_vehicle" class="swiper">
                                                 <div class="swiper-wrapper">
                                                     <t t-foreach="fleet_vehicle.fleet_model_ids" t-as="img">
                                                         <div class="swiper-slide text-center" t-attf-data-color="{{img.color_name}}" t-field="img.image_vehicle_color" t-options="{'widget': 'image'}" />
@@ -92,18 +92,18 @@
                                         </div>
                                         <div class="col-12 col-md-5 mt-2">
                                             <p class="text-justify">
-                                                <t t-if="fleet_vehicle.descripcion_vehiculo" t-esc="fleet_vehicle.descripcion_vehiculo"></t>
+                                                <t t-if="fleet_vehicle and fleet_vehicle.descripcion_vehiculo" t-esc="fleet_vehicle.descripcion_vehiculo"></t>
                                             </p>
                                             <div class="row mt-5">
                                                 <div class="col-6">
-                                                    <h1 t-if="fleet_vehicle.cuota_desde" class="text-uppercase bri-b">Cuota</h1>
-                                                    <p t-if="fleet_vehicle.cuota_desde" class="text-uppercase bri-b p-0 m-0">desde</p>
-                                                    <h1 t-if="fleet_vehicle.cuota_desde" class="text-uppercase bri-b">
-                                                        <t t-esc="fleet_vehicle.cuota_desde"></t>
+                                                    <h1 t-if="fleet_vehicle and fleet_vehicle.cuota_desde" class="text-uppercase bri-b">Cuota</h1>
+                                                    <p t-if="fleet_vehicle and fleet_vehicle.cuota_desde" class="text-uppercase bri-b p-0 m-0">desde</p>
+                                                    <h1 t-if="fleet_vehicle and fleet_vehicle.cuota_desde" class="text-uppercase bri-b">
+                                                        <t t-esc="fleet_vehicle and fleet_vehicle.cuota_desde"></t>
                                                     </h1>
                                                 </div>
                                                 <div class="col-6">
-                                                    <a t-if="fleet_vehicle.ficha_tecnica" t-attf-href="{{ficha_tecnica_url}}" target="_blank" class="text-uppercase text-center" aria-label="Download" title="Download">
+                                                    <a t-if="fleet_vehicle and fleet_vehicle.ficha_tecnica" t-attf-href="{{ficha_tecnica_url}}" target="_blank" class="text-uppercase text-center" aria-label="Download" title="Download">
                                                         <div class="text-primary">
                                                             <!-- <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-newspaper" viewBox="0 0 16 16">
                                                                 <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5v-11zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5H12z" />
@@ -152,7 +152,7 @@
                                             </div>
                                             <h4 class="bri-b text-center">Motor:</h4>
                                             <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                <t t-if="fleet_vehicle.descripcion_motor" t-raw="fleet_vehicle.descripcion_motor"></t>
+                                                <t t-if="fleet_vehicle and fleet_vehicle.descripcion_motor" t-raw="fleet_vehicle.descripcion_motor"></t>
                                             </p>
                                         </div>
                                         <div class="col-6 col-md-4 py-5 border border-primary">
@@ -164,7 +164,7 @@
                                             </div>
                                             <h4 class="bri-b text-center">Potencia Par máximo:</h4>
                                             <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                <t t-if="fleet_vehicle.potencia_par_maximo" t-raw="fleet_vehicle.potencia_par_maximo"></t>
+                                                <t t-if="fleet_vehicle and fleet_vehicle.potencia_par_maximo" t-raw="fleet_vehicle.potencia_par_maximo"></t>
                                             </p>
                                         </div>
                                         <div class="col-6 col-md-4 py-5 border border-primary">
@@ -176,7 +176,7 @@
                                             </div>
                                             <h4 class="bri-b text-center">Caja y transmisón</h4>
                                             <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                <t t-if="fleet_vehicle.caja_y_transmicion" t-raw="fleet_vehicle.caja_y_transmicion"></t>
+                                                <t t-if="fleet_vehicle and fleet_vehicle.caja_y_transmicion" t-raw="fleet_vehicle.caja_y_transmicion"></t>
                                             </p>
                                         </div>
                                         <div class="col-6 col-md-4 py-5 border border-primary">
@@ -188,7 +188,7 @@
                                             </div>
                                             <h4 class="bri-b text-center">Peso motocicleta</h4>
                                             <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                <t t-if="fleet_vehicle.peso_motocicleta" t-raw="fleet_vehicle.peso_motocicleta"></t>
+                                                <t t-if="fleet_vehicle and fleet_vehicle.peso_motocicleta" t-raw="fleet_vehicle.peso_motocicleta"></t>
                                             </p>
                                         </div>
                                         <div class="col-6 col-md-4 py-5 border border-primary">
@@ -200,7 +200,7 @@
                                             </div>
                                             <h4 class="bri-b text-center">Altura sin espejos:</h4>
                                             <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                <t t-if="fleet_vehicle.altura_sin_espejos" t-raw="fleet_vehicle.altura_sin_espejos"></t>
+                                                <t t-if="fleet_vehicle and fleet_vehicle.altura_sin_espejos" t-raw="fleet_vehicle.altura_sin_espejos"></t>
                                             </p>
                                         </div>
                                         <div class="col-6 col-md-4 py-5 border border-primary">
@@ -212,7 +212,7 @@
                                             </div>
                                             <h4 class="bri-b text-center">Altura del asiento:</h4>
                                             <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                <t t-if="fleet_vehicle.altura_del_asiento" t-raw="fleet_vehicle.altura_del_asiento"></t>
+                                                <t t-if="fleet_vehicle and fleet_vehicle.altura_del_asiento" t-raw="fleet_vehicle.altura_del_asiento"></t>
                                             </p>
                                         </div>
                                     </div>
@@ -224,19 +224,22 @@
                                         <div class="col-12 col-md-6 d-none d-md-block">
                                             <h1 class="display-1 text-center bri-b p-0 m-0">
                                                 <!-- Tarifa en dolares en pantallas medianas o mas grandes -->
-                                                <t t-esc="tarifa_dolar" />
+                                                <!-- <t t-esc="tarifa_dolar" /> -->
+                                                <t t-esc="signo_t_dolar" /><t t-esc="'{0:,.2f}'.format(float(tarifa_dolar))" />
                                             </h1>
                                         </div>
                                         <div class="col-12 col-md-6 d-block d-md-none">
                                             <h1 class="display-4 text-center bri-b p-0 m-0" style="font-size: 3.5rem !important;">
                                                 <!-- Tarifa en dolares en pantallas de movil -->
-                                                <t t-esc="tarifa_dolar" />
+                                                <!-- <t t-esc="tarifa_dolar" /> -->
+                                                <t t-esc="signo_t_dolar" /><t t-esc="'{0:,.2f}'.format(float(tarifa_dolar))" />
                                             </h1>
                                         </div>
                                         <div class="col-12 col-md-6">
                                             <h1 class="display-1 text-center bri-b p-0 m-0 d-none d-md-block">
                                                 <!-- Tarifa en quetzales en pantallas medianas o mas grandes -->
-                                                <t t-esc="tarifa_publica" />
+                                                <!-- <t t-esc="tarifa_publica" /> -->
+                                                <t t-esc="signo_t_publica" /><t t-esc="'{0:,.2f}'.format(float(tarifa_publica))" />
                                             </h1>
                                         </div>
                                     </div>
@@ -249,7 +252,7 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6 d-block">
                                             <div class="bg-primary text-white p-2 p-md-5">
-                                                <t t-if="fleet_vehicle.cotizacion_dolar" t-raw="fleet_vehicle.cotizacion_dolar" widget="html"></t>
+                                                <t t-if="fleet_vehicle and fleet_vehicle.cotizacion_dolar" t-raw="fleet_vehicle.cotizacion_dolar" widget="html"></t>
                                             </div>
 
                                             <ul class="list-unstyled text-muted pt-3 text-sm">
@@ -260,10 +263,11 @@
                                         <div class="col-12 col-md-6 d-block">
                                             <h1 class="display-4 text-center bri-b p-0 m-0 d-block d-md-none" style="font-size: 3.5rem !important;">
                                                 <!-- Tarifa en quetzales en pantallas de movil -->
-                                                <t t-esc="tarifa_publica" />
+                                                <!-- <t t-esc="tarifa_publica" /> -->
+                                                <t t-esc="signo_t_publica" /><t t-esc="'{0:,.2f}'.format(float(tarifa_publica))" />
                                             </h1>
                                             <div class="bg-primary text-white p-2 p-md-5">
-                                                <t t-if="fleet_vehicle.cotizacion_quetzal" t-raw="fleet_vehicle.cotizacion_quetzal" widget="html"></t>
+                                                <t t-if="fleet_vehicle and fleet_vehicle.cotizacion_quetzal" t-raw="fleet_vehicle.cotizacion_quetzal" widget="html"></t>
                                             </div>
                                         </div>
                                     </div>
