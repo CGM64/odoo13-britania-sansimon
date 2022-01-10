@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 <data>
+    <menuitem id="menu_rma_reparaciones_operaciones" 
+      name="Operaciones" 
+      parent="repair.menu_repair_order" 
+      sequence="2"/>
 
     <menuitem id="menu_tri_product_menu_list"
             name="Productos Triumph"
             parent="stock.menu_stock_inventory_control"
             groups="base.group_user"/>
+    
+
 
     <!--Menu de Productos Triumph-->
     
@@ -95,6 +101,12 @@
                 name="Productos Triumph"
                 action="product_tri_action"
                 parent="britania.menu_tri_product_menu_list"
+                groups="base.group_user"/>
+
+    <menuitem id="menu_repair_product_tri"
+                name="Productos Triumph"
+                action="product_tri_action"
+                parent="menu_rma_reparaciones_operaciones"
                 groups="base.group_user"/>
 
     <!--Menu de grupo producto-->

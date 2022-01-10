@@ -53,7 +53,8 @@ class ImportarCatalogosExcel(models.TransientModel):
 		('p14', 'Generar xml de actividades economicas'),
 		('p15', 'Generar xml de ocupación'),
 		('p16', 'Asignar codigo nomina a provincia y municipio'),
-	], required=True, default='p13')
+		('p17', 'Actualizar el costo, en los productos servicio'),
+	], required=True, default='p1')
 
 	ubicacion = fields.Many2one('stock.location', string='Ubicacion')
 	inventario = fields.Many2one('stock.inventory', string='Inventario')
@@ -95,6 +96,17 @@ class ImportarCatalogosExcel(models.TransientModel):
 			self._generar_xml_ocupacion()
 		elif self.tipo_plantilla == 'p16':
 			self._asignar_codigo_nomina()
+		elif self.tipo_plantilla == 'p17':
+			self._asignar_costo_producto_servicio()
+
+	#Funcion para actualizar el costo en el caso de los productos tipo servicio.
+	#Esto con el proposito de realizar autoconsumos, todo se factura al costo, pero los codigos servicios no tienen costo.
+	def _asignar_costo_producto_servicio(self):
+		producto_servicio = self.env['product.template'].search([('type','=','service')])
+		for pser in producto_servicio:
+			if pser.default_code:
+				pser.standard_price = pser.lst_price / 1.12
+				print("%s %s %s" % (pser.default_code, pser.standard_price, pser.name))
 
 	def _actualiza_vededor_factura(self):
 		fp = tempfile.NamedTemporaryFile(delete= False,suffix=".xlsx")

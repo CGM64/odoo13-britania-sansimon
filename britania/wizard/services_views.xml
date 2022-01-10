@@ -31,7 +31,7 @@
     <menuitem id="menu_tag_productos_menu_list"
                 name="Servicios"
                 action="fleet_repair_action"
-                parent="fleet.fleet_configuration"
+                parent="menu_rma_reparaciones_operaciones"
                 groups="base.group_user"/>
 
     <!--Menu de Año modelo-->
@@ -56,11 +56,12 @@
               </p>
         </field>
   </record>
-
+<!--
   <menuitem id="menu_fleet_year_menu_list"
                   name="Año del modelos"
                   action="fleet_year_action"
-                  parent="fleet.fleet_configuration"
+                  parent="menu_rma_reparaciones_operaciones"
                   groups="base.group_user"/>
+-->
 </data>
 </odoo>

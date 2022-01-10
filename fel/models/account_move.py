@@ -26,6 +26,8 @@ class AccountMove(models.Model):
 
     fecha_certificacion = fields.Datetime(string='Fecha certificacion',copy=False,readonly=True)
 
+    fel_url = fields.Char('URL Firma', copy=False, readonly=True, track_visibility='onchange')
+
     def getNitFelFormat(self, nit):
         if nit:
             nit = nit.upper()
@@ -249,6 +251,12 @@ class AccountMove(models.Model):
             factura.fac_numero = fel_certificacion_response["numero"]
             factura.fecha_certificacion = fel_certificacion_response["fecha"]
             msg = "https://report.feel.com.gt/ingfacereport/ingfacereport_documento?uuid="+fel_certificacion_response["uuid"]
+            print("DOCUMENTO: ",documento)
+            if self.partner_id.vat:
+                nit_emisor = self.partner_id.vat
+            else:
+                nit_emisor = 'CF'
+            factura.fel_url = 'https://felpub.c.sat.gob.gt/verificador-web/publico/vistas/verificacionDte.jsf?tipo=autorizacion&numero={}&emisor={}&receptor={}&monto={}'.format(self.fel_firma,self.company_id.vat.replace('-',''),nit_emisor.replace('-',''),self.amount_total)
             factura.message_post(subject='FEL', body=msg)
 
     def firmar_factura(self, documento, batch, anulacion):

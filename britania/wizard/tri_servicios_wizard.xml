@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <!--Wizard Servicios Triumph-->
+    <record id="view_import_services_tri_wizard" model="ir.ui.view">
+        <field name="name">britania.services.triumph.wizard</field>
+        <field name="model">britania.services.triumph.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Cargar Servicios Triumph">
+                <div>
+                    <p>
+                        Este formulario le ayudara a cargar servicios.
+                    </p>
+                </div>
+                <group>
+                  <field name="archivo" filename="name"/>
+                </group>
+                <footer>
+                    <button string="Cargar Catalogos" name="cargar_catalogo_excel" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+         </field>
+    </record>
+
+    <record id="action_services_tri_wizard" model="ir.actions.act_window">
+        <field name="name">Carga masiva de Servicios Triumph</field>
+        <field name="res_model">britania.services.triumph.wizard</field>
+
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_import_services_tri_wizard"/>
+        <field name="target">new</field>
+        <field name="context"></field>
+    </record>
+
+    <menuitem
+        id="menu_services_tri_wizard" 
+        name="Carga Servicios Triumph" 
+        action="action_services_tri_wizard"
+        parent="menu_rma_reparaciones_operaciones" 
+        groups="base.group_user"/>
+</data>
+</odoo>

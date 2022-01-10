@@ -563,7 +563,12 @@
               NIT:<t t-esc="o.fel_setting_id.proveedor_id.vat"/><br/>
               Nombre:<t t-esc="o.fel_setting_id.proveedor_id.name"/>
             </div>
-            <div class="col-3"><img src="/britania/static/description/FEL.PNG" style="max-height:70px;padding-top: 4px;"/></div>
+            <div class="col-2"><img src="/britania/static/description/FEL.PNG" style="max-height:70px;padding-top: 4px;"/></div>
+            <div class="col-1">
+              <t t-if="o.fel_firma">
+                  <img t-if="o.generate_qr()" t-att-src="'data:image/png;base64,%s' % to_text(o.generate_qr())" class="qr" />
+              </t>
+            </div>
           </div>
         </div>
       </t>

@@ -4,7 +4,9 @@ from datetime import datetime
 from odoo.http import request
 import re
 
-
+#REPORTE DE IMPORTACIONES
+#REPORT ID account_inventario_report_xls
+#REPROT NAME l10n_gt_sat.account_inventario_report_xls
 class LibroInventarioReportXls(models.AbstractModel):
     _name = 'report.l10n_gt_sat.account_inventario_report_xls'
     _description = 'Reporte Inventario XLS'
@@ -80,6 +82,10 @@ class LibroInventarioReportXls(models.AbstractModel):
         stock_picking = request.env['stock.picking'].search(dominio)
         stock_picking = stock_picking.sorted(lambda orden: orden.id)
         porcentaje=0
+        total_cantidad_recibida=0
+        total_value=0
+        total_gasto=0
+        porcentaje_incremento=0
         
         picking_a_sumar=[]
         for pick in stock_picking.move_ids_without_package:
@@ -120,32 +126,49 @@ class LibroInventarioReportXls(models.AbstractModel):
                     picking_line['gasto'] = gasto
                     picking_line['total'] = total
                     picking_line['costo_en_destino'] = costo_en_destino.replace('None','')
-                    
+
+
+
+                    # total_cantidad_recibida+=line.quantity_done
+                    total_cantidad_recibida+=line.quantity_done
+                    total_value+=value
+                    total_gasto+=gasto
+
+                    if total_value==0:
+                        porcentaje_incremento=0
+                    else:
+                        porcentaje_incremento=total_gasto/total_value
+
+                    picking_line['total_cantidad_recibida'] =total_cantidad_recibida
+                    picking_line['total_value'] =total_value
+                    picking_line['total_gasto'] =total_gasto
                     
                     if float(total_general) !=0:
-                        picking_line['porcentaje']= total/float(total_general)
+                        picking_line['participacion']= total/float(total_general)
                         picking_line['total_general'] = total_general
                         porcentaje+=total/float(total_general)
                     else:
-                        picking_line['porcentaje']= 0
+                        picking_line['participacion']= 0
                         picking_line['total_general'] = 0
                         porcentaje+=0
 
                     picking_lines.append(picking_line)
             recepcion['lines'] = picking_lines
             recepcion['porcentaje_total'] = porcentaje
-
+            recepcion['porcentaje_incremento'] = porcentaje_incremento
             listado_picking.append(recepcion)
-        return listado_picking
+        return listado_picking,porcentaje_incremento
+
+
 
     def generate_xlsx_report(self, workbook, data, data_report):
-        formato_celda_numerica = workbook.add_format(
-            {'num_format': '#,##0.00', 'border': 0, })
-        formato_encabezado = workbook.add_format(
-            {'bold': 1,  'border': 1,    'align': 'center', 'valign':   'vcenter', 'fg_color': '#1C1C1C', 'font_color': 'white'})
-        formato_fecha = workbook.add_format(
-            {'num_format': 'dd/mm/yyyy', 'border': 0})
+        formato_celda_numerica = workbook.add_format({'num_format': '#,##0.00', 'border': 0, })
+        formato_encabezado = workbook.add_format({'bold': 1,  'border': 1,    'align': 'center', 'valign':   'vcenter', 'fg_color': '#1C1C1C', 'font_color': 'white'})
+        formato_fecha = workbook.add_format({'num_format': 'dd/mm/yyyy', 'border': 0})
         formato_porcentaje = workbook.add_format({'num_format': '0.00%'})
+
+        numerico_general = workbook.add_format({'num_format': '#,##0.00', 'border': 0, 'fg_color': '#1C1C1C', 'font_color': 'white'})
+        porcentaje_general = workbook.add_format({'num_format': '0.00%','fg_color': '#1C1C1C', 'font_color': 'white'})
 
         self.workbook = workbook
         fecha_inicio = data['form']['fecha_inicio']
@@ -155,9 +178,9 @@ class LibroInventarioReportXls(models.AbstractModel):
         generar_por = data['form']['generar_por']
         
         if generar_por=='fecha':
-            stock_picking = self._estructura_reporte(generar_por,None,fecha_inicio, fecha_fin)
+            stock_picking,porcentaje_incremento = self._estructura_reporte(generar_por,None,fecha_inicio, fecha_fin)
         else:
-            stock_picking = self._estructura_reporte(generar_por,picking_ids,None,None)
+            stock_picking,porcentaje_incremento= self._estructura_reporte(generar_por,picking_ids,None,None)
 
         sheet_inventario = workbook.add_worksheet('Inventario')
         sheet_inventario.write(0, 0, "FECHA", formato_encabezado)
@@ -168,17 +191,16 @@ class LibroInventarioReportXls(models.AbstractModel):
         sheet_inventario.write(0, 5, "PRODUCTO", formato_encabezado)
         sheet_inventario.write(0, 6, "CANT RECIBIDA", formato_encabezado)
 
-        sheet_inventario.write(0, 7, "VALUE", formato_encabezado)
+        sheet_inventario.write(0, 7, "VALOR", formato_encabezado)
         sheet_inventario.write(0, 8, "GASTO", formato_encabezado)
         sheet_inventario.write(0, 9, "TOTAL", formato_encabezado)
         sheet_inventario.write(0, 10, "PORCENTAJE", formato_encabezado)
         sheet_inventario.write(0, 11, "COSTO EN DESTINO", formato_encabezado)
+        sheet_inventario.write(0, 12, "PARTICIPACION", formato_encabezado)
 
         sheet_inventario.set_column("A:R", 25)
 
-
         # stock_picking_nuevo=list(filter(lambda f: f['value'] !=0))
-
         fila = 0
         for picking in stock_picking:
             for line in picking['lines']:
@@ -195,10 +217,24 @@ class LibroInventarioReportXls(models.AbstractModel):
                     sheet_inventario.write(fila, 7, line['value'], formato_celda_numerica)
                     sheet_inventario.write(fila, 8, line['gasto'], formato_celda_numerica)
                     sheet_inventario.write(fila, 9, line['total'], formato_celda_numerica)
-                    sheet_inventario.write(fila, 10, line['porcentaje'], formato_porcentaje)
+
+                    sheet_inventario.write(fila, 10, porcentaje_incremento, formato_porcentaje)
                     sheet_inventario.write(fila, 11, line['costo_en_destino'])
-                    sheet_inventario.write(fila+1, 9, line['total_general'], formato_celda_numerica)
-                    sheet_inventario.write(fila+1, 10, picking['porcentaje_total'], formato_porcentaje)
+                    sheet_inventario.write(fila, 12, line['participacion'], formato_porcentaje)
+
+                    #SUMATORIAS POR COLUMNA
+                    sheet_inventario.write(fila+1, 6, line['total_cantidad_recibida'], numerico_general)
+                    sheet_inventario.write(fila+1, 7, line['total_value'], numerico_general)
+                    sheet_inventario.write(fila+1, 8, line['total_gasto'], numerico_general)
+                    sheet_inventario.write(fila+1, 9, line['total_general'], numerico_general)
+                    sheet_inventario.write(fila+1, 12, picking['porcentaje_total'], porcentaje_general)
+                    
+        sheet_inventario.merge_range('A'+str(fila+2)+':F'+str(fila+2),'TOTALES', formato_encabezado)
+        sheet_inventario.write(fila+1, 10, None, numerico_general)
+        sheet_inventario.write(fila+1, 11, None, numerico_general)
+
+
+
 
 
 

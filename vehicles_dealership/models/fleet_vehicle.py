@@ -57,9 +57,6 @@ class FleetVehicle(models.Model):
         new_vehicle = super(FleetVehicle, self.with_context(create_fleet_vehicle=True)).create(vals)
         ctx.update({"from_vehicle_create": True})
 
-        print("fleet.vehicle Estoy en el create")
-        print(ctx)
-
         if new_vehicle.product_id:
             new_vehicle.product_id.with_context(ctx).write({
                 'name': new_vehicle.name,
@@ -76,9 +73,6 @@ class FleetVehicle(models.Model):
         update_prod_vals = {}
         ctx.update({"from_vehicle_write": True})
 
-        print("fleet.vehicle Estoy en el write")
-        print(ctx)
-
         for vehicle in self:
             if vehicle.product_id:
                 vehicle.product_id.default_code = vehicle.pedido
@@ -91,45 +85,4 @@ class FleetVehicle(models.Model):
         return res
 
 
-class ProductTemplate(models.Model):
-    """Product Template model."""
 
-    _inherit = 'product.template'
-
-    is_vehicle = fields.Boolean(string="Vehicle")
-
-
-class ProductProduct(models.Model):
-    """Product model."""
-
-    _inherit = 'product.product'
-
-    is_vehicle = fields.Boolean(string="Vehicle")
-
-    @api.model
-    def create(self, vals):
-        """Overrridden method to update the product information."""
-        if not vals.get('name', False) and self._context.get('create_fleet_vehicle', False):
-            vals.update({'name': 'NEW VEHICLE',
-                         'type': 'product',
-                         'is_vehicle': True})
-
-        return super(ProductProduct, self).create(vals)
-
-    def write(self, vals):
-        """Overrridden method to update the vehicle information."""
-        ctx = dict(self.env.context)
-        res = super(ProductProduct, self).write(vals)
-
-        for product in self:
-            if ctx and not ctx.get("from_vehicle_create", False) and not ctx.get("from_vehicle_write", False):
-                vehicles = self.env['fleet.vehicle'].search([('product_id', '=', product.id)])
-                update_vehicle_vals = {}
-                if vals.get('image_1920', False):
-                    update_vehicle_vals.update({'image_1920': product.image_1920})
-                if vals.get('name', False):
-                    update_vehicle_vals.update({'name': product.name})
-                if update_vehicle_vals and vehicles:
-                    for vehicle in vehicles:
-                        vehicle.write(update_vehicle_vals)
-        return res
