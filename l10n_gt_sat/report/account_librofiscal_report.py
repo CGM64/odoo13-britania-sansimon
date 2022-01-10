@@ -201,6 +201,7 @@ class AccountCommonJournalReport(models.TransientModel):
             tipo_libro['facturas'] = facturas
             prueba = sorted(libro_resumido.items())
             tipo_libro['resumido'] = prueba
+            print(prueba)
 
             
 
@@ -245,7 +246,7 @@ class AccountCommonJournalReport(models.TransientModel):
             libro_fiscal.append(tipo_libro)
 
 
-        print('libro_fiscal',libro_fiscal)
+        # print('libro_fiscal',libro_fiscal)
         return libro_fiscal
 
         #docs = self.env['account.move'].search([('journal_id', '=', journal.id)], limit=1):
@@ -257,7 +258,7 @@ class AccountCommonJournalReport(models.TransientModel):
         model = self.env.context.get('active_model')
         docs = self.env[model].browse(self.env.context.get('active_id'))
         libros = self.get_libro(data)
-        print("llego al get libro")
+        # print("llego al get libro")
 
 
 
