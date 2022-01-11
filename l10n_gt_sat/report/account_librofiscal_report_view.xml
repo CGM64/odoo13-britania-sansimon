@@ -100,7 +100,6 @@
           <th scope="col">Peq. Cont.</th>
           <th scope="col">Bienes</th>
           <th scope="col">Combust.</th>
-          <th scope="col">Subtotal</th>
           <th scope="col">Iva</th>
           <th scope="col">Total</th>
         </tr>
@@ -125,7 +124,6 @@
       <t t-set="r" t-value="libro['resumen']"/>
       <tr>
         <td></td>
-        <td class="text-right"></td>
         <td class="text-right"><span t-esc="r['sat_exento']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
         <td class="text-right"><span t-esc="r['sat_importa_out_ca']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
         <td class="text-right"><span t-esc="r['sat_importa_in_ca']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
