@@ -83,6 +83,8 @@ class WebsiteCotizador(CustomerPortal):
             ficha_tecnica_url = '/web/binary/ficha_tecnica?model=fleet.vehicle.model&field=ficha_tecnica&id='+ str(fleet_vehicle_model[0].id)
         
         caracteristicas = []
+        f_m_descripcion_vehiculo = ""
+        f_m_titulo_vehiculo = ""
         if fleet_vehicle_model and fleet_vehicle_model[0].informacion:
             string_raw = fleet_vehicle_model[0].informacion
             if string_raw != "":
@@ -94,6 +96,14 @@ class WebsiteCotizador(CustomerPortal):
                             caracteristicas.append({ "titulo": c[0], "descripcion": c[1] })
                         else:
                             caracteristicas.append({ "titulo": c[0], "descripcion": "" })
+            
+            if fleet_vehicle_model[0].descripcion_vehiculo:
+                str_raw = fleet_vehicle_model[0].descripcion_vehiculo
+                if string_raw != "":
+                    temp_caracteristicas = str_raw.split("<separador>")
+                    if len(temp_caracteristicas) == 2:
+                        f_m_titulo_vehiculo = temp_caracteristicas[0]
+                        f_m_descripcion_vehiculo = temp_caracteristicas[1]
         
         values = {
             'sale_order': order_sudo,
@@ -112,7 +122,9 @@ class WebsiteCotizador(CustomerPortal):
             'signo_t_dolar': signo_t_dolar,
             'tarifa_publica': tarifa_publica,
             'signo_t_publica': signo_t_publica,
-            'nombre_producto': nombre_producto
+            'nombre_producto': nombre_producto,
+            'f_m_descripcion_vehiculo': f_m_descripcion_vehiculo,
+            'f_m_titulo_vehiculo': f_m_titulo_vehiculo
         }
 
         if order_sudo.company_id:

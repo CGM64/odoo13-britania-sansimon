@@ -17,18 +17,18 @@
                     </div>
 
                     <!--SELECTORES-->
-                    <div class="bg-primary btn-line mt-1 mt-md-4">
+                    <div class="bg-primary btn-line mt-1 mt-md-4" style="max-heigth: 80px;">
                         <div class="container">
                             <ul class="nav nav-pills nav-justified m-auto" id="myTab" role="tablist">
                                 <li class="nav-item text-uppercase" role="presentation">
-                                    <a class="nav-link nav-link-custom h-100 active text-white d-flex align-items-center justify-content-center" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                                    <a class="nav-link nav-link-custom h-100 active text-white d-flex align-items-center justify-content-center without-padding" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
                                         <div class="icon">
                                             <div class="bri-icon bri-icon-inicio"></div>
                                         </div>
                                     </a>
                                 </li>
                                 <li class="nav-item text-uppercase" role="presentation">
-                                    <a class="nav-link nav-link-custom h-100 text-white d-flex align-items-center justify-content-center" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">
+                                    <a class="nav-link nav-link-custom h-100 text-white d-flex align-items-center justify-content-center without-padding" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">
                                         <div class="icon">
                                             <!-- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -41,7 +41,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item text-uppercase" role="presentation">
-                                    <a class="nav-link nav-link-custom h-100 text-white d-flex align-items-center justify-content-center" id="detalles-tab" data-toggle="tab" href="#detalles" role="tab" aria-controls="detalles" aria-selected="false">
+                                    <a class="nav-link nav-link-custom h-100 text-white d-flex align-items-center justify-content-center without-padding" id="detalles-tab" data-toggle="tab" href="#detalles" role="tab" aria-controls="detalles" aria-selected="false">
                                         <div class="icon">
                                             <!-- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
                                                 <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
@@ -53,7 +53,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item text-uppercase" role="presentation">
-                                    <a class="nav-link nav-link-custom h-100 text-white d-flex align-items-center justify-content-center" id="cotizacion-tab" data-toggle="tab" href="#cotizacion" role="tab" aria-controls="cotizacion" aria-selected="false">
+                                    <a class="nav-link nav-link-custom h-100 text-white d-flex align-items-center justify-content-center without-padding" id="cotizacion-tab" data-toggle="tab" href="#cotizacion" role="tab" aria-controls="cotizacion" aria-selected="false">
                                         <div class="icon">
                                             <!-- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
                                                 <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
@@ -91,8 +91,11 @@
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-5 mt-2">
+                                            <h1 class="text-uppercase bri-b">
+                                                <t t-if="f_m_titulo_vehiculo" t-raw="f_m_titulo_vehiculo"></t>
+                                            </h1>
                                             <p class="text-justify">
-                                                <t t-if="fleet_vehicle and fleet_vehicle.descripcion_vehiculo" t-esc="fleet_vehicle.descripcion_vehiculo"></t>
+                                                <t t-if="f_m_descripcion_vehiculo" t-raw="f_m_descripcion_vehiculo"></t>
                                             </p>
                                             <div class="row mt-5">
                                                 <div class="col-6">
@@ -124,11 +127,11 @@
                                     <div class="row">
                                         <t t-foreach="caracteristicas" t-as="c">
                                             <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
-                                                <h1 class="text-uppercase text-justify bri-b">
-                                                    <t t-esc="c['titulo']"></t>
+                                                <h1 class="text-uppercase bri-b">
+                                                    <t t-raw="c['titulo']"></t>
                                                 </h1>
                                                 <p class="text-justify">
-                                                    <t t-esc="c['descripcion']"></t>
+                                                    <t t-raw="c['descripcion']"></t>
                                                 </p>
                                             </div>
                                         </t>

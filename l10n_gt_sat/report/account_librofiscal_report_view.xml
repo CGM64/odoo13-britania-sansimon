@@ -25,7 +25,14 @@
                 </t>
               </t>
               <t t-else="">
-                <t t-call="l10n_gt_sat.librofiscal_compras"/>
+                <!-- <t t-call="l10n_gt_sat.librofiscal_compras"/> -->
+
+                <t t-if="libro['tipo'] == 'detallado'">
+                  <t t-call="l10n_gt_sat.librofiscal_compras"/>
+                </t>
+                <t t-else="">
+                  <t t-call="l10n_gt_sat.librofiscal_compras_resumido"/>
+                </t>
               </t>
 
             </div>
@@ -73,6 +80,58 @@
         <td class="text-right"><span t-esc="r['servicio']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
         <td class="text-right"><span t-esc="r['bien']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
         <td class="text-right"><span t-esc="r['sat_subtotal_total']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+        <td class="text-right"><span t-esc="r['sat_iva_total']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+        <td class="text-right"><span t-esc="r['amount_total_total']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+        <td></td>
+      </tr>
+    </table>
+  </template>
+
+  <template id="librofiscal_compras_resumido">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Fecha</th>
+          <th scope="col">Excenta</th>
+          <th scope="col">Imp. Fuera CA</th>
+          <th scope="col">Imp. CA</th>
+          <th scope="col">Servicios</th>
+          <th scope="col">Compra Activos F.</th>
+          <th scope="col">Peq. Cont.</th>
+          <th scope="col">Bienes</th>
+          <th scope="col">Combust.</th>
+          <th scope="col">Iva</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <t t-foreach="libro['resumido']" t-as="r">
+          <tr>
+            <td><span t-esc="r[1]['dia']" t-options='{"widget": "date"}'/></td>
+            <td class="text-right"><span t-esc="r[1]['sat_exento']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+            <td class="text-right"><span t-esc="r[1]['sat_importa_out_ca']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+            <td class="text-right"><span t-esc="r[1]['sat_importa_in_ca']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+            <td class="text-right"><span t-esc="r[1]['sat_servicio']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+            <td class="text-right"><span t-esc="r[1]['sat_peq_contri']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+            <td class="text-right"><span t-esc="r[1]['sat_bien']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+            <td class="text-right"><span t-esc="r[1]['sat_combustible']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+            <td class="text-right"><span t-esc="r[1]['sat_base']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+            <td class="text-right"><span t-esc="r[1]['sat_iva']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+            <td class="text-right"><span t-esc="r[1]['sat_amount_total']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+          </tr>
+        </t>
+      </tbody>
+      <t t-set="r" t-value="libro['resumen']"/>
+      <tr>
+        <td></td>
+        <td class="text-right"><span t-esc="r['sat_exento']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+        <td class="text-right"><span t-esc="r['sat_importa_out_ca']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+        <td class="text-right"><span t-esc="r['sat_importa_in_ca']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+        <td class="text-right"><span t-esc="r['servicio']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+        <td class="text-right"><span t-esc="r['sat_peq_contri']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+        <td class="text-right"><span t-esc="r['bien']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+        <td class="text-right"><span t-esc="r['sat_combustible']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
+        <td class="text-right"><span t-esc="r['sat_base']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
         <td class="text-right"><span t-esc="r['sat_iva_total']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
         <td class="text-right"><span t-esc="r['amount_total_total']" t-options='{"widget": "monetary", "display_currency": currency}'/></td>
         <td></td>

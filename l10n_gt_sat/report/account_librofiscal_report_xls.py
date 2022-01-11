@@ -9,7 +9,7 @@ class LibroFiscalReportXls(models.AbstractModel):
 
     workbook = None
 
-    def _get_libro_ventas(self, libro, sheet_libro, fila, columna, format1, date_format, vendedor):
+    def _get_libro_ventas(self, libro, sheet_libro, fila, columna, format1, date_format, vendedor,tipo):
         sheet_libro.set_column(columna,columna,4)
         sheet_libro.set_column(columna + 1,columna + 1,8)
         sheet_libro.set_column(columna + 2,columna + 2,12)
@@ -28,60 +28,88 @@ class LibroFiscalReportXls(models.AbstractModel):
         if vendedor:
             sheet_libro.set_column(columna + 15,columna + 15,30)
 
-
-        sheet_libro.write(fila, columna, "No.", format1)
-        sheet_libro.write(fila, columna + 1, "Cod.", format1)
-        sheet_libro.write(fila, columna + 2, "Fecha", format1)
-        sheet_libro.write(fila, columna + 3, "Serie", format1)
-        sheet_libro.write(fila, columna + 4, "No. Factura", format1)
-        sheet_libro.write(fila, columna + 5, "Nit", format1)
-        sheet_libro.write(fila, columna + 6, "Nombre", format1)
-        sheet_libro.write(fila, columna + 7, "Exenta", format1)
-        sheet_libro.write(fila, columna + 8, "Exp. Fuera CA.", format1)
-        sheet_libro.write(fila, columna + 9, "Exp. Centro A.", format1)
-        sheet_libro.write(fila, columna + 10, "Servicios", format1)
-        sheet_libro.write(fila, columna + 11, "Ventas", format1)
-        sheet_libro.write(fila, columna + 12, "Subtotal", format1)
-        sheet_libro.write(fila, columna + 13, "Iva", format1)
-        sheet_libro.write(fila, columna + 14, "Total", format1)
+        columnas={
+        "no":['No.'], 
+        "cod":['Cod.'], 
+        "fecha":['Fecha.','resumido'], 
+        "serie":['Serie.'], 
+        "no_factura":['No. Factura'],
+        "nit":['NIT'], 
+        "nombre":['Nombre'],
+        "exenta":['Exenta','resumido'], 
+        "exp_out":['Exp. Fuera CA.','resumido'], 
+        "exp_ca":['Exp. Centro A.','resumido'], 
+        "servicios":['Servicio.','resumido'], 
+        "ventas":['Ventas','resumido'], 
+        "subtotal":['Subtotal','resumido'], 
+        "iva":['IVA.','resumido'],
+        "total":['Total.','resumido'], 
+        }
         if vendedor:
-            sheet_libro.write(fila, columna + 15, "Vendedor", format1)
+            columnas['vendedor']=['Vendedor']
+
+        columnas= dict(filter(lambda x: len(x[1]) == 2, columnas.items())) if tipo!='detallado' else columnas
+        columna=0
+        for col in columnas:
+            sheet_libro.write(fila, columna, columnas[col][0], format1) if tipo=='detallado' else sheet_libro.write(fila, columna, columnas[col][0], format1)                   
+            columna += 1
 
         fila += 1
-
-        for f in libro['facturas']:
-            sheet_libro.write(fila, columna, f.no_linea)
-            sheet_libro.write(fila, columna + 1, f.journal_id.code)
-            sheet_libro.write(fila, columna + 2, f.invoice_date, date_format)
-            sheet_libro.write(fila, columna + 3, f.sat_fac_serie)
-            sheet_libro.write(fila, columna + 4, f.sat_fac_numero)
-            sheet_libro.write(fila, columna + 5, f.partner_id.vat if f.state not in ('cancel') else '')
-            sheet_libro.write(fila, columna + 6, f.partner_id.name if f.state not in ('cancel') else 'Anulado')
-            sheet_libro.write(fila, columna + 7, 0, self.fnumerico)
-            sheet_libro.write(fila, columna + 8, 0, self.fnumerico)
-            sheet_libro.write(fila, columna + 9, f.sat_exportacion_in_ca, self.fnumerico)
-            sheet_libro.write(fila, columna + 10, f.sat_servicio, self.fnumerico)
-            sheet_libro.write(fila, columna + 11, f.sat_bien, self.fnumerico)
-            sheet_libro.write(fila, columna + 12, f.sat_subtotal, self.fnumerico)
-            sheet_libro.write(fila, columna + 13, f.sat_iva, self.fnumerico)
-            sheet_libro.write(fila, columna + 14, f.sat_amount_total, self.fnumerico)
-            if vendedor:
-                sheet_libro.write(fila, columna + 15, f.invoice_user_id.name)
+        columna=0
+        if tipo =='detallado':
+            for f in libro['facturas']:
+                sheet_libro.write(fila, columna, f.no_linea)
+                sheet_libro.write(fila, columna + 1, f.journal_id.code)
+                sheet_libro.write(fila, columna + 2, f.invoice_date, date_format)
+                sheet_libro.write(fila, columna + 3, f.sat_fac_serie)
+                sheet_libro.write(fila, columna + 4, f.sat_fac_numero)
+                sheet_libro.write(fila, columna + 5, f.partner_id.vat if f.state not in ('cancel') else '')
+                sheet_libro.write(fila, columna + 6, f.partner_id.name if f.state not in ('cancel') else 'Anulado')
+                sheet_libro.write(fila, columna + 7, 0, self.fnumerico)
+                sheet_libro.write(fila, columna + 8, 0, self.fnumerico)
+                sheet_libro.write(fila, columna + 9, f.sat_exportacion_in_ca, self.fnumerico)
+                sheet_libro.write(fila, columna + 10, f.sat_servicio, self.fnumerico)
+                sheet_libro.write(fila, columna + 11, f.sat_bien, self.fnumerico)
+                sheet_libro.write(fila, columna + 12, f.sat_subtotal, self.fnumerico)
+                sheet_libro.write(fila, columna + 13, f.sat_iva, self.fnumerico)
+                sheet_libro.write(fila, columna + 14, f.sat_amount_total, self.fnumerico)
+                if vendedor:
+                    sheet_libro.write(fila, columna + 15, f.invoice_user_id.name)
+                fila += 1
+                
+            r = libro['resumen']
+            sheet_libro.write(fila, columna + 9, r['sat_exportacion_in_ca'], self.money)
+            sheet_libro.write(fila, columna + 10, r['servicio'], self.money)
+            sheet_libro.write(fila, columna + 11, r['bien'], self.money)
+            sheet_libro.write(fila, columna + 12, r['sat_subtotal_total'], self.money)
+            sheet_libro.write(fila, columna + 13, r['sat_iva_total'], self.money)
+            sheet_libro.write(fila, columna + 14, r['amount_total_total'], self.money)
             fila += 1
+        else:
+            for f in libro['resumido']:
+                sheet_libro.write(fila, columna , f[1]['dia'], date_format)
+                sheet_libro.write(fila, columna + 1, f[1]['sat_exento'], self.fnumerico)
+                sheet_libro.write(fila, columna + 2, f[1]['sat_importa_out_ca'], self.fnumerico)
+                sheet_libro.write(fila, columna + 3, f[1]['sat_importa_in_ca'], self.fnumerico)
+                sheet_libro.write(fila, columna + 4, f[1]['sat_servicio'], self.fnumerico)
+                sheet_libro.write(fila, columna + 5, f[1]['sat_bien'], self.fnumerico)
+                sheet_libro.write(fila, columna + 6, f[1]['sat_subtotal'], self.fnumerico)
+                sheet_libro.write(fila, columna + 7, f[1]['sat_iva'], self.fnumerico)
+                sheet_libro.write(fila, columna + 8, f[1]['sat_amount_total'], self.fnumerico)
+                fila += 1
 
-        r = libro['resumen']
-
-        sheet_libro.write(fila, columna + 9, r['sat_exportacion_in_ca'], self.money)
-        sheet_libro.write(fila, columna + 10, r['servicio'], self.money)
-        sheet_libro.write(fila, columna + 11, r['bien'], self.money)
-        sheet_libro.write(fila, columna + 12, r['sat_subtotal_total'], self.money)
-        sheet_libro.write(fila, columna + 13, r['sat_iva_total'], self.money)
-        sheet_libro.write(fila, columna + 14, r['amount_total_total'], self.money)
-        fila += 1
+            r = libro['resumen']
+            sheet_libro.write(fila, columna + 3, r['sat_exportacion_in_ca'], self.money)
+            sheet_libro.write(fila, columna + 4, r['servicio'], self.money)
+            sheet_libro.write(fila, columna + 5, r['bien'], self.money)
+            sheet_libro.write(fila, columna + 6, r['sat_subtotal_total'], self.money)
+            sheet_libro.write(fila, columna + 7, r['sat_iva_total'], self.money)
+            sheet_libro.write(fila, columna + 8, r['amount_total_total'], self.money)
+            fila += 1
 
         return sheet_libro
 
-    def _get_libro_compras(self, libro, sheet_libro, fila, columna, format1, date_format):
+    def _get_libro_compras(self, libro, sheet_libro, fila, columna, format1, date_format,tipo):
         sheet_libro.set_column(columna,columna,4)
         sheet_libro.set_column(columna + 1,columna + 1,8)
         sheet_libro.set_column(columna + 2,columna + 2,12)
@@ -101,62 +129,93 @@ class LibroFiscalReportXls(models.AbstractModel):
         sheet_libro.set_column(columna + 16,columna + 16,12)
         sheet_libro.set_column(columna + 17,columna + 17,15)
 
+        columnas={
+            "no":['No.'], 
+            "cod":['Cod.'], 
+            "fecha":['Fecha.','resumido'], 
+            "serie":['Serie.'], 
+            "no_factura":['No. Factura'],
+            "nit":['NIT'], 
+            "nombre":['Nombre'],
+            "exenta":['Exenta','resumido'], 
+            "imp_out":['Importacion fuera CA','resumido'],
+            "imp_ca":['Importacion CA','resumido'],
+            "servicios":['Servicios','resumido'],
+            "compra_activos":['Compra de activos fijos','resumido'],
+            "pequenio_cont":['Pequeño Contrib.','resumido'],
+            "bienes":['Bienes.','resumido'],
+            "combustible":['Combust.','resumido'],
+            "base_compras":['Base para Compras'],
+            "iva":['IVA.','resumido'],
+            "total":['Total','resumido'],  
+        }
 
-
-        sheet_libro.write(fila, columna, "No.", format1)
-        sheet_libro.write(fila, columna + 1, "Cod.", format1)
-        sheet_libro.write(fila, columna + 2, "Fecha", format1)
-        sheet_libro.write(fila, columna + 3, "Serie", format1)
-        sheet_libro.write(fila, columna + 4, "No. Factura", format1)
-        sheet_libro.write(fila, columna + 5, "Nit", format1)
-        sheet_libro.write(fila, columna + 6, "Nombre", format1)
-        sheet_libro.write(fila, columna + 7, "Exenta", format1)
-        sheet_libro.write(fila, columna + 8, "Importacion fuera CA", format1)
-        sheet_libro.write(fila, columna + 9, "Importacion CA", format1)
-        sheet_libro.write(fila, columna + 10, "Servicios", format1)
-        sheet_libro.write(fila, columna + 11, "Compra de activos fijos", format1)
-        sheet_libro.write(fila, columna + 12, "Pequeño Contrib.", format1)
-        sheet_libro.write(fila, columna + 13, "Bienes", format1)
-        sheet_libro.write(fila, columna + 14, "Combust.", format1)
-        sheet_libro.write(fila, columna + 15, "Base para Compras", format1)
-        sheet_libro.write(fila, columna + 16, "IVA", format1)
-        sheet_libro.write(fila, columna + 17, "Total", format1)
+        columnas= dict(filter(lambda x: len(x[1]) == 2, columnas.items())) if tipo!='detallado' else columnas
+        c=0
+        for col in columnas:
+            sheet_libro.write(fila, c, columnas[col][0], format1) if tipo=='detallado' else sheet_libro.write(fila, c, columnas[col][0], format1)                   
+            c += 1
 
         fila += 1
-
-        for f in libro['facturas']:
-            sheet_libro.write(fila, columna, f.no_linea)
-            sheet_libro.write(fila, columna + 1, f.journal_id.code)
-            sheet_libro.write(fila, columna + 2, f.invoice_date, date_format)
-            sheet_libro.write(fila, columna + 3, f.sat_fac_serie)
-            sheet_libro.write(fila, columna + 4, f.sat_fac_numero)
-            sheet_libro.write(fila, columna + 5, f.partner_id.vat)
-            sheet_libro.write(fila, columna + 6, f.partner_id.name)
-            sheet_libro.write(fila, columna + 7, f.sat_exento, self.fnumerico)
-            sheet_libro.write(fila, columna + 8, f.sat_importa_out_ca, self.fnumerico)
-            sheet_libro.write(fila, columna + 9, f.sat_importa_in_ca, self.fnumerico)
-            sheet_libro.write(fila, columna + 10, f.sat_servicio, self.fnumerico)
-            sheet_libro.write(fila, columna + 11, 0, self.fnumerico)
-            sheet_libro.write(fila, columna + 12, f.sat_peq_contri, self.fnumerico)
-            sheet_libro.write(fila, columna + 13, f.sat_bien, self.fnumerico)
-            sheet_libro.write(fila, columna + 14, f.sat_combustible, self.fnumerico)
-            sheet_libro.write(fila, columna + 15, f.sat_base, self.fnumerico)
-            sheet_libro.write(fila, columna + 16, f.sat_iva, self.fnumerico)
-            sheet_libro.write(fila, columna + 17, f.sat_amount_total, self.fnumerico)
+        if tipo=='detallado':
+            for f in libro['facturas']:
+                sheet_libro.write(fila, columna, f.no_linea)
+                sheet_libro.write(fila, columna + 1, f.journal_id.code)
+                sheet_libro.write(fila, columna + 2, f.invoice_date, date_format)
+                sheet_libro.write(fila, columna + 3, f.sat_fac_serie)
+                sheet_libro.write(fila, columna + 4, f.sat_fac_numero)
+                sheet_libro.write(fila, columna + 5, f.partner_id.vat)
+                sheet_libro.write(fila, columna + 6, f.partner_id.name)
+                sheet_libro.write(fila, columna + 7, f.sat_exento, self.fnumerico)
+                sheet_libro.write(fila, columna + 8, f.sat_importa_out_ca, self.fnumerico)
+                sheet_libro.write(fila, columna + 9, f.sat_importa_in_ca, self.fnumerico)
+                sheet_libro.write(fila, columna + 10, f.sat_servicio, self.fnumerico)
+                sheet_libro.write(fila, columna + 11, 0, self.fnumerico)
+                sheet_libro.write(fila, columna + 12, f.sat_peq_contri, self.fnumerico)
+                sheet_libro.write(fila, columna + 13, f.sat_bien, self.fnumerico)
+                sheet_libro.write(fila, columna + 14, f.sat_combustible, self.fnumerico)
+                sheet_libro.write(fila, columna + 15, f.sat_base, self.fnumerico)
+                sheet_libro.write(fila, columna + 16, f.sat_iva, self.fnumerico)
+                sheet_libro.write(fila, columna + 17, f.sat_amount_total, self.fnumerico)
+                fila += 1
+            r = libro['resumen']
+            sheet_libro.write(fila, columna + 7, r['sat_exento'], self.money)
+            sheet_libro.write(fila, columna + 8, r['sat_importa_out_ca'], self.money)
+            sheet_libro.write(fila, columna + 9, r['sat_importa_in_ca'], self.money)
+            sheet_libro.write(fila, columna + 10, r['servicio'], self.money)
+            sheet_libro.write(fila, columna + 12, r['sat_peq_contri'], self.money)
+            sheet_libro.write(fila, columna + 13, r['bien'], self.money)
+            sheet_libro.write(fila, columna + 14, r['sat_combustible'], self.money)
+            sheet_libro.write(fila, columna + 15, r['sat_base'], self.money)
+            sheet_libro.write(fila, columna + 16, r['sat_iva_total'], self.money)
+            sheet_libro.write(fila, columna + 17, r['amount_total_total'], self.money)
             fila += 1
-
-        r = libro['resumen']
-        sheet_libro.write(fila, columna + 7, r['sat_exento'], self.money)
-        sheet_libro.write(fila, columna + 8, r['sat_importa_out_ca'], self.money)
-        sheet_libro.write(fila, columna + 9, r['sat_importa_in_ca'], self.money)
-        sheet_libro.write(fila, columna + 10, r['servicio'], self.money)
-        sheet_libro.write(fila, columna + 12, r['sat_peq_contri'], self.money)
-        sheet_libro.write(fila, columna + 13, r['bien'], self.money)
-        sheet_libro.write(fila, columna + 14, r['sat_combustible'], self.money)
-        sheet_libro.write(fila, columna + 15, r['sat_base'], self.money)
-        sheet_libro.write(fila, columna + 16, r['sat_iva_total'], self.money)
-        sheet_libro.write(fila, columna + 17, r['amount_total_total'], self.money)
-        fila += 1
+        else:
+            for f in libro['resumido']:
+                sheet_libro.write(fila, columna , f[1]['dia'], date_format)
+                sheet_libro.write(fila, columna + 1, f[1]['sat_exento'], self.fnumerico)
+                sheet_libro.write(fila, columna + 2, f[1]['sat_importa_out_ca'], self.fnumerico)
+                sheet_libro.write(fila, columna + 3, f[1]['sat_importa_in_ca'], self.fnumerico)
+                sheet_libro.write(fila, columna + 4, f[1]['sat_servicio'], self.fnumerico)
+                sheet_libro.write(fila, columna + 5, f[1]['sat_peq_contri'], self.fnumerico)
+                sheet_libro.write(fila, columna + 6, f[1]['sat_bien'], self.fnumerico)
+                sheet_libro.write(fila, columna + 7, f[1]['sat_combustible'], self.fnumerico)
+                sheet_libro.write(fila, columna + 8, f[1]['sat_base'], self.fnumerico)
+                sheet_libro.write(fila, columna + 9, f[1]['sat_iva'], self.fnumerico)
+                sheet_libro.write(fila, columna + 10, f[1]['sat_amount_total'], self.fnumerico)
+                fila += 1
+            r = libro['resumen']
+            sheet_libro.write(fila, columna + 1, r['sat_exento'], self.money)
+            sheet_libro.write(fila, columna + 2, r['sat_importa_out_ca'], self.money)
+            sheet_libro.write(fila, columna + 3, r['sat_importa_in_ca'], self.money)
+            sheet_libro.write(fila, columna + 4, r['servicio'], self.money)
+            sheet_libro.write(fila, columna + 5, r['sat_peq_contri'], self.money)
+            sheet_libro.write(fila, columna + 6, r['bien'], self.money)
+            sheet_libro.write(fila, columna + 7, r['sat_combustible'], self.money)
+            sheet_libro.write(fila, columna + 8, r['sat_base'], self.money)
+            sheet_libro.write(fila, columna + 9, r['sat_iva_total'], self.money)
+            sheet_libro.write(fila, columna + 10, r['amount_total_total'], self.money)
+            fila += 1
 
         sheet_libro = self.workbook.add_worksheet("Resumen " + libro['descripcion'])
 
@@ -268,11 +327,12 @@ class LibroFiscalReportXls(models.AbstractModel):
             sheet_libro.write(2, 0, "Del: " + libro['del'] + "Al: " + libro['del'], self.bold)
 
             vendedor = data['form']['vendedor']
+            tipo=data['form']['tipo']
 
             fila = 5
             columna = 0
 
             if libro['libro'] == 'sale':
-                sheet_libro = self._get_libro_ventas(libro, sheet_libro, fila, columna, format1, date_format, vendedor)
+                sheet_libro = self._get_libro_ventas(libro, sheet_libro, fila, columna, format1, date_format, vendedor,tipo)
             else:
-                sheet_libro = self._get_libro_compras(libro, sheet_libro, fila, columna, format1, date_format)
+                sheet_libro = self._get_libro_compras(libro, sheet_libro, fila, columna, format1, date_format,tipo)
