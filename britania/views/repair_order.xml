@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_repair_order_tree_britania">
+        <field name="name">repair.tree.britania</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_tree"/>
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='state']" position="after">
+            <field name="amount_total" string="Total" sum="Total" optional="show"/>
+          </xpath>
+          <xpath expr="//field[@name='address_id']" position="replace">
+            <!--*******ELIMINANDO CAMPO EN VISTA*******-->
+          </xpath>
+          <xpath expr="//field[@name='guarantee_limit']" position="replace">
+            <!--*******ELIMINANDO CAMPO EN VISTA*******-->
+          </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>
