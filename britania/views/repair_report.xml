@@ -72,6 +72,12 @@
         <t t-if="o.operations">
             <t t-set="display_discount_p" t-value="any(l.discount for l in o.operations)" />
             <t t-set="display_discount_o" t-value="any(l.discount for l in o.fees_lines)" />
+            <t t-if="display_discount_p">
+                <t t-set="display_discount" t-value="1"/>
+            </t>
+            <t t-if="display_discount_o">
+                <t t-set="display_discount" t-value="1"/>
+            </t>
             <tr class="bg-200 o_line_section"><td colspan="5"><strong>Repuestos</strong></td></tr>
             <tr t-foreach="o.operations" t-as="line">
                 <td>
@@ -86,25 +92,25 @@
                     <td class="text-right">
                         <span t-field="line.price_unit"/>
                     </td>
-                    <t t-if="display_discount_p or display_discount_o">
+                    <t t-if="display_discount == 1">
                         <td class="text-right">
                             <span t-field="line.discount" t-options='{"precision": 2}'/>%
                         </td>
                     </t>
                     <td class="text-right o_price_total">
-                        <span t-field="line.amount_total" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/>
+                        <span t-field="line.price_total" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/>
                    </td>
                 </t>
             </tr>
             <tr>
-                <t t-set="total_ops" t-value="sum(l.amount_total for l in o.operations)"/>
-                <t t-if="display_discount_p">
+                <t t-set="total_ops" t-value="sum(l.price_total for l in o.operations)"/>
+                <t t-if="display_discount == 1">
                     <td colspan="4" class="text-right">Subtotal repuestos: </td>
                     <td class="text-right">
                         <t t-esc="total_ops" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/>
                     </td>
                 </t>
-                <t t-if="not display_discount_p">
+                <t t-if="not display_discount">
                     <td colspan="3" class="text-right">Subtotal repuestos: </td>
                     <td class="text-right">
                         <t t-esc="total_ops" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/>
@@ -118,20 +124,28 @@
         <t t-if="o.fees_lines">
             <t t-set="display_discount_p" t-value="any(l.discount for l in o.operations)" />
             <t t-set="display_discount_o" t-value="any(l.discount for l in o.fees_lines)" />
+            <t t-if="display_discount_p">
+                <t t-set="display_discount" t-value="1"/>
+            </t>
+            <t t-if="display_discount_o">
+                <t t-set="display_discount" t-value="1"/>
+            </t>
             <tr class="bg-200 o_line_section"><td colspan="5"><strong>Servicios</strong></td></tr>
             <tr t-foreach="o.fees_lines" t-as="fees">
-                <t t-if="display_discount_p or display_discount_o">
-                    <td colspan="4">
+                <t t-if="display_discount == 1">
+                    <td>
                         <span t-field="fees.name"/>
                     </td>
                 </t>
-                <t t-if="not display_discount_p or display_discount_o">
-                    <td colspan="3">
+                <t t-if="not display_discount">
+                    <td>
                         <span t-field="fees.name"/>
                     </td>
                 </t>
+                <td></td>
+                <td></td>
                 <t t-if="(fees.repair_id.invoice_method != 'none')">
-                    <t t-if="display_discount_o">
+                    <t t-if="display_discount == 1">
                     <td class="text-right">
                         <span t-field="fees.discount" t-options='{"precision": 2}'/>%
                     </td>
@@ -144,13 +158,13 @@
             </tr>
             <tr>
                 <t t-set="total_fees" t-value="sum(l.amount_total for l in o.fees_lines)"/>
-                <t t-if="display_discount_p or display_discount_o">
+                <t t-if="display_discount == 1">
                     <td colspan="4" class="text-right">Subtotal servicios: </td>
                     <td class="text-right">
                         <t t-esc="total_fees" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/>
                     </td>
                 </t>
-                <t t-if="not display_discount_p or display_discount_o">
+                <t t-if="not display_discount">
                     <td colspan="3" class="text-right">Subtotal servicios: </td>
                     <td class="text-right">
                         <t t-esc="total_fees" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/>
@@ -167,8 +181,7 @@
                         <tr class="border-black o_total">
                             <td><strong>Total</strong></td>
                             <td class="text-right o_price_total">
-                                <span t-field="o.amount_total"
-                                    t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/>
+                                <t t-esc="total_fees + total_ops" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}'/>
                             </td>
                         </tr>
                     </t>

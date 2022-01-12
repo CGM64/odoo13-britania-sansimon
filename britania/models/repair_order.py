@@ -477,12 +477,18 @@ class RepairLine(models.Model):
         return product[field_name] * uom_factor * cur_factor, currency_id
 
     #Funcion que se copio de sale.order.line para el calculo de la linea tomando en cuenta el descuento asignado
-    @api.onchange('product_id', 'price_unit', 'product_uom', 'product_uom_qty', 'tax_id')
+    @api.onchange('product_id', 'price_unit', 'product_uom', 'product_uom_qty', 'tax_id', 'discount', 'repair_id')
     def _onchange_discount(self):
+        print("*******************_onchange_discount********************")
+        print("self.discount", self.discount)
+        print("amount_total", self.amount_total)
+        print("price_subtotal", self.price_subtotal)
+        print("price_total", self.price_total)
         if not (self.product_id and self.product_uom and
                 self.repair_id.partner_id and self.repair_id.pricelist_id and
                 self.repair_id.pricelist_id.discount_policy == 'without_discount' and
                 self.env.user.has_group('product.group_discount_per_so_line')):
+            print("entro al primer if")
             return
 
         self.discount = 0.0
@@ -495,11 +501,21 @@ class RepairLine(models.Model):
             uom=self.product_uom.id,
             fiscal_position=self.env.context.get('fiscal_position')
         )
+        print("***************************************")
+        print("self.discount", self.discount)
+        print("amount_total", self.amount_total)
+        print("price_subtotal", self.price_subtotal)
+        print("price_total", self.price_total)
 
         product_context = dict(self.env.context, partner_id=self.repair_id.partner_id.id, date=self.repair_id.create_date, uom=self.product_uom.id)
 
         price, rule_id = self.repair_id.pricelist_id.with_context(product_context).get_product_price_rule(self.product_id, self.product_uom_qty or 1.0, self.repair_id.partner_id)
         new_list_price, currency = self.with_context(product_context)._get_real_price_currency(product, rule_id, self.product_uom_qty, self.product_uom, self.repair_id.pricelist_id.id)
+        print("***************************************")
+        print("self.discount", self.discount)
+        print("amount_total", self.amount_total)
+        print("price_subtotal", self.price_subtotal)
+        print("price_total", self.price_total)
 
         if new_list_price != 0:
             if self.repair_id.pricelist_id.currency_id != currency:
@@ -510,3 +526,9 @@ class RepairLine(models.Model):
             discount = (new_list_price - price) / new_list_price * 100
             if (discount > 0 and new_list_price > 0) or (discount < 0 and new_list_price < 0):
                 self.discount = discount
+            
+            print("***************************************")
+            print("self.discount", self.discount)
+            print("amount_total", self.amount_total)
+            print("price_subtotal", self.price_subtotal)
+            print("price_total", self.price_total)
