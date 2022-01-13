@@ -1,0 +1,39 @@
+@font-face {
+    font-family: "TriumphBrokman Medium";
+    src: url("/theme_britania/static/src/fonts/TriumphBrokman-Medium.otf");
+}
+
+@font-face {
+    font-family: "TriumphBrokman SemiBold";
+    src: url("/theme_britania/static/src/fonts/TriumphBrokman-DemiBold.otf");
+}
+
+@font-face {
+    font-family: "TriumphBrokman Bold";
+    src: url("/theme_britania/static/src/fonts/TriumphBrokman-Bold.otf");
+}
+
+@font-face {
+    font-family: "TriumphBrokman ExtraBold";
+    src: url("/theme_britania/static/src/fonts/TriumphBrokman-ExtraBold.otf");
+}
+
+* {
+    --font-family: "TriumphBrokman Medium";
+    --font-family-semi-bold: "TriumphBrokman SemiBold";
+    --font-family-bold: "TriumphBrokman Bold";
+    --font-family-extra-bold: "TriumphBrokman ExtraBold";
+    font-family: var(--font-family) !important;
+}
+
+.bri-sb {
+    font-family: var(--font-family-semi-bold) !important;
+}
+
+.bri-b {
+    font-family: var(--font-family-bold) !important;
+}
+
+.bri-eb {
+    font-family: var(--font-family-extra-bold) !important;
+}

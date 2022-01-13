@@ -40,9 +40,9 @@ class TriProduct(models.Model):
     @api.depends('group.group_uti', 'standard_price')
     def _precios_compute(self):
 
-        maritimo_porc = 20
-        aereo_porc = 30
-        courier_porc = 40
+        maritimo_porc = 120
+        aereo_porc = 130
+        courier_porc = 220
         
         for product in self:
             
@@ -61,7 +61,7 @@ class TriProduct(models.Model):
     def calcular_totales(self, porcentaje, precio_standard, group):
         #TASA DE CAMBIO
         tasa_cambio = self.env['res.currency'].search([('name','=','USV')], limit=1)
-        nacionalizacion = (porcentaje / 100)+1
+        nacionalizacion = (porcentaje / 100)
         totales = precio_standard*tasa_cambio.tipo_cambio*nacionalizacion*group
         iva = (12 / 100)+1
         total = totales*iva

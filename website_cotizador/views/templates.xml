@@ -1,0 +1,377 @@
+<odoo>
+    <data>
+
+        <template id="bri_view_cotizador">
+            <t t-call="website.layout">
+                <t t-set="additional_title">
+                    Cotización |
+                    <t t-if="fleet_vehicle" t-esc="fleet_vehicle.name" />
+                </t>
+                <div class="oe_structure">
+
+                    <!-- ENCABEZADO -->
+                    <div t-if="fleet_vehicle and fleet_vehicle.imagen_portada" class="container">
+                        <div class="jumbotron jumbotron-fluid p-0 m-0">
+                            <div class="panel-image text-center" t-if="fleet_vehicle" t-field="fleet_vehicle.imagen_portada" t-options="{'widget': 'image'}" />
+                        </div>
+                    </div>
+
+                    <!--SELECTORES-->
+                    <div class="bg-primary btn-line mt-1 mt-md-4" style="max-heigth: 80px;">
+                        <div class="container">
+                            <ul class="nav nav-pills nav-justified m-auto" id="myTab" role="tablist">
+                                <li class="nav-item text-uppercase" role="presentation">
+                                    <a class="nav-link nav-link-custom h-100 active text-white d-flex align-items-center justify-content-center without-padding" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                                        <div class="icon">
+                                            <div class="bri-icon bri-icon-inicio"></div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="nav-item text-uppercase" role="presentation">
+                                    <a class="nav-link nav-link-custom h-100 text-white d-flex align-items-center justify-content-center without-padding" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">
+                                        <div class="icon">
+                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                            </svg> -->
+                                            <div class="bri-icon bri-icon-informacion"></div>
+                                            <p class="bri-b p-0 m-0">Información</p>
+                                        </div>
+
+                                    </a>
+                                </li>
+                                <li class="nav-item text-uppercase" role="presentation">
+                                    <a class="nav-link nav-link-custom h-100 text-white d-flex align-items-center justify-content-center without-padding" id="detalles-tab" data-toggle="tab" href="#detalles" role="tab" aria-controls="detalles" aria-selected="false">
+                                        <div class="icon">
+                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
+                                                <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                                <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
+                                            </svg> -->
+                                            <div class="bri-icon bri-icon-detalles-tecnicos"></div>
+                                            <p class="bri-b p-0 m-0">Detalles técnicos</p>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="nav-item text-uppercase" role="presentation">
+                                    <a class="nav-link nav-link-custom h-100 text-white d-flex align-items-center justify-content-center without-padding" id="cotizacion-tab" data-toggle="tab" href="#cotizacion" role="tab" aria-controls="cotizacion" aria-selected="false">
+                                        <div class="icon">
+                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+                                            </svg> -->
+                                            <div class="bri-icon bri-icon-cotizacion"></div>
+                                            <p class="bri-b p-0 m-0">Cotización</p>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+                    <!--TABS-->
+                    <div class="container ">
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="container py-5 pb-lg-2 mb-lg-3">
+                                    <div class="row">
+                                        <div class="col-12 col-md-7 contenedor-relativo">
+                                            <h1 class="display-3 font-weight-bold text-uppercase wow animate__animated animate__fadeInLeft" data-wow-delay="0.2s" style="text-shadow: 4px 3px 4px rgba(0, 0, 0, 0.5);">for the ride</h1>
+
+                                            <div t-if="fleet_vehicle" class="swiper">
+                                                <div class="swiper-wrapper">
+                                                    <t t-foreach="fleet_vehicle.fleet_model_ids" t-as="img">
+                                                        <div class="swiper-slide text-center" t-attf-data-color="{{img.color_name}}" t-field="img.image_vehicle_color" t-options="{'widget': 'image'}" />
+                                                    </t>
+                                                </div>
+                                                <div class="swiper-pagination"></div>
+                                                <!-- Si se necestian botones de navegacion -->
+                                                <!-- <div class="swiper-button-prev d-none d-md-block"></div>
+                                                <div class="swiper-button-next d-none d-md-block"></div> -->
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-5 mt-2">
+                                            <h1 class="text-uppercase bri-b">
+                                                <t t-if="f_m_titulo_vehiculo" t-raw="f_m_titulo_vehiculo"></t>
+                                            </h1>
+                                            <p class="text-justify">
+                                                <t t-if="f_m_descripcion_vehiculo" t-raw="f_m_descripcion_vehiculo"></t>
+                                            </p>
+                                            <div class="row mt-5">
+                                                <div class="col-6">
+                                                    <h1 t-if="fleet_vehicle and fleet_vehicle.cuota_desde" class="text-uppercase bri-b">Cuota</h1>
+                                                    <p t-if="fleet_vehicle and fleet_vehicle.cuota_desde" class="text-uppercase bri-b p-0 m-0">desde</p>
+                                                    <h1 t-if="fleet_vehicle and fleet_vehicle.cuota_desde" class="text-uppercase bri-b">
+                                                        <t t-esc="fleet_vehicle and fleet_vehicle.cuota_desde"></t>
+                                                    </h1>
+                                                </div>
+                                                <div class="col-6">
+                                                    <a t-if="fleet_vehicle and fleet_vehicle.ficha_tecnica" t-attf-href="{{ficha_tecnica_url}}" target="_blank" class="text-uppercase text-center" aria-label="Download" title="Download">
+                                                        <div class="text-primary">
+                                                            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-newspaper" viewBox="0 0 16 16">
+                                                                <path d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5v-11zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5H12z" />
+                                                                <path d="M2 3h10v2H2V3zm0 3h4v3H2V6zm0 4h4v1H2v-1zm0 2h4v1H2v-1zm5-6h2v1H7V6zm3 0h2v1h-2V6zM7 8h2v1H7V8zm3 0h2v1h-2V8zm-3 2h2v1H7v-1zm3 0h2v1h-2v-1zm-3 2h2v1H7v-1zm3 0h2v1h-2v-1z" />
+                                                            </svg> -->
+                                                            <div class="bri-icon bri-icon-ficha-tecnica" style="width: 80px; height: 80px;"></div>
+                                                        </div>
+                                                        <p class="p-0 m-0 bri-b">Ficha técnica</p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
+                                <div class="container mt-5">
+                                    <div class="row">
+                                        <t t-foreach="caracteristicas" t-as="c">
+                                            <div class="col-12 col-md-6 animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                <h1 class="text-uppercase bri-b">
+                                                    <t t-raw="c['titulo']"></t>
+                                                </h1>
+                                                <p class="text-justify">
+                                                    <t t-raw="c['descripcion']"></t>
+                                                </p>
+                                            </div>
+                                        </t>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="detalles" role="tabpanel" aria-labelledby="detalles-tab">
+                                <div class="container mt-5 px-3">
+                                    <div class="row without-border">
+                                        <div class="bri-line line-left"></div>
+                                        <div class="bri-line line-top"></div>
+                                        <div class="bri-line line-right"></div>
+                                        <div class="bri-line line-bottom"></div>
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
+                                            <div class="detalle-tecnico-contenedor mt-2 text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
+                                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
+                                                    <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
+                                                </svg> -->
+                                                <div class="bri-icon bri-icon-motor bg-primary" style="width:80px; height:80px;"></div>
+                                            </div>
+                                            <h4 class="bri-b text-center">Motor:</h4>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                <t t-if="fleet_vehicle and fleet_vehicle.descripcion_motor" t-raw="fleet_vehicle.descripcion_motor"></t>
+                                            </p>
+                                        </div>
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
+                                            <div class="detalle-tecnico-contenedor mt-2 text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
+                                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
+                                                    <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
+                                                </svg> -->
+                                                <div class="bri-icon bri-icon-potencia bg-primary" style="width:80px; height:80px"></div>
+                                            </div>
+                                            <h4 class="bri-b text-center">Potencia Par máximo:</h4>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                <t t-if="fleet_vehicle and fleet_vehicle.potencia_par_maximo" t-raw="fleet_vehicle.potencia_par_maximo"></t>
+                                            </p>
+                                        </div>
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
+                                            <div class="detalle-tecnico-contenedor mt-2 text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
+                                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
+                                                    <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
+                                                </svg> -->
+                                                <div class="bri-icon bri-icon-transmision bg-primary" style="width:80px; height:80px"></div>
+                                            </div>
+                                            <h4 class="bri-b text-center">Caja y transmisón</h4>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                <t t-if="fleet_vehicle and fleet_vehicle.caja_y_transmicion" t-raw="fleet_vehicle.caja_y_transmicion"></t>
+                                            </p>
+                                        </div>
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
+                                            <div class="detalle-tecnico-contenedor mt-2 text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
+                                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
+                                                    <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
+                                                </svg> -->
+                                                <div class="bri-icon bri-icon-peso bg-primary" style="width:80px; height:80px"></div>
+                                            </div>
+                                            <h4 class="bri-b text-center">Peso motocicleta</h4>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                <t t-if="fleet_vehicle and fleet_vehicle.peso_motocicleta" t-raw="fleet_vehicle.peso_motocicleta"></t>
+                                            </p>
+                                        </div>
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
+                                            <div class="detalle-tecnico-contenedor mt-2 text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
+                                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
+                                                    <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
+                                                </svg> -->
+                                                <div class="bri-icon bri-icon-altura-sin-espejo bg-primary" style="width:80px; height:80px"></div>
+                                            </div>
+                                            <h4 class="bri-b text-center">Altura sin espejos:</h4>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                <t t-if="fleet_vehicle and fleet_vehicle.altura_sin_espejos" t-raw="fleet_vehicle.altura_sin_espejos"></t>
+                                            </p>
+                                        </div>
+                                        <div class="col-6 col-md-4 py-5 border border-primary">
+                                            <div class="detalle-tecnico-contenedor mt-2 text-center animate__animated animate__fadeInDown" data-wow-delay="0.2s">
+                                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-boxes" viewBox="0 0 16 16">
+                                                    <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z" />
+                                                </svg> -->
+                                                <div class="bri-icon bri-icon-altura-asiento bg-primary" style="width:80px; height:80px"></div>
+                                            </div>
+                                            <h4 class="bri-b text-center">Altura del asiento:</h4>
+                                            <p class="text-center animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                                                <t t-if="fleet_vehicle and fleet_vehicle.altura_del_asiento" t-raw="fleet_vehicle.altura_del_asiento"></t>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="cotizacion" role="tabpanel" aria-labelledby="cotizacion-tab">
+                                <div class="container mt-5">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6 d-none d-md-block">
+                                            <h1 class="display-1 text-center bri-b p-0 m-0">
+                                                <!-- Tarifa en dolares en pantallas medianas o mas grandes -->
+                                                <!-- <t t-esc="tarifa_dolar" /> -->
+                                                <t t-esc="signo_t_dolar" /><t t-esc="'{0:,.2f}'.format(float(tarifa_dolar))" />
+                                            </h1>
+                                        </div>
+                                        <div class="col-12 col-md-6 d-block d-md-none">
+                                            <h1 class="display-4 text-center bri-b p-0 m-0" style="font-size: 3.5rem !important;">
+                                                <!-- Tarifa en dolares en pantallas de movil -->
+                                                <!-- <t t-esc="tarifa_dolar" /> -->
+                                                <t t-esc="signo_t_dolar" /><t t-esc="'{0:,.2f}'.format(float(tarifa_dolar))" />
+                                            </h1>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <h1 class="display-1 text-center bri-b p-0 m-0 d-none d-md-block">
+                                                <!-- Tarifa en quetzales en pantallas medianas o mas grandes -->
+                                                <!-- <t t-esc="tarifa_publica" /> -->
+                                                <t t-esc="signo_t_publica" /><t t-esc="'{0:,.2f}'.format(float(tarifa_publica))" />
+                                            </h1>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <p class="h2 text-primary text-center bri-b text-uppercase">2 AÑOS DE GARANTÍA</p>
+                                            <p class="text-primary text-center text-uppercase">LIBRE DE KILOMETRAJE</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-md-6 d-block">
+                                            <div class="bg-primary text-white p-2 p-md-5">
+                                                <t t-if="fleet_vehicle and fleet_vehicle.cotizacion_dolar" t-raw="fleet_vehicle.cotizacion_dolar" widget="html"></t>
+                                            </div>
+
+                                            <ul class="list-unstyled text-muted pt-3 text-sm">
+                                                <li>* Cuotas no incluyen seguro</li>
+                                                <li>* Aplican restricciones, precios sujetos a taza de cambio del día.</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-12 col-md-6 d-block">
+                                            <h1 class="display-4 text-center bri-b p-0 m-0 d-block d-md-none" style="font-size: 3.5rem !important;">
+                                                <!-- Tarifa en quetzales en pantallas de movil -->
+                                                <!-- <t t-esc="tarifa_publica" /> -->
+                                                <t t-esc="signo_t_publica" /><t t-esc="'{0:,.2f}'.format(float(tarifa_publica))" />
+                                            </h1>
+                                            <div class="bg-primary text-white p-2 p-md-5">
+                                                <t t-if="fleet_vehicle and fleet_vehicle.cotizacion_quetzal" t-raw="fleet_vehicle.cotizacion_quetzal" widget="html"></t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--REDES-->
+                    <div class="w-100 text-center py-2 py-lg-5">
+                        <div class="container text-center">
+                            <a t-if="'social_instagram' in res_company.fields_get() and res_company.social_instagram" t-attf-href="{{res_company.social_instagram}}" class="btn" style="color: black;" target="_blank">
+                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+                                    <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
+                                </svg> -->
+                                <div class="social-icon">
+                                    <img src="/website_cotizador/static/src/img/icons/icon_instagram.png" />
+                                </div>
+                            </a>
+                            <a t-if="'social_facebook' in res_company.fields_get() and res_company.social_facebook" t-attf-href="{{res_company.social_facebook}}" class="btn" style="color: black;" target="_blank">
+                                <!-- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+                                    <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                                </svg> -->
+                                <div class="social-icon">
+                                    <img src="/website_cotizador/static/src/img/icons/icon_facebook.png" />
+                                </div>
+                            </a>
+                            <a t-if="'social_waze' in res_company.fields_get() and res_company.social_waze" t-attf-href="{{res_company.social_waze}}" class="btn" style="color: black;" target="_blank">
+                                <div class="social-icon">
+                                    <img src="/website_cotizador/static/src/img/icons/icon_waze.png" />
+                                </div>
+                            </a>
+                            <a t-if="'social_whatsapp' in res_company.fields_get() and res_company.social_whatsapp" t-attf-href="{{res_company.social_whatsapp}}" class="btn" style="color: black;" target="_blank">
+                                <div class="bri-icon bri-icon-whatsapp" style="width:40px;height:40px;"></div>
+                            </a>
+                            <a t-if="'social_twitter' in res_company.fields_get() and res_company.social_twitter" t-attf-href="{{res_company.social_twitter}}" class="btn" style="color: black;" target="_blank">
+                                <div class="bri-icon bri-icon-twitter" style="width:40px;height:40px;"></div>
+                            </a>
+                            <a t-if="'social_youtube' in res_company.fields_get() and res_company.social_youtube" t-attf-href="{{res_company.social_youtube}}" class="btn" style="color: black;" target="_blank">
+                                <div class="bri-icon bri-icon-youtube" style="width:40px;height:40px;"></div>
+                            </a>
+                            <a t-if="'social_github' in res_company.fields_get() and res_company.social_github" t-attf-href="{{res_company.social_github}}" class="btn" style="color: black;" target="_blank">
+                                <div class="bri-icon bri-icon-github" style="width:40px;height:40px;"></div>
+                            </a>
+                            <a t-if="'social_linkedin' in res_company.fields_get() and res_company.social_linkedin" t-attf-href="{{res_company.social_linkedin}}" class="btn" style="color: black;" target="_blank">
+                                <div class="bri-icon bri-icon-linkedin" style="width:40px;height:40px;"></div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!--BANER MAPA-->
+                    <div class="w-100">
+                        <div class="container banner-map p-0">
+                            <img src="/website_cotizador/static/src/img/concesionario.jpeg" alt="TRIUMPH SALA DE VENTAS, MOTOS" width="100%" />
+                            <div class="blur-banner-map h-100 w-100"></div>
+                        </div>
+                    </div>
+
+                    <!--FOOTER-->
+                    <div class="w-100 bg-dark mt-2">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 col-md-6 text-left d-flex align-items-center">
+                                    <span class="h3 py-2 p-md-0 m-0 text-capitalize text-light bri-b">
+                                        <!-- <t t-esc="res_company.company_registry" /> -->
+                                        <t t-esc="res_company.company_registry" />
+                                    </span>
+                                </div>
+                                <div class="col-12 col-md-6 text-light text-left text-md-right py-3">
+                                    <!--Tel: +502 2384 8030<br /-->
+                                    <span class="p-0 m-0">Tel: </span>
+                                    <t t-esc="res_company.phone" />
+                                    <br />
+                                    <!--Email: info@britania.gt<br /-->
+                                    <span class="p-0 m-0">Email: </span>
+                                    <t t-esc="res_company.email" />
+                                    <br />
+                                    <!--5 avenida 16-48 zona 10, Guatemala City-->
+                                    <t t-esc="res_company.street" />
+                                    ,
+                                    <t t-esc="res_company.city" />
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </template>
+
+        <!--
+        <template id="object">
+          <h1><t t-esc="object.display_name"/></h1>
+          <dl>
+            <t t-foreach="object._fields" t-as="field">
+              <dt><t t-esc="field"/></dt>
+              <dd><t t-esc="object[field]"/></dd>
+            </t>
+          </dl>
+        </template>
+-->
+    </data>
+</odoo>

@@ -1,0 +1,48 @@
+// $white:    #fff !default;
+// $gray-100: #f8f9fa !default;
+// $gray-200: #e9ecef !default;
+// $gray-300: #dee2e6 !default;
+// $gray-400: #ced4da !default;
+// $gray-500: #adb5bd !default;
+// $gray-600: #868e96 !default;
+// $gray-700: #495057 !default;
+// $gray-800: #343a40 !default;
+// $gray-900: #212529 !default;
+// $black:    #000 !default;
+
+// $blue:    #033C73 !default;
+// $indigo:  #6610f2 !default;
+// $purple:  #6f42c1 !default;
+// $pink:    #e83e8c !default;
+$red:     #cd192d !default;
+// $orange:  #fd7e14 !default;
+// $yellow:  #DD5600 !default;
+// $green:   #73A839 !default;
+// $teal:    #20c997 !default;
+// $cyan:    #2FA4E7 !default;
+$cyan: #5f111a !default;
+
+$primary:       $cyan !default;
+// $secondary:     $gray-200 !default;
+// $success:       $green !default;
+// $info:          $blue !default;
+// $warning:       $yellow !default;
+$danger:        $red !default;
+// $light:         $gray-100 !default;
+// $dark:          $gray-800 !default;
+$o-theme-color-palettes: (
+    (
+        'alpha': $primary,//#85AFA8,
+        'beta': #7E566B,
+        'gamma': #85909A,
+        'delta': #969397,
+        'epsilon': #422335,
+    ),
+    // (
+    //     'alpha': #54787D,
+    //     'beta': #6B9997,
+    //     'gamma': #615145,
+    //     'delta': #C6CCA5,
+    //     'epsilon': #412342,
+    // ),
+);

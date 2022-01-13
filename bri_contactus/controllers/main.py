@@ -17,8 +17,11 @@ from odoo.addons.website.controllers.main import Website
 from odoo.addons.website_form.controllers.main import WebsiteForm
 from odoo.osv import expression
 from odoo import api, models
+from odoo.addons.website_crm.controllers.main import WebsiteForm
+from odoo.tools import ustr, pycompat
+#from odoo.addons.base.models.ir_attachment import IrAttachment
 
-class WebsiteSale(http.Controller):
+class WebsiteSale(WebsiteForm):
 
     @http.route(
         [
@@ -40,11 +43,68 @@ class WebsiteSale(http.Controller):
         medio_c =  request.env['crm.medio.contacto']
         lista_medios_c = medio_c.sudo().search([])
 
+        company = request.env.company
+        
         values = {
             'medios': lista_medio,
             'depto' : lista_dp,
             'fleet' : lista_fleet,
             'medio_c' : lista_medios_c,
+            'name': company.company_registry,
+            'phone': company.phone,
         }
 
         return request.render("bri_contactus.bri_contactenos", values)
+
+    @http.route('/website_form/<string:model_name>', type='http', auth="public", methods=['POST'], website=True)
+    def website_form(self, model_name, **kwargs):
+        return_value = super(WebsiteForm, self).website_form(model_name, **kwargs)
+        
+        template = request.env.ref('bri_contactus.confirmate_data_user_email').sudo()
+        if template:
+            model_record = request.env['ir.model'].sudo().search([('model','=',model_name),('website_form_access','=',True)])
+            if model_record and hasattr(request.env[model_name], 'phone_format'):
+                try:
+                    data = self.extract_data(model_record, request.params)
+                except:
+                    pass
+                else:
+                    
+                    # Token en la oportunidad
+                    leads = request.env["crm.lead"].sudo()
+
+                    rs = return_value.get_data().decode('utf-8')
+                    j = json.loads(rs)
+                    id = j.get("id")
+                    
+                    lead = leads.search([
+                        ("id", "=", id)
+                    ])
+
+                    lead.write({'opp_token': leads._generate_token()})
+                    
+                    # Envio de correos
+                    email = request.env['ir.mail_server'].sudo().search([('name','=','correo.contacto')])
+                    
+                    mail_values = {
+                        #'email_from': request.env.user.email_formatted,
+                        'email_from': email.smtp_user,
+                    }
+                    template.write(mail_values)
+                    template.with_context().sudo().send_mail(lead.id, force_send=True, raise_exception=True)
+                    lead.message_post(subject="Correo de confirmación enviado", body="Envío de correo de confirmación de datos validos")
+                    pass
+        
+        return return_value
+
+    @http.route('/lead_verify/', type='http', auth="public", methods=['GET'], website=True)
+    def lead_verify(self, *args):
+        leads = request.env["crm.lead"].sudo()
+        lead = leads.search([
+            ("opp_token", "=", request.params.get('token')),
+        ])
+        if lead:
+            lead.write({ "opp_token": 'COMPLETED'})
+            lead.message_post(subject="Confirmación recibida", body="Confirmación de datos validos por parte del cliente")
+        #lead.message_post(subject="Confirmación recibida", body="Confirmación de datos validos por parte del cliente")
+        return request.render("bri_contactus.validation_page")

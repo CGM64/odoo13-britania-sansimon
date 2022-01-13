@@ -1,0 +1,158 @@
+
+/* ---- ----- -----  MEGA MENU ----- ----- ----- */
+.o_mega_menu-small {
+	width: 80% !important;
+	margin: auto;
+}
+
+.dropdown-menu-center {
+	left: 0 !important;
+	right: 0 !important;
+}
+
+/* ---- ----- ----- Contenedor Controles ----- ----- ----- */
+.contenedor-controles {
+	display: flex;
+	justify-content: end;
+	align-items: end;
+}
+
+.contenedor-controles h3 {
+	color: #fff;
+	font-size: 30px;
+}
+
+.contenedor-controles .indicadores button {
+	background: black;
+	height: 3px;
+	width: 10px;
+	cursor: pointer;
+	border: none;
+	margin-right: 2px;
+}
+
+.contenedor-controles .indicadores button:hover,
+.contenedor-controles .indicadores button.activo {
+	background: red;
+}
+
+
+/* ---- ----- ----- Contenedor Principal y Flechas ----- ----- ----- */
+.custom-carousel {
+	margin-bottom: 70px;
+}
+
+.custom-carousel .contenedor-principal {
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+
+.custom-carousel .contenedor-principal .flecha-izquierda,
+.custom-carousel .contenedor-principal .flecha-derecha {
+	position: absolute;
+	border: none;
+	background: rgba(0,0,0,0.3);
+	font-size: 40px;
+	height: 30%;
+	top: calc(60% - 25%);
+	line-height: 40px;
+	width: 50px;
+	color: #fff;
+	cursor: pointer;
+	z-index: 500;
+	transition: .2s ease all;
+}
+
+.custom-carousel .contenedor-principal .flecha-izquierda:hover,
+.custom-carousel .contenedor-principal .flecha-derecha:hover {
+	background: rgba(0,0,0, .9);
+}
+
+.custom-carousel .contenedor-principal .flecha-izquierda {
+	left: 0;
+}
+
+.custom-carousel .contenedor-principal .flecha-derecha {
+	right: 0;
+}
+
+/* ---- ----- ----- Carousel ----- ----- ----- */
+.custom-carousel .contenedor-carousel {
+	width: 100%;
+	padding: 10px 0px;
+	overflow: hidden;
+	scroll-behavior: smooth;
+}
+
+.custom-carousel .contenedor-carousel .carousel {
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+.custom-carousel .contenedor-carousel .carousel .custom-carousel-item {
+	min-width: calc(100%/3);
+    transition: .3s ease all;
+    padding: 25px;
+    /*box-shadow: 5px 5px 10px rgba(0,0,0, .3);*/
+}
+
+.custom-carousel .contenedor-carousel .carousel .custom-carousel-item.hover {
+	transform: scale(1.2);
+    z-index: 3;
+	transform-origin: center;
+}
+
+.custom-carousel .contenedor-carousel .carousel .custom-carousel-item .carousel-item-content {
+	width: 100%; 
+	vertical-align: top;
+}
+
+/* ---- ----- ----- Media Queries ----- ----- ----- */
+@media screen and (max-width: 900px) {
+	
+    .custom-carousel .contenedor-carousel {
+		overflow: visible;
+	}
+
+	.custom-carousel .contenedor-carousel .carousel {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 20px;
+	}
+
+	.custom-carousel .indicadores,
+	.custom-carousel .flecha-izquierda,
+	.custom-carousel .flecha-derecha {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.custom-carousel .contenedor-carousel {
+		overflow: visible;
+	}
+
+	.custom-carousel .contenedor-carousel .carousel {
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		gap: 20px;
+	}
+
+	.custom-carousel .indicadores,
+	.custom-carousel .flecha-izquierda,
+	.custom-carousel .flecha-derecha {
+		display: none;
+	}
+}
+
+.snippet_three_buttons_bar {
+
+    &.opt_shadow img {
+        box-shadow: 0 2px 5px rgba(51, 51, 51, 0.4);
+    }
+    &.opt_grey_bg {
+        border: none;
+        background-color: #FFF;
+    }
+}

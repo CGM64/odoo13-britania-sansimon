@@ -49,6 +49,7 @@ class FleetVehicle(models.Model):
                                  required=True,copy=True)
     pedido = fields.Char(string='No. Pedido',required=False,copy=True)
 
+
     @api.model
     def create(self, vals):
         """Overrridden method to update the product information."""

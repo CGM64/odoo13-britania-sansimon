@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="validation_page" name="validation info page">
+        <t t-call="website.layout">
+            <t t-set="title">Datos validados</t>
+            <div class="oe_structure">
+                <div class="container mt-5 text-center">
+                    <h1 class="display-3">¡Felicidades!</h1>
+                    <p>Su información ha sido validada correctamente, en breve alguien se comunicara con usted.</p>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
