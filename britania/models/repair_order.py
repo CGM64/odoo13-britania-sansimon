@@ -46,7 +46,6 @@ class repairOrder(models.Model):
     #     print("costo_fees_lines> ",costo_fees_lines)
     #     print("costo_repair_line> ",costo_repair_line)
     #     self.costo=costo_fees_lines
-
     #Función para asignar el costo a las órdenes que no tienen.
     def asignar_costo(self):
         # print("--------------------------Entro a asignar costo--------------------------")
@@ -270,6 +269,32 @@ class repairOrder(models.Model):
 
         return dict((repair.id, repair.invoice_id.id) for repair in repairs)
 
+    @api.depends('operations.price_subtotal', 'invoice_method', 'fees_lines.price_subtotal', 'pricelist_id.currency_id','operations.discount','fees_lines.discount')
+    def _amount_untaxed(self):
+        for order in self:
+            total = sum(operation.price_subtotal for operation in order.operations)
+            total += sum(fee.price_subtotal for fee in order.fees_lines)
+            order.amount_untaxed = order.pricelist_id.currency_id.round(total)
+
+    @api.depends('operations.price_unit', 'operations.product_uom_qty', 'operations.product_id',
+                 'fees_lines.price_unit', 'fees_lines.product_uom_qty', 'fees_lines.product_id',
+                 'pricelist_id.currency_id', 'partner_id','operations.discount','fees_lines.discount')
+    def _amount_tax(self):
+        for order in self:
+            val = 0.0
+            for operation in order.operations:
+                if operation.tax_id:
+                    price = operation.price_unit * (1 - (operation.discount or 0.0) / 100.0)
+                    tax_calculate = operation.tax_id.compute_all(price, order.pricelist_id.currency_id, operation.product_uom_qty, operation.product_id, order.partner_id)
+                    for c in tax_calculate['taxes']:
+                        val += c['amount']
+            for fee in order.fees_lines:
+                if fee.tax_id:
+                    tax_calculate = fee.tax_id.compute_all(fee.price_unit, order.pricelist_id.currency_id, fee.product_uom_qty, fee.product_id, order.partner_id)
+                    for c in tax_calculate['taxes']:
+                        val += c['amount']
+            order.amount_tax = val
+
 class RepairFee(models.Model):
     _inherit = "repair.fee"
 
@@ -375,7 +400,19 @@ class RepairFee(models.Model):
                 print(discount)
                 self.discount = discount
 
+    @api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id','discount')
+    def _compute_price_subtotal(self):
+        for fee in self:
+            price = fee.price_unit * (1 - (fee.discount or 0.0) / 100.0)
+            taxes = fee.tax_id.compute_all(price, fee.repair_id.pricelist_id.currency_id, fee.product_uom_qty, fee.product_id, fee.repair_id.partner_id)
+            fee.price_subtotal = taxes['total_excluded']
 
+    @api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id', 'tax_id','discount')
+    def _compute_price_total(self):
+        for fee in self:
+            price = fee.price_unit * (1 - (fee.discount or 0.0) / 100.0)
+            taxes = fee.tax_id.compute_all(price, fee.repair_id.pricelist_id.currency_id, fee.product_uom_qty, fee.product_id, fee.repair_id.partner_id)
+            fee.price_total = taxes['total_included']
 class RepairLine(models.Model):
     _inherit = "repair.line"
 
@@ -479,16 +516,10 @@ class RepairLine(models.Model):
     #Funcion que se copio de sale.order.line para el calculo de la linea tomando en cuenta el descuento asignado
     @api.onchange('product_id', 'price_unit', 'product_uom', 'product_uom_qty', 'tax_id', 'discount', 'repair_id')
     def _onchange_discount(self):
-        print("*******************_onchange_discount********************")
-        print("self.discount", self.discount)
-        print("amount_total", self.amount_total)
-        print("price_subtotal", self.price_subtotal)
-        print("price_total", self.price_total)
         if not (self.product_id and self.product_uom and
                 self.repair_id.partner_id and self.repair_id.pricelist_id and
                 self.repair_id.pricelist_id.discount_policy == 'without_discount' and
                 self.env.user.has_group('product.group_discount_per_so_line')):
-            print("entro al primer if")
             return
 
         self.discount = 0.0
@@ -501,21 +532,11 @@ class RepairLine(models.Model):
             uom=self.product_uom.id,
             fiscal_position=self.env.context.get('fiscal_position')
         )
-        print("***************************************")
-        print("self.discount", self.discount)
-        print("amount_total", self.amount_total)
-        print("price_subtotal", self.price_subtotal)
-        print("price_total", self.price_total)
 
         product_context = dict(self.env.context, partner_id=self.repair_id.partner_id.id, date=self.repair_id.create_date, uom=self.product_uom.id)
 
         price, rule_id = self.repair_id.pricelist_id.with_context(product_context).get_product_price_rule(self.product_id, self.product_uom_qty or 1.0, self.repair_id.partner_id)
         new_list_price, currency = self.with_context(product_context)._get_real_price_currency(product, rule_id, self.product_uom_qty, self.product_uom, self.repair_id.pricelist_id.id)
-        print("***************************************")
-        print("self.discount", self.discount)
-        print("amount_total", self.amount_total)
-        print("price_subtotal", self.price_subtotal)
-        print("price_total", self.price_total)
 
         if new_list_price != 0:
             if self.repair_id.pricelist_id.currency_id != currency:
@@ -526,9 +547,3 @@ class RepairLine(models.Model):
             discount = (new_list_price - price) / new_list_price * 100
             if (discount > 0 and new_list_price > 0) or (discount < 0 and new_list_price < 0):
                 self.discount = discount
-            
-            print("***************************************")
-            print("self.discount", self.discount)
-            print("amount_total", self.amount_total)
-            print("price_subtotal", self.price_subtotal)
-            print("price_total", self.price_total)
