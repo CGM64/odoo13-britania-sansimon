@@ -3,6 +3,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from odoo.http import request
+from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
@@ -50,6 +51,17 @@ class SaleOrder(models.Model):
             order.update({
                 'amount_total_undiscounted': total,
             })
+
+    def action_confirm(self):
+        rslt=super(SaleOrder,self).action_confirm()
+        if self.user_has_groups('britania.sale_group_acceso_desc'):
+            porcentaje_maximo=self.team_id.porcentaje_maximo_lider
+        else:
+            porcentaje_maximo=self.team_id.porcentaje_maximo
+        for line in self.order_line:
+            if line.discount >porcentaje_maximo:
+                raise UserError(_("El porcentaje de descuento es mayor al porcentaje permitido en la linea del producto %s.") % (line.product_id.name))
+        return  rslt
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"

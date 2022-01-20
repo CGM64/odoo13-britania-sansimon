@@ -45,7 +45,8 @@
         'data/res_partner_data.xml',
         'views/fleet_vehicle.xml',
         'views/repair_report_analisis.xml',
-        'views/repair_order.xml',       
+        'views/repair_order.xml',
+        'data/sale_group_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

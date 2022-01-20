@@ -32,8 +32,16 @@ class RepairType(models.Model):
 class repairOrder(models.Model):
     _inherit = "repair.order"
 
+    @api.model
+    def _get_default_team(self):
+        return self.env['crm.team']._get_default_team_id()
+
     #CALCULANDO EL COSTO PARA COLOCARLO EN EL INFORME DE REPARACIONES
     guarantee_limit = fields.Date('Warranty Expiration', default=datetime.today(),states={'draft': [('readonly', True)]})
+    team_id = fields.Many2one(
+        'crm.team', 'Sales Team',
+        change_default=True, default=_get_default_team, check_company=True,  # Unrequired company
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
     # costo = fields.Float(string="Costo",store=True, compute="_compute_costo")
     # @api.depends('pricelist_id','product_qty','fees_lines.product_id','fees_lines.product_uom_qty','fees_lines.price_unit','fees_lines.discount',)
@@ -63,8 +71,12 @@ class repairOrder(models.Model):
                 costo=(line.product_id.product_tmpl_id.standard_price) * (line.product_uom_qty)
                 # print('     >',line.product_id.product_tmpl_id.standard_price,' Producto ', line.product_id.name, ' Tipo', line.product_id.type)
                 line.costo=costo
-                
-                
+    
+    #Función para obtener el vin de la orden de reparación
+    def obtnener_vin(self):
+        fleet = self.env['fleet.vehicle'].search([('id','=',self.product_id.id)])
+        vin = fleet.vin_sn
+        return vin  
 
     @api.model
     def _default_stock_location(self):
@@ -294,7 +306,20 @@ class repairOrder(models.Model):
                     for c in tax_calculate['taxes']:
                         val += c['amount']
             order.amount_tax = val
-
+            
+    def action_validate(self):
+        repair = super(repairOrder,self).action_validate()
+        if self.user_has_groups('britania.sale_group_acceso_desc'):
+            porcentaje_maximo=self.team_id.porcentaje_maximo_lider
+        else:
+            porcentaje_maximo=self.team_id.porcentaje_maximo
+        for line in self.operations:
+            if line.discount >porcentaje_maximo:
+                raise UserError(_("El porcentaje de descuento es mayor al porcentaje permitido en la linea piezas del producto %s.") % (line.product_id.name))
+        for line in self.fees_lines:
+            if line.discount >porcentaje_maximo:
+                raise UserError(_("El porcentaje de descuento es mayor al porcentaje permitido en la linea operaciones del producto %s.") % (line.product_id.name))
+        return repair
 class RepairFee(models.Model):
     _inherit = "repair.fee"
 
