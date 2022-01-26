@@ -74,7 +74,7 @@ class repairOrder(models.Model):
     
     #Función para obtener el vin de la orden de reparación
     def obtnener_vin(self):
-        fleet = self.env['fleet.vehicle'].search([('id','=',self.product_id.id)])
+        fleet = self.env['fleet.vehicle'].search([('product_id','=',self.product_id.id)])
         vin = fleet.vin_sn
         return vin  
 

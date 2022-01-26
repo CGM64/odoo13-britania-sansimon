@@ -142,13 +142,11 @@
                         <tr class="border-0">
                             <th class="border-0">DESCRIPCIÓN</th>
                             <th class="text-right border-0">CANTIDAD</th>
-                            <t t-if="o.invoice_method != 'none'">
-                                <th class="text-right border-0">PRECIO UNIT.</th>
-                                <t t-if="display_discount_p or display_discount_o">
-                                    <th class="text-right border-0">DESC.</th>
-                                </t>
-                                <th class="text-right border-0">PRECIO</th>
+                            <th class="text-right border-0">PRECIO UNIT.</th>
+                            <t t-if="display_discount_p or display_discount_o">
+                                <th class="text-right border-0">DESC.</th>
                             </t>
+                            <th class="text-right border-0">PRECIO</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -174,20 +172,18 @@
                                     <span t-field="line.product_uom_qty" />
                                     <span groups="uom.group_uom" t-field="line.product_uom.name" />
                                 </td>
-                                <t t-if="(line.repair_id.invoice_method != 'none')">
+                                <td class="text-right border-0">
+                                    <span t-field="line.price_unit" />
+                                </td>
+                                <t t-if="display_discount == 1">
                                     <td class="text-right border-0">
-                                        <span t-field="line.price_unit" />
-                                    </td>
-                                    <t t-if="display_discount == 1">
-                                        <td class="text-right border-0">
-                                            <span t-field="line.discount" t-options='{"precision": 2}' />
-                                            %
-                                        </td>
-                                    </t>
-                                    <td class="text-right o_price_total border-0">
-                                        <span t-field="line.price_total" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}' />
+                                        <span t-field="line.discount" t-options='{"precision": 2}' />
+                                        %
                                     </td>
                                 </t>
+                                <td class="text-right o_price_total border-0">
+                                    <span t-field="line.price_total" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}' />
+                                </td>
                             </tr>
                             <tr>
                                 <t t-set="total_ops" t-value="sum(l.price_total for l in o.operations)" />
@@ -232,14 +228,14 @@
                                 </t>
                                 <td class="border-0"></td>
                                 <td class="border-0"></td>
-                                <t t-if="(fees.repair_id.invoice_method != 'none')">
-                                    <t t-if="display_discount == 1">
-                                        <td class="border-0"></td>
-                                    </t>
-                                    <td class="text-right o_price_total border-0">
-                                        <span t-field="fees.amount_total" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}' />
+                                <t t-if="display_discount == 1">
+                                    <td class="border-0">
+                                        <span t-field="fees.discount" />
                                     </td>
                                 </t>
+                                <td class="text-right o_price_total border-0">
+                                    <span t-field="fees.amount_total" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}' />
+                                </td>
                             </tr>
                             <tr>
                                 <t t-set="total_fees" t-value="sum(l.amount_total for l in o.fees_lines)" />
@@ -289,6 +285,12 @@
 
     <!-- Reporte pedido-->
     <template id="custom_report_sale" inherit_id="sale.report_saleorder_document" name="custom_report_sale">
+
+        <xpath expr="/t/t/div/table/tbody/t[2]/tr/t[1]/td[1]" position="replace">
+            <td>
+              <span t-field="line.product_id.name"/>
+            </td>
+        </xpath>
 
         <xpath expr="//th[@name='th_taxes']" position="replace">
             <th name="th_taxes" class="text-right">Total</th>
