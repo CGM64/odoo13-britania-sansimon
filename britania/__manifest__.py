@@ -47,6 +47,7 @@
         'views/repair_report_analisis.xml',
         'views/repair_order.xml',
         'data/sale_group_data.xml',
+        'report/account_payment.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

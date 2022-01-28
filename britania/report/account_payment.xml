@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <template id="britania.account_pay">
+            <t t-call="web.basic_layout">
+                <div class="header">
+                    <div class="o_boxed_header">
+                        <div class="row mb8">
+                            <div class="col-4">
+                                <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" alt="Logo" />
+                            </div>
+                            <div class="col-8  text-center">
+                                <h4 class="mt0" t-field="o.company_id.company_registry" />
+                                <h6 class="mt0" t-field="o.company_id.display_street" />
+                                <h6 class="mt0">
+                                    <span>Teléfono:
+                      </span>
+                                    <span t-field="o.company_id.phone" />
+                                    <span>, Nit:
+                      </span>
+                                    <span t-field="o.company_id.vat" />
+                                    <br />
+                                </h6>
+                                <h6 class="mt0">
+                                    <span>Web:
+                      </span>
+                                    <span t-field="o.company_id.display_website" />
+                                    <span>, Correo:
+                      </span>
+                                    <span t-field="o.company_id.email" />
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page">
+                    <link rel="stylesheet" href="/britania/static/src/css/receipt.css" />
+                    <strong>
+                        <h2>
+                            <span>Recibo de Pago</span>
+                            <span> nº:</span>
+                            <span t-field="o.name" />
+                        </h2>
+                    </strong>
+                    <div class="oe_structure" />
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 text-right letra_general">
+                                FECHA DE PAGO:
+                                <span t-field="o.payment_date" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 text-left letra_general border border-dark">
+                                <span>CLIENTE:</span>
+                                <span t-field="o.partner_id.name" />
+                                <br />
+                                <span>METODO DE PAGO:</span>
+                                <span t-field="o.payment_method_id" />
+                                <br />
+                                <span>DIARIO:</span>
+                                <span t-field="o.journal_id.name" />
+                            </div>
+                            <div class="col-6 text-left letra_general border border-left-0 border-dark">
+                                <span>FACTURAS:</span>
+                                <t t-foreach="o.reconciled_invoice_ids" t-as="fact">
+                                    <span t-esc="fact.name" />
+                                </t>
+                                <br />
+                                <span>ATENDIDO POR:</span>
+                                <span t-field="o.create_uid.name" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-left letra_general border border-top-0 border-dark">
+                                <span>COMENTARIOS:</span>
+                                <span t-field="o.comentarios" />
+                                <br />
+                                <span>OBSERVACIONES:</span>
+                                <span t-field="o.observaciones" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-right letra_total_bold">
+                                <span>TOTAL RECIBIDO:</span>
+                                <span t-field="o.amount" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <hr style="border-color:black;" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <ul class="list-inline">
+                            <li t-if="o.company_id.phone" class="list-inline-item">
+                                Tel:
+                                <span t-field="o.company_id.phone" />
+                            </li>
+                            <li t-if="o.company_id.email" class="list-inline-item">
+                                Mail:
+                                <span t-field="o.company_id.email" />
+                            </li>
+                            <li t-if="o.company_id.website" class="list-inline-item">
+                                Web:
+                                <span t-field="o.company_id.display_website" />
+                            </li>
+                            <li t-if="o.company_id.vat" class="list-inline-item">
+                                <t t-esc="o.company_id.country_id.vat_label or 'Tax ID'" />
+                                :
+                                <span t-field="o.company_id.vat" />
+                            </li>
+                        </ul>
+                        <div t-field="o.company_id.report_footer" />
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="britania.account_payment">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="britania.account_pay" />
+                </t>
+            </t>
+        </template>
+
+        <record id="m_carta_britania" model="report.paperformat">
+            <field name="name">Papel media Carta</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">139</field>
+            <field name="page_width">215</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">45</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">39</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <report id="reporte_recibo_britania" name="britania.account_payment" file="britania.account_payment" model="account.payment" report_type="qweb-pdf" string="Recibo de pago" attachment_use="False" menu="True" paperformat="m_carta_britania" />
+
+    </data>
+</odoo>
