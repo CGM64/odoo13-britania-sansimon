@@ -43,33 +43,16 @@ class repairOrder(models.Model):
         change_default=True, default=_get_default_team, check_company=True,  # Unrequired company
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
 
-    # costo = fields.Float(string="Costo",store=True, compute="_compute_costo")
-    # @api.depends('pricelist_id','product_qty','fees_lines.product_id','fees_lines.product_uom_qty','fees_lines.price_unit','fees_lines.discount',)
-    # def _compute_costo(self):
-    #     print("--------------------------------------------------")
-    #     print("test de que llego al _compute_standard_price ")
-    #     print("--------------------------------------------------")
-    #     costo_fees_lines = sum(line.costo for line in self.fees_lines)
-    #     costo_repair_line = sum(line.costo for line in self.repair_line)
-    #     print("costo_fees_lines> ",costo_fees_lines)
-    #     print("costo_repair_line> ",costo_repair_line)
-    #     self.costo=costo_fees_lines
-    #Función para asignar el costo a las órdenes que no tienen.
+
     def asignar_costo(self):
-        # print("--------------------------Entro a asignar costo--------------------------")
         repair_orders=self.env['repair.order'].search([])
         for order in repair_orders:
-            # print("Orden de reparacion",order.name)
             for line in order.fees_lines:
-                # print("Fee Line")
                 costo=(line.product_id.product_tmpl_id.standard_price) * (line.product_uom_qty)
-                # print('     >',line.product_id.product_tmpl_id.standard_price,' Producto ', line.product_id.name, ' Tipo', line.product_id.type)
                 line.costo=costo
                 
             for line in order.operations:
-                # print("Repair Line")
                 costo=(line.product_id.product_tmpl_id.standard_price) * (line.product_uom_qty)
-                # print('     >',line.product_id.product_tmpl_id.standard_price,' Producto ', line.product_id.name, ' Tipo', line.product_id.type)
                 line.costo=costo
     
     #Función para obtener el vin de la orden de reparación
@@ -319,6 +302,14 @@ class repairOrder(models.Model):
         for line in self.fees_lines:
             if line.discount >porcentaje_maximo:
                 raise UserError(_("El porcentaje de descuento es mayor al porcentaje permitido en la linea operaciones del producto %s.") % (line.product_id.name))
+        
+        #VALIDAR EXISTENCIA EN LA ORDEN DE REPARACIÓN
+        for line in self.operations:
+            stock_quant=self.env['stock.quant'].search([('location_id','=',line.location_id.id),('product_id','=',line.product_id.id)])
+            existencia=sum(l.quantity for l in stock_quant)
+            if existencia < line.product_uom_qty:
+                raise UserError(_("Producto sin existencia suficiente: %s.") % (line.product_id.name))          
+        
         return repair
 class RepairFee(models.Model):
     _inherit = "repair.fee"
