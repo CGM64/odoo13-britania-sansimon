@@ -307,8 +307,8 @@ class repairOrder(models.Model):
         for line in self.operations:
             stock_quant=self.env['stock.quant'].search([('location_id','=',line.location_id.id),('product_id','=',line.product_id.id)])
             existencia=sum(l.quantity for l in stock_quant)
-            if existencia < line.product_uom_qty:
-                raise UserError(_("Producto sin existencia suficiente: %s.") % (line.product_id.name))          
+            #if existencia < line.product_uom_qty:
+            #    raise UserError(_("Producto sin existencia suficiente: %s.") % (line.product_id.name))          
         
         return repair
 class RepairFee(models.Model):
