@@ -31,6 +31,7 @@ class PurchaseOrderLine(models.Model):
                 'price_total': taxes['total_included'],
                 'price_subtotal': taxes['total_excluded'],
             })
+            aplica_calculo = False
             
             if taxes and line:
                 tasa = 1
@@ -44,11 +45,13 @@ class PurchaseOrderLine(models.Model):
                         if impuesto.impuesto_sat == 'iva':
                             iva = tax['amount']
                         if impuesto.impuesto_sat == 'isr':
+                            if impuesto.amount_type == 'code':
+                                aplica_calculo = True
                             isr = tax['amount']
                         if impuesto.impuesto_sat == 'retencion_iva':
                             retencion_iva = tax['amount']
                     base = tax['base']
-                    if isr != 0 or retencion_iva != 0:
+                    if (isr != 0 or retencion_iva != 0) and aplica_calculo:
                         base = (base)*tasa
                         account_move = self.env['account.move']
                         impuesto_isr = account_move.sudo().get_amount_isr(base,'FAC')
