@@ -52,12 +52,14 @@ class StockMovePeriodoXls(models.AbstractModel):
         for producto in productos:
             Move = self.env['stock.move']
             domain_quant_loc, domain_move_in_loc, domain_move_out_loc = producto.with_context(company_owned=True)._get_domain_locations()
-            domain_move_in = [('product_id', '=', producto.id),('state', '=', 'done'), ('date', '>=', fecha_inicio), ('date', '<=', fecha_fin)] + domain_move_in_loc
+
+            domain_move_in = ['&', ('location_dest_id.company_id', '=', 1), '|', ('location_id.company_id', '=', False), '&', 
+            ('location_id.usage', 'in', ['inventory', 'production','supplier']),('location_id.company_id', '=', 1),('product_id', '=', producto.id),
+            ('state', '=', 'done'), ('date', '>=', fecha_inicio), ('date', '<=', fecha_fin)] 
             domain_move_out = [('product_id', '=', producto.id),('state', '=', 'done'), ('date', '>=', fecha_inicio), ('date', '<=', fecha_fin)] + domain_move_out_loc
 
             moves_in_res = dict((item['product_id'][0], item['product_qty']) for item in Move.read_group(domain_move_in, ['product_id', 'product_qty'], ['product_id'], orderby='id'))
             moves_out_res = dict((item['product_id'][0], item['product_qty']) for item in Move.read_group(domain_move_out, ['product_id', 'product_qty'], ['product_id'], orderby='id'))
-
 
             i+=1
             sheet_libro.write(i,0,i)
