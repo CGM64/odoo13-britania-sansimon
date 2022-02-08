@@ -10,7 +10,56 @@ from odoo.tools.float_utils import float_compare
 from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tools.misc import formatLang, get_lang
 
+class PurchaseOrderLine(models.Model):
 
+    _inherit = "purchase.order.line"
+    
+    @api.depends('product_qty', 'price_unit', 'taxes_id')
+    def _compute_amount(self):
+        for line in self:
+            iva = base = isr = retencion_iva = 0
+            vals = line._prepare_compute_all_values()
+            taxes = line.taxes_id.compute_all(
+                vals['price_unit'],
+                vals['currency_id'],
+                vals['product_qty'],
+                vals['product'],
+                vals['partner'])
+                        
+            line.update({
+                'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
+                'price_total': taxes['total_included'],
+                'price_subtotal': taxes['total_excluded'],
+            })
+            aplica_calculo = False
+            
+            if taxes and line:
+                tasa = 1
+                if line.order_id.currency_id.name != 'GTQ':
+                    rate = line.order_id.currency_id.with_context(date=line.order_id.date_order).rate
+                    tasa = 1 / rate
+
+                for tax in taxes.get('taxes', []):
+                    impuesto = self.env['account.tax'].sudo().search([('name', '=', tax['name'])],limit=1)
+                    if tax and impuesto:
+                        if impuesto.impuesto_sat == 'iva':
+                            iva = tax['amount']
+                        if impuesto.impuesto_sat == 'isr':
+                            if impuesto.amount_type == 'code':
+                                aplica_calculo = True
+                            isr = tax['amount']
+                        if impuesto.impuesto_sat == 'retencion_iva':
+                            retencion_iva = tax['amount']
+                    base = tax['base']
+                    if (isr != 0 or retencion_iva != 0) and aplica_calculo:
+                        base = (base)*tasa
+                        account_move = self.env['account.move']
+                        impuesto_isr = account_move.sudo().get_amount_isr(base,'FAC')
+                        line.update({
+                            'price_tax': impuesto_isr/tasa,
+                            'price_total': taxes['total_included'],
+                            'price_subtotal': taxes['total_excluded'],
+                        })
 class PurchaseOrder(models.Model):
 
     _inherit = "purchase.order"

@@ -339,8 +339,8 @@ class AccountMove(models.Model):
                     factura.fac_numero = resultado["Numero"]
 
                     fecha_certificacion = fields.datetime.strptime(fecha_certificacion, '%Y-%m-%dT%H:%M:%S')
-                    offset = fields.datetime.now(pytz.timezone(self.env.user.tz or 'UTC')).utcoffset()
-                    fecha_certificacion = fecha_certificacion + offset
+                    #offset = fields.datetime.now(pytz.timezone(self.env.user.tz or 'UTC')).utcoffset()
+                    fecha_certificacion = fecha_certificacion #+ offset
                     factura.fecha_certificacion = fecha_certificacion
                     #factura.message_post(subject='FEL', body=resultado)
 
