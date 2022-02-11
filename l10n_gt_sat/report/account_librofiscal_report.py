@@ -53,7 +53,6 @@ class AccountCommonJournalReport(models.TransientModel):
         fecha_del = '%s-%s-01' % (ejercicio, periodo)
         fecha_al = '%s-%s-%s' % (ejercicio, periodo, ultimo_diadelmes)
 
-
         for libro in libros:
             journals = self.env['account.journal'].search([('invoice_receipt','=',True),('type', '=', libro['libro']),('company_id', '=', company_id)])
             tipo_libro = {}
@@ -77,10 +76,7 @@ class AccountCommonJournalReport(models.TransientModel):
             concepto_iva['sat_importa_out_ca'] = concepto_iva['sat_importa_out_ca_iva'] = 0.0
             concepto_iva['sat_exportacion_in_ca'] = 0
 
-
-
             lista_top_documentos = {}
-
             for journal in journals:
                 domain = [
                     ('company_id', '=', company_id),
@@ -154,14 +150,16 @@ class AccountCommonJournalReport(models.TransientModel):
                     day_to_year = documento.invoice_date.timetuple().tm_yday #Obtengo el dia del anio para utilizarlo como llave
 
                     libro_resumido_linea = {}
+                    dia_documento="{}_{}".format(documento.journal_id.code,day_to_year)
                     libro_resumido_linea['no_linea'] = 0
+                    libro_resumido_linea['codigo'] = documento.journal_id.code
                     libro_resumido_linea['dia'] = documento.invoice_date
                     libro_resumido_linea['fecha'] = documento.invoice_date.strftime('%d/%m/%Y')
 
-
-                    if day_to_year in libro_resumido:
-                        libro_resumido_linea = libro_resumido[day_to_year]
+                    if dia_documento in libro_resumido:
+                        libro_resumido_linea = libro_resumido[dia_documento]
                     else:
+                        libro_resumido_linea['total_documentos'] = 0
                         libro_resumido_linea['sat_servicio'] = 0.0
                         libro_resumido_linea['sat_bien'] = 0.0
                         libro_resumido_linea['sat_subtotal'] = 0.0
@@ -174,6 +172,7 @@ class AccountCommonJournalReport(models.TransientModel):
                         libro_resumido_linea['sat_importa_in_ca'] = 0.0
                         libro_resumido_linea['sat_importa_out_ca'] = 0.0
 
+                    libro_resumido_linea['total_documentos'] = libro_resumido_linea['total_documentos'] + 1
                     libro_resumido_linea['sat_servicio'] = libro_resumido_linea['sat_servicio'] + documento.sat_servicio
                     libro_resumido_linea['sat_importa_in_ca'] = libro_resumido_linea['sat_importa_in_ca'] + documento.sat_importa_in_ca
                     libro_resumido_linea['sat_importa_out_ca'] = libro_resumido_linea['sat_importa_out_ca'] + documento.sat_importa_out_ca
@@ -185,7 +184,8 @@ class AccountCommonJournalReport(models.TransientModel):
                     libro_resumido_linea['sat_exento'] = libro_resumido_linea['sat_exento'] + documento.sat_exento
                     libro_resumido_linea['sat_combustible'] = libro_resumido_linea['sat_combustible'] + documento.sat_combustible
                     libro_resumido_linea['sat_base'] = libro_resumido_linea['sat_base'] + documento.sat_base
-                    libro_resumido[day_to_year] = libro_resumido_linea
+                    libro_resumido[dia_documento] = libro_resumido_linea
+
 
 
             concepto_iva['servicio_total'] = concepto_iva['servicio'] +  concepto_iva['servicio_iva']
@@ -201,7 +201,7 @@ class AccountCommonJournalReport(models.TransientModel):
             tipo_libro['facturas'] = facturas
             prueba = sorted(libro_resumido.items())
             tipo_libro['resumido'] = prueba
-            print(prueba)
+            # print(prueba)
 
             
 
@@ -244,6 +244,7 @@ class AccountCommonJournalReport(models.TransientModel):
             tipo_libro['top10_documentos_diferencia'] = lista_top10_documentos_diferencia
             tipo_libro['top10_documentos_total'] = lista_top10_documentos_total
             libro_fiscal.append(tipo_libro)
+            # print(tipo_libro)
 
 
         # print('libro_fiscal',libro_fiscal)
