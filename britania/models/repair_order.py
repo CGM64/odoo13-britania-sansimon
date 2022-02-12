@@ -307,8 +307,8 @@ class repairOrder(models.Model):
         for line in self.operations:
             stock_quant=self.env['stock.quant'].search([('location_id','=',line.location_id.id),('product_id','=',line.product_id.id)])
             existencia=sum(l.quantity for l in stock_quant)
-            #if existencia < line.product_uom_qty:
-            #    raise UserError(_("Producto sin existencia suficiente: %s.") % (line.product_id.name))          
+            if existencia < line.product_uom_qty:
+                raise UserError(_("Producto sin existencia suficiente: %s.") % (line.product_id.name))          
         
         return repair
 class RepairFee(models.Model):
@@ -380,8 +380,6 @@ class RepairFee(models.Model):
     #Funcion que se copio de sale.order.line para el calculo de la linea tomando en cuenta el descuento asignado
     @api.onchange('product_id', 'price_unit', 'product_uom', 'product_uom_qty', 'tax_id')
     def _onchange_discount(self):
-        print("jajajajaj si llego hasta aqui, vamos a ver que pasa ------------------------------")
-        print(self.name)
         if not (self.product_id and self.product_uom and
                 self.repair_id.partner_id and self.repair_id.pricelist_id and
                 self.repair_id.pricelist_id.discount_policy == 'without_discount' and
@@ -412,8 +410,6 @@ class RepairFee(models.Model):
                     self.repair_id.company_id or self.env.company, self.repair_id.create_date or fields.Date.today())
             discount = (new_list_price - price) / new_list_price * 100
             if (discount > 0 and new_list_price > 0) or (discount < 0 and new_list_price < 0):
-                print("---------------dfdasdf-------- entro al descuento")
-                print(discount)
                 self.discount = discount
 
     @api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id','discount')
