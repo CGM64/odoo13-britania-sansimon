@@ -61,7 +61,7 @@ class LibroInventarioReportXls(models.AbstractModel):
             gasto = 0
             total = 0
             costo_en_destino=None
-        return value,gasto,total,str(costo_en_destino),costo_objeto
+        return value,gasto,total,str(costo_en_destino)
 
     def _estructura_reporte(self,generar_por,picking_ids,fecha_inicio, fecha_fin):
         regexLetras = "[^a-zA-Z0-9_ ,/]"
@@ -108,7 +108,7 @@ class LibroInventarioReportXls(models.AbstractModel):
             picking_lines = []
 
             for line in picking.move_ids_without_package:
-                value,gasto,total,costo_en_destino,costo_en_destino= self._stock_valuation_layer(line.id, fecha_inicio, fecha_fin)
+                value,gasto,total,costo_en_destino= self._stock_valuation_layer(line.id, fecha_inicio, fecha_fin)
                 # print("line", line.id, ' product ', line.product_id.id,line.product_id.name, ' valor> ', value,' gasto> ',gasto)
                 if line.id not in lista_ids:
                     lista_ids.append(line.id)
