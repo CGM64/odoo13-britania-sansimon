@@ -9,7 +9,7 @@ class LibroFiscalReportXls(models.AbstractModel):
 
     workbook = None
 
-    def _get_libro_ventas(self, libro, sheet_libro, fila, columna, format1, date_format, vendedor,tipo):
+    def _get_libro_ventas(self, libro, sheet_libro, fila, columna, format1,formato_resumen, date_format, vendedor,tipo):
         sheet_libro.set_column('A:C',10)
         sheet_libro.set_column('D:Q',15)
         if vendedor:
@@ -50,6 +50,7 @@ class LibroFiscalReportXls(models.AbstractModel):
             for f in libro['facturas']:
                 sheet_libro.write(fila, columna, f.no_linea)
                 sheet_libro.write(fila, columna + 1, f.journal_id.code)
+                sheet_libro.write(fila, columna + 2, len(f))
                 sheet_libro.write(fila, columna + 3, f.invoice_date, date_format)
                 sheet_libro.write(fila, columna + 4, f.sat_fac_serie)
                 sheet_libro.write(fila, columna + 5, f.sat_fac_numero)
@@ -64,7 +65,7 @@ class LibroFiscalReportXls(models.AbstractModel):
                 sheet_libro.write(fila, columna + 14, f.sat_iva, self.fnumerico)
                 sheet_libro.write(fila, columna + 15, f.sat_amount_total, self.fnumerico)
                 if vendedor:
-                    sheet_libro.write(fila, columna + 15, f.invoice_user_id.name)
+                    sheet_libro.write(fila, columna + 16, f.invoice_user_id.name)
                 fila += 1
                 
             r = libro['resumen']
@@ -101,21 +102,21 @@ class LibroFiscalReportXls(models.AbstractModel):
             sheet_libro.write(fila, columna + 10, r['amount_total_total'], self.money)
 
             #RESUMEN SOLICITADO POR EVELYN
-            sheet_libro.write(fila+2, 4,'Total Ventas Grabadas' , format1)
-            sheet_libro.write(fila+3, 4,'Total Servicios Prestados' , format1)
-            sheet_libro.write(fila+4, 4,'Total Exportaciones', format1)
-            sheet_libro.write(fila+5, 4,'Total Notas de Crédito', format1)
-            sheet_libro.write(fila+6, 4,'Total de Facturas Emitidas', format1)
+            sheet_libro.write(fila+2, 4,'Total Ventas Grabadas' , formato_resumen)
+            sheet_libro.write(fila+3, 4,'Total Servicios Prestados' , formato_resumen)
+            sheet_libro.write(fila+4, 4,'Total Exportaciones', formato_resumen)
+            sheet_libro.write(fila+5, 4,'Total Notas de Crédito', formato_resumen)
+            sheet_libro.write(fila+6, 4,'Total de Facturas Emitidas', formato_resumen)
             sheet_libro.write(fila+2, 5, r['bien'], self.money)
             sheet_libro.write(fila+3, 5, r['servicio'], self.money)
             sheet_libro.write(fila+4, 5, r['sat_exportacion_in_ca'], self.money)
             sheet_libro.write(fila+5, 5, r['cantidad_notas_credito'], self.money)
             sheet_libro.write(fila+6, 5, r['cantidad_facturas'], self.money)
 
-            sheet_libro.write(fila+2, 7,'Venta Exenta' , format1)
-            sheet_libro.write(fila+3, 7,'IVA Debito Fiscal' ,format1)
-            sheet_libro.write(fila+4, 7,'Total Documentos', format1)
-            sheet_libro.write(fila+5, 7,'Notas de Credito', format1)
+            sheet_libro.write(fila+2, 7,'Venta Exenta' , formato_resumen)
+            sheet_libro.write(fila+3, 7,'IVA Debito Fiscal' ,formato_resumen)
+            sheet_libro.write(fila+4, 7,'Total Documentos', formato_resumen)
+            sheet_libro.write(fila+5, 7,'Notas de Credito', formato_resumen)
             sheet_libro.write(fila+2, 8, r['sat_exento'], self.money)
             sheet_libro.write(fila+3, 8, r['sat_iva_total'], self.money)
             sheet_libro.write(fila+4, 8, r['cantidad_documentos'], self.money)
@@ -171,6 +172,7 @@ class LibroFiscalReportXls(models.AbstractModel):
             for f in libro['facturas']:
                 sheet_libro.write(fila, columna, f.no_linea)
                 sheet_libro.write(fila, columna + 1, f.journal_id.code)
+                sheet_libro.write(fila, columna + 2, len(f))
                 sheet_libro.write(fila, columna + 3, f.invoice_date, date_format)
                 sheet_libro.write(fila, columna + 4, f.sat_fac_serie)
                 sheet_libro.write(fila, columna + 5, f.sat_fac_numero)
@@ -328,6 +330,7 @@ class LibroFiscalReportXls(models.AbstractModel):
         self.fnumerico = workbook.add_format({'num_format': '#,##0.00'})
         self.money = workbook.add_format({'font_size': 12, 'bottom': True, 'right': True, 'left': True, 'top': True, 'align': 'vcenter', 'bold': True, 'num_format': '#,##0.00','border':0 })
         formato_titulo = workbook.add_format({'bold': 1,'border': 1,'align':'center','valign':'vcenter','fg_color': '#1C1C1C', 'font_color': 'white'})
+        formato_resumen = workbook.add_format({'bold': 1,'border': 0,'align':'left','fg_color': '#1C1C1C', 'font_color': 'white'})
         formato_encabezado = workbook.add_format({'bold': 1,'border': 0,'align':'left','fg_color': '#fffff', 'font_color': 'black'})
 
 
@@ -345,6 +348,6 @@ class LibroFiscalReportXls(models.AbstractModel):
             fila = 5
             columna = 0
             if libro['libro'] == 'sale':
-                sheet_libro = self._get_libro_ventas(libro, sheet_libro, fila, columna, formato_titulo, date_format, vendedor,tipo)
+                sheet_libro = self._get_libro_ventas(libro, sheet_libro, fila, columna, formato_titulo,formato_resumen, date_format, vendedor,tipo)
             else:
                 sheet_libro = self._get_libro_compras(libro, sheet_libro, fila, columna, formato_titulo, date_format,tipo)
