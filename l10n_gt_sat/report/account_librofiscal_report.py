@@ -259,7 +259,7 @@ class AccountCommonJournalReport(models.TransientModel):
             # print(tipo_libro)
 
 
-        print('libro_fiscal',libro_fiscal)
+        # print('libro_fiscal',libro_fiscal)
         return libro_fiscal
 
         #docs = self.env['account.move'].search([('journal_id', '=', journal.id)], limit=1):
