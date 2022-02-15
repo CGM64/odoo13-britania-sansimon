@@ -51,15 +51,17 @@ class LibroInventarioReportXls(models.AbstractModel):
             gasto = sum([line.value for line in stock_valuation_layer.filtered(lambda gs: gs.stock_move_id.id == stock_move_id)])
             total = value + gasto
             costo_en_destino=[]
+            costo_objeto=[]
             for item in stock_valuation_layer:
                 if item.description not in costo_en_destino:
                     costo_en_destino.append(item.description)
+                    costo_objeto.append(item)
         else:
             value = 0
             gasto = 0
             total = 0
             costo_en_destino=None
-        return value,gasto,total,str(costo_en_destino)
+        return value,gasto,total,str(costo_en_destino),costo_objeto
 
     def _estructura_reporte(self,generar_por,picking_ids,fecha_inicio, fecha_fin):
         regexLetras = "[^a-zA-Z0-9_ ,/]"
@@ -106,7 +108,7 @@ class LibroInventarioReportXls(models.AbstractModel):
             picking_lines = []
 
             for line in picking.move_ids_without_package:
-                value,gasto,total,costo_en_destino= self._stock_valuation_layer(line.id, fecha_inicio, fecha_fin)
+                value,gasto,total,costo_en_destino,costo_en_destino= self._stock_valuation_layer(line.id, fecha_inicio, fecha_fin)
                 # print("line", line.id, ' product ', line.product_id.id,line.product_id.name, ' valor> ', value,' gasto> ',gasto)
                 if line.id not in lista_ids:
                     lista_ids.append(line.id)
@@ -126,8 +128,6 @@ class LibroInventarioReportXls(models.AbstractModel):
                     picking_line['gasto'] = gasto
                     picking_line['total'] = total
                     picking_line['costo_en_destino'] = costo_en_destino.replace('None','')
-
-
 
                     # total_cantidad_recibida+=line.quantity_done
                     total_cantidad_recibida+=line.quantity_done
