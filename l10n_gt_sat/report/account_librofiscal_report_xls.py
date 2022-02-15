@@ -26,11 +26,11 @@ class LibroFiscalReportXls(models.AbstractModel):
         "nit":['NIT'], 
         "nombre":['Nombre'],
         "exenta":['Exenta','resumido'], 
-        "exp_out":['Exp. Fuera CA.','resumido'], 
+        "exp_out":['Exp. Fuera CA.'], 
         "exp_ca":['Exp. Centro A.','resumido'], 
         "servicios":['Servicio.','resumido'], 
         "ventas":['Ventas','resumido'], 
-        "subtotal":['Subtotal','resumido'], 
+        "subtotal":['Subtotal'], 
         "iva":['IVA.','resumido'],
         "total":['Total.','resumido'], 
         }
@@ -82,24 +82,24 @@ class LibroFiscalReportXls(models.AbstractModel):
                 sheet_libro.write(fila, columna + 1, f[1]['total_documentos'], self.fnumerico)
                 sheet_libro.write(fila, columna + 2, f[1]['dia'], date_format)
                 sheet_libro.write(fila, columna + 3, f[1]['sat_exento'], self.fnumerico)
-                sheet_libro.write(fila, columna + 4, f[1]['sat_importa_out_ca'], self.fnumerico)
-                sheet_libro.write(fila, columna + 5, f[1]['sat_importa_in_ca'], self.fnumerico)
-                sheet_libro.write(fila, columna + 6, f[1]['sat_servicio'], self.fnumerico)
-                sheet_libro.write(fila, columna + 7, f[1]['sat_bien'], self.fnumerico)
-                sheet_libro.write(fila, columna + 8, f[1]['sat_subtotal'], self.fnumerico)
-                sheet_libro.write(fila, columna + 9, f[1]['sat_iva'], self.fnumerico)
-                sheet_libro.write(fila, columna + 10, f[1]['sat_amount_total'], self.fnumerico)
+                # sheet_libro.write(fila, columna + 4, f[1]['sat_importa_out_ca'], self.fnumerico)
+                sheet_libro.write(fila, columna + 4, f[1]['sat_importa_in_ca'], self.fnumerico)
+                sheet_libro.write(fila, columna + 5, f[1]['sat_servicio'], self.fnumerico)
+                sheet_libro.write(fila, columna + 6, f[1]['sat_bien'], self.fnumerico)
+                # sheet_libro.write(fila, columna + 8, f[1]['sat_subtotal'], self.fnumerico)
+                sheet_libro.write(fila, columna + 7, f[1]['sat_iva'], self.fnumerico)
+                sheet_libro.write(fila, columna + 8, f[1]['sat_amount_total'], self.fnumerico)
                 fila += 1
 
             r = libro['resumen']
             sheet_libro.write(fila, columna + 1, r['cantidad_documentos'], self.money)
             sheet_libro.write(fila, columna + 3, r['sat_exento'], self.money)
-            sheet_libro.write(fila, columna + 5, r['sat_exportacion_in_ca'], self.money)
-            sheet_libro.write(fila, columna + 6, r['servicio'], self.money)
-            sheet_libro.write(fila, columna + 7, r['bien'], self.money)
-            sheet_libro.write(fila, columna + 8, r['sat_subtotal_total'], self.money)
-            sheet_libro.write(fila, columna + 9, r['sat_iva_total'], self.money)
-            sheet_libro.write(fila, columna + 10, r['amount_total_total'], self.money)
+            sheet_libro.write(fila, columna + 4, r['sat_exportacion_in_ca'], self.money)
+            sheet_libro.write(fila, columna + 5, r['servicio'], self.money)
+            sheet_libro.write(fila, columna + 6, r['bien'], self.money)
+            # sheet_libro.write(fila, columna + 7, r['sat_subtotal_total'], self.money)
+            sheet_libro.write(fila, columna + 7, r['sat_iva_total'], self.money)
+            sheet_libro.write(fila, columna + 8, r['amount_total_total'], self.money)
 
             #RESUMEN SOLICITADO POR EVELYN
             sheet_libro.write(fila+2, 4,'Total Ventas Grabadas' , formato_resumen)
