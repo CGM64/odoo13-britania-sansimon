@@ -15,7 +15,6 @@ class LibroInventarioReportXls(models.AbstractModel):
     workbook = None
     
     def _sum_stock_valuation_layer(self, stock_move_ids, fecha_inicio, fecha_fin):
-
         if fecha_inicio !=None and fecha_fin !=None:
             dominio = [
                 ('stock_move_id', 'in', stock_move_ids),
@@ -24,7 +23,6 @@ class LibroInventarioReportXls(models.AbstractModel):
         else:
             dominio = [
                 ('stock_move_id', 'in', stock_move_ids)]
-
         stock_valuation_layer = request.env['stock.valuation.layer'].search(dominio)
         total = sum([line.value for line in stock_valuation_layer])
         return total
@@ -42,53 +40,41 @@ class LibroInventarioReportXls(models.AbstractModel):
                 ('stock_valuation_layer_id', '=', False)]
 
         stock_valuation_layer = request.env['stock.valuation.layer'].search(dominio)
-
+        costo_destino_strings=''
+        string_ids=''
         if len(stock_valuation_layer) > 0:
             value = stock_valuation_layer.value
-            dominio.pop(dominio.index( ('stock_valuation_layer_id', '=', False), ))
+            dominio.pop(dominio.index(('stock_valuation_layer_id', '=', False),))
             dominio.append(('stock_valuation_layer_id', '!=', False))
             stock_valuation_layer = request.env['stock.valuation.layer'].search(dominio)
             gasto = sum([line.value for line in stock_valuation_layer.filtered(lambda gs: gs.stock_move_id.id == stock_move_id)])
             total = value + gasto
-            costo_en_destino=[]
             costo_objeto=[]
-            for item in stock_valuation_layer:
-                if item.description not in costo_en_destino:
-                    costo_en_destino.append(item.description)
-                    costo_objeto.append(item)
+            for_linea=[costo_objeto.append(item.stock_landed_cost_id) for item in stock_valuation_layer if item.stock_landed_cost_id not in costo_objeto]
+            #ACÁ ASIGNO EN LA VARIABLE STRINGS_IDS EL ID DE LOS OBJETOS Y EN LA VARIABLE COSTO_DESTINO_STRINGS LOS NOMBRES DE LOS OBJETOS
+            for objeto in costo_objeto:
+                string_ids += str(objeto.id)
+                costo_destino_strings += str(objeto.name)+','
         else:
             value = 0
             gasto = 0
             total = 0
-            costo_en_destino=None
-        return value,gasto,total,str(costo_en_destino)
+        return value,gasto,total,costo_destino_strings,string_ids
 
     def _estructura_reporte(self,generar_por,picking_ids,fecha_inicio, fecha_fin):
-        regexLetras = "[^a-zA-Z0-9_ ,/]"
-
         # fi = datetime.strptime(fecha_inicio, '%Y-%m-%d').date()
         # ff = datetime.strptime(fecha_fin, '%Y-%m-%d').date()
-
         if generar_por =='picking':
-            dominio = [
-                ('id', 'in', picking_ids),
-            ]
+            dominio = [('id', 'in', picking_ids),]
         else:
             dominio = [
                 ('state', '=', 'done'),
                 ('date_done', '>=', fecha_inicio),
                 ('date_done', '<=', fecha_fin),
-                ('sale_id', '=', None),
-            ]
-
+                ('sale_id', '=', None),]
         stock_picking = request.env['stock.picking'].search(dominio)
         stock_picking = stock_picking.sorted(lambda orden: orden.id)
-        porcentaje=0
-        total_cantidad_recibida=0
-        total_value=0
-        total_gasto=0
-        porcentaje_incremento=0
-        
+        total_cantidad_recibida,total_value,total_gasto=0,0,0
         picking_a_sumar=[]
         for pick in stock_picking.move_ids_without_package:
             if pick.id not in picking_a_sumar:
@@ -96,6 +82,12 @@ class LibroInventarioReportXls(models.AbstractModel):
         total_general=self._sum_stock_valuation_layer(picking_a_sumar, fecha_inicio, fecha_fin)
 
         listado_picking = []
+        totales={
+            'total_cantidad_recibida':0,
+            'total_value':0,
+            'total_gasto':0,
+            'total_general':0,
+        }
         for picking in stock_picking:
             lista_ids = []
             recepcion = {
@@ -104,60 +96,47 @@ class LibroInventarioReportXls(models.AbstractModel):
                 'partner_name': picking.partner_id.name,
                 'state': picking.state,
                 'origin': picking.origin,
+                'total_general':0,
+                'total_value':0,
+                'total_gasto':0,
             }
             picking_lines = []
 
             for line in picking.move_ids_without_package:
-                value,gasto,total,costo_en_destino= self._stock_valuation_layer(line.id, fecha_inicio, fecha_fin)
-                # print("line", line.id, ' product ', line.product_id.id,line.product_id.name, ' valor> ', value,' gasto> ',gasto)
+                value,gasto,total,costo_en_destino,string_ids= self._stock_valuation_layer(line.id, fecha_inicio, fecha_fin)
                 if line.id not in lista_ids:
                     lista_ids.append(line.id)
+                    picking_svl='{}_{}'.format(picking.id,string_ids)
                     picking_line = {
-                        # 'default_code': line.product_id.default_code,
                         'product_name': line.product_id.name,
                         'quantity_done': line.quantity_done,
+                        'picking_svl':picking_svl,
+                        'default_code':line.product_id.default_code if line.product_id.default_code !=False else None,
+                        'value': value,
+                        'gasto': gasto,
+                        'total': total,
+                        'costo_en_destino': costo_en_destino,
                     }
-                    costo_en_destino=re.sub(regexLetras, "", str(costo_en_destino))
+                    if picking_svl not in recepcion:
+                        recepcion[picking_svl]=picking_svl
+                        recepcion['total_general'] =total
+                        recepcion['total_value'] =value
+                        recepcion['total_gasto'] =gasto
+                    else:
+                        recepcion['total_general'] +=total
+                        recepcion['total_value'] +=value
+                        recepcion['total_gasto'] +=gasto
                     
-                    if line.product_id.default_code !=False:
-                        picking_line['default_code'] =  line.product_id.default_code
-                    else:
-                        picking_line['default_code'] =  None
-
-                    picking_line['value'] = value
-                    picking_line['gasto'] = gasto
-                    picking_line['total'] = total
-                    picking_line['costo_en_destino'] = costo_en_destino.replace('None','')
-
-                    # total_cantidad_recibida+=line.quantity_done
-                    total_cantidad_recibida+=line.quantity_done
-                    total_value+=value
-                    total_gasto+=gasto
-
-                    if total_value==0:
-                        porcentaje_incremento=0
-                    else:
-                        porcentaje_incremento=total_gasto/total_value
-
-                    picking_line['total_cantidad_recibida'] =total_cantidad_recibida
-                    picking_line['total_value'] =total_value
-                    picking_line['total_gasto'] =total_gasto
-                    
-                    if float(total_general) !=0:
-                        picking_line['participacion']= total/float(total_general)
-                        picking_line['total_general'] = total_general
-                        porcentaje+=total/float(total_general)
-                    else:
-                        picking_line['participacion']= 0
-                        picking_line['total_general'] = 0
-                        porcentaje+=0
+                    if total !=0:
+                        totales['total_cantidad_recibida'] +=line.quantity_done
+                    totales['total_value'] +=value
+                    totales['total_gasto']+=gasto
+                    totales['total_general'] = total_general
 
                     picking_lines.append(picking_line)
             recepcion['lines'] = picking_lines
-            recepcion['porcentaje_total'] = porcentaje
-            recepcion['porcentaje_incremento'] = porcentaje_incremento
             listado_picking.append(recepcion)
-        return listado_picking,porcentaje_incremento
+        return listado_picking,totales
 
 
 
@@ -177,10 +156,7 @@ class LibroInventarioReportXls(models.AbstractModel):
         picking_ids = data['form']['picking_ids']
         generar_por = data['form']['generar_por']
         
-        if generar_por=='fecha':
-            stock_picking,porcentaje_incremento = self._estructura_reporte(generar_por,None,fecha_inicio, fecha_fin)
-        else:
-            stock_picking,porcentaje_incremento= self._estructura_reporte(generar_por,picking_ids,None,None)
+        stock_picking,totales = self._estructura_reporte(generar_por,None,fecha_inicio, fecha_fin) if generar_por=='fecha' else self._estructura_reporte(generar_por,picking_ids,None,None)
 
         sheet_inventario = workbook.add_worksheet('Inventario')
         sheet_inventario.write(0, 0, "FECHA", formato_encabezado)
@@ -194,9 +170,9 @@ class LibroInventarioReportXls(models.AbstractModel):
         sheet_inventario.write(0, 7, "VALOR", formato_encabezado)
         sheet_inventario.write(0, 8, "GASTO", formato_encabezado)
         sheet_inventario.write(0, 9, "TOTAL", formato_encabezado)
-        sheet_inventario.write(0, 10, "PORCENTAJE", formato_encabezado)
+        sheet_inventario.write(0, 10, "% INCREMENTO", formato_encabezado)
         sheet_inventario.write(0, 11, "COSTO EN DESTINO", formato_encabezado)
-        sheet_inventario.write(0, 12, "PARTICIPACION", formato_encabezado)
+        sheet_inventario.write(0, 12, "% PARTICIPACION", formato_encabezado)
 
         sheet_inventario.set_column("A:R", 25)
 
@@ -206,6 +182,12 @@ class LibroInventarioReportXls(models.AbstractModel):
             for line in picking['lines']:
                 if line['total'] !=0:
                     fila += 1
+                    total=picking['total_general']
+                    gasto=picking['total_gasto']
+                    value=picking['total_value']
+                    porcentaje_incremento= gasto/value if value !=0 else 0
+                    porcentaje_participacion=line['total']/float(total) if total !=0 else 0
+
                     sheet_inventario.write(fila, 0, picking['date_done'], formato_fecha)
                     sheet_inventario.write(fila, 1, picking['name'])
                     sheet_inventario.write(fila, 2, picking['origin'])
@@ -220,18 +202,17 @@ class LibroInventarioReportXls(models.AbstractModel):
 
                     sheet_inventario.write(fila, 10, porcentaje_incremento, formato_porcentaje)
                     sheet_inventario.write(fila, 11, line['costo_en_destino'])
-                    sheet_inventario.write(fila, 12, line['participacion'], formato_porcentaje)
+                    sheet_inventario.write(fila, 12, porcentaje_participacion, formato_porcentaje)
+        #SUMATORIAS POR COLUMNA
+        sheet_inventario.write(fila+1, 6, totales['total_cantidad_recibida'], numerico_general)
+        sheet_inventario.write(fila+1, 7, totales['total_value'], numerico_general)
+        sheet_inventario.write(fila+1, 8, totales['total_gasto'], numerico_general)
+        sheet_inventario.write(fila+1, 9, totales['total_general'], numerico_general)
 
-                    #SUMATORIAS POR COLUMNA
-                    sheet_inventario.write(fila+1, 6, line['total_cantidad_recibida'], numerico_general)
-                    sheet_inventario.write(fila+1, 7, line['total_value'], numerico_general)
-                    sheet_inventario.write(fila+1, 8, line['total_gasto'], numerico_general)
-                    sheet_inventario.write(fila+1, 9, line['total_general'], numerico_general)
-                    sheet_inventario.write(fila+1, 12, picking['porcentaje_total'], porcentaje_general)
-                    
         sheet_inventario.merge_range('A'+str(fila+2)+':F'+str(fila+2),'TOTALES', formato_encabezado)
         sheet_inventario.write(fila+1, 10, None, numerico_general)
         sheet_inventario.write(fila+1, 11, None, numerico_general)
+        sheet_inventario.write(fila+1, 12, None, numerico_general)
 
 
 
