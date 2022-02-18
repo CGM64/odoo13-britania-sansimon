@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Comunidad Linguistica-->
+    <record id="hr_employee_comunidad_linguistica_form" model="ir.ui.view">
+        <field name="name">hr.employee.comunidad.linguistica.form</field>
+        <field name="model">hr.employee.comunidad.linguistica</field>
+        <field name="arch" type="xml">
+            <form string="Comunidad Linguistica">
+            <sheet>
+                <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                <group name="category_details" col="2">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_employee_comunidad_linguistica_tree" model="ir.ui.view">
+        <field name="name">hr.employee.comunidad.linguistica.tree</field>
+        <field name="model">hr.employee.comunidad.linguistica</field>
+        <field name="arch" type="xml">
+            <tree string="Comunidad Linguistica">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_hr_employee_comunidad_linguistica" model="ir.actions.act_window">
+        <field name="name">Comunidad Linguistica</field>
+        <field name="res_model">hr.employee.comunidad.linguistica</field>
+        <field name="view_id" ref="hr_employee_comunidad_linguistica_tree"/>
+    </record>
+
+    <menuitem
+    id="hr_employee_comunidad_linguistica_menu"
+    action="action_hr_employee_comunidad_linguistica"
+    parent="l10n_gt_hr_payroll.catalogos_ministerio_trabajo_menu"
+    sequence="60"/>
+</odoo>

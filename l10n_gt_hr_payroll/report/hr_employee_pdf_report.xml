@@ -1,0 +1,78 @@
+<odoo>
+  <data>
+  <!--
+    <report
+      string="Ficha Empleado"
+      id="l10n_gt_hr_payroll_ficha_empleado_report"
+      model="hr.employee"
+      report_type="qweb-pdf"
+      name="l10n_gt_hr_payroll.report_ficha_empleado"
+      file="l10n_gt_hr_payroll.report_ficha_empleado"
+      attachment_use="True"
+      />
+-->
+      <template id="report_ficha_empleado">
+          <t t-call="web.html_container">
+              <t t-foreach="docs" t-as="o">
+                  <t t-call="web.external_layout">
+                      <div class="page">
+                        <div class="infopersonal">
+                          <div style="bacground_color:#000; width:1cm; height:1.5cm; " class="foto">
+                              <p style="color:#fff;">Foto</p>
+                          </div>
+                          <div class="info">
+                            <div class="contenedor" style="height: 21cm;width: 90%;padding: 0 1rem;margin: 1rem;">
+                              <div class="contenedor1" style="width: 90%;margin-left: auto;margin-right: auto;">
+                              <table>
+                                <h2 style="text-align:center;">INFORMACIÓN PERSONAL</h2>
+                                <tr>
+                                  <td style="font-weight:bold">Registro:</td>
+                                  <td><span t-field="o.registration_number"/></td>
+                                  <td style="font-weight:bold">C.B:</td>
+                                  <td><span t-field="o.barcode"/></td>
+                                </tr>
+                                <tr>
+                                  <td style="font-weight:bold" colspan="2">Nombre:</td>
+                                  <td colspan="2"><span t-field="o.name"/></td>
+                                </tr>
+                                <tr>
+                                  <td style="font-weight:bold" colspan="2">Fecha de Nacimiento:</td>
+                                  <td colspan="2"><span t-field="o.birthday"/></td>
+                                </tr>
+                                <tr>
+                                  <td style="font-weight:bold" colspan="2">CUI:</td>
+                                  <td colspan="2"><span t-field="o.identification_id"/></td>
+                                </tr>
+                                <tr>
+                                  <td style="font-weight:bold">Estado Civil:</td>
+                                  <td><span t-field="o.marital"/></td>
+                                  <td style="font-weight:bold">Género:</td>
+                                  <td><span t-field="o.gender"/></td>
+                                </tr>
+                              </table>
+                              <table>
+                                <h2 style="text-align:center;">INFORMACIÓN DE CONTACTO</h2>
+                                <tr>
+                                  <td style="font-weight:bold">Dirección:</td>
+                                  <td><span t-field="o.address_home_id"/></td>
+                                </tr>
+                                <tr>
+                                  <td style="font-weight:bold">Email:</td>
+                                  <td><span t-field="o.private_email"/></td>
+                                </tr>
+                                <tr>
+                                  <td style="font-weight:bold">Celular:</td>
+                                  <td><span t-field="o.phone"/></td>
+                                </tr>
+                              </table>
+                          </div>
+                        </div>
+                       </div>
+                      </div>
+                      </div>
+                  </t>
+              </t>
+          </t>
+      </template>
+  </data>
+</odoo>

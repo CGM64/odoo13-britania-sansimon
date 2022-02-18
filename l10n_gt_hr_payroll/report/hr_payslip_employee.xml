@@ -1,0 +1,315 @@
+<odoo>
+    <data>
+        <!--Se definen las características del papel par ala impresión-->
+
+        <!--Fin definición del papel-->
+        <template id="boleta_pago">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="container">
+                            <style>
+                            div.de{
+                                width:45%;
+                            }
+                            div.iz{
+                                width:45%;
+                            }
+                            table, td, th{border: none !important;}
+                            </style>
+                            <div>
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <td>Boleta de Pago</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h4>Periodo del <span t-field="o.start_date_month"/>
+                                                    al <span t-field="o.date_to"/>
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span t-field="o.employee_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span t-field="o.employee_id.job_title"/>
+                                        </td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                        <div class="float-left iz">
+                            <table class="table table-striped" t-foreach="o.datos_boleta()" t-as="item">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">INGRESOS</th>
+                                        <th scope="col">MONTO</th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    <tr>
+                                        <td >Sueldo Ordinario</td>
+                                        <td class="text-right">
+                                            <t t-if="'HRSUD' in item">
+                                                <span t-esc="item['HRSUD']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="item['default']"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td >Bono Decreto</td>
+                                        <td class="text-right">
+                                            <t t-if="'HRBDC' in item">
+                                                <span t-esc="item['HRBDC']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="item['default']"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td >Bono Especial</td>
+                                        <td class="text-right">
+                                            <t t-if="'BONOESPE' in item">
+                                                <span t-esc="item['BONOESPE']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="item['default']"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+
+                                    <tr >
+                                        <td >Bono Producción</td>
+                                        <td class="text-right">
+                                            <t t-if="'BONOPRO' in item">
+                                                <span t-esc="item['BONOPRO']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="item['default']"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td >Bono Logística</td>
+                                        <td class="text-right">
+                                            <t t-if="'BONOLOGI' in item">
+                                                <span t-esc="item['BONOLOGI']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="item['default']"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td >Comisión</td>
+                                        <td class="text-right">
+                                            <t t-if="'COMISION' in item">
+                                                <span t-esc="item['COMISION']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="item['default']"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td >Total de Ingresos</td>
+                                        <td class="text-right">
+                                            <t t-if="'HRTIG' in item">
+                                                <span t-esc="item['HRTIG']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-esc="item['default']"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="float-right de">
+                        <table class="table table-striped" t-foreach="o.datos_boleta()" t-as="item">
+                            <thead>
+                                <tr>
+                                    <th >DEDUCCIONES</th>
+                                    <th >MONTO</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr >
+                                    <td >Anticipo Quincena</td>
+                                    <td class="text-right">
+                                        <t t-if="'ANTIQUI' in item">
+                                            <span t-esc="item['ANTIQUI']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="item['default']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td >IGSS</td>
+                                    <td class="text-right">
+                                        <t t-if="'HRCLI' in item">
+                                            <span t-esc="item['HRCLI']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="item['default']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td >ISR</td>
+                                    <td class="text-right">
+                                        <t t-if="'ISR' in item">
+                                            <span t-esc="item['ISR']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="item['default']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td >Anticipo</td>
+                                    <td class="text-right">
+                                        <t t-if="'DESANTI' in item">
+                                            <span t-esc="item['DESANTI']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="item['default']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td >Bantrab</td>
+                                    <td class="text-right">
+                                        <t t-if="'BTRAB' in item">
+                                            <span t-esc="item['BTRAB']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="item['default']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td >Juridico</td>
+                                    <td class="text-right">
+                                        <t t-if="'JURID' in item">
+                                            <span t-esc="item['JURID']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="item['default']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td >Comisión</td>
+                                    <td class="text-right">
+                                        <t t-if="'COMISION' in item">
+                                            <span t-esc="item['COMISION']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="item['default']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <tr >
+                                    <td >Otros</td>
+                                    <td class="text-right">
+                                        <t t-if="'DESOTROS' in item">
+                                            <span t-esc="item['DESOTROS']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="item['default']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr >
+                                    <td >Comisión</td>
+                                    <td class="text-right">
+                                        <t t-if="'COMISION' in item">
+                                            <span t-esc="item['COMISION']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="item['default']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <tr >
+                                    <td >Facturas</td>
+                                    <td class="text-right">
+                                        <t t-if="'DESFAC' in item">
+                                            <span t-esc="item['DESFAC']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="item['default']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td >Total de Descuentos</td>
+                                    <td class="text-right">
+                                        <t t-if="'TDESC' in item">
+                                            <span t-esc="item['TDESC']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="item['default']"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <table class="table" t-foreach="o.datos_boleta()" t-as="liquido">
+                            <tbody>
+                                <tr >
+                                    <td class="negrita">LIQUIDO A RECIBIR</td>
+                                    <td>
+                                        <span t-esc="liquido['LIQRE']"/>
+                                    </td>
+                                </tr>
+
+                                <tr >
+                                    <td colspan="2">
+                                        <span t-esc="liquido['letras']"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <table class="table">
+                            <tbody>
+                                <tr >
+                                    <td>F)____________________________</td>
+                                </tr>
+                                <tr >
+                                    <td>
+                                        <span t-field="o.employee_id.name"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </t>
+            </t>
+        </t>
+    </template>
+</data>
+</odoo>

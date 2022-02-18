@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="view_hr_bonos_descuentos_tree" model="ir.ui.view">
+        <field name="name">hr.bonos.descuentos.tree</field>
+        <field name="model">hr.bonos.descuentos</field>
+        <field name="arch" type="xml">
+            <!-- <tree string="Bonos o Descuentos" js_class="hr_payroll_payslip_tree" sample="1" multi_edit="1"> -->
+                <!-- Odoo 13 no admite el atributo 'sample' -->
+            <tree string="Bonos o Descuentos" js_class="hr_payroll_payslip_tree" multi_edit="1" decoration-info="state == 'draft'" decoration-warning="state == 'verify'" decoration-success="state in ('done','paid')">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                <!-- <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'verify'" decoration-success="state in ('done','paid')"/> -->
+                <!-- los atributos 'decoration-info', 'decoration-warning', 'decoration-success' no son permitidos en la etiqueta <field></field>, solo en la etiqueta <tree></tree> -->
+                <field name="state" widget="badge" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hr_bonos_descuentos_form" model="ir.ui.view">
+        <field name="name">hr.bonos.descuentos.form</field>
+        <field name="model">hr.bonos.descuentos</field>
+        <field name="arch" type="xml">
+            <form string="Bonos o Descuentos">
+                <header>
+                    <button string="Confirm" name="action_payslip_done" type="object" states="verify" class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
+                    <button string="Cancel" name="action_bonos_descuentos_cancel" type="object" states="draft"/>
+                    <button string="Set to Draft" name="action_bonos_descuentos_draft" type="object" states="cancel"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title" name="title">
+                        <h1><field name="name"/></h1>
+                    </div>            
+                    <group col="4">
+                        <field name="date"/>
+                        <field name="struct_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Bonos &amp; Descuentos" name="bonos_descuento_registro">
+                            <field name="bono_descuentos_line_ids">
+                                <tree string="Worked Days" editable="bottom">
+                                    <field name="contract_id"/>
+                                    <field name="_allowed_input_type_ids" invisible="1"/>
+                                    <field name="input_type_id"/>
+                                    <field name="name"/>
+                                    <field name="amount"/>
+                                    <field name="company_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_hr_bonos_descuentos_form" model="ir.actions.act_window">
+        <field name="name">Bonos o Descuentos</field>
+        <field name="res_model">hr.bonos.descuentos</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- parent="hr_work_entry_contract_enterprise.menu_hr_payroll_work_entries_root" -->
+    <!-- No existe 'hr_work_entry_contract_enterprise' en odoo13 -->
+    <menuitem
+        id="menu_hr_bonos_descuentos_payslips"
+        name="Bonos o Descuentos"
+        parent="hr_payroll.menu_hr_payroll_work_entries_root"
+        sequence="70"
+        action="action_view_hr_bonos_descuentos_form"
+        groups="hr_payroll.group_hr_payroll_user"/>
+
+</odoo>

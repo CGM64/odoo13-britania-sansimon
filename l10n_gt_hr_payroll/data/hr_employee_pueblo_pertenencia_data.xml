@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="hr_employee_pueblo_pertenencia_01" model="hr.employee.pueblo.pertenencia">
+            <field name="name">Maya</field>
+            <field name="code">1</field>
+        </record>
+        <record id="hr_employee_pueblo_pertenencia_02" model="hr.employee.pueblo.pertenencia">
+            <field name="name">Garífuna</field>
+            <field name="code">2</field>
+        </record>
+        <record id="hr_employee_pueblo_pertenencia_03" model="hr.employee.pueblo.pertenencia">
+            <field name="name">Xinka</field>
+            <field name="code">3</field>
+        </record>
+        <record id="hr_employee_pueblo_pertenencia_04" model="hr.employee.pueblo.pertenencia">
+            <field name="name">Afrodescendiente / creole / afromestizo</field>
+            <field name="code">4</field>
+        </record>
+        <record id="hr_employee_pueblo_pertenencia_05" model="hr.employee.pueblo.pertenencia">
+            <field name="name">Ladino</field>
+            <field name="code">5</field>
+        </record>
+        <record id="hr_employee_pueblo_pertenencia_06" model="hr.employee.pueblo.pertenencia">
+            <field name="name">Extranjero</field>
+            <field name="code">6</field>
+        </record>
+    </data>
+</odoo>

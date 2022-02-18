@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Work entries -->
+        <record id="work_entry_type_trabajo_en_casa" model="hr.work.entry.type">
+            <field name="name">Trabajo en casa</field>
+            <field name="code">TRBENCASA</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="work_entry_type_vacaciones" model="hr.work.entry.type">
+            <field name="name">Vacaciones</field>
+            <field name="code">VACACIONES</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="work_entry_type_vacaciones_anticipadas" model="hr.work.entry.type">
+            <field name="name">Vacaciones Anticipadas</field>
+            <field name="code">VACACIONESANTICPADAS</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="work_entry_type_supension_igss_enfermedad" model="hr.work.entry.type">
+            <field name="name">Suspencion Igss Enfermedad</field>
+            <field name="code">SUSINGSSENFERMEDAD</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="work_entry_type_suspension_igss_maternidad" model="hr.work.entry.type">
+            <field name="name">Suspencion Igss Maternidad</field>
+            <field name="code">SUSINGSSMATERNIDAD</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="work_entry_type_ausencia_injustificada" model="hr.work.entry.type">
+            <field name="name">Ausencia Injustificada</field>
+            <field name="code">AUSENCIAINJUS</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="work_entry_type_ausencia_sin_contrato" model="hr.work.entry.type">
+            <field name="name">Ausencia Sin Contrato</field>
+            <field name="code">AUSENCIASINCONTRA</field>
+            <field name="color">8</field>
+        </record>
+
+        <record id="work_entry_type_ingreso_parcial" model="hr.work.entry.type">
+            <field name="name">Ingreso Parcial</field>
+            <field name="code">INGRESOPARCIAL</field>
+            <field name="color">7</field>
+        </record>
+
+        <record id="work_entry_type_septimo" model="hr.work.entry.type">
+            <field name="name">Septimo</field>
+            <field name="code">SEPTIMO</field>
+            <field name="color">9</field>
+        </record>
+    </data>
+</odoo>
