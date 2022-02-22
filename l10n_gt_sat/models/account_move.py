@@ -19,8 +19,6 @@ class AccountMove(models.Model):
         #Obtener la base en la moneda de la compania
         amount = amount_currency
         #Si el monto es menor a Q2,500 entonces no se realiza ninguna retencion
-        if amount < 2500.0 and tipo_dte and tipo_dte != 'FESP':
-            return 0
         if amount <= 30000.0:
             return (sing * (amount * 0.05))
         elif amount > 30000.0:
@@ -39,7 +37,6 @@ class AccountMove(models.Model):
             tax_base_amount = tax_base_amount_currency = taxes_map_entry['tax_base_amount']
             amount = taxes_map_entry['amount']
             impuesto = False
-                        
             if not taxes_map_entry['tax_line']:
                 account_id = self.env['account.tax.repartition.line'].search([
                     ('account_id','=',grouping_dict['account_id']),
