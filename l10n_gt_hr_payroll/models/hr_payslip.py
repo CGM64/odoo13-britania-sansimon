@@ -56,9 +56,10 @@ class Payslip(models.Model):
         return next(existing_lines, False)
     
     #Funcion que permete agregar automaticamente, las otras entradas  a la nomina de cada empleado segun estructura salarial.
-    @api.depends('employee_id', 'struct_id', 'date_from')
-    def _compute_name(self):
-        res = super()._compute_name()
+    @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
+    def _onchange_employee(self):
+        print("-------------si llego a _onchange_employee ")
+        res = super()._onchange_employee()
         for payslip in self:
             estructura_otras_entradas = payslip.struct_id.input_line_type_ids
             input_line_vals = []
@@ -322,10 +323,12 @@ class Payslip(models.Model):
 
 #Funcion para el salario devengado menos las ausencias.
 def compute_sueldo_x_dia(payslip, categories, worked_days, inputs, code):
+    print("si esta llegando")
     employee = payslip.contract_id.employee_id
     wage = categories.BASIC
     dias_trabajados = 0
     numero_dias_total = payslip.number_of_hours
+    print(numero_dias_total)
     for dias in payslip.worked_days_line_ids:
         if dias.work_entry_type_id.code == code:
             dias_trabajados = dias.number_of_hours
@@ -335,7 +338,7 @@ def compute_sueldo_x_dia(payslip, categories, worked_days, inputs, code):
     sueldo_diario = sueldo_quincena / numero_dias_total
     sueldo_total = sueldo_diario * dias_trabajados
     total = round(sueldo_total,2)
-    #print("--%s=%s" % (code, total))
+    print("--%s=%s" % (code, total))
     return total
 
 #Busca el valor del codigo enlas nominas anteriores, esto es para obtener el total de bono especial entre todas las nominas del me..
