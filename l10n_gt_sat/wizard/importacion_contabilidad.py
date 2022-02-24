@@ -19,7 +19,6 @@ class AnalisisImportacionesContabilidad(models.TransientModel):
     fecha_fin = fields.Date(string='Fecha Fin', required=True, default=previous_month.strftime('%Y-%m-' + str(days_previous_month[1])))
 
     def export_xls(self):
-        print("------------------llego al botons")
         self.ensure_one()
         data = {}
         data['form'] = self.read(['fecha_inicio', 'fecha_fin'])[0]
@@ -35,7 +34,6 @@ class AnalisisImportacionesContabilidadXls(models.AbstractModel):
     workbook = None
 
     def generate_xlsx_report(self, workbook, data, data_report):
-        print("-----------llego al reporte")
         self.workbook = workbook
         sheet_libro = workbook.add_worksheet('Ventas')
         money = workbook.add_format({'align':'right','valign':'vcenter','num_format': 'Q#,##0.00'})
@@ -44,25 +42,80 @@ class AnalisisImportacionesContabilidadXls(models.AbstractModel):
         negritaizquierda = workbook.add_format({'bold': True,'align':'left','valign':'vcenter','text_wrap':1})
         porcentaje = workbook.add_format({'num_format': '0.00%','align':'left'})
 
-        i = 0;
+        i = 0
         
         sheet_libro.set_column(0,0,5)
-        sheet_libro.set_column(1,3,15)
-        sheet_libro.set_column(3,3,5)
-        sheet_libro.set_column(4,4,20)
-        sheet_libro.set_column(5,5,5)
+        sheet_libro.set_column(1,1,15)
+        sheet_libro.set_column(2,2,10)
+        sheet_libro.set_column(3,3,35)
+        sheet_libro.set_column(4,4,25)
+        sheet_libro.set_column(5,5,20)
         sheet_libro.set_column(6,6,20)
         sheet_libro.set_column(7,7,20)
+        sheet_libro.set_column(8,8,10)
+        sheet_libro.set_column(9,9,35)
+        sheet_libro.set_column(10,10,20)
+        sheet_libro.set_column(11,11,20)
         
         sheet_libro.write(i,0,"No", negritaizquierda)
-        sheet_libro.write(i,1,"Pedidos", negritaizquierda)
+        sheet_libro.write(i,1,"Destino", negritaizquierda)
         sheet_libro.write(i,2,"Fecha", negritaizquierda)
-        sheet_libro.write(i,3,"# Fact.", negritaizquierda)
-        sheet_libro.write(i,4,"T. Fact.", negritaizquierda)
-        sheet_libro.write(i,5,"#. Desp.", negritaizquierda)
-        sheet_libro.write(i,6,"T. Desp.", negritaizquierda)
-        sheet_libro.write(i,7,"Cost. Fac.", negritaizquierda)
+        sheet_libro.write(i,3,"Contabilidad", negritaizquierda)
+        sheet_libro.write(i,4,"Cuenta", negritaizquierda)
+        sheet_libro.write(i,5,"Debe", negritaizquierda)
+        sheet_libro.write(i,6,"Haber", negritaizquierda)
+        sheet_libro.write(i,7,"Pedido", negritaizquierda)
+        sheet_libro.write(i,8,"# Fact.", negritaizquierda)
         
         inicio = data['form']['fecha_inicio']
         fin = data['form']['fecha_fin']
+        
+        #costos_destino = self.env["stock.landed.cost"].search([('id','=',50)])
+        costos_destino = self.env["stock.landed.cost"].search([])
+        i+=1
+        for costo_destino in costos_destino:
+
+            
+            contabilidad = costo_destino.account_move_id
+            
+            #for conta_line in contabilidad.line_ids.filtered(lambda detalle: detalle.account_id.code == '1.1.06.40'):
+            for conta_line in contabilidad.line_ids:
+                sheet_libro.write(i,0,i)
+                sheet_libro.write(i,1,costo_destino.name)
+                sheet_libro.write(i,2,costo_destino.date,date_format)                
+                sheet_libro.write(i,3,conta_line.name)
+                sheet_libro.write(i,4,conta_line.account_id.display_name)
+                sheet_libro.write(i,5,conta_line.debit,money)
+                sheet_libro.write(i,6,conta_line.credit,money)
+                i+=1
+            
+            pickings = costo_destino.picking_ids
+            
+            picking_ids = pickings.filtered(lambda l: l.picking_type_id.code == 'incoming')
+                
+            for picking_id in picking_ids:
+                pedido_compra = picking_id.purchase_id
+                
+                
+                
+                facturas = pedido_compra.order_line.invoice_lines.move_id.filtered(lambda r: r.type in ('in_invoice', 'in_refund'))
+                count_factura = len(facturas)
+                #sheet_libro.write(i,8,count_factura) #NUmero de facturas
+                
+                duca = facturas.sat_invoice_id
+                
+                facturas_duca = duca.sat_invoice_child_ids
+                
+                for factura_detalle in facturas_duca.line_ids:
+                    sheet_libro.write(i,0,i)
+                    sheet_libro.write(i,1,costo_destino.name)
+                    sheet_libro.write(i,2,factura_detalle.move_id.date,date_format)
+                    sheet_libro.write(i,3,factura_detalle.move_id.name)
+                    sheet_libro.write(i,4,factura_detalle.account_id.display_name)
+                    sheet_libro.write(i,5,factura_detalle.debit,money)
+                    sheet_libro.write(i,6,factura_detalle.credit,money)
+                    sheet_libro.write(i,7,pedido_compra.name)            
+                    i+=1
+                
+                
         
