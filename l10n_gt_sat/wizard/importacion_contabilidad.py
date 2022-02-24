@@ -70,7 +70,7 @@ class AnalisisImportacionesContabilidadXls(models.AbstractModel):
         inicio = data['form']['fecha_inicio']
         fin = data['form']['fecha_fin']
         
-        #costos_destino = self.env["stock.landed.cost"].search([('id','=',50)])
+        #costos_destino = self.env["stock.landed.cost"].search([('id','=',49)])
         costos_destino = self.env["stock.landed.cost"].search([])
         i+=1
         for costo_destino in costos_destino:
@@ -92,30 +92,43 @@ class AnalisisImportacionesContabilidadXls(models.AbstractModel):
             pickings = costo_destino.picking_ids
             
             picking_ids = pickings.filtered(lambda l: l.picking_type_id.code == 'incoming')
+            
+            pedido_compra = None
                 
             for picking_id in picking_ids:
                 pedido_compra = picking_id.purchase_id
                 
                 
                 
-                facturas = pedido_compra.order_line.invoice_lines.move_id.filtered(lambda r: r.type in ('in_invoice', 'in_refund'))
-                count_factura = len(facturas)
-                #sheet_libro.write(i,8,count_factura) #NUmero de facturas
-                
-                duca = facturas.sat_invoice_id
-                
-                facturas_duca = duca.sat_invoice_child_ids
-                
-                for factura_detalle in facturas_duca.line_ids:
-                    sheet_libro.write(i,0,i)
-                    sheet_libro.write(i,1,costo_destino.name)
-                    sheet_libro.write(i,2,factura_detalle.move_id.date,date_format)
-                    sheet_libro.write(i,3,factura_detalle.move_id.name)
-                    sheet_libro.write(i,4,factura_detalle.account_id.display_name)
-                    sheet_libro.write(i,5,factura_detalle.debit,money)
-                    sheet_libro.write(i,6,factura_detalle.credit,money)
-                    sheet_libro.write(i,7,pedido_compra.name)            
-                    i+=1
+            facturas = pedido_compra.order_line.invoice_lines.move_id.filtered(lambda r: r.type in ('in_invoice', 'in_refund'))
+            count_factura = len(facturas)
+            #sheet_libro.write(i,8,count_factura) #NUmero de facturas
+            
+            duca = facturas.sat_invoice_id
+            
+            facturas_duca = duca.sat_invoice_child_ids
+            
+            for factura_linea_duca in duca.line_ids:
+                sheet_libro.write(i,0,i)
+                sheet_libro.write(i,1,costo_destino.name)
+                sheet_libro.write(i,2,factura_linea_duca.move_id.date,date_format)
+                sheet_libro.write(i,3,factura_linea_duca.move_id.name)
+                sheet_libro.write(i,4,factura_linea_duca.account_id.display_name)
+                sheet_libro.write(i,5,factura_linea_duca.debit,money)
+                sheet_libro.write(i,6,factura_linea_duca.credit,money)
+                sheet_libro.write(i,7,"DUCA")
+                i+=1              
+            
+            for factura_detalle in facturas_duca.line_ids:
+                sheet_libro.write(i,0,i)
+                sheet_libro.write(i,1,costo_destino.name)
+                sheet_libro.write(i,2,factura_detalle.move_id.date,date_format)
+                sheet_libro.write(i,3,factura_detalle.move_id.name)
+                sheet_libro.write(i,4,factura_detalle.account_id.display_name)
+                sheet_libro.write(i,5,factura_detalle.debit,money)
+                sheet_libro.write(i,6,factura_detalle.credit,money)
+                sheet_libro.write(i,7,factura_detalle.purchase_line_id.order_id.name)            
+                i+=1
                 
                 
         
