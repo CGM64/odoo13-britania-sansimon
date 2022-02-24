@@ -8,6 +8,7 @@ from datetime import date
 from odoo.tools import float_round
 from odoo.exceptions import UserError, ValidationError
 from datetime import datetime, date, timedelta
+from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips
 
 dias_lab_mes = 30.416
 
@@ -58,7 +59,6 @@ class Payslip(models.Model):
     #Funcion que permete agregar automaticamente, las otras entradas  a la nomina de cada empleado segun estructura salarial.
     @api.onchange('employee_id', 'struct_id', 'contract_id', 'date_from', 'date_to')
     def _onchange_employee(self):
-        print("-------------si llego a _onchange_employee ")
         res = super()._onchange_employee()
         for payslip in self:
             estructura_otras_entradas = payslip.struct_id.input_line_type_ids
@@ -96,7 +96,6 @@ class Payslip(models.Model):
         return res
 
     def _get_new_worked_days_lines(self):
-
         valor = [(5, False, False)]
         if self.struct_id.use_worked_day_lines:
             valor = [(5, 0, 0)] + [(0, 0, vals) for vals in self._get_worked_day_lines()]
@@ -320,15 +319,14 @@ class Payslip(models.Model):
     def action_refresh_from_work_entries(self):
         self._calcular_bonos_descuentos()
         return super().action_refresh_from_work_entries()
+    
 
 #Funcion para el salario devengado menos las ausencias.
 def compute_sueldo_x_dia(payslip, categories, worked_days, inputs, code):
-    print("si esta llegando")
     employee = payslip.contract_id.employee_id
     wage = categories.BASIC
     dias_trabajados = 0
     numero_dias_total = payslip.number_of_hours
-    print(numero_dias_total)
     for dias in payslip.worked_days_line_ids:
         if dias.work_entry_type_id.code == code:
             dias_trabajados = dias.number_of_hours
@@ -338,7 +336,7 @@ def compute_sueldo_x_dia(payslip, categories, worked_days, inputs, code):
     sueldo_diario = sueldo_quincena / numero_dias_total
     sueldo_total = sueldo_diario * dias_trabajados
     total = round(sueldo_total,2)
-    print("--%s=%s" % (code, total))
+    #print("--%s=%s" % (code, total))
     return total
 
 #Busca el valor del codigo enlas nominas anteriores, esto es para obtener el total de bono especial entre todas las nominas del me..

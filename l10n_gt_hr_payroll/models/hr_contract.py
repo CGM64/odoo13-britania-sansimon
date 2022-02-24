@@ -58,10 +58,6 @@ class HrContract(models.Model):
     fecha_reinicio_labores = fields.Date('Fecha de reinicio de labores', tracking=True, help="Fecha de reinicio de labores.")
 
     def _get_horas_completas(self, date_start, date_stop):
-        
-        
-        print("-----------------llego a horas completas")
-        
         """
         Genera el total de horas que un emleado debio trabajar en el
         periodo de tiempo asignado por el calendario de trabajo.
