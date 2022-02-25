@@ -76,7 +76,7 @@ Guatemala Payroll Salary Rules.
         'data/l10n_gt_hr_payroll_structure_anticipo_data.xml',
         'data/l10n_gt_hr_payslip_input_type.xml',
         'data/ir_sequence_data.xml',
-        #'data/l10n_gt_hr_work_entry_type_data.xml',
+        'data/l10n_gt_hr_work_entry_type_data.xml',
         #Ministerio de trabajo
         'data/hr_employee_tipo_discapacidad_data.xml',
         'data/hr_employee_documento_identificacion_data.xml',
