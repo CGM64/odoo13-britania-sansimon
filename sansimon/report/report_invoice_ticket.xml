@@ -16,7 +16,7 @@
                 <t t-foreach="doc.journal_id.fel_frases_ids" t-as="frases">
                   <span>
                     <strong><span t-field="frases.fel_escenario.texto"/></strong>
-                  </span>
+                  </span><br/>
                 </t>
                 <br/>
                 <span>
