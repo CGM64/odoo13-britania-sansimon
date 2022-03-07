@@ -2,19 +2,39 @@
 <odoo>
   <template id="librofiscal">
     <t t-call="web.html_container">
-      <!-- <t t-set="data_report_margin_top" t-value="12"/> <t t-set="data_report_header_spacing" t-value="9"/> <t t-set="data_report_dpi" t-value="110"/> -->
+      <t t-set="data_report_margin_top" t-value="12"/>
+      <t t-set="data_report_header_spacing" t-value="9"/>
+      <t t-set="data_report_dpi" t-value="110"/>
       <t t-foreach="docs" t-as="o">
 
-        <t t-foreach="libros" t-as="libro">
-          <t t-call="web.internal_layout">
-            <div class="page">
-              <h2><span t-esc="o.company_id.name"/></h2>
+      <t t-foreach="libros" t-as="libro">
+        <t t-call="web.basic_layout">
+          <div class="header">
+						<div class="row">
+							<div class="col-3">
+								<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+							</div>
+							<div class="col-2 offset-2 text-center">
+								<span t-esc="res_company.name"/>
+							</div>
+							<div class="col-2 offset-3 text-right">
+								<t t-set="o" t-value="modelo"/>
+								<ul class="list-inline">
+									Folio: <t t-call="l10n_gt_sat.counter_folio"></t>
+								</ul>
+							</div>
+						</div>
+					</div>
+      <div class="page">
+        <br/>
               <h3>Libro de
                 <span t-esc="libro['descripcion']"/></h3>
-              <h4>Del:
+              <h5>Del:
                 <span t-esc="libro['del']"/>
                 Al:
-                <span t-esc="libro['al']"/></h4>
+                <span t-esc="libro['al']"/></h5>
+                <h5>Resolucion:<span t-esc="data['resolucion']"/></h5>
+
 
               <t t-if="libro['libro'] == 'sale'">
                 <t t-if="libro['tipo'] == 'detallado'">
@@ -365,6 +385,50 @@
         </tr>
       </tbody>
     </table>
+  </template>
+
+  <template id="counter_folio">
+    <span class="current_folio"></span>
+    <span class="page" hidden="true" />
+    <t t-if="o.folio != 0">
+      <script>
+        var currentNoFolioNumber =
+        <t t-esc="o.folio - 1 " />
+        ;
+        //var temps = document.getElementById('current_folio');
+        
+        var temp = {};
+        
+        var params = document.location.search.substr(1);
+        
+        params = params.split('&amp;');
+        
+        for(var i = 0 ; i &lt; params.length; i++) {
+          var split_param = params[i].split('=',2);
+          
+          if( split_param[0] == 'page'){
+            temp[split_param[0]] = parseInt(unescape(split_param[1])) + currentNoFolioNumber;
+          } else {
+            temp[split_param[0]] = unescape(split_param[1]);
+          }
+        }
+        
+        
+        var elements = document.getElementsByClassName("current_folio");
+        for( var i = 0 ; i &lt; elements.length; i++) {
+        elements[i].innerText = temp['page'];
+        }
+        //var classes = ["frompage", "topage", "page", "webpage", "section", "subsection", "subsubsection"];
+        /*for( var i = 0 ; i &lt; classes.length; i++) {
+          var elements = document.getElementsByClassName(classes[i]);
+          
+          //for(var j = 0; j &lt; elements.length; j++) {
+            //temps.innerText = temp[classes[i]];
+            //elements[j].textContent = temp[classes[i]];
+          //}
+        }*/
+      </script>
+    </t>
   </template>
 
 </odoo>

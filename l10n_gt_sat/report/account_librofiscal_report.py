@@ -271,6 +271,7 @@ class AccountCommonJournalReport(models.TransientModel):
         model = self.env.context.get('active_model')
         docs = self.env[model].browse(self.env.context.get('active_id'))
         libros = self.get_libro(data)
+        libro_fiscal = self.env['l10n_gt_sat.librofiscal.report'].search([('id','=',data['context']['active_id'])])
         # print("llego al get libro")
 
 
@@ -282,6 +283,7 @@ class AccountCommonJournalReport(models.TransientModel):
             'docs': docs,
             'libros': libros,
             'currency': self.env.company.currency_id,
+            'modelo': libro_fiscal,
         }
 
         return docargs

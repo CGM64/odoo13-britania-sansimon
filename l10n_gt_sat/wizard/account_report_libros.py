@@ -5,7 +5,7 @@ import datetime
 
 
 TIPOS_DE_LIBROS = [
-            ('all', 'Todo'),
+            #('all', 'Todo'),
             ('sale', 'Ventas'),
             ('purchase', 'Compras'),
         ]
@@ -29,7 +29,7 @@ class AccountLibroFiscalReport(models.TransientModel):
     _description = "Libro Fiscal Report"
 
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.user.company_id)
-    libro = fields.Selection(TIPOS_DE_LIBROS, string='Libro', required=True, default='all')
+    libro = fields.Selection(TIPOS_DE_LIBROS, string='Libro', required=True, default='sale')
     tipo = fields.Selection([('detallado', 'Detallado'),
                              ('resumido', 'Resumido'),
                             ], string='Tipo', required=True, default='detallado')
@@ -52,17 +52,20 @@ class AccountLibroFiscalReport(models.TransientModel):
                                    string='Recepciones',
                                    domain=lambda self: [("company_id", "=", self.env.user.company_id.id)]
                                    )
+    #Ticket #24718
+    resolucion = fields.Char(string='Resolución',default='')
+    folio = fields.Integer(string='Folio',default=1)
 
     def check_report(self):
         self.ensure_one()
         data = {}
-        data['form'] = self.read(['libro', 'tipo', 'periodo', 'ejercicio', 'company_id'])[0]
+        data['form'] = self.read(['libro', 'tipo', 'periodo', 'ejercicio', 'company_id','resolucion','folio'])[0]
         return self.env.ref('l10n_gt_sat.action_report_librofiscal').with_context(landscape=True).report_action(self, data=data)
 
     def export_xls(self):
         self.ensure_one()
         data = {}
-        data['form'] = self.read(['libro', 'tipo', 'periodo', 'ejercicio', 'company_id', 'vendedor'])[0]
+        data['form'] = self.read(['libro', 'tipo', 'periodo', 'ejercicio', 'company_id', 'vendedor','resolucion','folio'])[0]
         return self.env['ir.actions.report'].search([('report_name', '=', 'l10n_gt_sat.account_librofiscal_report_xls'),
                 ('report_type', '=', 'xlsx')], limit=1).report_action(self,data=data)
 
