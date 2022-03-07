@@ -15,7 +15,7 @@
 								<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
 							</div>
 							<div class="col-2 offset-2 text-center">
-								<span t-esc="res_company.name"/>
+								<span t-esc="res_company.company_registry"/>
 							</div>
 							<div class="col-2 offset-3 text-right">
 								<t t-set="o" t-value="modelo"/>

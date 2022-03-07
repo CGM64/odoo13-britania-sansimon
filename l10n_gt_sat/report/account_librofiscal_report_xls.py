@@ -341,7 +341,7 @@ class LibroFiscalReportXls(models.AbstractModel):
 
             sheet_libro = workbook.add_worksheet(libro['descripcion'])
             sheet_libro.merge_range('A1:F1', 'GUATEMALA', formato_encabezado)
-            sheet_libro.merge_range('A2:F2', str(data['form']['company_id'][1]).upper(), formato_encabezado)
+            sheet_libro.merge_range('A2:F2', self.env.company.company_registry, formato_encabezado)
             sheet_libro.merge_range('A3:F3', "LIBRO DE " + str(libro['descripcion']).upper(), formato_encabezado)
             sheet_libro.merge_range('A4:F4', "DEL " + libro['del'] + " AL " + libro['del'], formato_encabezado)
             sheet_libro.merge_range('A5:F5','Resolucion: {}'.format(data['form']['resolucion'] if data['form']['resolucion'] else ''), formato_encabezado)
