@@ -86,6 +86,7 @@ class AccountCommonJournalReport(models.TransientModel):
                     ('date','<=',fecha_al),
                     ('invoice_date','!=',False),
                     ('state','in',('posted','cancel')),
+                    ('fel_firma','!=',False),
                     #('partner_id','=',11151),
                     #('id','=',33202),
                 ]
