@@ -284,6 +284,7 @@ class AccountCommonJournalReport(models.TransientModel):
             'docs': docs,
             'libros': libros,
             'currency': self.env.company.currency_id,
+            'modelo': libro_fiscal,
         }
 
         return docargs
