@@ -75,7 +75,8 @@ class FleetVehicle(models.Model):
 
         for vehicle in self:
             if vehicle.product_id:
-                vehicle.product_id.default_code = vehicle.pedido
+                if vehicle.product_id.default_code != vehicle.pedido:
+                    vehicle.product_id.default_code = vehicle.pedido
                 if vals.get('image_1920', False):
                     update_prod_vals.update({'image_1920': vehicle.image_1920})
                 if vals.get('model_id', False) or vals.get('license_plate', False):
