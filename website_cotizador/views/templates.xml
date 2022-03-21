@@ -255,12 +255,12 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6 d-block">
                                             <div class="bg-primary text-white p-2 p-md-5">
-                                                <t t-if="fleet_vehicle and fleet_vehicle.cotizacion_dolar" t-raw="fleet_vehicle.cotizacion_dolar" widget="html"></t>
+                                                <t t-if="desgloce_pago_dolares" t-raw="desgloce_pago_dolares" widget="html"></t>
                                             </div>
 
                                             <ul class="list-unstyled text-muted pt-3 text-sm">
                                                 <li>* Cuotas no incluyen seguro</li>
-                                                <li>* Aplican restricciones, precios sujetos a taza de cambio del día.</li>
+                                                <li>* Aplican restricciones, precios sujetos a tasa de cambio del día.</li>
                                             </ul>
                                         </div>
                                         <div class="col-12 col-md-6 d-block">
@@ -270,7 +270,7 @@
                                                 <t t-esc="signo_t_publica" /><t t-esc="'{0:,.2f}'.format(float(tarifa_publica))" />
                                             </h1>
                                             <div class="bg-primary text-white p-2 p-md-5">
-                                                <t t-if="fleet_vehicle and fleet_vehicle.cotizacion_quetzal" t-raw="fleet_vehicle.cotizacion_quetzal" widget="html"></t>
+                                                <t t-if="desgloce_pago_publica" t-raw="desgloce_pago_publica" widget="html"></t>
                                             </div>
                                         </div>
                                     </div>

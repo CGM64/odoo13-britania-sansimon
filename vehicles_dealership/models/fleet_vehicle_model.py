@@ -28,41 +28,52 @@ class FleetVehicle(models.Model):
     fleet_model_ids = fields.One2many("fleet.vehicle.model.color","fleet_model_id", string="Colores")
     imagen_portada = fields.Image(string="Imagen de portada", help="Imagen que aparecerá como portada en el encabezado del cotizador.")
 
-    cotizacion_dolar = fields.Text(string="Pagos en dólares", required=False, copy=True, default="""
-    <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
-    <h2 class="" style="text-align: center;">3 VECES MÁS FÁCIL</h2>
-    <ul>
-        <li>33% De enganche inicial de:</li>
-    </ul>
-    <h2 class="" style="text-align: right;">$ 0,000.00</h2>
-    <ul>
-        <li>33% Se divide en 33 bajas cuotas
-            mensuales de:</li>
-    </ul>
-    <h2 class="" style="text-align: right;">$ 0,000.00</h2>
-    <ul>
-        <li>33% Pago final de:</li>
-    </ul>
-    <h2 class="" style="text-align: right;">$ 0,000.00</h2>
-    <p>o renueva tu motocicleta por una nueva*’</p>
-    """)
-    cotizacion_quetzal = fields.Text(string="Pagos en quetzales", required=False, copy=True, default="""
-    <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
-    <h2 class="" style="text-align: center;">3 VECES MÁS FÁCIL</h2>
-    <ul>
-        <li>33% De enganche inicial de:</li>
-    </ul>
-    <h2 class="" style="text-align: right;">Q 0,000.00</h2>
-    <ul>
-        <li>33% Se divide en 33 bajas cuotas
-            mensuales de:</li>
-    </ul>
-    <h2 class="" style="text-align: right;">Q 0,000.00</h2>
-    <ul>
-        <li>33% Pago final de:</li>
-    </ul>
-    <h2 class="" style="text-align: right;">Q 0,000.00</h2>
-    <p>o renueva tu motocicleta por una nueva*’</p>
-    """)
+    porcentaje_recargo = fields.Float(string="Porcentaje de recargo", help="Porcentaje de recargo en el precio total del vehículo", required=False, copy=True)
+
+    @api.onchange('porcentaje_recargo')
+    def onchange_porcentaje_recargo(self):
+        if self.porcentaje_recargo < 0.00:
+            self.porcentaje_recargo = 0.00
+        elif self.porcentaje_recargo > 100.00:
+            self.porcentaje_recargo = 100.00
+
+    # cotizacion_dolar = fields.Text(string="Pagos en dólares", required=False, copy=True, default="")
+    # """
+    # <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
+    # <h2 class="" style="text-align: center;">3 VECES MÁS FÁCIL</h2>
+    # <ul>
+    #     <li>33% De enganche inicial de:</li>
+    # </ul>
+    # <h2 class="" style="text-align: right;">$ 0,000.00</h2>
+    # <ul>
+    #     <li>33% Se divide en 33 bajas cuotas
+    #         mensuales de:</li>
+    # </ul>
+    # <h2 class="" style="text-align: right;">$ 0,000.00</h2>
+    # <ul>
+    #     <li>33% Pago final de:</li>
+    # </ul>
+    # <h2 class="" style="text-align: right;">$ 0,000.00</h2>
+    # <p>con opción en tu ultimo pago a renovar tu moto por otra nueva.*’</p>
+    # """#)
+    # cotizacion_quetzal = fields.Text(string="Pagos en quetzales", required=False, copy=True, default="")
+    # """
+    # <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
+    # <h2 class="" style="text-align: center;">3 VECES MÁS FÁCIL</h2>
+    # <ul>
+    #     <li>33% De enganche inicial de:</li>
+    # </ul>
+    # <h2 class="" style="text-align: right;">Q 0,000.00</h2>
+    # <ul>
+    #     <li>33% Se divide en 33 bajas cuotas
+    #         mensuales de:</li>
+    # </ul>
+    # <h2 class="" style="text-align: right;">Q 0,000.00</h2>
+    # <ul>
+    #     <li>33% Pago final de:</li>
+    # </ul>
+    # <h2 class="" style="text-align: right;">Q 0,000.00</h2>
+    # <p>con opción en tu ultimo pago a renovar tu moto por otra nueva.*’</p>
+    # """#)
     
     # ================================================================================
