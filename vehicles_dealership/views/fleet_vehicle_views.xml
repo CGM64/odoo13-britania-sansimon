@@ -90,8 +90,9 @@
 
           <page string="Desglose de pago" name="formas_de_pago">
             <group string="Desglose de pago" col="2">
-              <field name="cotizacion_dolar" widget="html" />
-              <field name="cotizacion_quetzal" widget="html" />
+              <field name="porcentaje_recargo" />
+              <!-- <field name="cotizacion_dolar" widget="html" />
+              <field name="cotizacion_quetzal" widget="html" /> -->
             </group>
           </page>
 

@@ -9,6 +9,7 @@ from odoo.addons.portal.controllers.mail import _message_post_helper
 from odoo.osv import expression
 from odoo.addons.sale.controllers.portal import CustomerPortal #, pager as portal_pager, get_records_page
 
+import math
 
 
 class WebsiteCotizador(CustomerPortal):
@@ -35,7 +36,6 @@ class WebsiteCotizador(CustomerPortal):
                     subtype="mail.mt_note",
                     partner_ids=order_sudo.user_id.sudo().partner_id.ids,
                 )
-        company = request.env.company
 
         base_url = request.env ['ir.config_parameter'].sudo().get_param('web.base.url')
 
@@ -43,34 +43,10 @@ class WebsiteCotizador(CustomerPortal):
             ("product_tmpl_id", "=", order_sudo.order_line[0].product_id.product_tmpl_id.id)
         ])
 
-        tarifa_dolar = ''
-        tarifa_publica = ''
-        signo_t_dolar = ''
-        signo_t_publica = ''
-        nombre_producto = order_sudo.order_line[0].product_id.name
-
-        for price in producto[0].sale_pricelists:
-            context = price._context.copy()
-            context.update({'product_id' : producto.id})
-            price.with_context(context)._get_product_price()
-            if price.name == 'Tarifa en Dolares':
-                tarifa_dolar = price.product_price.replace(' ', '')
-                signo_t_dolar = price.product_price[0]
-                tarifa_dolar = price.product_price.replace(signo_t_dolar, '')
-            elif price.name == 'Tarifa pública':
-                tarifa_publica = price.product_price.replace(' ', '')
-                signo_t_publica = price.product_price[0]
-                tarifa_publica = price.product_price.replace(signo_t_publica, '')
-            #print(price.name, price.product_price)
 
         fleet_vehicle = request.env["fleet.vehicle"].sudo().search([
             ("product_id","=",producto[0].id)
         ])
-
-        for fleet in fleet_vehicle:
-            if fleet.model_id.id:
-                fleet_vehicle = fleet
-                break
 
         fleet_vehicle_model = False
         ficha_tecnica_url = '#'
@@ -80,8 +56,78 @@ class WebsiteCotizador(CustomerPortal):
                 ("id","=",fleet_vehicle[0].model_id.id)
             ])
             fleet_vehicle_model = fleet_vehicle_model[0]
-            ficha_tecnica_url = '/web/binary/ficha_tecnica?model=fleet.vehicle.model&field=ficha_tecnica&id='+ str(fleet_vehicle_model[0].id)
+            ficha_tecnica_url = '/web/binary/ficha_tecnica?model=fleet.vehicle.model&field=ficha_tecnica&id='+ str(fleet_vehicle_model.id)
         
+        tarifa_dolar = ''
+        tarifa_publica = ''
+        signo_t_dolar = ''
+        signo_t_publica = ''
+        nombre_producto = order_sudo.order_line[0].product_id.name
+        porcentaje_recargo = 0.00
+
+        if fleet_vehicle_model:
+            porcentaje_recargo = 1.00 + fleet_vehicle_model.porcentaje_recargo / 100
+        
+        desgloce_pago = """
+                    <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
+                    <h2 class="" style="text-align: center;">3 VECES MÁS FÁCIL</h2>
+                    <ul>
+                        <li>33% De enganche inicial de:</li>
+                    </ul>
+                    <h2 class="" style="text-align: right;">{}</h2>
+                    <ul>
+                        <li>33% Se divide en 33 bajas cuotas
+                            mensuales de:</li>
+                    </ul>
+                    <h2 class="" style="text-align: right;">{}</h2>
+                    <ul>
+                        <li>33% Pago final de:</li>
+                    </ul>
+                    <h2 class="" style="text-align: right;">{}</h2>
+                    <p>con opción en tu ultimo pago a renovar tu moto por otra nueva.*’</p>
+        """
+        desgloce_pago_publica = ""
+        desgloce_pago_dolares = ""
+
+        for price in producto[0].sale_pricelists:
+            context = price._context.copy()
+            context.update({'product_id' : producto.id})
+            price.with_context(context)._get_product_price()
+            if price.name == 'Tarifa en Dolares':
+                signo_t_dolar = price.product_price[0]
+                tarifa_dolar = price.product_price[2:]
+                
+                f_tarifa_dolar = float(tarifa_dolar)
+                f_tarifa_dolar = math.ceil(f_tarifa_dolar * porcentaje_recargo)
+                tarifa_dolar = str(f_tarifa_dolar)
+                
+                cuota_inicial_final = math.ceil(f_tarifa_dolar / 3)
+                cuotas_mensuales = math.ceil(cuota_inicial_final / 33)
+
+                desgloce_pago_dolares = desgloce_pago.format(
+                    "{} {:,}.00".format(signo_t_dolar,cuota_inicial_final),
+                    "{} {:,}.00".format(signo_t_dolar,cuotas_mensuales),
+                    "{} {:,}.00".format(signo_t_dolar,cuota_inicial_final)
+                )
+
+            elif price.name == 'Tarifa pública':
+                signo_t_publica = price.product_price[0]
+                tarifa_publica = price.product_price[2:]
+                
+                f_tarifa_publica = float(tarifa_publica)
+                f_tarifa_publica = math.ceil(f_tarifa_publica * porcentaje_recargo)
+                tarifa_publica = str(f_tarifa_publica)
+                
+                cuota_inicial_final = math.ceil(f_tarifa_publica / 3)
+                cuotas_mensuales = math.ceil(cuota_inicial_final / 33)
+                
+                desgloce_pago_publica = desgloce_pago.format(
+                    "{} {:,}.00".format(signo_t_publica,cuota_inicial_final),
+                    "{} {:,}.00".format(signo_t_publica,cuotas_mensuales),
+                    "{} {:,}.00".format(signo_t_publica,cuota_inicial_final)
+                )
+
+
         caracteristicas = []
         f_m_descripcion_vehiculo = ""
         f_m_titulo_vehiculo = ""
@@ -116,12 +162,13 @@ class WebsiteCotizador(CustomerPortal):
             'fleet_vehicle': fleet_vehicle_model,
             'caracteristicas': caracteristicas,
             'ficha_tecnica_url': ficha_tecnica_url,
-            'company_id': company,
             'base_url': base_url,
             'tarifa_dolar': tarifa_dolar,
             'signo_t_dolar': signo_t_dolar,
             'tarifa_publica': tarifa_publica,
             'signo_t_publica': signo_t_publica,
+            'desgloce_pago_dolares': desgloce_pago_dolares,
+            'desgloce_pago_publica': desgloce_pago_publica,
             'nombre_producto': nombre_producto,
             'f_m_descripcion_vehiculo': f_m_descripcion_vehiculo,
             'f_m_titulo_vehiculo': f_m_titulo_vehiculo
