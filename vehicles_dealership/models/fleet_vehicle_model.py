@@ -27,6 +27,7 @@ class FleetVehicle(models.Model):
     informacion = fields.Text(string="Información general", required=False, copy=True)
     fleet_model_ids = fields.One2many("fleet.vehicle.model.color","fleet_model_id", string="Colores")
     imagen_portada = fields.Image(string="Imagen de portada", help="Imagen que aparecerá como portada en el encabezado del cotizador.")
+    codigo = fields.Char(string="Codigo")
 
     porcentaje_recargo = fields.Float(string="Porcentaje de recargo", help="Porcentaje de recargo en el precio total del vehículo", required=False, copy=True)
 
