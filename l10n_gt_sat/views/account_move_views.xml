@@ -40,7 +40,7 @@
                 <notebook position="inside">
 
                    <!-- <page name="duca_page" string="DUCA" attrs="{'invisible': [('journal_tipo_operacion','not in',('DUCA_IN','DUCA_OUT'))]}"> -->
-                   <page name="duca_page" string="DUCA"  attrs="{'invisible': [('type', 'not in',  ('in_invoice'))]}">
+                   <page name="duca_page" string="DUCA"  attrs="{'invisible': [('type', 'not in',  ('in_invoice','in_refund'))]}">
 
                     <group string="Valores">
                        <group>

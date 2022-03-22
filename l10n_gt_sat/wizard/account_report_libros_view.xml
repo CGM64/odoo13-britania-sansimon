@@ -11,10 +11,12 @@
                 <field name="tipo"/>
                 <field name="vendedor" widget="boolean_toggle"/>
                 <field name="ejercicio"/>
+                <field name="resolucion"/>
             </group>
             <group>
                 <field name="libro"/>
                 <field name="periodo"/>
+                <field name="folio"/>
                 <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
             </group>
           </group>

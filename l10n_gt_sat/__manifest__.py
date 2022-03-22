@@ -47,6 +47,7 @@
         'wizard/account_report_libros_view.xml',
         'wizard/account_report_importacion.xml',
         'wizard/libro_contable_view.xml',
+        'wizard/importacion_contabilidad.xml',
         'report/account_librofiscal_report_view.xml',
         'report/purchase_order_views.xml',
         'views/res_company.xml',

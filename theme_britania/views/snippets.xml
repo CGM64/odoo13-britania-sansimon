@@ -182,7 +182,7 @@
                                     </ul>
                                 </div>
                                 <div class="col-12">
-                                    <p class="text-danger text-sm">* NOTA: Precios vigentes para modelos 2020 y 2021, en Moneda
+                                    <p class="text-danger text-sm">* NOTA: Precios vigentes para modelos  <t t-esc="datetime.datetime.now().strftime('%Y')"/>, en Moneda
                                     Nacional, IVA Incluido. Aplican
                                     restricciones. Precios pueden variar sin previo aviso. Consulte previamente a los
                                     distribuidores
@@ -193,7 +193,7 @@
                             </div>
                         </div>
                         <div class="col-12 col-md-3 py-3">
-                            <p class="text-muted text-sm">© 2021 Triumph Motorcycles</p>
+                            <p class="text-muted text-sm">© <t t-esc="datetime.datetime.now().strftime('%Y')"/> Triumph Motorcycles</p>
                         </div>
                     </div>
                 </div>
