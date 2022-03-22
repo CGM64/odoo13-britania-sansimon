@@ -28,4 +28,6 @@ class FleetVehicle(models.Model):
     fleet_model_ids = fields.One2many("fleet.vehicle.model.color","fleet_model_id", string="Colores")
     imagen_portada = fields.Image(string="Imagen de portada", help="Imagen que aparecerá como portada en el encabezado del cotizador.")
     
+    codigo = fields.Char(string="Codigo")
+    
     # ================================================================================
