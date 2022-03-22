@@ -51,7 +51,24 @@ class WebsiteCotizador(CustomerPortal):
         fleet_vehicle_model = False
         ficha_tecnica_url = '#'
 
+        cuota_enganche_quetzal = 0.00
+        cuota_mensual_quetzal = 0.00
+        cuota_final_quetzal = 0.00
+
+        cuota_enganche_dolar = 0.00
+        cuota_mensual_dolar = 0.00
+        cuota_final_dolar = 0.00
+
         if fleet_vehicle.model_id.id:
+            
+            cuota_enganche_quetzal = fleet_vehicle.cuota_enganche_quetzal
+            cuota_mensual_quetzal = fleet_vehicle.cuota_mensual_quetzal
+            cuota_final_quetzal = fleet_vehicle.cuota_final_quetzal
+
+            cuota_enganche_dolar = fleet_vehicle.cuota_enganche_dolar
+            cuota_mensual_dolar = fleet_vehicle.cuota_mensual_dolar
+            cuota_final_dolar = fleet_vehicle.cuota_final_dolar
+
             fleet_vehicle_model = request.env["fleet.vehicle.model"].sudo().search([
                 ("id","=",fleet_vehicle[0].model_id.id)
             ])
@@ -63,10 +80,10 @@ class WebsiteCotizador(CustomerPortal):
         signo_t_dolar = ''
         signo_t_publica = ''
         nombre_producto = order_sudo.order_line[0].product_id.name
-        porcentaje_recargo = 0.00
+        #porcentaje_recargo = 0.00
 
-        if fleet_vehicle_model:
-            porcentaje_recargo = 1.00 + fleet_vehicle_model.porcentaje_recargo / 100
+        # if fleet_vehicle_model:
+        #     porcentaje_recargo = 1.00 + fleet_vehicle_model.porcentaje_recargo / 100
         
         desgloce_pago = """
                     <p class="p-0 m-0">El valor total es dividido en 3 partes</p>
@@ -97,34 +114,34 @@ class WebsiteCotizador(CustomerPortal):
                 signo_t_dolar = price.product_price[0]
                 tarifa_dolar = price.product_price[2:]
                 
-                f_tarifa_dolar = float(tarifa_dolar)
-                f_tarifa_dolar = math.ceil(f_tarifa_dolar * porcentaje_recargo)
-                tarifa_dolar = str(f_tarifa_dolar)
+                # f_tarifa_dolar = float(tarifa_dolar)
+                # f_tarifa_dolar = math.ceil(f_tarifa_dolar * porcentaje_recargo)
+                # tarifa_dolar = str(f_tarifa_dolar)
                 
-                cuota_inicial_final = math.ceil(f_tarifa_dolar / 3)
-                cuotas_mensuales = math.ceil(cuota_inicial_final / 33)
+                # cuota_inicial_final = math.ceil(f_tarifa_dolar / 3)
+                # cuotas_mensuales = math.ceil(cuota_inicial_final / 33)
 
                 desgloce_pago_dolares = desgloce_pago.format(
-                    "{} {:,}.00".format(signo_t_dolar,cuota_inicial_final),
-                    "{} {:,}.00".format(signo_t_dolar,cuotas_mensuales),
-                    "{} {:,}.00".format(signo_t_dolar,cuota_inicial_final)
+                    "{} {:,.2f}".format(signo_t_dolar,cuota_enganche_dolar),
+                    "{} {:,.2f}".format(signo_t_dolar,cuota_mensual_dolar),
+                    "{} {:,.2f}".format(signo_t_dolar,cuota_final_dolar)
                 )
 
             elif price.name == 'Tarifa pública':
                 signo_t_publica = price.product_price[0]
                 tarifa_publica = price.product_price[2:]
                 
-                f_tarifa_publica = float(tarifa_publica)
-                f_tarifa_publica = math.ceil(f_tarifa_publica * porcentaje_recargo)
-                tarifa_publica = str(f_tarifa_publica)
+                # f_tarifa_publica = float(tarifa_publica)
+                # f_tarifa_publica = math.ceil(f_tarifa_publica * porcentaje_recargo)
+                # tarifa_publica = str(f_tarifa_publica)
                 
-                cuota_inicial_final = math.ceil(f_tarifa_publica / 3)
-                cuotas_mensuales = math.ceil(cuota_inicial_final / 33)
+                # cuota_inicial_final = math.ceil(f_tarifa_publica / 3)
+                # cuotas_mensuales = math.ceil(cuota_inicial_final / 33)
                 
                 desgloce_pago_publica = desgloce_pago.format(
-                    "{} {:,}.00".format(signo_t_publica,cuota_inicial_final),
-                    "{} {:,}.00".format(signo_t_publica,cuotas_mensuales),
-                    "{} {:,}.00".format(signo_t_publica,cuota_inicial_final)
+                    "{} {:,.2f}".format(signo_t_publica,cuota_enganche_quetzal),
+                    "{} {:,.2f}".format(signo_t_publica,cuota_mensual_quetzal),
+                    "{} {:,.2f}".format(signo_t_publica,cuota_final_quetzal)
                 )
 
 
