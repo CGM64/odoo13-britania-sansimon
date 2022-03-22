@@ -10,7 +10,7 @@
 
     'description': """
 Guatemala Payroll Salary Rules.
-============================
+===============================
 
     -Configuration of hr_payroll for Guatemala localization
     -All main contributions rules for Guatemala payslip.
