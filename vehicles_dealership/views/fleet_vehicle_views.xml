@@ -30,6 +30,19 @@
             <field name="currency_id" readonly="0" />
             <field name="pedido" />
           </group>
+          <group string="Desglose de pago">
+            <group string="En dólares">
+              <field name="cuota_enganche_dolar" />
+              <field name="cuota_mensual_dolar" />
+              <field name="cuota_final_dolar" />
+            </group>
+            
+            <group string="En quetzales">
+              <field name="cuota_enganche_quetzal" />
+              <field name="cuota_mensual_quetzal" />
+              <field name="cuota_final_quetzal" />
+            </group>
+          </group>
         </xpath>
         <xpath expr="//field[@name='model_id']" position="attributes">
           <attribute name="options">{'no_create_edit': True, 'no_create':True, 'no_open':True}</attribute>
@@ -85,13 +98,6 @@
             <group string="Descripciones" col="2">
               <field name="descripcion_vehiculo" />
               <field name="informacion" placeholder="Título &lt;separador&gt; Descripcion &lt;nuevo&gt;Título &lt;separador&gt; Descripcion &lt;nuevo&gt;..." />
-            </group>
-          </page>
-
-          <page string="Desglose de pago" name="formas_de_pago">
-            <group string="Desglose de pago" col="2">
-              <field name="cotizacion_dolar" widget="html" />
-              <field name="cotizacion_quetzal" widget="html" />
             </group>
           </page>
 

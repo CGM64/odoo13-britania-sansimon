@@ -49,6 +49,13 @@ class FleetVehicle(models.Model):
                                  required=True,copy=True)
     pedido = fields.Char(string='No. Pedido',required=False,copy=True)
 
+    cuota_enganche_quetzal = fields.Float(string='Cuota de enganche (Q)', help="Cuota de enganche para el plan 3 veces mas fácil de BAC",required=False,copy=True)
+    cuota_mensual_quetzal = fields.Float(string='Cuota mensual (Q)', help="Cuota mensual a pagar para el plan 3 veces mas fácil de BAC (33 cuotas)",required=False,copy=True)
+    cuota_final_quetzal = fields.Float(string='Cuota final (Q)', help="Cuota final para el plan 3 veces mas fácil de BAC",required=False,copy=True)
+
+    cuota_enganche_dolar = fields.Float(string='Cuota de enganche ($)', help="Cuota de enganche para el plan 3 veces mas fácil de BAC",required=False,copy=True)
+    cuota_mensual_dolar = fields.Float(string='Cuota mensual ($)', help="Cuota mensual a pagar para el plan 3 veces mas fácil de BAC (33 cuotas)",required=False,copy=True)
+    cuota_final_dolar = fields.Float(string='Cuota final ($)', help="Cuota final para el plan 3 veces mas fácil de BAC",required=False,copy=True)
 
     @api.model
     def create(self, vals):
@@ -75,7 +82,8 @@ class FleetVehicle(models.Model):
 
         for vehicle in self:
             if vehicle.product_id:
-                vehicle.product_id.default_code = vehicle.pedido
+                if vehicle.product_id.default_code != vehicle.pedido:
+                    vehicle.product_id.default_code = vehicle.pedido
                 if vals.get('image_1920', False):
                     update_prod_vals.update({'image_1920': vehicle.image_1920})
                 if vals.get('model_id', False) or vals.get('license_plate', False):

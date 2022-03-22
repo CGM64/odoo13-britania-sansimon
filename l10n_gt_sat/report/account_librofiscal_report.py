@@ -89,6 +89,8 @@ class AccountCommonJournalReport(models.TransientModel):
                     #('partner_id','=',11151),
                     #('id','=',33202),
                 ]
+                if libro['libro'] == "sale":
+                    domain.append(('fel_firma','!=',False))
                 if libro['libro'] == "purchase":
                     domain.append(('state', '=', 'posted'))
                 documentos = self.env['account.move'].search(domain).sorted(key=lambda r: (r.invoice_date, r.id))
