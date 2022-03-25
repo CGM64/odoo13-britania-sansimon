@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="hr_view_employee_form_inherit" model="ir.ui.view">
+    <field name="name">hr.view.employee.form.inherit</field>
+    <field name="model">hr.employee</field>
+    <field name="inherit_id" ref="hr.view_employee_form" />
+    <field name="arch" type="xml">
+      <xpath expr="//page[@name='personal_information']//field[@name='certificate']" position="after">
+        <field name="nivel_academico_id" options="{'no_create': True}"/>
+        <field name="nivel_educativo_id" options="{'no_create': True}"/>
+      </xpath>
+
+      <xpath expr="//field[@name='phone']" position="after">
+        <field name="vat"/>
+        <field name="cui"/>
+      </xpath>
+
+      <xpath expr="//field[@name='vat']" position="after">
+        <field name="afiliacion_igss"/>
+        <field name="afiliacion_irtra"/>
+        <field name="fecha_emision_irtra"/>
+        <field name="fecha_cambio_irtra"/>
+      </xpath>
+
+      <xpath expr="//field[@name='children']" position="before">
+        <field name="padre"/>
+        <field name="madre"/>
+        <field name="conyugue"/>
+      </xpath>
+
+      <xpath expr="//field[@name='country_id']" position="after">
+        <field name="state_id"/>
+        <field name="municipio_id"/>
+      </xpath>
+
+      <xpath expr="//page[@name='personal_information']/group[last()]" position="inside">
+        <group string="Otra Informacion">
+          <field name="solicitud_empleo"/>
+          <field name="recibo_luz"/>
+          <field name="fotos"/>
+          <field name="infor_net"/>
+          <field name="papaleria_completa"/>
+          <field name="contrato_ind_trab"/>
+          <field name="talla_camisa"/>
+          <field name="lectura_reglamento"/>
+          <field name="acta_responsabilidad"/>
+          <field name="contrato_registrado"/>
+        </group>
+        <group string="Ministerio de Trabajo">
+          <field name="discapacidad_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
+          <field name="numero_expediente_extranjero"/>
+          <field name="documento_identificacion_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
+          <field name="pueblo_pertenencia_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
+          <field name="comunidad_linguistica_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
+          <field name="ocupacion_id" options="{'no_quick_create':True,'no_create_edit':True,'no_open': True,}"/>
+        </group>
+      </xpath>
+      
+
+      
+      <xpath expr="//page[@name='hr_settings']/group[last()]" position="inside">
+        <group string="Adjuntos">
+          <field name="attachment_dpi"/>
+          <field name="attachment_licencia"/>
+          <field name="attachment_contrato"/>
+        </group>
+      </xpath>
+
+      <xpath expr="//field[@name='user_id']" position="after">
+        <field name="distribucion_nombres"/>
+      </xpath>
+
+      <xpath expr="//field[@name='country_of_birth']" position="after">
+        <field name="municipio_of_birth_id"/>
+      </xpath>
+
+    </field>
+  </record>
+
+  <record id="res_partner_bank_view_form__inherit" model="ir.ui.view">
+    <field name="name">res.partner.bank.view.form.inherit</field>
+    <field name="model">res.partner.bank</field>
+    <field name="inherit_id" ref="base.view_partner_bank_form" />
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='acc_type']" position="after">
+        <field name="account_type_id"/>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="res_partner_view_form_private_inherit" model="ir.ui.view">
+    <field name="name">res.partner.view.form.private.inherit</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="base.res_partner_view_form_private" />
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='email']" position="after">
+        <field name="vat"/>
+      </xpath>
+
+      <xpath expr="//field[@name='acc_number']" position="before">
+        <field name="bank_id"/>
+        <field name="account_type_id"/>
+      </xpath>
+    </field>
+  </record>
+    <menuitem
+    id="catalogos_ministerio_trabajo_menu"
+    name="Ministerio de Trabajo"
+    parent="hr.menu_human_resources_configuration"
+    groups="base.group_no_one"
+    sequence="200"/>
+</odoo>

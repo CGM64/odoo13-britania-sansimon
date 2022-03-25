@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Se definen las características del papel par ala impresión-->
+        <record id="librodesalarios_paper" model="report.paperformat">
+            <field name="name">LibrodeSalarios</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">355</field>
+            <field name="page_width">215</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">0.2</field>
+            <field name="margin_right">0.2</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">27</field>
+            <field name="dpi">110</field>
+        </record>
+        <!--Fin definición del papel-->
+
+        <template id="report_nomina_pagos">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+
+                        <div class="page mt-10">
+                            <t t-set="d_nominas" t-value="o.constructor_planillas_pdf()"/>
+
+                            <div class="container mb-5">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <strong t-esc="d_nominas['empresa']" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <strong t-esc="d_nominas['titulo']" />
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col-12">
+                                        <strong t-esc="'(CIFRAS EXPRESADAS EN ' + d_nominas['moneda']+')'" />
+                                    </div>
+                                </div>
+
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                        <tr scope="col">
+                                            <t t-foreach=" d_nominas['encabezados']" t-as="encabezado">
+                                                <th class="text-center" scope="col" t-foreach="encabezado.values()" t-as="v">
+                                                    <t t-esc="str(v).upper()" />
+                                                </th>
+                                            </t>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="d_nominas['departamentos']" t-as="departamento">
+                                            <tr>
+                                                <td t-att-colspan="len(d_nominas['encabezados'])">
+                                                    <strong t-esc="departamento['departamento']" />
+                                                </td>
+                                            </tr>
+
+                                            <tr t-foreach="departamento['detalle']" t-as="empleado">
+                                                <t t-foreach="empleado['empleado']" t-as="codigo">
+                                                    <td class="font-weight-bold" t-foreach="codigo.values()" t-as="v">
+                                                        <t t-if="isinstance(v,float)">
+                                                            <span style="float:right;" t-esc="'{0:,.2f}'.format(v)" />
+                                                        </t>
+                                                        <t t-else="">
+                                                            <span t-esc="v" />
+                                                        </t>
+                                                    </td>
+                                                </t>
+                                            </tr>
+
+                                            <tr class="text-right">
+                                                <t t-foreach="departamento['totales']" t-as="codigo">
+                                                    <td t-foreach="codigo.values()" t-as="v">
+                                                        <t t-if="v==''">
+                                                            <t t-esc="v" />
+                                                        </t>
+                                                        <t t-else="">
+                                                            <strong t-esc="'{0:,.2f}'.format(v)" />
+                                                        </t>
+                                                    </td>
+                                                </t>
+                                            </tr>
+                                        </t>
+
+                                        <tr class="text-center">
+                                            <td t-att-colspan="len(d_nominas['encabezados'])">
+                                                <p class="text-light bg-dark" t-esc="'TOTALES'" />
+                                            </td>
+                                        </tr>
+
+                                        <tr class="text-right">
+                                            <t t-foreach="d_nominas['totales']" t-as="codigo">
+                                                <td t-foreach="codigo.values()" t-as="v">
+                                                    <t t-if="v==''">
+                                                        <t t-esc="v" />
+                                                    </t>
+                                                    <t t-else="">
+                                                        <strong t-esc="'{0:,.2f}'.format(v)" />
+                                                    </t>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td t-att-colspan="len(d_nominas['encabezados'])">
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+
+                                </table>
+                            </div>
+
+
+
+                            <style>
+                                .div-bg {
+                                    background-color:#3D3D3D;
+                                    border-radius:20px;
+                                }
+                                .border-secondary{
+                                    border: 2px solid  #3D3D3D !important;
+                                    border-radius:20px !important;
+                                }
+                                .resumen{
+                                    width:60%;
+                                    float:left;
+                                }
+                                .forma-pago{
+                                    width:40%;
+                                    float:right;
+                                }
+                            </style>
+                            <div style="page-break-after: always"></div>
+                            <div class="container resumen">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <strong>RESUMEN FORMAS DE PAGO</strong>
+                                    </div>
+                                </div>
+                                <div class="row mt-1 div-bg p-1 mb-1 text-white">
+                                    <div class="col-1 text-right ">NO</div>
+                                    <div class="col-6 text-LEFT ">EMPLEADO</div>
+                                    <div class="col-2 text-center">MONTO</div>
+                                    <div class="col-3 text-LEFT">FORMA DE PAGO</div>
+                                </div>
+
+                                <div class="row" t-foreach="d_nominas['resumen']['formapago']" t-as="forma">
+                                    <t t-set="i" t-value="0"/>
+                                    <t t-foreach="forma.values()" t-as="v">
+                                        <t t-set="i" t-value="i+1"/>
+                                        <t t-if="i==1">
+                                            <div class="col-1">
+                                                <t t-if="isinstance(v,float)">
+                                                    <span style="float:right;" t-esc="'{0:,.2f}'.format(v)" />
+                                                </t>
+                                                <t t-else="">
+                                                    <span style="float:right;" t-esc="v" />
+                                                </t>
+                                            </div>
+                                        </t>
+                                        <t t-elif="i==2">
+                                            <div class="col-6">
+                                                <t t-if="isinstance(v,float)">
+                                                    <span style="float:right;" t-esc="'{0:,.2f}'.format(v)" />
+                                                </t>
+                                                <t t-else="">
+                                                    <span style="float:left;" t-esc="v" />
+                                                </t>
+                                            </div>
+                                        </t>
+                                        <t t-elif="i==3">
+                                            <div class="col-2">
+                                                <t t-if="isinstance(v,float)">
+                                                    <span style="float:right;" t-esc="'{0:,.2f}'.format(v)" />
+                                                </t>
+                                                <t t-else="">
+                                                    <span style="float:left;" t-esc="v" />
+                                                </t>
+                                            </div>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="col-3">
+                                                <t t-if="isinstance(v,float)">
+                                                    <span style="float:right;" t-esc="'{0:,.2f}'.format(v)" />
+                                                </t>
+                                                <t t-else="">
+                                                    <span style="float:left;" t-esc="v" />
+                                                </t>
+                                            </div>
+                                        </t>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <div class="container forma-pago">
+                                <div class="row" t-foreach="d_nominas['resumen']['totales'].items()" t-as="items">
+                                    <div class="col-9 text-right ">
+                                        <strong t-esc="items[0]"/>
+                                    </div>
+                                    <div class="col-3 text-right border border-secondary">
+                                        <strong t-esc="'{0:,.2f}'.format(items[1])"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="footer text-right">
+                            <label>Página <span class="page"/>
+ de <span class="topage" />
+                        </label>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</data>
+</odoo>

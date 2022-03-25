@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Ocupacion-->
+    <record id="hr_employee_ocupacion_form" model="ir.ui.view">
+        <field name="name">hr.employee.ocupacion.form</field>
+        <field name="model">hr.employee.ocupacion</field>
+        <field name="arch" type="xml">
+            <form string="Ocupacion">
+            <sheet>
+                <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                <group name="category_details" col="2">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_employee_ocupacion_tree" model="ir.ui.view">
+        <field name="name">hr.employee.ocupacion.tree</field>
+        <field name="model">hr.employee.ocupacion</field>
+        <field name="arch" type="xml">
+            <tree string="Ocupacion">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_hr_employee_ocupacion" model="ir.actions.act_window">
+        <field name="name">Ocupacion</field>
+        <field name="res_model">hr.employee.ocupacion</field>
+        <field name="view_id" ref="hr_employee_ocupacion_tree"/>
+    </record>
+
+    <menuitem
+    id="hr_employee_ocupacion_menu"
+    action="action_hr_employee_ocupacion"
+    parent="l10n_gt_hr_payroll.catalogos_ministerio_trabajo_menu"
+    sequence="70"/>
+</odoo>

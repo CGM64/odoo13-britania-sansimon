@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Pueblo de Pertenencia-->
+    <record id="hr_employee_pueblo_pertenencia_form" model="ir.ui.view">
+        <field name="name">hr.employee.pueblo.pertenencia.form</field>
+        <field name="model">hr.employee.pueblo.pertenencia</field>
+        <field name="arch" type="xml">
+            <form string="Pueblo de Pertenencia">
+            <sheet>
+                <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                <group name="category_details" col="2">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_employee_pueblo_pertenencia_tree" model="ir.ui.view">
+        <field name="name">hr.employee.pueblo.pertenencia.tree</field>
+        <field name="model">hr.employee.pueblo.pertenencia</field>
+        <field name="arch" type="xml">
+            <tree string="Pueblo de Pertenencia">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_hr_employee_pueblo_pertenencia" model="ir.actions.act_window">
+        <field name="name">Pueblo de Pertenencia</field>
+        <field name="res_model">hr.employee.pueblo.pertenencia</field>
+        <field name="view_id" ref="hr_employee_pueblo_pertenencia_tree"/>
+    </record>
+
+    <menuitem
+    id="hr_employee_pueblo_pertenencia_menu"
+    action="action_hr_employee_pueblo_pertenencia"
+    parent="l10n_gt_hr_payroll.catalogos_ministerio_trabajo_menu"
+    sequence="50"/>
+</odoo>

@@ -16,3 +16,4 @@ from . import res_partner
 from . import gs_gastos
 from . import res_currency
 from . import partner
+from . import res_municipio

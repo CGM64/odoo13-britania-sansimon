@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="hr_employee_comunidad_linguistica_01" model="hr.employee.comunidad.linguistica">
+            <field name="name">Achi´</field>
+            <field name="code">1</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_02" model="hr.employee.comunidad.linguistica">
+            <field name="name">Akateka</field>
+            <field name="code">2</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_03" model="hr.employee.comunidad.linguistica">
+            <field name="name">Awakateka</field>
+            <field name="code">3</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_04" model="hr.employee.comunidad.linguistica">
+            <field name="name">Ch´orti´</field>
+            <field name="code">4</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_05" model="hr.employee.comunidad.linguistica">
+            <field name="name">Chalchiteka</field>
+            <field name="code">5</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_06" model="hr.employee.comunidad.linguistica">
+            <field name="name">Chuj</field>
+            <field name="code">6</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_07" model="hr.employee.comunidad.linguistica">
+            <field name="name">Itza´</field>
+            <field name="code">7</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_08" model="hr.employee.comunidad.linguistica">
+            <field name="name">Ixil</field>
+            <field name="code">8</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_09" model="hr.employee.comunidad.linguistica">
+            <field name="name">Jakalteka</field>
+            <field name="code">9</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_10" model="hr.employee.comunidad.linguistica">
+            <field name="name">K´iche´</field>
+            <field name="code">10</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_11" model="hr.employee.comunidad.linguistica">
+            <field name="name">Kaqchikel</field>
+            <field name="code">11</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_12" model="hr.employee.comunidad.linguistica">
+            <field name="name">Mam</field>
+            <field name="code">12</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_13" model="hr.employee.comunidad.linguistica">
+            <field name="name">Mopan</field>
+            <field name="code">13</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_14" model="hr.employee.comunidad.linguistica">
+            <field name="name">Poqomam</field>
+            <field name="code">14</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_15" model="hr.employee.comunidad.linguistica">
+            <field name="name">Poqomchi´</field>
+            <field name="code">15</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_16" model="hr.employee.comunidad.linguistica">
+            <field name="name">Q´anjob´al</field>
+            <field name="code">16</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_17" model="hr.employee.comunidad.linguistica">
+            <field name="name">Q´eqchi´</field>
+            <field name="code">17</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_18" model="hr.employee.comunidad.linguistica">
+            <field name="name">Sakapulteka</field>
+            <field name="code">18</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_19" model="hr.employee.comunidad.linguistica">
+            <field name="name">Sipakapense</field>
+            <field name="code">19</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_20" model="hr.employee.comunidad.linguistica">
+            <field name="name">Tektiteka</field>
+            <field name="code">20</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_21" model="hr.employee.comunidad.linguistica">
+            <field name="name">Tz´utujil</field>
+            <field name="code">21</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_21" model="hr.employee.comunidad.linguistica">
+            <field name="name">Uspanteka</field>
+            <field name="code">22</field>
+        </record>
+        <record id="hr_employee_comunidad_linguistica_99" model="hr.employee.comunidad.linguistica">
+            <field name="name">Ninguno</field>
+            <field name="code">99</field>
+        </record>
+    </data>
+
+</odoo>

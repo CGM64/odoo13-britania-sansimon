@@ -59,6 +59,7 @@
         'report/purchase_order_views.xml',
         'views/res_currency_views.xml',
         'views/sale_order_view.xml',
+        'views/res_municipio_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

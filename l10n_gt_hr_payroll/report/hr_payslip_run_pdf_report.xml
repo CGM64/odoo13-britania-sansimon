@@ -1,0 +1,944 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!--Se definen las características del papel par ala impresión-->
+    <record id="librodesalarios_paper" model="report.paperformat">
+      <field name="name">LibrodeSalarios</field>
+      <field name="default" eval="True"/>
+      <field name="format">custom</field>
+      <field name="page_height">330</field>
+      <field name="page_width">215</field>
+      <field name="orientation">Landscape</field>
+      <field name="margin_top">30</field>
+      <field name="margin_bottom">5</field>
+      <field name="margin_left">0.5</field>
+      <field name="margin_right">0.5</field>
+      <field name="header_line" eval="False"/>
+      <field name="header_spacing">27</field>
+      <field name="dpi">110</field>
+    </record>
+    <!--Fin definición del papel-->
+
+    <template id="report_nomina_template">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+          <t t-call="web.external_layout">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+
+
+
+            <t t-if="o.slip_ids.struct_id.id == o.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp').id">
+              <div class="page mt-10">
+                <style>
+                .td-dark {
+                    background-color:#3D3D3D;
+                    color:#fff;
+                }
+
+                .thead-dark{
+                    background-color:#3D3D3D !important;
+                    color:#fff !important;
+                }
+
+                .container{
+                  width:100%;
+                }
+
+                .fnt-color{
+                  color:#fff;
+                }
+
+                .page{
+                  font-size:11.5px;
+                }
+
+                </style>
+
+                <div class="container mb-5" t-foreach="o.generate_xlsx_report()" t-as="dato">
+                  <div class="container" t-foreach="dato['head']" t-as="head">
+
+                    <div class="row text-center">
+                      <div class="col-12">
+                        <p t-esc="head['empresa']" />
+                      </div>
+                    </div>
+
+                    <div class="row text-center">
+                      <div class="col-12">
+                        <pc t-esc="head['nombre_planilla']" />
+                      </div>
+                    </div>
+
+                    <div class="row text-center">
+                      <div class="col-12">
+                        <p t-esc="head['cifras']" />
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <table class="table mt-3 table-sm">
+                  <thead class="thead-dark fnt-color">
+                    <tr>
+                      <th class="text-center" scope="col" rowspan="2">NO</th>
+                      <th class="text-center" scope="col" rowspan="2">EMPLEADO</th>
+                      <th class="text-center" scope="col" rowspan="2">FECHA DE INGRESO</th>
+                      <th class="text-center" scope="col" rowspan="2">DIAS LAB.</th>
+                      <th class="text-center" scope="col" rowspan="2">SUELDO BASE</th>
+                      <th class="text-center" scope="col" rowspan="2">SUELDO DEL MES</th>
+                      <th class="text-center" scope="col" rowspan="2">SEPTIMO</th>
+                      <th class="text-center" scope="col" rowspan="2">BONO ESPECIAL</th>
+                      <th class="text-center" scope="col" rowspan="2">BONIFICACION DECRETO</th>
+                      <th class="text-center" scope="col" rowspan="2">BONO PRODUCCION</th>
+                      <th class="text-center" scope="col" rowspan="2">BONO LOGISTICA</th>
+                      <th class="text-center" scope="col" rowspan="2">COMISION</th>
+                      <th class="text-center" scope="col" rowspan="2">TOTAL INGRESOS</th>
+                      <th class="text-center" scope="col" colspan="9">DESCUENTOS</th>
+                      <th class="text-center" scope="col" rowspan="2">TOTAL DESCUENTOS</th>
+                      <th class="text-center" scope="col" rowspan="2">LIQUIDO A RECIBIR</th>
+                      <th class="text-center" scope="col" rowspan="2">TOTAL DE BONOS</th>
+                      <th class="text-center" scope="col" rowspan="2">OBSERVACIONES</th>
+                      <th class="text-center" scope="col" rowspan="2">TIPO DE PAGO</th>
+                    </tr>
+                    <tr>
+                      <th class="text-center" scope="col" rowspan="">IGSS</th>
+                      <th class="text-center" scope="col" rowspan="">ISR</th>
+                      <th class="text-center" scope="col" rowspan="">BANTRAB</th>
+                      <th class="text-center" scope="col" rowspan="">JURIDICO</th>
+                      <th class="text-center" scope="col" rowspan="">ANTICIPOS</th>
+                      <th class="text-center" scope="col" rowspan="">FACTURA</th>
+                      <th class="text-center" scope="col" rowspan="">OTROS</th>
+                      <th class="text-center" scope="col" rowspan="">COMISION</th>
+                      <th class="text-center" scope="col" rowspan="">1ERA QUINCENA</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <t t-set="i" t-value="1"/>
+                    <tr t-foreach="o.generate_xlsx_report()" t-as="dato">
+                      <t t-if="dato['page']">
+                        <tr t-foreach="dato['page']" t-as="depto">
+
+                          <td colspan="3">
+                            <strong>
+                              <p t-esc="depto['departamento']" />
+                            </strong>
+                          </td>
+
+                          <t t-if="depto['empleados']">
+                            <tr t-foreach="depto['empleados']" t-as="emp">
+                              <td>
+                                <strong>
+                                  <p>
+                                    <span t-esc="i"/>
+                                  </p>
+                                </strong>
+                              </td>
+                              <td>
+                                <p t-esc="emp['EMPLEADO']" />
+                              </td>
+                              <td>
+                                <p t-esc="emp['FECHA_INGRESO']"  t-options='{"widget": "date"}'/>
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="round(emp['D_LABORADOS'],2)" />
+                              </td>
+
+
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['BASIC'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['HRSUD'])" />
+                              </td>
+
+                              <td>
+                                <t t-if="'SEPTM' in emp">
+                                  <p class="text-right" t-esc="'{0:,.2f}'.format(emp['SEPTM'])" />
+                                </t>
+                                <t t-else="">
+                                  <p class="text-right" t-esc="'{0:,.2f}'.format(0)" />
+                                </t>
+                                
+                              </td>
+
+
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['BONOESPE'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['HRBDC'])" />
+                              </td>
+
+                              <t t-if="'BONOPRO' in emp">
+                                <td>
+                                  <p class="text-right" t-esc="'{0:,.2f}'.format(emp['BONOPRO'])" />
+                                </td>
+                              </t>
+                              <t t-else="">
+                                <td>
+                                  <p class="text-right">0.00</p>
+                                </td>
+                              </t>
+                              <t t-if="'BONOLOGI' in emp">
+                                <td>
+                                  <p class="text-right" t-esc="'{0:,.2f}'.format(emp['BONOLOGI'])" />
+                                </td>
+                              </t>
+                              <t t-else="">
+                                <td>
+                                  <p class="text-right">0.00</p>
+                                </td>
+                              </t>
+                              <t t-if="'COMISION' in emp">
+                                <td>
+                                  <p class="text-right" t-esc="'{0:,.2f}'.format(emp['COMISION'])" />
+                                </td>
+                              </t>
+                              <t t-else="">
+                                <td>
+                                  <p class="text-right">0.00</p>
+                                </td>
+                              </t>
+
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['HRTIG'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['HRCLI'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['ISR'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['BTRAB'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['JURID'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['DESANTI'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['DESFAC'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['DESOTROS'])" />
+                              </td>
+
+                              <t t-if="'COMISION' in emp">
+                                <td>
+                                  <p class="text-right" t-esc="'{0:,.2f}'.format(emp['COMISION'])" />
+                                </td>
+                              </t>
+                              <t t-else="">
+                                <td>
+                                  <p class="text-right">0.00</p>
+                                </td>
+                              </t>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['ANTIQUI'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['TDESC'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['LIQRE'])" />
+                              </td>
+                              <td>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp['TOTAL_BONOS'])" />
+                              </td>
+                              <td>
+                                <p t-esc="emp['OBSERVACIONES']" />
+                              </td>
+                              <td>
+                                <p t-esc="emp['FORMA_PAGO']" />
+                              </td>
+                              <t t-set="i" t-value="i+1"/>
+                            </tr>
+
+                            <t t-if="depto['sub_total_emp']">
+                              <tr t-foreach="depto['sub_total_emp']" t-as="subt">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['BASIC'])" />
+                                  </strong>
+                                </td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['HRSUD'])" />
+                                  </strong>
+                                </td>
+
+                                <td>
+                                  <strong>
+                                    <t t-if="'SEPTM' in subt">
+                                      <p class="text-right" t-esc="'{0:,.2f}'.format(subt['SEPTM'])" />
+                                    </t>
+                                    <t t-else="">
+                                      <p class="text-right" t-esc="'{0:,.2f}'.format(0)" />
+                                    </t>                             
+                                  </strong>
+                                </td>
+
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['BONOESPE'])" />
+                                  </strong>
+                                </td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['HRBDC'])" />
+                                  </strong>
+                                </td>
+
+                                <t t-if="'BONOPRO' in subt">
+                                  <td>
+                                    <strong class="text-right">
+                                      <p class="text-right" t-esc="'{0:,.2f}'.format(subt['BONOPRO'])" />
+                                    </strong>
+                                  </td>
+                                </t>
+                                <t t-else="">
+                                  <td>
+                                    <strong>
+                                      <p class="text-right">0.00</p>
+                                    </strong>
+                                  </td>
+                                </t>
+
+                                <t t-if="'BONOLOGI' in subt">
+                                  <td>
+                                    <strong>
+                                      <p class="text-right" t-esc="'{0:,.2f}'.format(subt['BONOLOGI'])" />
+                                    </strong>
+                                  </td>
+                                </t>
+                                <t t-else="">
+                                  <td>
+                                    <strong>
+                                      <p class="text-right">0.00</p>
+                                    </strong>
+                                  </td>
+                                </t>
+
+                                <t t-if="'COMISION' in subt">
+                                  <td>
+                                    <strong>
+                                      <p class="text-right" t-esc="'{0:,.2f}'.format(subt['COMISION'])" />
+                                    </strong>
+                                  </td>
+                                </t>
+                                <t t-else="">
+                                  <td>
+                                    <strong>
+                                      <p class="text-right">0.00</p>
+                                    </strong>
+                                  </td>
+                                </t>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['HRTIG'])" />
+                                  </strong>
+                                </td>
+
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['HRCLI'])" />
+                                  </strong>
+                                </td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['ISR'])" />
+                                  </strong>
+                                </td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['BTRAB'])" />
+                                  </strong>
+                                </td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['JURID'])" />
+                                  </strong>
+                                </td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['DESANTI'])" />
+                                  </strong>
+                                </td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['DESFAC'])" />
+                                  </strong>
+                                </td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['DESOTROS'])" />
+                                  </strong>
+                                </td>
+                                <t t-if="'COMISION' in subt">
+                                  <td>
+                                    <strong>
+                                      <p class="text-right" t-esc="'{0:,.2f}'.format(subt['COMISION'])" />
+                                    </strong>
+                                  </td>
+                                </t>
+                                <t t-else="">
+                                  <td>
+                                    <strong>
+                                      <p class="text-right">0.00</p>
+                                    </strong>
+                                  </td>
+                                </t>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['ANTIQUI'])" />
+                                  </strong>
+                                </td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['TDESC'])" />
+                                  </strong>
+                                </td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['LIQRE'])" />
+                                  </strong>
+                                </td>
+                                <td>
+                                  <strong>
+                                    <p class="text-right" t-esc="'{0:,.2f}'.format(subt['TOTAL_BONOS'])" />
+                                  </strong>
+                                </td>
+
+                              </tr>
+                            </t>
+
+                          </t>
+
+                        </tr>
+                      </t>
+
+                      <t t-if="dato['footer']">
+                        <tr t-foreach="dato['footer']" t-as="total">
+                          <td colspan="4" rowspan='2'>
+                            <p class="text-center td-dark">TOTALES</p>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['BASIC'])" />
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['HRSUD'])" />
+                            </strong>
+                          </td>
+
+                          <td>
+                            <strong>
+                              <t t-if="'SEPTM' in total">
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(total['SEPTM'])" />
+                              </t>
+                              <t t-else="">
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(0)" />
+                              </t>
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['BONOESPE'])" />
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['HRBDC'])" />
+                            </strong>
+                          </td>
+
+                          <t t-if="'BONOPRO' in total">
+                            <td>
+                              <strong>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(total['BONOPRO'])" />
+                              </strong>
+                            </td>
+                          </t>
+                          <t t-else="">
+                            <td>
+                              <strong class="text-right">
+                                <p class="text-right">0.00</p>
+                              </strong>
+                            </td>
+                          </t>
+
+                          <t t-if="'BONOLOGI' in total">
+                            <td>
+                              <strong>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(total['BONOLOGI'])" />
+                              </strong>
+                            </td>
+                          </t>
+                          <t t-else="">
+                            <td>
+                              <strong class="text-right">
+                                <p class="text-right">0.00</p>
+                              </strong>
+                            </td>
+                          </t>
+
+                          <t t-if="'COMISION' in total">
+                            <td>
+                              <strong>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(total['COMISION'])" />
+                              </strong>
+                            </td>
+                          </t>
+                          <t t-else="">
+                            <td>
+                              <strong class="text-right">
+                                <p class="text-right">0.00</p>
+                              </strong>
+                            </td>
+                          </t>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['HRTIG'])" />
+                            </strong>
+                          </td>
+
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['HRCLI'])" />
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['ISR'])" />
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['BTRAB'])" />
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['JURID'])" />
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['DESANTI'])" />
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['DESFAC'])" />
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['DESOTROS'])" />
+                            </strong>
+                          </td>
+                          <t t-if="'COMISION' in total">
+                            <td>
+                              <strong>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(total['COMISION'])" />
+                              </strong>
+                            </td>
+                          </t>
+                          <t t-else="">
+                            <td>
+                              <strong class="text-right">
+                                <p class="text-right">0.00</p>
+                              </strong>
+                            </td>
+                          </t>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['ANTIQUI'])" />
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['TDESC'])" />
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['LIQRE'])" />
+                            </strong>
+                          </td>
+                          <td>
+                            <strong>
+                              <p class="text-right" t-esc="'{0:,.2f}'.format(total['TOTAL_BONOS'])" />
+                            </strong>
+                          </td>
+
+                        </tr>
+                      </t>
+
+                    </tr>
+                  </tbody>
+
+                  <tfoot>
+
+                  </tfoot>
+                </table>
+
+
+                <table class="table mt-3 table-sm">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th class="text-center" scope="col" colspan="4">RESUMEN</th>
+                    </tr>
+                    <tr>
+                      <th class="text-center" scope="col" rowspan="">NO</th>
+                      <th class="text-center" scope="col" rowspan="">EMPLEADO</th>
+                      <th class="text-center" scope="col" rowspan="">MONTO</th>
+                      <th class="text-center" scope="col" rowspan="">FORMA DE PAGO</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr t-foreach="o.generate_xlsx_report()" t-as="dato">
+                      <t t-if="dato['resumen']">
+                        <tr t-foreach="dato['resumen']" t-as="resumen">
+                          <td colspan="">
+                
+                          </td>
+                          <td colspan="">
+                            <strong>
+                              <p t-esc="resumen['nombre']" />
+                            </strong>
+                          </td>
+                          <td class="text-right" colspan="">
+                            <strong>
+                              <p t-esc="'{0:,.2f}'.format(resumen['LIQRE'])" />
+                            </strong>
+                          </td>
+                
+                          <td colspan="">
+                            <strong>
+                              <p t-esc="resumen['forma_pago']" />
+                            </strong>
+                          </td>
+                        </tr>
+                      </t>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <table class="table mt-3 table-sm">
+                  <thead class="">
+                    <tr>
+                      <th class="td-dark text-center" scope="col" rowspan="">CHEQUE</th>
+                      <th class="td-dark text-center" scope="col" rowspan="">TRANSFERENCIA</th>
+                      <th class="td-dark text-center" scope="col" rowspan="">TRANSFERENCIA ACH</th>
+                      <th class="td-dark text-center" scope="col" rowspan="">FONDO FIJO</th>
+                      <th class="td-dark text-center" scope="col" rowspan="">CAJA CHICA</th>
+                    </tr>
+                  </thead>
+                
+                  <tbody>
+                    <tr t-foreach="o.generate_xlsx_report()" t-as="dato">
+                      <td colspan="">
+                        <strong>
+                          <p class="text-right" t-esc="'{0:,.2f}'.format(dato['cheque'])" />
+                        </strong>
+                      </td>
+                      <td colspan="">
+                        <strong>
+                          <p class="text-right" t-esc="'{0:,.2f}'.format(dato['transferencia'])" />
+                        </strong>
+                      </td>
+                      <td colspan="">
+                        <strong>
+                          <p class="text-right" t-esc="'{0:,.2f}'.format(dato['ach'])" />
+                        </strong>
+                      </td>
+                      <td colspan="">
+                        <strong>
+                          <p class="text-right" t-esc="'{0:,.2f}'.format(dato['fondofijo'])" />
+                        </strong>
+                      </td>
+                      <td colspan="">
+                        <strong>
+                          <p class="text-right" t-esc="'{0:,.2f}'.format(dato['cajachica'])" />
+                        </strong>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+
+              </div>
+            </t>
+
+            <t t-else="">
+              <div class="page mt-10">
+                <style>
+
+                .page{
+                  font-size:11.5px;
+                }
+
+                .td-dark {
+                    background-color:#3D3D3D;
+                    color:#fff;
+                }
+
+                .container{
+                  width:100%;
+                }
+
+                .fnt-color{
+                  color:#fff;
+                }
+
+                </style>
+
+                <div class="container mb-5" t-foreach="o.generate_xlsx_report()" t-as="dato">
+                  <div class="container" t-foreach="dato['head']" t-as="head">
+
+                    <div class="row text-center">
+                      <div class="col-12">
+                        <p t-esc="head['empresa']" />
+                      </div>
+                    </div>
+
+                    <div class="row text-center">
+                      <div class="col-12">
+                        <pc t-esc="head['nombre_planilla']" />
+                      </div>
+                    </div>
+
+                    <div class="row text-center">
+                      <div class="col-12">
+                        <p t-esc="head['cifras']" />
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <table class="table mt-3 table-sm">
+                  <thead class="thead-dark">
+                    <tr t-foreach="o.generate_xlsx_report()" t-as="dato">
+                      <td>
+                        <strong>
+                          <p></p>
+                        </strong>
+                      </td>
+                      <td colspan="3" t-foreach="dato['titulo']" t-as="titulo">
+                        <strong>
+                          <p class="text-center" t-esc=" str(titulo).upper()" />
+                        </strong>
+                      </td>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <t t-set="i" t-value="1"/>
+                    <tr t-foreach="o.generate_xlsx_report()" t-as="dato">
+                      <t t-if="dato['page']">
+                        <tr t-foreach="dato['page']" t-as="depto">
+                          <td>
+                            <strong>
+                              <p></p>
+                            </strong>
+                          </td>
+
+                          <td colspan="3">
+                            <strong>
+                              <p t-esc="depto['departamento']" />
+                            </strong>
+                          </td>
+
+                          <tr t-foreach="depto['empleados']" t-as="emp">
+                            <td>
+                              <strong>
+                                <p t-esc="i"/>
+                              </strong>
+                            </td>
+                            <td colspan="3" t-foreach="dato['titulo']" t-as="titulo">
+                              <t t-if="o.type(emp[titulo]) != 'str'">
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(emp[titulo])" />
+                              </t>
+                              <t t-else="">
+                                <p class="text-left" t-esc="emp[titulo]" />
+                              </t>
+                            </td>
+                            <t t-set="i" t-value="i+1"/>
+                          </tr>
+
+                          <tr t-foreach="depto['sub_total_emp']" t-as="subt">
+                            <td>
+                              <strong>
+                                <p></p>
+                              </strong>
+                            </td>
+                            <td colspan="3" t-foreach="dato['titulo']" t-as="titulo">
+                              <t t-if="titulo in subt">
+                                <strong>
+                                  <p class="text-right" t-esc="'{0:,.2f}'.format(subt[titulo])" />
+                                </strong>
+                              </t>
+                              <t t-else="">
+                              </t>
+                            </td>
+                          </tr>
+                        </tr>
+                      </t>
+
+
+                      <t t-if="dato['total']">
+                        <tr rowspan='2'>
+                          <td>
+                            <strong>
+                              <p></p>
+                            </strong>
+                          </td>
+                          <td t-att-colspan="dato['len']">
+                            <strong>
+                              <p class="text-center td-dark">TOTALES</p>
+                            </strong>
+                          </td>
+                        </tr>
+                        <tr t-foreach="dato['total']" t-as="total">
+                          <td>
+                            <strong>
+                              <p></p>
+                            </strong>
+                          </td>
+                          <td colspan="3" t-foreach="dato['titulo']" t-as="titulo">
+                            <t t-if="titulo in total">
+                              <strong>
+                                <p class="text-right" t-esc="'{0:,.2f}'.format(total[titulo])" />
+                              </strong>
+                            </t>
+                            <t t-else="">
+                            </t>
+                          </td>
+                        </tr>
+                      </t>
+
+                    </tr>
+
+                  </tbody>
+
+                  <tfoot>
+
+                  </tfoot>
+                </table>
+
+
+                <table class="table mt-3 table-sm">
+                  <thead class="">
+                    <tr>
+                      <th class="text-center" scope="col" colspan="4">RESUMEN</th>
+                    </tr>
+                    <tr>
+                      <th class="text-center" scope="col" rowspan="">NO</th>
+                      <th class="text-center" scope="col" rowspan="">EMPLEADO</th>
+                      <th class="text-center" scope="col" rowspan="">MONTO</th>
+                      <th class="text-center" scope="col" rowspan="">FORMA DE PAGO</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr t-foreach="o.generate_xlsx_report()" t-as="dato">
+                      <t t-if="dato['resumen']">
+                        <tr t-foreach="dato['resumen']" t-as="resumen">
+                          <td colspan="">
+
+                          </td>
+                          <td colspan="">
+                            <strong>
+                              <p t-esc="resumen['nombre']" />
+                            </strong>
+                          </td>
+                          <td class="text-right" colspan="">
+                            <strong>
+                              <p t-esc="'{0:,.2f}'.format(resumen['LIQRE'])" />
+                            </strong>
+                          </td>
+
+                          <td colspan="">
+                            <strong>
+                              <p t-esc="resumen['forma_pago']" />
+                            </strong>
+                          </td>
+                        </tr>
+                      </t>
+                    </tr>
+                  </tbody>
+                </table>
+
+
+                <table class="table mt-3 table-sm">
+                  <thead class="">
+                    <tr>
+                      <th class="td-dark text-center" scope="col" rowspan="">CHEQUE</th>
+                      <th class="td-dark text-center" scope="col" rowspan="">TRANSFERENCIA</th>
+                      <th class="td-dark text-center" scope="col" rowspan="">TRANSFERENCIA ACH</th>
+                      <th class="td-dark text-center" scope="col" rowspan="">FONDO FIJO</th>
+                      <th class="td-dark text-center" scope="col" rowspan="">CAJA CHICA</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr t-foreach="o.generate_xlsx_report()" t-as="dato">
+                      <td colspan="">
+                        <strong>
+                          <p class="text-right" t-esc="'{0:,.2f}'.format(dato['cheque'])" />
+                        </strong>
+                      </td>
+                      <td colspan="">
+                        <strong>
+                          <p class="text-right" t-esc="'{0:,.2f}'.format(dato['transferencia'])" />
+                        </strong>
+                      </td>
+                      <td colspan="">
+                        <strong>
+                          <p class="text-right" t-esc="'{0:,.2f}'.format(dato['ach'])" />
+                        </strong>
+                      </td>
+                      <td colspan="">
+                        <strong>
+                          <p class="text-right" t-esc="'{0:,.2f}'.format(dato['fondofijo'])" />
+                        </strong>
+                      </td>
+                      <td colspan="">
+                        <strong>
+                          <p class="text-right" t-esc="'{0:,.2f}'.format(dato['cajachica'])" />
+                        </strong>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+
+              </div>
+            </t>
+
+
+            <div class="footer text-right">
+              <label>Página <span class="page"/>
+ de <span class="topage" />
+            </label>
+          </div>
+
+        </t>
+      </t>
+    </t>
+  </template>
+</data>
+</odoo>

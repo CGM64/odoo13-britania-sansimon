@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Contract View -->
+    <record id="view_hr_payslip_form_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_payslip_cancel']" position="replace">
+                <button string="Cancelar" name="action_payslip_cancel" type="object" states="draft,confirm,verify,done" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Modify Payslip Run Form -->
+
+    <record id="hr_payslip_run_view_form" model="ir.ui.view">
+        <field name="name">hr.payslip.run.inherit.form</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_draft']" position="replace">
+                <button name="action_draft" type="object" string="Cambiar a Borrador" states="verify,close" />
+            </xpath>
+            <!-- Modificando Contexto payslip_generate_pdf a False, para que no genere en automatico la boleta de pago del empleado y lo adjunte al modelo-->
+            <xpath expr="//button[@name='action_validate']" position="replace">
+                <button name="action_validate" type="object" string="Validar" states="verify" class="oe_highlight" context="{'payslip_generate_pdf': False}" />
+            </xpath>
+
+            <xpath expr="//button[@name='action_validate']" position="replace">
+                <button name="action_validate" type="object" string="Validar" states="verify" class="oe_highlight" context="{'payslip_generate_pdf': False}" />
+            </xpath>
+
+            <!-- <xpath expr="//field[@name='country_code']" position="after"> -->
+                <!-- Campo 'country_code' no existe en odoo 13 -->
+
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="bono_descuento_id" />
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

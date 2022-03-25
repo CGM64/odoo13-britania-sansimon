@@ -11,14 +11,14 @@ class CodigoMarca(models.Model):
     _name = 'codigo.marca'
     _description = 'Codigo Marca Vehiculo'
     name = fields.Char(string='Codigo de Marca',copy=False)
-
+    
 class FleetVehicle(models.Model):
     """Fleet Vehicle model."""
 
-    _inherit = 'fleet.vehicle.model'
-    codigo = fields.Char(string="Codigo")
-
-class FleetVehicle(models.Model):
+    _inherit = 'fleet.vehicle'
+    
+    location = fields.Char(string='Ubicación Fisica', help='Location of the vehicle (garage, ...)')
+class FleetVehicleProductProduct(models.Model):
     """Fleet Vehicle model."""
 
     _inherit = 'fleet.vehicle'
@@ -48,6 +48,8 @@ class FleetVehicle(models.Model):
                                  ondelete="cascade", delegate=True,
                                  required=True,copy=True)
     pedido = fields.Char(string='No. Pedido',required=False,copy=True)
+    
+    
 
     cuota_enganche_quetzal = fields.Float(string='Cuota de enganche (Q)', help="Cuota de enganche para el plan 3 veces mas fácil de BAC",required=False,copy=True)
     cuota_mensual_quetzal = fields.Float(string='Cuota mensual (Q)', help="Cuota mensual a pagar para el plan 3 veces mas fácil de BAC (33 cuotas)",required=False,copy=True)

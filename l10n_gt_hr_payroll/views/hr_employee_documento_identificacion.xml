@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Documento de Identificacion-->
+    <record id="hr_employee_documento_identificacion_form" model="ir.ui.view">
+        <field name="name">hr.employee.documento.identificacion.form</field>
+        <field name="model">hr.employee.documento.identificacion</field>
+        <field name="arch" type="xml">
+            <form string="Documento de Identificacion">
+            <sheet>
+                <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                <group name="category_details" col="2">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_employee_documento_identificacion_tree" model="ir.ui.view">
+        <field name="name">hr.employee.documento.identificacion.tree</field>
+        <field name="model">hr.employee.documento.identificacion</field>
+        <field name="arch" type="xml">
+            <tree string="Documento de Identificacion">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_hr_employee_documento_identificacion" model="ir.actions.act_window">
+        <field name="name">Documento de Identificacion</field>
+        <field name="res_model">hr.employee.documento.identificacion</field>
+        <field name="view_id" ref="hr_employee_documento_identificacion_tree"/>
+    </record>
+
+    <menuitem
+        id="hr_employee_documento_identificacion_menu"
+        action="action_hr_employee_documento_identificacion"
+        parent="l10n_gt_hr_payroll.catalogos_ministerio_trabajo_menu"
+        sequence="30"/>
+</odoo>
