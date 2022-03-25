@@ -33,7 +33,7 @@ class StockPickingInherit(models.Model):
                         raise UserError(_('No hay stock para el producto: %s') % line.product_id.name)  
                     for location in stock_quant:
                         if location.quantity < line.product_uom_qty:
-                            raise UserError(_('No hay suficiente stock para el producto: %s') % line.product_id.name)
+                            raise UserError(_('1 No hay suficiente stock para el producto: %s') % line.product_id.name)
 
                 # VALIDA LA SOPERACIONES DETALLADAS
                 for line in picking.move_line_ids_without_package:
@@ -43,7 +43,7 @@ class StockPickingInherit(models.Model):
                     
                     for location in stock_quant:
                         if location.quantity < line.qty_done:
-                            raise UserError(_('No hay suficiente stock para el producto: %s') % line.product_id.name)
+                            raise UserError(_('2 No hay suficiente stock para el producto: %s') % line.product_id.name)
         rslt = super(StockPickingInherit, self).button_validate()    
         return rslt
 class StockBackorderConfirmation(models.TransientModel):
@@ -66,26 +66,27 @@ class StockBackorderConfirmation(models.TransientModel):
             confirmation.pick_ids.with_context(cancel_backorder=cancel_backorder).action_done()
 
     def process(self):
-        for picking in self.pick_ids:
+        for picking in self.pick_ids.filtered(lambda pi: pi.picking_type_id.code != 'incoming'):
+
             #VALIDA LAS OPERACIONES
             for line in picking.move_ids_without_package:
                 stock_quant=self.env['stock.quant'].search([('location_id','=',picking.location_id.id),('product_id','=',line.product_id.id)])
                 if len(stock_quant) == 0:
-                    raise UserError(_('No hay stock para el producto: %s') % line.product_id.name)
+                    raise UserError(_('3 No hay stock para el producto: %s') % line.product_id.name)
                 
                 for location in stock_quant:
                     if location.quantity < line.product_uom_qty:
-                        raise UserError(_('No hay suficiente stock para el producto: %s') % line.product_id.name)
+                        raise UserError(_('4 No hay suficiente stock para el producto: %s') % line.product_id.name)
 
             #VALIDA LA SOPERACIONES DETALLADAS
             for line in picking.move_line_ids_without_package:
                 stock_quant=self.env['stock.quant'].search([('location_id','=',picking.location_id.id),('product_id','=',line.product_id.id)])
                 if len(stock_quant) == 0:
-                    raise UserError(_('No hay stock para el producto: %s') % line.product_id.name)
+                    raise UserError(_('5 No hay stock para el producto: %s') % line.product_id.name)
                 
                 for location in stock_quant:
                     if location.quantity < line.qty_done:
-                        raise UserError(_('No hay suficiente stock para el producto: %s') % line.product_id.name)
+                        raise UserError(_('6 No hay suficiente stock para el producto: %s') % line.product_id.name)
         self._process()
 
     def process_cancel_backorder(self):
@@ -94,21 +95,21 @@ class StockBackorderConfirmation(models.TransientModel):
             for line in picking.move_ids_without_package:
                 stock_quant=self.env['stock.quant'].search([('location_id','=',picking.location_id.id),('product_id','=',line.product_id.id)])
                 if len(stock_quant) == 0:
-                    raise UserError(_('No hay stock para el producto: %s') % line.product_id.name)
+                    raise UserError(_('7 No hay stock para el producto: %s') % line.product_id.name)
             
                 for location in stock_quant:
                     if location.quantity < line.product_uom_qty:
-                        raise UserError(_('No hay suficiente stock para el producto: %s') % line.product_id.name)
+                        raise UserError(_('8 No hay suficiente stock para el producto: %s') % line.product_id.name)
 
             #VALIDA LA SOPERACIONES DETALLADAS
             for line in picking.move_line_ids_without_package:
                 stock_quant=self.env['stock.quant'].search([('location_id','=',picking.location_id.id),('product_id','=',line.product_id.id)])
                 if len(stock_quant) == 0:
-                    raise UserError(_('No hay stock para el producto: %s') % line.product_id.name)
+                    raise UserError(_('9 No hay stock para el producto: %s') % line.product_id.name)
                 
                 for location in stock_quant:
                     if location.quantity < line.qty_done:
-                        raise UserError(_('No hay suficiente stock para el producto: %s') % line.product_id.name)
+                        raise UserError(_('10 No hay suficiente stock para el producto: %s') % line.product_id.name)
         self._process(cancel_backorder=True)
 
 
