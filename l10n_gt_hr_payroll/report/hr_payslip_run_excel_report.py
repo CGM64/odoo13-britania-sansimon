@@ -145,7 +145,7 @@ class HrPayslipRunXlsxExport(models.AbstractModel):
         total_bonos_general=0
         formas_pago=['cheque']
         no_sumar=['NO','EMPLEADO','FECHAINGRESO','DIASLAB','FORMAPAGO','INICIOCALCULO','FINALIZACALCULO','OBSERVACIONES']
-        excluir=[{'BASIC':'Basic Salary'}]
+        excluir=[]  #{'BASIC':'Basic Salary'}
         for departamento in departamentos:
             d_departamento = {'departamento': str(departamento.name).upper() ,'detalle': [], 'totales': []}
             nominas = model.slip_ids.filtered(lambda f: f.contract_id.department_id.id == departamento.id)
