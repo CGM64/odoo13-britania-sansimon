@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_tipo_planilla_tree" model="ir.ui.view">
+        <field name="name">hr.tipo.planilla.tree</field>
+        <field name="model">hr.tipo.planilla</field>
+        <field name="arch" type="xml">
+            <tree string="Tipos de Planilla" js_class="hr_payroll_payslip_tree" multi_edit="1">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="tipo_afiliados"/>
+                <field name="periodo_planilla"/>
+                <field name="departamento_id"/>
+                <field name="codigo_departamento"/>
+                <field name="code_actividad_economica"/>
+                <field name="clase_planilla"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hr_tipo_planilla_form" model="ir.ui.view">
+        <field name="name">hr.tipo.planilla.form</field>
+        <field name="model">hr.tipo.planilla</field>
+        <field name="arch" type="xml">
+            <form string="Tipos de Planilla">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <div class="oe_title">
+                        <label for="name" string="Nombre o descripción del tipo de planilla"/>
+                        <h1><field name="name" placeholder="Planilla Mensual de Administración."/></h1>
+                    </div>                        
+                    <group>
+                        <group>
+                            <field name="active" invisible="1"/>
+                            <field name="code"/>
+                            <field name="tipo_afiliados"/>
+                            <field name="periodo_planilla"/>
+                        </group>
+                        <group>
+                            <field name="country_id" invisible="1"/>
+                            <field name="departamento_id"/>
+                            <field name="codigo_departamento"/>
+                            <field name="code_actividad_economica"/>
+                            <field name="clase_planilla"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_hr_tipo_planilla_form" model="ir.actions.act_window">
+        <field name="name">Tipos de Planilla</field>
+        <field name="res_model">hr.tipo.planilla</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_hr_tipo_planilla_payslips"
+        name="Tipos de Planilla"
+        parent="hr_payroll.menu_hr_salary_configuration"
+        sequence="80"
+        action="action_view_hr_tipo_planilla_form"
+        groups="hr_payroll.group_hr_payroll_user"/>
+
+</odoo>

@@ -1,202 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="hr_payroll_salary_structure_gt_anticipo_emp" model="hr.payroll.structure">
-        <field name="name">Planilla de Anticipo de Quincena</field>
-        <field name="country_id" ref="base.gt"/>
-        <field name="type_id" ref="hr_payroll_salary_structure_type_gt_emp"/>
-        <field name="schedule_pay">bi-weekly</field>
-        <field name="journal_id" ref="hr_payroll_gt_journal_nomina"/>
-    </record>
-
-    <!-- Reglas Salariales -->
-    <!-- <field name="amount_python_compute">result = worked_days.WORK100.number_of_days</field> -->
-    <record id="hr_ant_salary_rule_sueldo" model="hr.salary.rule">
-        <field name="code">HRSUD</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = compute_sueldo_x_dia(payslip, categories, worked_days, inputs,'WORK100')</field>
-        <field name="category_id" ref="hr_payroll.ALW"/>
-        <field name="name">Sueldo x Dias</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="50"/>
-        <field name="note">Sueldo por los dias trabajados.</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <field name="account_debit" search="[('code', '=', '1-1-04-05-001'),]"/>
-
-    </record>
-
-    <record id="hr_ant_salary_rule_septimo" model="hr.salary.rule">
-        <field name="code">SEPTM</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = compute_sueldo_x_dia(payslip, categories, worked_days, inputs,'SEPTIMO')</field>
-        <field name="category_id" ref="hr_payroll.ALW"/>
-        <field name="name">Septimo</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="51"/>
-        <field name="note">Septimo</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <field name="account_debit" search="[('code', '=', '1-1-04-05-001'),]"/>
-    </record>    
-
-    <record id="hr_ant_salary_rule_bono_decreto" model="hr.salary.rule">
-        <field name="code">HRBDC</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">
-result = 0.0
-if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and worked_days.WORK100.number_of_days > 0.0:
-  result = round((contract.bono_decreto / 2 / horas_totales_lab) * (worked_days.WORK100.number_of_hours + worked_days.SEPTIMO.number_of_hours),2)
-</field>
-        <field name="category_id" ref="hr_payroll.ALW"/>
-        <field name="name">Bono Decreto</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="52"/>
-        <field name="note">Bono decreto para los empleados.</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <field name="account_debit" search="[('code', '=', '1-1-04-05-001'),]"/>
-    </record>
-
-    <record id="hr_ant_salary_rule_bono_especial" model="hr.salary.rule">
-        <field name="code">BONOESPE</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.BONOESPE and inputs.BONOESPE.amount</field>
-        <field name="category_id" ref="hr_payroll.ALW"/>
-        <field name="name">Bono Especial</field>
-        <field name="sequence" eval="53"/>
-        <field name="note">Bono Especial</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <field name="account_debit" search="[('code', '=', '1-1-04-05-001'),]"/>
-    </record>
-
-    <record id="hr_ant_salary_rule_anticipo_bono" model="hr.salary.rule">
-        <field name="code">ANTI</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = contract.comision</field>
-        <field name="category_id" ref="hr_payroll.ALW"/>
-        <field name="name">Anticipo</field>
-        <field name="sequence" eval="57"/>
-        <field name="note">Anticipo sueldo planilla</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <field name="account_debit" search="[('code', '=', '6.01.01.01.21'),]"/>
-        <field name="account_credit" search="[('code', '=', '2-1-03-01-001'),]"/>
-    </record>
-
-    <record id="hr_ant_salary_rule_total_ingresos" model="hr.salary.rule">
-        <field name="code">HRTIG</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = categories.ALW</field>
-        <field name="category_id" ref="hr_payroll.NET"/>
-        <field name="name">Total de Ingresos</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="54"/>
-        <field name="note">Total de Ingresos para los empleados.</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-    </record>
-
-    <record id="hr_ant_salary_rule_cuota_laboral_igss" model="hr.salary.rule">
-        <field name="code">HRCLI</field>
-        <field name="condition_select">python</field>
-        <field name="condition_python">result = contract.aplica_igss</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = round(((HRSUD + SEPTM)*4.83/100),2)</field>
-        <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="name">Cuota Laboral IGSS</field>
-        <field name="sequence" eval="55"/>
-        <field name="note">Cuota Laboral IGSS</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <field name="partner_id" ref="res_partner_igss"/>
-        <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
-    </record>
-
-    <record id="hr_ant_salary_rule_bantrab" model="hr.salary.rule">
-        <field name="code">BTRAB</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = contract.bantrab and round((contract.bantrab / 2),2)</field>
-        <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="name">Bantrab</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="58"/>
-        <field name="note">Descuento por banco de los trabajadores por empleado</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
-    </record>
-
-    <record id="hr_ant_salary_rule_juridico" model="hr.salary.rule">
-        <field name="code">JURID</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = contract.juridico and round(contract.juridico / 2,2)</field>
-        <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="name">Juridico</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="59"/>
-        <field name="note">Descuento juridico por empleado</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
-    </record>
-
-    <record id="hr_ant_salary_rule_desc_anticipo" model="hr.salary.rule">
-        <field name="code">DESANTI</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.DESANTI and inputs.DESANTI.amount</field>
-        <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="name">Desc. Anticipos</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="60"/>
-        <field name="note">Descuento anticipo al empleado</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
-    </record>
-
-    <record id="hr_ant_salary_rule_desc_factura" model="hr.salary.rule">
-        <field name="code">DESFAC</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.DESFAC and inputs.DESFAC.amount</field>
-        <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="name">Desc. Factura</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="61"/>
-        <field name="note">Descuento al empleado por facturas</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
-    </record>
-
-    <record id="hr_ant_salary_rule_desc_otros" model="hr.salary.rule">
-        <field name="code">DESOTROS</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.DESOTROS and inputs.DESOTROS.amount</field>
-        <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="name">Desc. Otros</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="62"/>
-        <field name="note">Descuento otros</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
-    </record>
-
-    <record id="hr_ant_salary_rule_total_descuentos" model="hr.salary.rule">
-        <field name="code">TDESC</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = categories.DED</field>
-        <field name="category_id" ref="hr_payroll.NET"/>
-        <field name="name">Total de Descuentos</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="63"/>
-        <field name="note">Total de Desecuentos</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-    </record>
-
-    <record id="hr_ant_salary_rule_liquido_recibir" model="hr.salary.rule">
-        <field name="code">LIQRE</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = HRTIG - TDESC</field>
-        <field name="category_id" ref="hr_payroll.NET"/>
-        <field name="name">Liquido a Recibir</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="64"/>
-        <field name="note">Liquido a Recibir</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
-        <!-- <field name="partner_id" ref="res_partner_banco_industrial"/> -->
-        <field name="account_credit" search="[('code', '=', '2-1-03-01-001'),]"/>
-    </record>
-
+    <data noupdate="1">
+        <record id="hr_payroll_salary_structure_gt_anticipo_emp" model="hr.payroll.structure">
+            <field name="name">Planilla de Anticipo de Quincena</field>
+            <field name="country_id" ref="base.gt"/>
+            <field name="type_id" ref="hr_payroll_salary_structure_type_gt_emp"/>
+            <field name="schedule_pay">bi-weekly</field>
+            <field name="journal_id" ref="hr_payroll_gt_journal_nomina"/>
+        </record>
+    
+        <!-- Reglas Salariales -->
+        <!-- <field name="amount_python_compute">result = worked_days.WORK100.number_of_days</field> -->
+        <record id="hr_ant_salary_rule_sueldo" model="hr.salary.rule">
+            <field name="code">HRSUD</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = compute_sueldo_x_dia(payslip, categories, worked_days, inputs,'WORK100')</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Sueldo x Dias</field>
+            <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+            <field name="sequence" eval="50"/>
+            <field name="note">Sueldo por los dias trabajados.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <field name="account_debit" search="[('code', '=', '1-1-04-05-001'),]"/>
+    
+        </record>
+    
+        <record id="hr_ant_salary_rule_septimo" model="hr.salary.rule">
+            <field name="code">SEPTM</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = compute_sueldo_x_dia(payslip, categories, worked_days, inputs,'SEPTIMO')</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Septimo</field>
+            <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+            <field name="sequence" eval="51"/>
+            <field name="note">Septimo</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <field name="account_debit" search="[('code', '=', '1-1-04-05-001'),]"/>
+        </record>    
+    
+        <record id="hr_ant_salary_rule_bono_decreto" model="hr.salary.rule">
+            <field name="code">HRBDC</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">
+    result = 0.0
+    if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and worked_days.WORK100.number_of_days > 0.0:
+      result = round((contract.bono_decreto / 2 / horas_totales_lab) * (worked_days.WORK100.number_of_hours + worked_days.SEPTIMO.number_of_hours),2)
+    </field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Bono Decreto</field>
+            <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+            <field name="sequence" eval="52"/>
+            <field name="note">Bono decreto para los empleados.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <field name="account_debit" search="[('code', '=', '1-1-04-05-001'),]"/>
+        </record>
+    
+        <record id="hr_ant_salary_rule_bono_especial" model="hr.salary.rule">
+            <field name="code">BONOESPE</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.BONOESPE and inputs.BONOESPE.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Bono Especial</field>
+            <field name="sequence" eval="53"/>
+            <field name="note">Bono Especial</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <field name="account_debit" search="[('code', '=', '1-1-04-05-001'),]"/>
+        </record>
+    
+        <record id="hr_ant_salary_rule_anticipo_bono" model="hr.salary.rule">
+            <field name="code">ANTI</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.comision</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Anticipo</field>
+            <field name="sequence" eval="57"/>
+            <field name="note">Anticipo sueldo planilla</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <field name="account_debit" search="[('code', '=', '6.01.01.01.21'),]"/>
+            <field name="account_credit" search="[('code', '=', '2-1-03-01-001'),]"/>
+        </record>
+    
+        <record id="hr_ant_salary_rule_total_ingresos" model="hr.salary.rule">
+            <field name="code">HRTIG</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.ALW</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Total de Ingresos</field>
+            <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+            <field name="sequence" eval="54"/>
+            <field name="note">Total de Ingresos para los empleados.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+        </record>
+    
+        <record id="hr_ant_salary_rule_cuota_laboral_igss" model="hr.salary.rule">
+            <field name="code">HRCLI</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.aplica_igss</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = round(((HRSUD + SEPTM)*4.83/100),2)</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Cuota Laboral IGSS</field>
+            <field name="sequence" eval="55"/>
+            <field name="note">Cuota Laboral IGSS</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <field name="partner_id" ref="res_partner_igss"/>
+            <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
+        </record>
+    
+        <record id="hr_ant_salary_rule_bantrab" model="hr.salary.rule">
+            <field name="code">BTRAB</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.bantrab and round((contract.bantrab / 2),2)</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Bantrab</field>
+            <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+            <field name="sequence" eval="58"/>
+            <field name="note">Descuento por banco de los trabajadores por empleado</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
+        </record>
+    
+        <record id="hr_ant_salary_rule_juridico" model="hr.salary.rule">
+            <field name="code">JURID</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.juridico and round(contract.juridico / 2,2)</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Juridico</field>
+            <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+            <field name="sequence" eval="59"/>
+            <field name="note">Descuento juridico por empleado</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
+        </record>
+    
+        <record id="hr_ant_salary_rule_desc_anticipo" model="hr.salary.rule">
+            <field name="code">DESANTI</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.DESANTI and inputs.DESANTI.amount</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Desc. Anticipos</field>
+            <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+            <field name="sequence" eval="60"/>
+            <field name="note">Descuento anticipo al empleado</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
+        </record>
+    
+        <record id="hr_ant_salary_rule_desc_factura" model="hr.salary.rule">
+            <field name="code">DESFAC</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.DESFAC and inputs.DESFAC.amount</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Desc. Factura</field>
+            <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+            <field name="sequence" eval="61"/>
+            <field name="note">Descuento al empleado por facturas</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
+        </record>
+    
+        <record id="hr_ant_salary_rule_desc_otros" model="hr.salary.rule">
+            <field name="code">DESOTROS</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.DESOTROS and inputs.DESOTROS.amount</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="name">Desc. Otros</field>
+            <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+            <field name="sequence" eval="62"/>
+            <field name="note">Descuento otros</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <field name="account_credit" search="[('code', '=', '1-1-04-05-001'),]"/>
+        </record>
+    
+        <record id="hr_ant_salary_rule_total_descuentos" model="hr.salary.rule">
+            <field name="code">TDESC</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.DED</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Total de Descuentos</field>
+            <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+            <field name="sequence" eval="63"/>
+            <field name="note">Total de Desecuentos</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+        </record>
+    
+        <record id="hr_ant_salary_rule_liquido_recibir" model="hr.salary.rule">
+            <field name="code">LIQRE</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Liquido a Recibir</field>
+            <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+            <field name="sequence" eval="64"/>
+            <field name="note">Liquido a Recibir</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_emp"/>
+            <!-- <field name="partner_id" ref="res_partner_banco_industrial"/> -->
+            <field name="account_credit" search="[('code', '=', '2-1-03-01-001'),]"/>
+        </record>
+    </data>
 
 </odoo>

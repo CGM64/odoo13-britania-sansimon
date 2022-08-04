@@ -1,0 +1,41 @@
+.bg-primary {
+    background-color: rgb(31,73,125) !important;
+}
+.text-primary {
+    color: rgb(31,73,125) !important;
+}
+
+.bg-gris {
+    background-color: rgb(219,223,234) !important;
+}
+
+.border-recibo {
+    border: 2px solid black !important;
+}
+
+.border-i-recibo {
+    border-left: 2px solid black !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+}
+
+.border-d-recibo {
+    border-right: 2px solid black !important;
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+}
+
+.border-arriba-recibo {
+    border-bottom: 0 !important;
+    border-top: 2px solid black !important;
+}
+
+.border-abajo-recibo {
+    border-top: 0 !important;
+    border-bottom: 2px solid black !important;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem !important;
+}

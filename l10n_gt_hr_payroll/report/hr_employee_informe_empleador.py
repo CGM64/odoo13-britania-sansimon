@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models,api
+from odoo import models, api, _, fields
 from datetime import datetime
 import io
 import time
@@ -14,7 +14,12 @@ class LibroFiscalReportXls(models.AbstractModel):
     _inherit = 'report.report_xlsx.abstract'
      
     def get_empleados(self, periodo):
-        hr_employee = self.env['hr.employee'].search([('active','=',True)])
+        tiempo = datetime.strptime(periodo + '-01-01', '%Y-%m-%d').date()
+        hoy = fields.Date.today()
+        hr_employee = self.env['hr.employee'].search([('active','=',True), ('contract_id','!=',False)])
+        hr_employee = hr_employee.sorted(lambda m: (m.contract_id.date_start))
+        hr_employee = hr_employee.filtered(lambda emp: (emp.contract_id.date_end if emp.contract_id.date_end else hoy) >= tiempo)
+        #hr_employee = hr_employee.filtered(lambda emp: emp.contract_id.date_end < tiempo)
         empleados = []
         i=0
         for employee in hr_employee:
@@ -44,7 +49,7 @@ class LibroFiscalReportXls(models.AbstractModel):
                 'numero_documento': employee.cui or '',
                 'pais_origen': employee.country_id.codigo_nacionalidad or '',
                 'numero_expediente_extranjero': employee.numero_expediente_extranjero or '',
-                'lugar_nacimiento_municipio': employee.municipio_of_birth_id.code or '',
+                'lugar_nacimiento_municipio': employee.municipio_id.code or '',
                 'numero_tributario': employee.vat or '',
                 'numero_afiliacion_igss': employee.afiliacion_igss,
                 'sexo': employee.get_genero(),
@@ -76,7 +81,7 @@ class LibroFiscalReportXls(models.AbstractModel):
                 'retribución_indemnizacion': 0,
                 'sucursal': 0,
             }
-            
+            #print(time.strftime(periodo + '-01-01'))
             nominas = self.env['hr.payslip'].search([
                     ('contract_id','=',employee.contract_id.id),
                     ('state','in',('done','paid')),
@@ -89,7 +94,7 @@ class LibroFiscalReportXls(models.AbstractModel):
                     dias_laborados_anio += sum(line.number_of_days for line in nomina.worked_days_line_ids.filtered(lambda tipo_entrada: tipo_entrada.work_entry_type_id.es_informe_empleador))
                     if nomina.struct_id.id == self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp').id:
                         salario_anual += sum(line.amount for line in nomina.line_ids.filtered(lambda tipo_entrada: tipo_entrada.salary_rule_id.code == 'HRSUD'))
-            empleado['dias_laborados_anio'] = dias_laborados_anio
+            #empleado['dias_laborados_anio'] = dias_laborados_anio
             empleado['salario_anual'] = salario_anual
             
             empleados.append(empleado)
@@ -102,8 +107,12 @@ class LibroFiscalReportXls(models.AbstractModel):
 
         text_right = workbook.add_format()
         text_right.set_align('right')
+        
+        text_left = workbook.add_format()
+        text_left.set_align('left')
+        
         text_date = workbook.add_format()
-        text_date.set_num_format('mm/dd/yyyy')
+        text_date.set_num_format('dd/mm/yyyy')
 
         periodo = data['form']['periodos']
         empleados = self.get_empleados(periodo)
@@ -186,7 +195,7 @@ class LibroFiscalReportXls(models.AbstractModel):
             sheet_libro.write(i, 17, empleado['sexo'])
             sheet_libro.write(i, 18, empleado['fecha_nacimiento'],text_date)
             sheet_libro.write(i, 19, empleado['nivel_educativo'],text_right)
-            sheet_libro.write(i, 20, empleado['titulo_diploma'],text_right)
+            sheet_libro.write(i, 20, empleado['titulo_diploma'],text_left)
             sheet_libro.write(i, 21, empleado['pueblo_pertenencia'],text_right)
             sheet_libro.write(i, 22, empleado['comunidad_liguistica'],text_right)
             sheet_libro.write(i, 23, empleado['cantidad_hijos'])

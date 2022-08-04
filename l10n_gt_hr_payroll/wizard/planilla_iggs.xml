@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Menu de planilla IGSS-->
+        <record id="wizard_planilla_igss" model="ir.ui.view">
+            <field name="name">planilla.igss.view.form</field>
+            <field name="model">planilla.igss.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generar planilla" class="o_expense_form">
+                    <sheet>
+                        <div>
+                            <p>
+                            Este asistente le ayudara a generar la Planilla Electrónica IGSS
+                            </p>
+                        </div>
+                        <group>
+                            <group string="Planilla IGSS">
+                                <field name="rango_fecha_inicio" date="date_order"/>
+                                <field name="rango_fecha_fin" date="date_order"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <button string="Excel" name="generate_xlsx" type="object" class="btn-primary"/>
+                            <button string="Txt" name="generate_txt" type="object" class="btn-secondary"/>
+                            <button string="Cancel" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="hr_payroll_action" model="ir.actions.act_window">
+            <field name="name">Planilla Electrónica IGSS</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">planilla.igss.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="wizard_planilla_igss"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_hr_payroll_menu_list" 
+        name="Planilla Electrónica IGSS" 
+        action="hr_payroll_action" 
+        parent="hr_payroll.menu_hr_payroll_report" 
+        groups="base.group_user"
+        sequence="200"/>
+    </data>
+</odoo>

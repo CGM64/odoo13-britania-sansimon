@@ -14,6 +14,7 @@
                             <field name="aplica_igss"/>
                             <field name="tipo_contrato"/>
                             <field name="temporalidad_contrato"/>
+                            <field name="condicion_laboral"/>
                             <field name="jornada_trabajo"/>
                         </group>
                     </group>
@@ -28,6 +29,7 @@
             </xpath>
             <xpath expr="//field[@name='hr_responsible_id']" position="after">
                 <field name="fecha_reinicio_labores"/>
+                <field name="motivo_baja"/>
             </xpath>
         </field>
     </record>

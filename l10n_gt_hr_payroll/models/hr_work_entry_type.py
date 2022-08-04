@@ -19,3 +19,6 @@ class Payslip(models.Model):
     es_informe_empleador = fields.Boolean(
         string="Asistencia, Informe Empleador", default=True,
         help="Indicador que sirve para tomar en cuenta el tipo de asistencia como dias laborados durante el periodo.")
+    es_suspendido_planilla_igss = fields.Boolean(
+        string="Suspendido, Planila IGSS", default=False,
+        help="Indicador que sirve para tomar en cuenta si el tipo de asistencia se toma en cuenta para reportar los suspendidos en el reporte de la planilla del igss.")
