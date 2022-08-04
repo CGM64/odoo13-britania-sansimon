@@ -36,15 +36,19 @@ class ResPartner(models.Model):
                 encontrar = record.website.rfind('/')+1
                 record.display_website = record.website[encontrar:]
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         res = super(ResPartner, self).create(vals_list)
-        if not res.default_code:
-            res.update({'default_code': self.env['ir.sequence'].next_by_code('res.partner.sequence')})
+
+        for partner in res:
+            if not partner.default_code:
+                partner.update({'default_code': self.env['ir.sequence'].next_by_code('res.partner.sequence')})
         return res
 
     def write(self, vals):
         res =  super(ResPartner, self).write(vals)
-        if not self.default_code:
-                self.update({'default_code': self.env['ir.sequence'].next_by_code('res.partner.sequence')})
+
+        for partner in self:
+            if not partner.default_code:
+                    partner.update({'default_code': self.env['ir.sequence'].next_by_code('res.partner.sequence')})
         return res
