@@ -59,12 +59,24 @@ class HrPayslipRunXlsxExport(models.AbstractModel):
         return sum(calculo.total for calculo in empleado_nomina_bono.line_ids.filtered(lambda payslip: payslip.code in ('LIQRE',)))
 
     #LA PLANILLA CON ESTRUCTURA DE FIN DE MES SE ARMA A PARTIR DE LOS ENCABEZADOS ACÁ DEFINIDOS
-    def get_codigos_encabezados_estatica(self):
-        encabezados = [{'NO':'NO'},{'EMPLEADO':'EMPLEADO'},{'FECHAINGRESO':'FECHA DE INGRESO'},{'DIASLAB':'DIAS LAB.'},{'BASIC':'SUELDO BASE'},{'SEPTM':'SEPTIMO'},{'HRSUD':'SUELDO DEL MES'},
+    def get_encabezados_info_empleado(self):
+        return [{'NO':'NO'},{'EMPLEADO':'EMPLEADO'},{'FECHAINGRESO':'FECHA DE INGRESO'},{'DIASLAB':'DIAS LAB.'},{'BASIC':'SUELDO BASE'},{'SEPTM':'SEPTIMO'},{'HRSUD':'SUELDO DEL MES'},
                         {'BONOESPE':'BONO ESPECIAL'},{'HRBDC':'BONIFICACION DECRETO'},{'BONOPRO':'BONO PRODUCCIÓN'},{'BONOLOGI':'BONO LOGISTICA'},{'COMISION':'COMISION'},
-                        {'HRTIG':'TOTAL INGRESOS'},{'HRCLI':'IGSS'},{'ISR':'ISR'},{'BTRAB':'BANTRAB'},{'JURID':'JURIDICO'},{'DESANTI':'ANTICIPOS'},{'DESFAC':'FACTURA'},
-                        {'DESOTROS':'OTROS'},{'COMISION':'COMISION'},{'ANTIQUI':'1ERA QUINCENA'},{'TDESC':'TOTAL DESCUENTOS'},{'LIQRE':'LIQUIDO A RECIBIR'},{'TOTALBONOS':'TOTAL DE BONOS'},
+                        {'HRTIG':'TOTAL INGRESOS'}]
+    def get_encabezados_descuentos(self):
+        return [{'HRCLI':'IGSS'},{'ISR':'ISR'},{'BTRAB':'BANTRAB'},{'JURID':'JURIDICO'},{'DESANTI':'ANTICIPOS'},{'DESFAC':'FACTURA'},
+                        {'DESOTROS':'OTROS'},{'ANTIQUI':'1ERA QUINCENA'},{'TDESC':'TOTAL DESCUENTOS'}]#, {'DESCOMISION':'DESC. COMISION'}]
+    
+    def get_encabezados_otros(self):
+        return [{'LIQRE':'LIQUIDO A RECIBIR'},{'TOTALBONOS':'TOTAL DE BONOS'},
                         {'OBSERVACIONES':'OBSERVACIONES'},{'FORMAPAGO':'FORMA DE PAGO'}]
+    
+
+    def get_codigos_encabezados_estatica(self):
+        info_empleado = self.get_encabezados_info_empleado()
+        descuentos = self.get_encabezados_descuentos()
+        otros = self.get_encabezados_otros()
+        encabezados = info_empleado + descuentos + otros
         return encabezados
     
     #LAS PLANILLAS QUE NO SEAN ESTRUCTURA DE FIN DE MES SE ARMAN A PARTIR DEL DETALLE DE LAS NOMINAS
@@ -75,6 +87,7 @@ class HrPayslipRunXlsxExport(models.AbstractModel):
         if estructura_id == model.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bono14_emp').id:
             codigos.append({'INICIOCALCULO':'FECHA INICO DEL CALCULO'})
             codigos.append({'FINALIZACALCULO':'FECHA FINAL DEL CALCULO'})
+            codigos.append({'INGRESOLABORES':'INGRESO'})
         lista_exclusion=self.lista_exclusion(model)
         for line in model.slip_ids.line_ids:
             if {line.code:line.name} not in codigos and {line.code:line.name} not in lista_exclusion:
@@ -144,8 +157,8 @@ class HrPayslipRunXlsxExport(models.AbstractModel):
         correlativo = 0
         total_bonos_general=0
         formas_pago=['cheque']
-        no_sumar=['NO','EMPLEADO','FECHAINGRESO','DIASLAB','FORMAPAGO','INICIOCALCULO','FINALIZACALCULO','OBSERVACIONES']
-        excluir=[]  #{'BASIC':'Basic Salary'}
+        no_sumar=['NO','EMPLEADO','FECHAINGRESO','DIASLAB','FORMAPAGO','INICIOCALCULO','FINALIZACALCULO','INGRESOLABORES','OBSERVACIONES']
+        excluir=[{'BASIC':'Basic Salary'}]
         for departamento in departamentos:
             d_departamento = {'departamento': str(departamento.name).upper() ,'detalle': [], 'totales': []}
             nominas = model.slip_ids.filtered(lambda f: f.contract_id.department_id.id == departamento.id)
@@ -181,9 +194,11 @@ class HrPayslipRunXlsxExport(models.AbstractModel):
                             inicio=nomina.contract_id.date_start
                             if inicio < nomina.date_from:
                                inicio=nomina.date_from
-                            d_empleado['empleado'].append({k: inicio})  
+                            d_empleado['empleado'].append({k: inicio})
                         elif k=='FINALIZACALCULO':
-                            d_empleado['empleado'].append({k: nomina.date_to})  
+                            d_empleado['empleado'].append({k: nomina.date_to})
+                        elif k=='INGRESOLABORES':
+                            d_empleado['empleado'].append({k: nomina.contract_id.date_start})                              
                         else:
                             if {k:v} not in excluir:
                                 d_empleado['empleado'].append({k:line.total if line else 0.00})
@@ -258,7 +273,7 @@ class HrPayslipRunXlsxExport(models.AbstractModel):
         abc = self.get_abc()
         columna = 0
         fila=4
-        descuentos=['HRCLI','ISR','BTRAB','JURID','DESANTI','ANTI','DESFAC','DESOTROS','COMISION','ANTIQUI']
+        descuentos=['HRCLI','ISR','BTRAB','JURID','DESANTI','ANTI','DESFAC','DESOTROS','ANTIQUI']#, 'DESCOMISION']
         encabezado_dinamico=[]     
         for encabezado in d_nominas['encabezados']:
             columna += 1
@@ -290,8 +305,12 @@ class HrPayslipRunXlsxExport(models.AbstractModel):
                 inicio,fin=encabezado_dinamico[0],encabezado_dinamico[-1]
                 sheet.merge_range(abc[inicio]+'5:'+abc[fin]+'5', 'DESCUENTOS',formato_titulo)
         elif estructura_id ==estructura_finmes:
-            sheet.merge_range('K5:K6', 'COMISION',formato_titulo)   
-            sheet.merge_range('M5:U5', 'DESCUENTOS',formato_titulo)   
+            #sheet.merge_range('K5:K6', 'COMISION',formato_titulo)   
+            #sheet.merge_range('M5:U5', 'DESCUENTOS',formato_titulo)
+            desc_inicio = len(self.get_encabezados_info_empleado())+1
+            desc_fin = desc_inicio + len(self.get_encabezados_descuentos()) - 2
+            sheet.merge_range('{}5:{}5'.format(abc[desc_inicio],abc[desc_fin]), 'DESCUENTOS',formato_titulo)
+            pass
         #INICIA LA CONSTUCCIÓN DL DETALLE DE LA PLANILLA
         #DEPARTAMENTOS
         fila=6

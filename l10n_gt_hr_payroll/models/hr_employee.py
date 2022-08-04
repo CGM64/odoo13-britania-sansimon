@@ -35,7 +35,7 @@ class HrEmployeeInherit(models.Model):
     state_id = fields.Many2one('res.country.state', string='Departamento', domain="[('country_id', '=', country_id)]",)
     municipio_id = fields.Many2one('res.state.municipio', string='Municipio', domain="[('state_id', '=', state_id)]",)
     
-    municipio_of_birth_id  = fields.Many2one('res.state.municipio', string='Municipio de nacimiento' )
+    municipio_dpi_id  = fields.Many2one('res.state.municipio', string='Extendido en', help="Municipio donde fue extendido el dpi o vecindad.")
     
     attachment_dpi = fields.Binary('DPI', copy=False, tracking=True)
     attachment_licencia = fields.Binary('Licencia', copy=False, tracking=True)
@@ -44,13 +44,16 @@ class HrEmployeeInherit(models.Model):
     #Ministerio de Trabajo
     discapacidad_id = fields.Many2one('hr.employee.tipo.discapacidad', string='Discapacidad', required=True,default=lambda self: self.env.ref('l10n_gt_hr_payroll.hr_employee_tipo_discapacidad_01',raise_if_not_found=False))
     documento_identificacion_id = fields.Many2one('hr.employee.documento.identificacion', string='Doc. Identificacion', required=True,default=lambda self: self.env.ref('l10n_gt_hr_payroll.hr_employee_documento_identificacion_01',raise_if_not_found=False))
-    nivel_academico_id = fields.Many2one('hr.nivel.academico', string='Nivel Académico')
-    nivel_educativo_id = fields.Many2one('hr.employee.nivel.educativo', string='Nivel Educativo', required=True,default=lambda self: self.env.ref('l10n_gt_hr_payroll.hr_employee_nivel_educativo_01',raise_if_not_found=False))
+    nivel_academico_id = fields.Many2one('hr.nivel.academico', string='Nivel Académico', help="Titulo o diplomado(profesion).")
+    nivel_educativo_id = fields.Many2one('hr.employee.nivel.educativo', string='Nivel Educativo', required=True,default=lambda self: self.env.ref('l10n_gt_hr_payroll.hr_employee_nivel_educativo_01',raise_if_not_found=False), help="Nivel academico mas alto alcanzado.")
     pueblo_pertenencia_id = fields.Many2one('hr.employee.pueblo.pertenencia', string='Pueblo de Pertenencia', required=True,default=lambda self: self.env.ref('l10n_gt_hr_payroll.hr_employee_pueblo_pertenencia_05',raise_if_not_found=False))
     comunidad_linguistica_id = fields.Many2one('hr.employee.comunidad.linguistica', string='Comunidad Linguistica', required=True,default=lambda self: self.env.ref('l10n_gt_hr_payroll.hr_employee_comunidad_linguistica_99',raise_if_not_found=False))
     ocupacion_id = fields.Many2one('hr.employee.ocupacion', string='Ocupacion', required=True,default=lambda self: self.env.ref('l10n_gt_hr_payroll.hr_employee_ocupacion_0001',raise_if_not_found=False))
     distribucion_nombres=fields.Char(string="Distribucion de Nombres", default="1,2,4,5,6", required=True, help="Campo que ayuda a definir en que columna se posiciona cada nombre en el reporte del ministerio de trabajo")
     numero_expediente_extranjero = fields.Char(string="Exp. Extranjero", help="Número de expediente del permiso de extranjero")
+    
+    #Planilla del IGSS
+    tipo_planilla_id = fields.Many2one('hr.tipo.planilla', string='Tipo de Planilla', required=True)
     
   
     def get_estado_civil(self):

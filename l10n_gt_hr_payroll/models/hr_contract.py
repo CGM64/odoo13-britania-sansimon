@@ -3,6 +3,8 @@
 from datetime import date, datetime, time,timedelta
 from calendar import monthrange
 from collections import defaultdict
+
+from pkg_resources import require
 from odoo import api, fields, models
 from odoo.tools import date_utils
 
@@ -48,7 +50,11 @@ class HrContract(models.Model):
     temporalidad_contrato = fields.Selection([
                 ('1', 'Indefinido'),
                 ('2', 'Definido'),
-                ], tracking=True, string="Temporalidad del Contrato", default='1', help="Temporalidad de contrato (codigos del ministerio de trabajo).")
+                ], required=True, tracking=True, string="Temporalidad del Contrato", default='1', help="Temporalidad de contrato (codigos del ministerio de trabajo).")
+    condicion_laboral = fields.Selection([
+                ('P', 'Permanente'),
+                ('T', 'Temporal'),
+                ], required=True, tracking=True, string="Condicion Laboral", default='P', help="Condicion Laboral del contrato (codigos de la planilla del IGSS).")
     jornada_trabajo = fields.Selection([
                 ('1', 'Diurna'),
                 ('2', 'Mixta'),
@@ -56,6 +62,7 @@ class HrContract(models.Model):
                 ('4', 'No está sujeto a jornada'),
                 ], tracking=True, string="Jornada de Trabajo", default='1', help="Temporalidad de contrato (codigos del ministerio de trabajo).")
     fecha_reinicio_labores = fields.Date('Fecha de reinicio de labores', tracking=True, help="Fecha de reinicio de labores.")
+    motivo_baja = fields.Char('Motivo de Baja', tracking=True)
 
     def _get_horas_completas(self, date_start, date_stop):
         """
@@ -68,6 +75,8 @@ class HrContract(models.Model):
             calendar = contract.resource_calendar_id
             resource = employee.resource_id
             hr_contrar_entry = self.env['hr.work.entry']
+            
+            
             tz = pytz.timezone(calendar.tz)
 
             attendances = calendar._work_intervals(
@@ -83,12 +92,14 @@ class HrContract(models.Model):
                 fecha_fin = interval[1].astimezone(pytz.utc).replace(tzinfo=None)
                 duracion += hr_contrar_entry._get_duration(fecha_inicio, fecha_fin)
             
-            duracion += 16 # Le sumo 16 horas mas por 2 dias de septimo que tienen derecho.
+            duracion += contract.resource_calendar_id.septimo_horas * 2 # Le sumo 16 horas mas por 2 dias de septimo que tienen derecho.
             return duracion
 class ResourceCalendar(models.Model):
 
     _inherit = "resource.calendar"
     _description = "Resource Working Time"
+    
+    septimo_horas = fields.Float('Septimo (Horas)', help="Valor del septimo en horas para el calculo del mismo en la nomina.")
     
     def _work_intervals(self, start_dt, end_dt, resource=None, domain=None, tz=None):
         if resource is None:

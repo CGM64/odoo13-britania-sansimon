@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_occupation_igss_tree" model="ir.ui.view">
+            <field name="name">hr.occupation.igss.tree</field>
+            <field name="model">hr.occupation.igss</field>
+            <field name="arch" type="xml">
+                <tree string="Ocupacion IGSS" js_class="hr_payroll_payslip_tree" multi_edit="1">
+                    <field name="display_name"/>
+                    <field name="code"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hr_occupation_igss_view" model="ir.ui.view">
+            <field name="name">hr.occupation.igss.view.form</field>
+            <field name="model">hr.occupation.igss</field>
+            <field name="arch" type="xml">
+                <form string="Ocupación" class="o_expense_form">
+                    <sheet>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Ejemplo contador"/>
+                            </h1>
+                        </div>
+                        <group name="first" col="2">
+                            <field name="active" invisible="1"/>
+                            <field name="complete_name"/>
+                            <field name="parent_id" class="oe_inline"/>
+                            <field name="code" class="oe_inline"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_hr_employee_ocupacion_igss" model="ir.actions.act_window">
+            <field name="name">Ocupaciones IGSS</field>
+            <field name="res_model">hr.occupation.igss</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Crea ocupaciones
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            id="hr_employee_ocupacion_igss_menu"
+            action="action_hr_employee_ocupacion_igss"
+            parent="l10n_gt_hr_payroll.catalogos_ministerio_trabajo_menu"
+            sequence="90"/>
+    </data>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="planilla_igss_txt">
+            <t t-foreach="planilla_igss['patronos']" t-as="patrono">|<t t-esc="patrono['fecha_generacion']" />|<t t-esc="patrono['numero_patronal']" />|<t t-esc="patrono['mes_planilla']" />|<t t-esc="patrono['anio_planilla']" />|<t t-esc="patrono['nombre_comercial']" />|<t t-esc="patrono['nit']" />|<t t-esc="patrono['email']" />|0
+            </t>
+            [centros]
+            [empleados]
+            <t t-foreach="planilla_igss['empleados']" t-as="empleado"><t t-esc="empleado['num_liquidacion']" />|<t t-esc="empleado['numero_afiliacion_igss']" />|<t t-esc="empleado['primer_nombre']" />|<t t-esc="empleado['segundo_nombre']" />|<t t-esc="empleado['primer_apellido']" />|<t t-esc="empleado['segundo_apellido']" />|<t t-esc="empleado['apellido_casada']" />|<t t-esc="empleado['sueldo']" />|<t t-esc="empleado['fecha_alta']" />|<t t-esc="empleado['fecha_baja']" />|<t t-esc="empleado['cod_centro']" />|<t t-esc="empleado['nit']" />|<t t-esc="empleado['cod_ocupacion']" />|<t t-esc="empleado['condicion_laboral']" />|<t t-esc="empleado['deducciones']" />|0
+            </t>
+        </template>
+    </data>
+</odoo>
