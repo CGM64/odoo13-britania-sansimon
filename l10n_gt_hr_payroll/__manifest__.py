@@ -97,7 +97,7 @@ Guatemala Payroll Salary Rules.
 
         'report/hr_payslip_bono14.xml',
         'views/report_paperformat.xml',
-        
+        'views/hr_actividad_economica_igss.xml',        
         'views/hr_payslip_views.xml',
     ],
     # only loaded in demonstration mode

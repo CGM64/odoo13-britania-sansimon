@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_actividad_economica_iggs_tree_view" model="ir.ui.view">
+        <field name="name">hr.actividad.economica.iggs.view.tree</field>
+        <field name="model">hr.actividad.economica.iggs</field>
+        <field name="arch" type="xml">
+            <tree string="Actividad económica IGSS">
+                <!-- <field name="active" invisible="1" /> -->
+                <field name="name" />
+                <field name="categoria" />
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_actividad_economica_iggs_form_view" model="ir.ui.view">
+        <field name="name">hr.actividad.economica.iggs.view.form</field>
+        <field name="model">hr.actividad.economica.iggs</field>
+        <field name="arch" type="xml">
+            <form string="Actividad económica IGSS">
+                <sheet>
+                    <group>
+                        <group>
+                            <!-- <field name="active" invisible="1" /> -->
+                            <field name="name" />
+                            <field name="categoria" />
+                            <field name="code"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_actividad_economica_iggs_action" model="ir.actions.act_window">
+        <field name="name">Actividad económica IGSS</field>
+        <field name="res_model">hr.actividad.economica.iggs</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_hr_actividad_economica_iggs_tree"
+        name="Actividad económica IGSS"
+        action="hr_actividad_economica_iggs_action"
+        parent="hr.menu_human_resources_configuration"
+        sequence="5"
+        groups="hr.group_hr_user"/>
+
+    
+</odoo>

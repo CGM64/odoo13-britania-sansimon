@@ -8,7 +8,7 @@ class EconomicActivity(models.Model):
     _description = "Actividad economica"
 
     display_name = fields.Char('Actividad', required=True, translate=True)
-    name = name = fields.Char('Nombre de actividad', translate=True)
+    name = fields.Char('Nombre de actividad', translate=True)
     categoria = fields.Char('Categoria', required=True, translate=True)
     complete_name = fields.Char(
         'Nombre completo', #compute='_compute_complete_name',
