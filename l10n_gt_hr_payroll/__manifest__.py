@@ -99,6 +99,9 @@ Guatemala Payroll Salary Rules.
         'views/report_paperformat.xml',
         'views/hr_actividad_economica_igss.xml',        
         'views/hr_payslip_views.xml',
+
+        'data/resource_calendar_data.xml',
+        'data/hr_payroll_structure_type_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
