@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="0">
+        <!-- ################################## TURNO 1 (07:30) SUELDO GENERAL ######################################### -->
+        <record id="hr_payroll_salary_structure_t1_7_30" model="hr.payroll.structure">
+            <field name="name">Planilla de sueldo por Empleado Turno 1 (07:30)</field>
+            <field name="country_id" ref="base.gt" />
+            <field name="type_id" ref="planilla_sueldo_general_turno1_7_30" />
+            <field name="schedule_pay">bi-weekly</field>
+            <field name="journal_id" ref="hr_payroll_gt_journal_nomina" />
+            <field name="report_id" ref="l10n_gt_hr_payroll.l10n_gt_hr_payroll_boleta_pago_report" />
+        </record>
+
+        <!-- Reglas Salariales -->
+
+        <!-- ############################################################################ -->
+
+        <!-- ################################## TURNO 1 (08:30) SUELDO GENERAL ######################################### -->
+        <record id="hr_payroll_salary_structure_t1_8_30" model="hr.payroll.structure">
+            <field name="name">Planilla de sueldo por Empleado Turno 1 (08:30)</field>
+            <field name="country_id" ref="base.gt" />
+            <field name="type_id" ref="planilla_sueldo_general_turno1_8_30" />
+            <field name="schedule_pay">bi-weekly</field>
+            <field name="journal_id" ref="hr_payroll_gt_journal_nomina" />
+            <field name="report_id" ref="l10n_gt_hr_payroll.l10n_gt_hr_payroll_boleta_pago_report" />
+        </record>
+
+        <!-- Reglas Salariales -->
+
+        <!-- ############################################################################ -->
+
+        <!-- ################################## TURNO 2 (07:30) SUELDO GENERAL ######################################### -->
+        <record id="hr_payroll_salary_structure_t2_7_30" model="hr.payroll.structure">
+            <field name="name">Planilla de sueldo por Empleado Turno 2 (07:30)</field>
+            <field name="country_id" ref="base.gt" />
+            <field name="type_id" ref="planilla_sueldo_general_turno2_7_30" />
+            <field name="schedule_pay">bi-weekly</field>
+            <field name="journal_id" ref="hr_payroll_gt_journal_nomina" />
+            <field name="report_id" ref="l10n_gt_hr_payroll.l10n_gt_hr_payroll_boleta_pago_report" />
+        </record>
+
+        <!-- Reglas Salariales -->
+
+        <!-- ############################################################################ -->
+
+        <!-- ################################## TURNO 2 (08:30) SUELDO GENERAL ######################################### -->
+        <record id="hr_payroll_salary_structure_t2_8_30" model="hr.payroll.structure">
+            <field name="name">Planilla de sueldo por Empleado Turno 2 (08:30)</field>
+            <field name="country_id" ref="base.gt" />
+            <field name="type_id" ref="planilla_sueldo_general_turno2_8_30" />
+            <field name="schedule_pay">bi-weekly</field>
+            <field name="journal_id" ref="hr_payroll_gt_journal_nomina" />
+            <field name="report_id" ref="l10n_gt_hr_payroll.l10n_gt_hr_payroll_boleta_pago_report" />
+        </record>
+
+        <!-- Reglas Salariales -->
+
+        <!-- ############################################################################ -->
+
+        <!-- ################################## TURNO 1 (07:30) ANTICIPO QUINCENA ######################################### -->
+        <record id="hr_payroll_salary_structure_gt_anticipo_t1_7_30" model="hr.payroll.structure">
+            <field name="name">Planilla de Anticipo de Quincena Turno 1 (07:30)</field>
+            <field name="country_id" ref="base.gt"/>
+            <field name="type_id" ref="planilla_sueldo_general_turno1_7_30"/>
+            <field name="schedule_pay">bi-weekly</field>
+            <field name="journal_id" ref="hr_payroll_gt_journal_nomina"/>
+        </record>
+
+        <!-- Reglas Salariales -->
+        <record id="hr_ant_salary_rule_sueldo_t1_7_30" model="hr.salary.rule">
+            <field name="code">HRSUD</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 0.40 * payslip.paid_amount</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Sueldo x Dias</field>
+            <field name="sequence" eval="50"/>
+            <field name="note">Anticipo de 40% de sueldo por los dias trabajados.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30"/>
+            <field name="account_debit" search="[('code', '=', '110309'),]"/>
+    
+        </record>
+
+        <record id="hr_ant_salary_rule_liquido_recibir_t1_7_30" model="hr.salary.rule">
+            <field name="code">LIQRE</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Líquido a Recibir</field>
+            <field name="sequence" eval="64"/>
+            <field name="note">Líquido a Recibir</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30"/>
+            <field name="account_credit" search="[('code', '=', '610301'),]"/>
+        </record>
+
+        <!-- ############################################################################ -->
+        <!-- ################################## TURNO 1 (08:30) ANTICIPO QUINCENA ######################################### -->
+        <record id="hr_payroll_salary_structure_gt_anticipo_t1_8_30" model="hr.payroll.structure">
+            <field name="name">Planilla de Anticipo de Quincena Turno 1 (08:30)</field>
+            <field name="country_id" ref="base.gt"/>
+            <field name="type_id" ref="planilla_sueldo_general_turno1_8_30"/>
+            <field name="schedule_pay">bi-weekly</field>
+            <field name="journal_id" ref="hr_payroll_gt_journal_nomina"/>
+        </record>
+
+        <!-- Reglas Salariales -->
+        <record id="hr_ant_salary_rule_sueldo_t1_8_30" model="hr.salary.rule">
+            <field name="code">HRSUD</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 0.40 * payslip.paid_amount</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Sueldo x Dias</field>
+            <field name="sequence" eval="50"/>
+            <field name="note">Anticipo de 40% de sueldo por los dias trabajados.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30"/>
+            <field name="account_debit" search="[('code', '=', '110309'),]"/>
+    
+        </record>
+
+        <record id="hr_ant_salary_rule_liquido_recibir_t1_8_30" model="hr.salary.rule">
+            <field name="code">LIQRE</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Líquido a Recibir</field>
+            <field name="sequence" eval="64"/>
+            <field name="note">Líquido a Recibir</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30"/>
+            <field name="account_credit" search="[('code', '=', '610301'),]"/>
+        </record>
+
+        <!-- ############################################################################ -->
+        <!-- ################################## TURNO 2 (07:30) ANTICIPO QUINCENA ######################################### -->
+        <record id="hr_payroll_salary_structure_gt_anticipo_t2_7_30" model="hr.payroll.structure">
+            <field name="name">Planilla de Anticipo de Quincena Turno 2 (07:30)</field>
+            <field name="country_id" ref="base.gt"/>
+            <field name="type_id" ref="planilla_sueldo_general_turno2_7_30"/>
+            <field name="schedule_pay">bi-weekly</field>
+            <field name="journal_id" ref="hr_payroll_gt_journal_nomina"/>
+        </record>
+
+        <!-- Reglas Salariales -->
+        <record id="hr_ant_salary_rule_sueldo_t2_7_30" model="hr.salary.rule">
+            <field name="code">HRSUD</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 0.40 * payslip.paid_amount</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Sueldo x Dias</field>
+            <field name="sequence" eval="50"/>
+            <field name="note">Anticipo de 40% de sueldo por los dias trabajados.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30"/>
+            <field name="account_debit" search="[('code', '=', '110309'),]"/>
+    
+        </record>
+
+        <record id="hr_ant_salary_rule_liquido_recibir_t2_7_30" model="hr.salary.rule">
+            <field name="code">LIQRE</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Líquido a Recibir</field>
+            <field name="sequence" eval="64"/>
+            <field name="note">Líquido a Recibir</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30"/>
+            <field name="account_credit" search="[('code', '=', '610301'),]"/>
+        </record>
+
+        <!-- ############################################################################ -->
+        <!-- ################################## TURNO 2 (08:30) ANTICIPO QUINCENA ######################################### -->
+        <record id="hr_payroll_salary_structure_gt_anticipo_t2_8_30" model="hr.payroll.structure">
+            <field name="name">Planilla de Anticipo de Quincena Turno 2 (08:30)</field>
+            <field name="country_id" ref="base.gt"/>
+            <field name="type_id" ref="planilla_sueldo_general_turno2_8_30"/>
+            <field name="schedule_pay">bi-weekly</field>
+            <field name="journal_id" ref="hr_payroll_gt_journal_nomina"/>
+        </record>
+
+        <!-- Reglas Salariales -->
+        <record id="hr_ant_salary_rule_sueldo_t2_8_30" model="hr.salary.rule">
+            <field name="code">HRSUD</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = 0.40 * payslip.paid_amount</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Sueldo x Dias</field>
+            <field name="sequence" eval="50"/>
+            <field name="note">Anticipo de 40% de sueldo por los dias trabajados.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30"/>
+            <field name="account_debit" search="[('code', '=', '110309'),]"/>
+    
+        </record>
+
+        <record id="hr_ant_salary_rule_liquido_recibir_t2_8_30" model="hr.salary.rule">
+            <field name="code">LIQRE</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Líquido a Recibir</field>
+            <field name="sequence" eval="64"/>
+            <field name="note">Líquido a Recibir</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30"/>
+            <field name="account_credit" search="[('code', '=', '610301'),]"/>
+        </record>
+
+        <!-- ############################################################################ -->
+    </data>
+</odoo>

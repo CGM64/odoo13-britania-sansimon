@@ -141,6 +141,7 @@
                 (0, 0, {'name': 'Sábado por la mañana', 'dayofweek': '5', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning', 'week_type': '1', 'work_entry_type_id': 1 })
             ]" />
         </record>
+        
 
     </data>
 

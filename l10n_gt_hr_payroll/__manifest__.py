@@ -102,6 +102,7 @@ Guatemala Payroll Salary Rules.
 
         'data/resource_calendar_data.xml',
         'data/hr_payroll_structure_type_data.xml',
+        'data/l10n_gt_hr_payroll_sansimon_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
