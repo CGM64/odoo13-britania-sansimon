@@ -187,6 +187,8 @@ class Payslip_run(models.Model):
     
     def ach(self):
         lista_lineas,ach=self.export_txt()
+        print("#####===== ACH")
+        print(lista_lineas)
         return ach
     
     def export_xls(self):

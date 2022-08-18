@@ -40,7 +40,10 @@ Guatemala Payroll Salary Rules.
 
     # always loaded
     'data': [
+        # SEGURIDAD
         'security/ir.model.access.csv',
+
+        # VISTAS
         'views/hr_contract_views.xml',
         'views/hr_employee_views_inherit.xml',
         'views/hr_nivel_academico_view_form.xml',
@@ -56,15 +59,22 @@ Guatemala Payroll Salary Rules.
         'views/hr_employee_pueblo_pertenencia.xml',
         'views/hr_employee_comunidad_linguistica.xml',
         'views/hr_employee_ocupacion.xml',
-        'wizard/rh_employee_informe_empleador.xml',
-        'report/hr_employee_informe_empleador.xml',
         'views/hr_resource_calendar_views.xml',
         'views/hr_tipo_planilla_views.xml',
-
         'views/hr_occupation_igss_views.xml',
-        'report/planilla_igss_txt.xml',
-        
+        'views/report_paperformat.xml',
+        'views/hr_actividad_economica_igss.xml',        
+        'views/hr_payslip_views.xml',
+        'views/hr_work_location.xml',
 
+        # WIZARDS
+        'wizard/rh_employee_informe_empleador.xml',
+        'wizard/planilla_iggs.xml',
+        
+        
+        # REPORTES
+        'report/hr_employee_informe_empleador.xml',
+        'report/planilla_igss_txt.xml',
         'report/hr_payslip_employee.xml',
         'report/hr_payslip_run_report.xml',
         'report/hr_employee_pdf_report.xml',
@@ -72,7 +82,11 @@ Guatemala Payroll Salary Rules.
         'report/hr_payslip_run_report.xml',        
         'report/hr_report_views.xml',
         'report/hr_archivo_bancario.xml',
+        'report/hr_payslip_bono14.xml',
+        'report/hr_payslip_anticipo_quincena.xml',
+        'report/hr_payslip_anticipo_salario.xml',
 
+        # DATOS
         'data/l10n_gt_hr_plan_trabajo_data.xml',
         'data/l10n_gt_hr_payroll_data.xml',
         'data/l10n_gt_hr_payroll_structure_bono14.xml',
@@ -90,16 +104,8 @@ Guatemala Payroll Salary Rules.
         'data/hr_employee_pueblo_pertenencia_data.xml',
         'data/hr_employee_comunidad_linguistica_data.xml',
         'data/hr_employee_ocupacion_data.xml',
-        'wizard/planilla_iggs.xml',
         'data/hr_actividad_economica_igss_data.xml',
         'data/hr_occupation_igss_data.xml',
-        'views/hr_work_location.xml',
-
-        'report/hr_payslip_bono14.xml',
-        'views/report_paperformat.xml',
-        'views/hr_actividad_economica_igss.xml',        
-        'views/hr_payslip_views.xml',
-
         'data/resource_calendar_data.xml',
         'data/hr_payroll_structure_type_data.xml',
         'data/l10n_gt_hr_payroll_sansimon_data.xml',

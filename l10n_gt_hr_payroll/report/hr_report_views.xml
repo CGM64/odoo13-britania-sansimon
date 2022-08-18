@@ -74,7 +74,7 @@
     </record>
  -->
 
-    <record id="hr_planilla_pdf" model="ir.actions.report">
+    <!-- <record id="hr_planilla_pdf" model="ir.actions.report">
         <field name="name">Planilla de Pagos (PDF)</field>
         <field name="model">hr.payslip.run</field>
         <field name="report_type">qweb-pdf</field>
@@ -83,7 +83,7 @@
         <field name="paperformat_id" ref="librodesalarios_paper"/>
         <field name="binding_model_id" ref="model_hr_payslip_run"/>
         <field name="binding_type">report</field>
-    </record>
+    </record> -->
 
     <record id="l10n_gt_hr_payroll_boleta_pago_report" model="ir.actions.report">
         <field name="name">Boleta de pago empleado</field>
@@ -102,7 +102,7 @@
         <field name="report_type">xlsx</field>
         <field name="report_name">l10n_gt_hr_payroll.planilla_igss_xlsx</field>
         <field name="report_file">l10n_gt_hr_payroll.planilla_igss_xlsx</field>
-        <field name="binding_model_id" ref="model_hr_payslip_run"/> 
+        <!-- <field name="binding_model_id" ref="model_hr_payslip_run"/>  -->
         <field name="binding_type">report</field>
     </record>
     

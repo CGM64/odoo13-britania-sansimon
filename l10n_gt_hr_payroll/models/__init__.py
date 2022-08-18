@@ -25,3 +25,4 @@ from . import res_state_municipio
 from . import hr_tipo_planilla
 
 from . import hr_employee_base
+from . import hr_salary_rule

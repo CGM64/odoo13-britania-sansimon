@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-  <data noupdate="1">
+  <data noupdate="0">
     <!-- Otros Tipos de Entrada de Nomina -->
 
     <record id="gt_hr_payslip_input_produccion" model="hr.payslip.input.type">
@@ -43,7 +43,7 @@
       <field name="name">Anticipo de Quincena</field>
       <field name="code">ANTIQUI</field>
       <field name="country_id" ref="base.gt" />
-      <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp'))]" />
+      <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp'))]" />
     </record>
 
     <record id="gt_hr_payslip_input_descuento_factura" model="hr.payslip.input.type">
@@ -85,7 +85,14 @@
       <field name="name">Comision</field>
       <field name="code">COMISION</field>
       <field name="country_id" ref="base.gt" />
-      <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp'))]" />
+      <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp'))]" />
+    </record>
+
+    <record id="gt_hr_payslip_input_premio" model="hr.payslip.input.type">
+      <field name="name">Premio</field>
+      <field name="code">PREMIO</field>
+      <field name="country_id" ref="base.gt" />
+      <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp'))]" />
     </record>
   </data>
 

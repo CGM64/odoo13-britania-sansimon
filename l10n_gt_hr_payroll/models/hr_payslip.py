@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-
+from . import letras
 from odoo import api, fields, models, _
 from dateutil.relativedelta import relativedelta, MO, SU
 from dateutil import rrule
@@ -23,6 +23,7 @@ class Payslip(models.Model):
             'dias_lab_mes': dias_lab_mes,
             'horas_totales_lab': self.number_of_hours,
             'compute_sueldo_x_dia': compute_sueldo_x_dia,
+            'compute_sueldo_x_dia_porcentaje': compute_sueldo_x_dia_porcentaje,
             'compute_codigo_nomina_anterior': compute_codigo_nomina_anterior,
         })
         return res
@@ -300,8 +301,14 @@ class Payslip(models.Model):
     def _monto_nomina_anticipo(self):
         fecha_inicio = self.date_from.replace(month=self.date_from.month, day=1, year=self.date_from.year)
         empleado_nomina_anticpo = self.env['hr.payslip'].search([
-                ('struct_id','=',self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_emp').id),
-                ('state','in',('done','paid')),
+                ('struct_id','in',(
+                    self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_7_30').id,
+                    self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_8_30').id,
+                    self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_7_30').id,
+                    self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_8_30').id,
+                    self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_emp').id)
+                ),
+                #('state','in',('done','paid')),
                 ('contract_id','=', self.contract_id.id),
                 ('date_from','>=',fecha_inicio)
                 ])
@@ -361,6 +368,21 @@ class Payslip(models.Model):
         self._calcular_bonos_descuentos()
         return super().action_refresh_from_work_entries()
     
+    def monto_letras(self,importe):
+        #Verificar el tipo de moneda
+        if not importe or importe == 0.0:
+            return ""
+        enletras = letras
+        cantidadenletras = enletras.to_word(importe)
+        if self.company_id.currency_id.name == 'USD':
+            cantidadenletras = cantidadenletras.replace('QUETZALES','DOLARES')
+        elif self.company_id.currency_id.name == 'EUR':
+            cantidadenletras = cantidadenletras.resultado('QUETZALES','EUROS')
+        else:
+            cantidadenletras = cantidadenletras
+        return cantidadenletras
+
+    
 
 #Funcion para el salario devengado menos las ausencias.
 def compute_sueldo_x_dia(payslip, categories, worked_days, inputs, code):
@@ -381,19 +403,47 @@ def compute_sueldo_x_dia(payslip, categories, worked_days, inputs, code):
     
     return round(total,2)
 
+def compute_sueldo_x_dia_porcentaje(payslip, categories, worked_days, inputs, code, code_septimo, porcentaje):
+    employee = payslip.contract_id.employee_id
+    wage = categories.BASIC
+    dias_trabajados = 0
+    dias_septimo = 16 # mas 16 para sumar los 2 septimos
+    numero_dias_total = payslip.number_of_hours
+    for dias in payslip.worked_days_line_ids:
+        # if (dias.work_entry_type_id.code == code_septimo):
+        #     dias_septimo = dias.number_of_hours
+        if dias.work_entry_type_id.code == code:
+            dias_trabajados = dias.number_of_hours
+    sueldo_quincena = wage * (porcentaje/100)
+    if numero_dias_total == 0:
+        return 0
+    dias_trabajados += dias_septimo
+    sueldo_diario = sueldo_quincena / numero_dias_total
+    sueldo_total = sueldo_diario * dias_trabajados
+    total = sueldo_total
+    #print("--%s=%s" % (code, total))
+    
+    return round(total,2)
+
 #Busca el valor del codigo enlas nominas anteriores, esto es para obtener el total de bono especial entre todas las nominas del me..
 def compute_codigo_nomina_anterior(payslip, clave):
     fecha_inicio = payslip.date_from.replace(month=payslip.date_from.month, day=1, year=payslip.date_from.year)
     fecha_fin = payslip.date_to
     empleado_nomina_anticpo = payslip.env['hr.payslip'].search([
-            ('struct_id','in',(payslip.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_emp').id, payslip.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp').id)),
-            ('state','in',('done','paid')),
+            ('struct_id','in',(
+                payslip.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_7_30').id,
+                payslip.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_8_30').id,
+                payslip.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_7_30').id,
+                payslip.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_8_30').id,
+                payslip.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_emp').id,
+                payslip.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp').id)),
+            #('state','in',('done','paid')),
             ('contract_id','=', payslip.contract_id.id),
             ('date_from','>=',fecha_inicio),
             ('date_to','<=',fecha_fin)
             ])
     total = sum(calculo.total for calculo in empleado_nomina_anticpo.line_ids.filtered(lambda payslip: payslip.code == clave))
-    #print("Si entro con la %s=%s" % (clave,total))
+    print("Si entro con la %s=%s" % (clave,total))
     return total
 
 # class HrPayslipRun(models.Model):

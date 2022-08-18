@@ -54,6 +54,8 @@ class ImportarCatalogosExcel(models.TransientModel):
 		('p15', 'Generar xml de ocupación'),
 		('p16', 'Asignar codigo nomina a provincia y municipio'),
 		('p17', 'Actualizar el costo, en los productos servicio'),
+		('p18', 'Actualizar código IGSS en departamentos'),
+		('p19', 'Actualizar código IGSS en municipios'),
 	], required=True, default='p1')
 
 	ubicacion = fields.Many2one('stock.location', string='Ubicacion')
@@ -98,6 +100,10 @@ class ImportarCatalogosExcel(models.TransientModel):
 			self._asignar_codigo_nomina()
 		elif self.tipo_plantilla == 'p17':
 			self._asignar_costo_producto_servicio()
+		elif self.tipo_plantilla == 'p18':
+			self._asignar_codigo_igss_departamentos()
+		elif self.tipo_plantilla == 'p19':
+			self._asignar_codigo_igss_municipios()
 
 	#Funcion para actualizar el costo en el caso de los productos tipo servicio.
 	#Esto con el proposito de realizar autoconsumos, todo se factura al costo, pero los codigos servicios no tienen costo.
@@ -1077,3 +1083,82 @@ class ImportarCatalogosExcel(models.TransientModel):
 		archivo.write(ruta + "ejemplo.xml",
 		xml_declaration=True,encoding='utf-8',
 		method="xml")
+	
+	def _asignar_codigo_igss_departamentos(self):
+		"""
+			El archivo debe tener el siguiente formato
+			|name|code|code_igss|country_id|
+			name es el nombre del departamento
+			code es el código del departamento
+			code_igss es el código de igss asignado a cada departamento
+			country_id es el nombre del país al que pertenece el departamanto
+			EJ.
+			|Guatemala|GUA|01|Guatemala|
+		"""
+		fp = tempfile.NamedTemporaryFile(delete= False,suffix=".xlsx")
+		fp.write(binascii.a2b_base64(self.archivo))
+		fp.seek(0)
+		values = []
+		workbook = xlrd.open_workbook(fp.name)
+		sheet = workbook.sheet_by_index(0)
+		product_template = []
+		i = 0
+
+		for row_no in range(sheet.nrows):
+			i+=1
+			if row_no <= 0:
+				fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
+			else:
+				line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
+				country_id = self.env["res.country"].search([("name",'=',line[3].strip())],limit=1)
+				depto = self.env["res.country.state"].search([
+					("name",'=',line[0].strip()),
+					("code",'=',line[1].strip()),
+					("country_id",'=',country_id.id),
+				],limit=1)
+				if depto:
+					depto.write({"code_igss": line[2].strip()})
+				else:
+					print("No se encontró este departamento, de ser necesario, creelo.")
+					print(line[0])
+		pass
+	
+	def _asignar_codigo_igss_municipios(self):
+		"""
+			El archivo debe tener el siguiente formato
+			|name|code|code_igss|state_id|
+			name es el nombre del municipio
+			code es el código del municipio
+			code_igss es el código de igss asignado a cada municipio
+			state_id es el nombre del país al que pertenece el municipio
+			EJ.
+			|Guatemala|101|01|Guatemala|
+		"""
+		fp = tempfile.NamedTemporaryFile(delete= False,suffix=".xlsx")
+		fp.write(binascii.a2b_base64(self.archivo))
+		fp.seek(0)
+		values = []
+		workbook = xlrd.open_workbook(fp.name)
+		sheet = workbook.sheet_by_index(0)
+		product_template = []
+		i = 0
+
+		for row_no in range(sheet.nrows):
+			i+=1
+			if row_no <= 0:
+				fields = map(lambda row:row.value.encode('utf-8'), sheet.row(row_no))
+			else:
+				line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
+				depto_id = self.env["res.country.state"].search([("name",'=',line[3].strip())],limit=1)
+				municipio = self.env["res.state.municipio"].search([
+					("name",'=',line[0].strip()),
+					("code",'=',line[1].strip()),
+					("state_id",'=',depto_id.id),
+				],limit=1)
+				if municipio:
+					municipio.write({"code_igss": line[2].strip()})
+				else:
+					print("No se encontró este municipio, de ser necesario, creelo.")
+					print(line[0],line[1].strip(),line[3].strip())
+		pass
+

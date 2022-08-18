@@ -357,7 +357,7 @@ class HrPayslipRunXlsxExport(models.AbstractModel):
                 if k=='BASIC':
                     columna_dinamica=columna
 
-        range=abc[1]+str(fila+1)+':'+abc[columna_dinamica-1]+str(fila+1)
+        range=abc[1]+str(fila+1)+':'+abc[2 if columna_dinamica == 0 else columna_dinamica-1]+str(fila+1)
         sheet.merge_range(range,'TOTALES',formato_titulo)     
         #RESUMEN
         sheet = workbook.add_worksheet('RESUMEN')
