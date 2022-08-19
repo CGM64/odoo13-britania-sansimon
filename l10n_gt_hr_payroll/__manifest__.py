@@ -93,7 +93,6 @@ Guatemala Payroll Salary Rules.
         'data/l10n_gt_hr_payroll_structure_aguinaldo.xml',
         'data/l10n_gt_hr_payroll_structure_bono.xml',
         'data/l10n_gt_hr_payroll_structure_anticipo_data.xml',
-        'data/l10n_gt_hr_payslip_input_type.xml',
         'data/l10n_gt_hr_work_entry_type_data.xml',
         'data/ir_sequence_data.xml',
         #'data/l10n_gt_hr_work_entry_type_data.xml',
@@ -109,6 +108,7 @@ Guatemala Payroll Salary Rules.
         'data/resource_calendar_data.xml',
         'data/hr_payroll_structure_type_data.xml',
         'data/l10n_gt_hr_payroll_sansimon_data.xml',
+        'data/l10n_gt_hr_payslip_input_type.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

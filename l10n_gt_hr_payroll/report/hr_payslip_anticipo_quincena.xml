@@ -19,7 +19,7 @@
                     <t t-if="(line.code == 'PREMIO')">
                         <t t-set="premio" t-value="line.total" />
                     </t>
-                    <t t-if="(line.code == 'NET')">
+                    <t t-if="(line.code == 'LIQRE')">
                         <t t-set="liquido" t-value="line.total" />
                     </t>
                 </t>

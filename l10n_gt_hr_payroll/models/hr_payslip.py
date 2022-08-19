@@ -312,6 +312,9 @@ class Payslip(models.Model):
                 ('contract_id','=', self.contract_id.id),
                 ('date_from','>=',fecha_inicio)
                 ])
+        print("$$$$$$ %s", empleado_nomina_anticpo.id)
+        for calculo in empleado_nomina_anticpo.line_ids.filtered(lambda payslip: payslip.code == 'LIQRE'):
+            print("0000000 %s = %s", calculo.code, calculo.total)
         for calculo in empleado_nomina_anticpo.line_ids.filtered(lambda payslip: payslip.code == 'LIQRE'):
             return calculo.total
         return 0
