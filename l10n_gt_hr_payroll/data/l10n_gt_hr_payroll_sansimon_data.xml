@@ -2,6 +2,12 @@
 <odoo>
 
     <data noupdate="0">
+        <record id="hr_category_bono" model="hr.salary.rule.category">
+            <field name="name">Bono</field>
+            <field name="code">BONO</field>
+            <field name="parent_id" eval="False"/>
+        </record>
+
         <!-- ################################## TURNO 1 (07:30) SUELDO GENERAL ######################################### -->
         <record id="hr_payroll_salary_structure_t1_7_30" model="hr.payroll.structure">
             <field name="name">Planilla de sueldo por Empleado Turno 1 (07:30)</field>
@@ -19,7 +25,7 @@
             <field name="amount_python_compute">result = contract.wage</field>
             <field name="category_id" ref="hr_payroll.BASIC"/>
             <field name="name">Sueldo</field>
-            <field name="sequence" eval="50"/>
+            <field name="sequence" eval="1"/>
             <field name="note">Sueldo base.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30"/>
     
@@ -31,7 +37,7 @@
             <field name="amount_python_compute">result = compute_sueldo_x_dia_porcentaje(payslip, categories, worked_days, inputs,'WORK100','SEPTIMO',60) + compute_codigo_nomina_anterior(payslip, 'HRSUD')</field>
             <field name="category_id" ref="hr_payroll.ALW" />
             <field name="name">Sueldo x Dias</field>
-            <field name="sequence" eval="51" />
+            <field name="sequence" eval="10" />
             <field name="note">Sueldo por los dias trabajados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
             <field name="account_debit" search="[('code', '=', '6-1-01-01-001'),]" />
@@ -48,10 +54,21 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
 </field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Bono Ley 37-2001</field>
-            <field name="sequence" eval="52"/>
+            <field name="sequence" eval="20"/>
             <field name="note">Bono Ley 37-2001</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30"/>
             <field name="account_debit" search="[('code', '=', '610302'),]" />
+        </record>
+
+        <record id="hr_salary_rule_reintegro_t1_7_30" model="hr.salary.rule">
+            <field name="code">REINTEGRO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.REINTEGRO and inputs.REINTEGRO.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Reintegro</field>
+            <field name="sequence" eval="21" />
+            <field name="note">Reintegro</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
         </record>
 
         <record id="hr_salary_rule_comision_t1_7_30" model="hr.salary.rule">
@@ -60,8 +77,30 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_codigo_nomina_anterior(payslip, 'COMISION')</field>
             <field name="category_id" ref="hr_payroll.ALW" />
             <field name="name">Comision</field>
-            <field name="sequence" eval="53" />
+            <field name="sequence" eval="22" />
             <field name="note">Comision</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
+        </record>
+
+        <record id="hr_salary_rule_horas_extras_t1_7_30" model="hr.salary.rule">
+            <field name="code">HRSEXTR</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRSEXTR and inputs.HRSEXTR.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Horas Extras</field>
+            <field name="sequence" eval="23" />
+            <field name="note">Horas Extras</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
+        </record>
+
+        <record id="hr_salary_rule_otros_ingresos_t1_7_30" model="hr.salary.rule">
+            <field name="code">OTRSING</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.OTRSING and inputs.OTRSING.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Otros Ingresos</field>
+            <field name="sequence" eval="23" />
+            <field name="note">Otros Ingresos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
         </record>
 
@@ -71,24 +110,9 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.ALW</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Ingresos</field>
-            <field name="sequence" eval="54" />
+            <field name="sequence" eval="30" />
             <field name="note">Total de Ingresos para los empleados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
-        </record>
-
-        <record id="hr_salary_rule_cuota_laboral_igss_t1_7_30" model="hr.salary.rule">
-            <field name="code">HRCLI</field>
-            <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.aplica_igss</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((HRSUD + COMISION)*4.83/100,2)</field>
-            <field name="category_id" ref="hr_payroll.DED" />
-            <field name="name">IGSS Laboral</field>
-            <field name="sequence" eval="55" />
-            <field name="note">IGSS Laboral.</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
-            <field name="partner_id" ref="res_partner_igss" />
-            <field name="account_credit" search="[('code', '=', '610306'),]" />
         </record>
 
         <record id="hr_salary_rule_desc_comision_t1_7_30" model="hr.salary.rule">
@@ -97,7 +121,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_codigo_nomina_anterior(payslip, 'COMISION')</field>
             <field name="category_id" ref="hr_payroll.DED" />
             <field name="name">Comisiones pagadas en Quincena</field>
-            <field name="sequence" eval="56" />
+            <field name="sequence" eval="31" />
             <field name="note">Comisiones pagadas en quincena</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
             <field name="account_credit" search="[('code', '=', '110309'),]" />
@@ -109,10 +133,58 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = inputs.ANTIQUI and inputs.ANTIQUI.amount</field>
             <field name="category_id" ref="hr_payroll.DED" />
             <field name="name">Anticipo de Quincena</field>
-            <field name="sequence" eval="57" />
+            <field name="sequence" eval="32" />
             <field name="note">Anticipo de Quincena</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
             <field name="account_credit" search="[('code', '=', '110309'),]" />
+        </record>
+
+        <record id="hr_salary_rule_cuota_laboral_igss_t1_7_30" model="hr.salary.rule">
+            <field name="code">HRCLI</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.aplica_igss</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = round((HRSUD + COMISION)*4.83/100,2)</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">IGSS Laboral</field>
+            <field name="sequence" eval="33" />
+            <field name="note">IGSS Laboral.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
+            <field name="partner_id" ref="res_partner_igss" />
+            <field name="account_credit" search="[('code', '=', '610306'),]" />
+        </record>
+
+        <record id="hr_salary_rule_ahorro_solidario_t1_7_30" model="hr.salary.rule">
+            <field name="code">HRASOL</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRASOL and inputs.HRASOL.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Ahorro Solidario</field>
+            <field name="sequence" eval="34" />
+            <field name="note">Ahorro Solidario.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
+        </record>
+
+        <record id="hr_salary_rule_prestamo_t1_7_30" model="hr.salary.rule">
+            <field name="code">HRPREST</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRPREST and inputs.HRPREST.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Prestamo</field>
+            <field name="sequence" eval="35" />
+            <field name="note">Prestamo.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
+        </record>
+
+        <record id="hr_salary_rule_otros_descuentos_t1_7_30" model="hr.salary.rule">
+            <field name="code">HROTRDESC</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HROTRDESC and inputs.HROTRDESC.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Otros</field>
+            <field name="sequence" eval="36" />
+            <field name="note">Otros descuentos.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
         </record>
 
         <record id="hr_salary_rule_total_descuentos_t1_7_30" model="hr.salary.rule">
@@ -121,7 +193,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.DED</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Descuentos</field>
-            <field name="sequence" eval="58" />
+            <field name="sequence" eval="40" />
             <field name="note">Total de Desecuentos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
         </record>
@@ -132,7 +204,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = HRTIG - TDESC</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Líquido a Recibir</field>
-            <field name="sequence" eval="59" />
+            <field name="sequence" eval="60" />
             <field name="note">Líquido a Recibir</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_7_30" />
             <field name="account_credit" search="[('code', '=', '610301'),]" />
@@ -157,7 +229,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = contract.wage</field>
             <field name="category_id" ref="hr_payroll.BASIC"/>
             <field name="name">Sueldo</field>
-            <field name="sequence" eval="50"/>
+            <field name="sequence" eval="1"/>
             <field name="note">Sueldo base.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30"/>
     
@@ -169,7 +241,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_sueldo_x_dia_porcentaje(payslip, categories, worked_days, inputs,'WORK100','SEPTIMO',60) + compute_codigo_nomina_anterior(payslip, 'HRSUD')</field>
             <field name="category_id" ref="hr_payroll.ALW" />
             <field name="name">Sueldo x Dias</field>
-            <field name="sequence" eval="51" />
+            <field name="sequence" eval="10" />
             <field name="note">Sueldo por los dias trabajados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
             <field name="account_debit" search="[('code', '=', '6-1-01-01-001'),]" />
@@ -186,10 +258,21 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
 </field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Bono Ley 37-2001</field>
-            <field name="sequence" eval="52"/>
+            <field name="sequence" eval="20"/>
             <field name="note">Bono Ley 37-2001</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30"/>
             <field name="account_debit" search="[('code', '=', '610302'),]" />
+        </record>
+
+        <record id="hr_salary_rule_reintegro_t1_8_30" model="hr.salary.rule">
+            <field name="code">REINTEGRO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.REINTEGRO and inputs.REINTEGRO.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Reintegro</field>
+            <field name="sequence" eval="21" />
+            <field name="note">Reintegro</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
         </record>
 
         <record id="hr_salary_rule_comision_t1_8_30" model="hr.salary.rule">
@@ -198,8 +281,30 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_codigo_nomina_anterior(payslip, 'COMISION')</field>
             <field name="category_id" ref="hr_payroll.ALW" />
             <field name="name">Comision</field>
-            <field name="sequence" eval="53" />
+            <field name="sequence" eval="22" />
             <field name="note">Comision</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
+        </record>
+
+        <record id="hr_salary_rule_horas_extras_t1_8_30" model="hr.salary.rule">
+            <field name="code">HRSEXTR</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRSEXTR and inputs.HRSEXTR.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Horas Extras</field>
+            <field name="sequence" eval="23" />
+            <field name="note">Horas Extras</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
+        </record>
+
+        <record id="hr_salary_rule_otros_ingresos_t1_8_30" model="hr.salary.rule">
+            <field name="code">OTRSING</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.OTRSING and inputs.OTRSING.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Otros Ingresos</field>
+            <field name="sequence" eval="23" />
+            <field name="note">Otros Ingresos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
         </record>
 
@@ -209,24 +314,9 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.ALW</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Ingresos</field>
-            <field name="sequence" eval="54" />
+            <field name="sequence" eval="30" />
             <field name="note">Total de Ingresos para los empleados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
-        </record>
-
-        <record id="hr_salary_rule_cuota_laboral_igss_t1_8_30" model="hr.salary.rule">
-            <field name="code">HRCLI</field>
-            <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.aplica_igss</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((HRSUD + COMISION)*4.83/100,2)</field>
-            <field name="category_id" ref="hr_payroll.DED" />
-            <field name="name">IGSS Laboral</field>
-            <field name="sequence" eval="55" />
-            <field name="note">IGSS Laboral.</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
-            <field name="partner_id" ref="res_partner_igss" />
-            <field name="account_credit" search="[('code', '=', '610306'),]" />
         </record>
 
         <record id="hr_salary_rule_desc_comision_t1_8_30" model="hr.salary.rule">
@@ -235,7 +325,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_codigo_nomina_anterior(payslip, 'COMISION')</field>
             <field name="category_id" ref="hr_payroll.DED" />
             <field name="name">Comisiones pagadas en Quincena</field>
-            <field name="sequence" eval="56" />
+            <field name="sequence" eval="31" />
             <field name="note">Comisiones pagadas en quincena</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
             <field name="account_credit" search="[('code', '=', '110309'),]" />
@@ -247,10 +337,58 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = inputs.ANTIQUI and inputs.ANTIQUI.amount</field>
             <field name="category_id" ref="hr_payroll.DED" />
             <field name="name">Anticipo de Quincena</field>
-            <field name="sequence" eval="57" />
+            <field name="sequence" eval="32" />
             <field name="note">Anticipo de Quincena</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
             <field name="account_credit" search="[('code', '=', '110309'),]" />
+        </record>
+
+        <record id="hr_salary_rule_cuota_laboral_igss_t1_8_30" model="hr.salary.rule">
+            <field name="code">HRCLI</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.aplica_igss</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = round((HRSUD + COMISION)*4.83/100,2)</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">IGSS Laboral</field>
+            <field name="sequence" eval="33" />
+            <field name="note">IGSS Laboral.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
+            <field name="partner_id" ref="res_partner_igss" />
+            <field name="account_credit" search="[('code', '=', '610306'),]" />
+        </record>
+
+        <record id="hr_salary_rule_ahorro_solidario_t1_8_30" model="hr.salary.rule">
+            <field name="code">HRASOL</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRASOL and inputs.HRASOL.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Ahorro Solidario</field>
+            <field name="sequence" eval="34" />
+            <field name="note">Ahorro Solidario.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
+        </record>
+
+        <record id="hr_salary_rule_prestamo_t1_8_30" model="hr.salary.rule">
+            <field name="code">HRPREST</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRPREST and inputs.HRPREST.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Prestamo</field>
+            <field name="sequence" eval="35" />
+            <field name="note">Prestamo.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
+        </record>
+
+        <record id="hr_salary_rule_otros_descuentos_t1_8_30" model="hr.salary.rule">
+            <field name="code">HROTRDESC</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HROTRDESC and inputs.HROTRDESC.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Otros</field>
+            <field name="sequence" eval="36" />
+            <field name="note">Otros descuentos.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
         </record>
 
         <record id="hr_salary_rule_total_descuentos_t1_8_30" model="hr.salary.rule">
@@ -259,7 +397,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.DED</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Descuentos</field>
-            <field name="sequence" eval="58" />
+            <field name="sequence" eval="40" />
             <field name="note">Total de Desecuentos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
         </record>
@@ -270,7 +408,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = HRTIG - TDESC</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Líquido a Recibir</field>
-            <field name="sequence" eval="59" />
+            <field name="sequence" eval="60" />
             <field name="note">Líquido a Recibir</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t1_8_30" />
             <field name="account_credit" search="[('code', '=', '610301'),]" />
@@ -295,19 +433,19 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = contract.wage</field>
             <field name="category_id" ref="hr_payroll.BASIC"/>
             <field name="name">Sueldo</field>
-            <field name="sequence" eval="50"/>
+            <field name="sequence" eval="1"/>
             <field name="note">Sueldo base.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30"/>
-        
+    
         </record>
-        
+
         <record id="hr_salary_rule_sueldo_t2_7_30" model="hr.salary.rule">
             <field name="code">HRSUD</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = compute_sueldo_x_dia_porcentaje(payslip, categories, worked_days, inputs,'WORK100','SEPTIMO',60) + compute_codigo_nomina_anterior(payslip, 'HRSUD')</field>
             <field name="category_id" ref="hr_payroll.ALW" />
             <field name="name">Sueldo x Dias</field>
-            <field name="sequence" eval="51" />
+            <field name="sequence" eval="10" />
             <field name="note">Sueldo por los dias trabajados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
             <field name="account_debit" search="[('code', '=', '6-1-01-01-001'),]" />
@@ -324,10 +462,21 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
 </field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Bono Ley 37-2001</field>
-            <field name="sequence" eval="52"/>
+            <field name="sequence" eval="20"/>
             <field name="note">Bono Ley 37-2001</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30"/>
             <field name="account_debit" search="[('code', '=', '610302'),]" />
+        </record>
+
+        <record id="hr_salary_rule_reintegro_t2_7_30" model="hr.salary.rule">
+            <field name="code">REINTEGRO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.REINTEGRO and inputs.REINTEGRO.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Reintegro</field>
+            <field name="sequence" eval="21" />
+            <field name="note">Reintegro</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
         </record>
 
         <record id="hr_salary_rule_comision_t2_7_30" model="hr.salary.rule">
@@ -336,8 +485,30 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_codigo_nomina_anterior(payslip, 'COMISION')</field>
             <field name="category_id" ref="hr_payroll.ALW" />
             <field name="name">Comision</field>
-            <field name="sequence" eval="53" />
+            <field name="sequence" eval="22" />
             <field name="note">Comision</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
+        </record>
+
+        <record id="hr_salary_rule_horas_extras_t2_7_30" model="hr.salary.rule">
+            <field name="code">HRSEXTR</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRSEXTR and inputs.HRSEXTR.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Horas Extras</field>
+            <field name="sequence" eval="23" />
+            <field name="note">Horas Extras</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
+        </record>
+
+        <record id="hr_salary_rule_otros_ingresos_t2_7_30" model="hr.salary.rule">
+            <field name="code">OTRSING</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.OTRSING and inputs.OTRSING.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Otros Ingresos</field>
+            <field name="sequence" eval="23" />
+            <field name="note">Otros Ingresos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
         </record>
 
@@ -347,24 +518,9 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.ALW</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Ingresos</field>
-            <field name="sequence" eval="54" />
+            <field name="sequence" eval="30" />
             <field name="note">Total de Ingresos para los empleados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
-        </record>
-
-        <record id="hr_salary_rule_cuota_laboral_igss_t2_7_30" model="hr.salary.rule">
-            <field name="code">HRCLI</field>
-            <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.aplica_igss</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((HRSUD + COMISION)*4.83/100,2)</field>
-            <field name="category_id" ref="hr_payroll.DED" />
-            <field name="name">IGSS Laboral</field>
-            <field name="sequence" eval="55" />
-            <field name="note">IGSS Laboral.</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
-            <field name="partner_id" ref="res_partner_igss" />
-            <field name="account_credit" search="[('code', '=', '610306'),]" />
         </record>
 
         <record id="hr_salary_rule_desc_comision_t2_7_30" model="hr.salary.rule">
@@ -373,7 +529,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_codigo_nomina_anterior(payslip, 'COMISION')</field>
             <field name="category_id" ref="hr_payroll.DED" />
             <field name="name">Comisiones pagadas en Quincena</field>
-            <field name="sequence" eval="56" />
+            <field name="sequence" eval="31" />
             <field name="note">Comisiones pagadas en quincena</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
             <field name="account_credit" search="[('code', '=', '110309'),]" />
@@ -385,10 +541,58 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = inputs.ANTIQUI and inputs.ANTIQUI.amount</field>
             <field name="category_id" ref="hr_payroll.DED" />
             <field name="name">Anticipo de Quincena</field>
-            <field name="sequence" eval="57" />
+            <field name="sequence" eval="32" />
             <field name="note">Anticipo de Quincena</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
             <field name="account_credit" search="[('code', '=', '110309'),]" />
+        </record>
+
+        <record id="hr_salary_rule_cuota_laboral_igss_t2_7_30" model="hr.salary.rule">
+            <field name="code">HRCLI</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.aplica_igss</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = round((HRSUD + COMISION)*4.83/100,2)</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">IGSS Laboral</field>
+            <field name="sequence" eval="33" />
+            <field name="note">IGSS Laboral.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
+            <field name="partner_id" ref="res_partner_igss" />
+            <field name="account_credit" search="[('code', '=', '610306'),]" />
+        </record>
+
+        <record id="hr_salary_rule_ahorro_solidario_t2_7_30" model="hr.salary.rule">
+            <field name="code">HRASOL</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRASOL and inputs.HRASOL.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Ahorro Solidario</field>
+            <field name="sequence" eval="34" />
+            <field name="note">Ahorro Solidario.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
+        </record>
+
+        <record id="hr_salary_rule_prestamo_t2_7_30" model="hr.salary.rule">
+            <field name="code">HRPREST</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRPREST and inputs.HRPREST.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Prestamo</field>
+            <field name="sequence" eval="35" />
+            <field name="note">Prestamo.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
+        </record>
+
+        <record id="hr_salary_rule_otros_descuentos_t2_7_30" model="hr.salary.rule">
+            <field name="code">HROTRDESC</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HROTRDESC and inputs.HROTRDESC.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Otros</field>
+            <field name="sequence" eval="36" />
+            <field name="note">Otros descuentos.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
         </record>
 
         <record id="hr_salary_rule_total_descuentos_t2_7_30" model="hr.salary.rule">
@@ -397,7 +601,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.DED</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Descuentos</field>
-            <field name="sequence" eval="58" />
+            <field name="sequence" eval="40" />
             <field name="note">Total de Desecuentos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
         </record>
@@ -408,7 +612,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = HRTIG - TDESC</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Líquido a Recibir</field>
-            <field name="sequence" eval="59" />
+            <field name="sequence" eval="60" />
             <field name="note">Líquido a Recibir</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_7_30" />
             <field name="account_credit" search="[('code', '=', '610301'),]" />
@@ -433,7 +637,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = contract.wage</field>
             <field name="category_id" ref="hr_payroll.BASIC"/>
             <field name="name">Sueldo</field>
-            <field name="sequence" eval="50"/>
+            <field name="sequence" eval="1"/>
             <field name="note">Sueldo base.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30"/>
     
@@ -445,7 +649,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_sueldo_x_dia_porcentaje(payslip, categories, worked_days, inputs,'WORK100','SEPTIMO',60) + compute_codigo_nomina_anterior(payslip, 'HRSUD')</field>
             <field name="category_id" ref="hr_payroll.ALW" />
             <field name="name">Sueldo x Dias</field>
-            <field name="sequence" eval="51" />
+            <field name="sequence" eval="10" />
             <field name="note">Sueldo por los dias trabajados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
             <field name="account_debit" search="[('code', '=', '6-1-01-01-001'),]" />
@@ -462,10 +666,21 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
 </field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Bono Ley 37-2001</field>
-            <field name="sequence" eval="52"/>
+            <field name="sequence" eval="20"/>
             <field name="note">Bono Ley 37-2001</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30"/>
             <field name="account_debit" search="[('code', '=', '610302'),]" />
+        </record>
+
+        <record id="hr_salary_rule_reintegro_t2_8_30" model="hr.salary.rule">
+            <field name="code">REINTEGRO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.REINTEGRO and inputs.REINTEGRO.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Reintegro</field>
+            <field name="sequence" eval="21" />
+            <field name="note">Reintegro</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
         </record>
 
         <record id="hr_salary_rule_comision_t2_8_30" model="hr.salary.rule">
@@ -474,8 +689,30 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_codigo_nomina_anterior(payslip, 'COMISION')</field>
             <field name="category_id" ref="hr_payroll.ALW" />
             <field name="name">Comision</field>
-            <field name="sequence" eval="53" />
+            <field name="sequence" eval="22" />
             <field name="note">Comision</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
+        </record>
+
+        <record id="hr_salary_rule_horas_extras_t2_8_30" model="hr.salary.rule">
+            <field name="code">HRSEXTR</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRSEXTR and inputs.HRSEXTR.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Horas Extras</field>
+            <field name="sequence" eval="23" />
+            <field name="note">Horas Extras</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
+        </record>
+
+        <record id="hr_salary_rule_otros_ingresos_t2_8_30" model="hr.salary.rule">
+            <field name="code">OTRSING</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.OTRSING and inputs.OTRSING.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW" />
+            <field name="name">Otros Ingresos</field>
+            <field name="sequence" eval="23" />
+            <field name="note">Otros Ingresos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
         </record>
 
@@ -485,24 +722,9 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.ALW</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Ingresos</field>
-            <field name="sequence" eval="54" />
+            <field name="sequence" eval="30" />
             <field name="note">Total de Ingresos para los empleados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
-        </record>
-
-        <record id="hr_salary_rule_cuota_laboral_igss_t2_8_30" model="hr.salary.rule">
-            <field name="code">HRCLI</field>
-            <field name="condition_select">python</field>
-            <field name="condition_python">result = contract.aplica_igss</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = round((HRSUD + COMISION)*4.83/100,2)</field>
-            <field name="category_id" ref="hr_payroll.DED" />
-            <field name="name">IGSS Laboral</field>
-            <field name="sequence" eval="55" />
-            <field name="note">IGSS Laboral.</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
-            <field name="partner_id" ref="res_partner_igss" />
-            <field name="account_credit" search="[('code', '=', '610306'),]" />
         </record>
 
         <record id="hr_salary_rule_desc_comision_t2_8_30" model="hr.salary.rule">
@@ -511,7 +733,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_codigo_nomina_anterior(payslip, 'COMISION')</field>
             <field name="category_id" ref="hr_payroll.DED" />
             <field name="name">Comisiones pagadas en Quincena</field>
-            <field name="sequence" eval="56" />
+            <field name="sequence" eval="31" />
             <field name="note">Comisiones pagadas en quincena</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
             <field name="account_credit" search="[('code', '=', '110309'),]" />
@@ -523,10 +745,58 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = inputs.ANTIQUI and inputs.ANTIQUI.amount</field>
             <field name="category_id" ref="hr_payroll.DED" />
             <field name="name">Anticipo de Quincena</field>
-            <field name="sequence" eval="57" />
+            <field name="sequence" eval="32" />
             <field name="note">Anticipo de Quincena</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
             <field name="account_credit" search="[('code', '=', '110309'),]" />
+        </record>
+
+        <record id="hr_salary_rule_cuota_laboral_igss_t2_8_30" model="hr.salary.rule">
+            <field name="code">HRCLI</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.aplica_igss</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = round((HRSUD + COMISION)*4.83/100,2)</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">IGSS Laboral</field>
+            <field name="sequence" eval="33" />
+            <field name="note">IGSS Laboral.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
+            <field name="partner_id" ref="res_partner_igss" />
+            <field name="account_credit" search="[('code', '=', '610306'),]" />
+        </record>
+
+        <record id="hr_salary_rule_ahorro_solidario_t2_8_30" model="hr.salary.rule">
+            <field name="code">HRASOL</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRASOL and inputs.HRASOL.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Ahorro Solidario</field>
+            <field name="sequence" eval="34" />
+            <field name="note">Ahorro Solidario.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
+        </record>
+
+        <record id="hr_salary_rule_prestamo_t2_8_30" model="hr.salary.rule">
+            <field name="code">HRPREST</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HRPREST and inputs.HRPREST.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Prestamo</field>
+            <field name="sequence" eval="35" />
+            <field name="note">Prestamo.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
+        </record>
+
+        <record id="hr_salary_rule_otros_descuentos_t2_8_30" model="hr.salary.rule">
+            <field name="code">HROTRDESC</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.HROTRDESC and inputs.HROTRDESC.amount</field>
+            <field name="category_id" ref="hr_payroll.DED" />
+            <field name="name">Otros</field>
+            <field name="sequence" eval="36" />
+            <field name="note">Otros descuentos.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
         </record>
 
         <record id="hr_salary_rule_total_descuentos_t2_8_30" model="hr.salary.rule">
@@ -535,7 +805,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.DED</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Descuentos</field>
-            <field name="sequence" eval="58" />
+            <field name="sequence" eval="40" />
             <field name="note">Total de Desecuentos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
         </record>
@@ -546,7 +816,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = HRTIG - TDESC</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Líquido a Recibir</field>
-            <field name="sequence" eval="59" />
+            <field name="sequence" eval="60" />
             <field name="note">Líquido a Recibir</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_t2_8_30" />
             <field name="account_credit" search="[('code', '=', '610301'),]" />
@@ -571,7 +841,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = contract.wage</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Salario básico total</field>
-            <field name="sequence" eval="50"/>
+            <field name="sequence" eval="1"/>
             <field name="note">Sueldo base.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30"/>
     
@@ -583,33 +853,10 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_sueldo_x_dia_porcentaje(payslip, categories, worked_days, inputs,'WORK100','SEPTIMO',40)</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Sueldo x Dias</field>
-            <field name="sequence" eval="51"/>
+            <field name="sequence" eval="10"/>
             <field name="note">Anticipo de 40% de sueldo por los dias trabajados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30"/>
             <field name="account_debit" search="[('code', '=', '110309'),]"/>
-    
-        </record>
-
-        <record id="hr_ant_salary_rule_comision_t1_7_30" model="hr.salary.rule">
-            <field name="code">COMISION</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = inputs.COMISION and inputs.COMISION.amount</field>
-            <field name="category_id" ref="hr_payroll.ALW" />
-            <field name="name">Comision</field>
-            <field name="sequence" eval="52" />
-            <field name="note">Comision</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30" />
-        </record>
-
-        <record id="hr_ant_salary_rule_premio_t1_7_30" model="hr.salary.rule">
-            <field name="code">PREMIO</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = inputs.PREMIO and inputs.PREMIO.amount</field>
-            <field name="category_id" ref="hr_payroll.ALW"/>
-            <field name="name">Premio</field>
-            <field name="sequence" eval="53"/>
-            <field name="note">Premio.</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30"/>
     
         </record>
 
@@ -619,8 +866,42 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.ALW</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Ingresos</field>
-            <field name="sequence" eval="54" />
+            <field name="sequence" eval="20" />
             <field name="note">Total de Ingresos para los empleados.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_comision_t1_7_30" model="hr.salary.rule">
+            <field name="code">COMISION</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.COMISION and inputs.COMISION.amount</field>
+            <field name="category_id" ref="hr_category_bono" />
+            <field name="name">Comision</field>
+            <field name="sequence" eval="30" />
+            <field name="note">Comision</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_premio_t1_7_30" model="hr.salary.rule">
+            <field name="code">PREMIO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.PREMIO and inputs.PREMIO.amount</field>
+            <field name="category_id" ref="hr_category_bono"/>
+            <field name="name">Premio</field>
+            <field name="sequence" eval="31"/>
+            <field name="note">Premio.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30"/>
+    
+        </record>
+
+        <record id="hr_ant_salary_rule_total_bonos_t1_7_30" model="hr.salary.rule">
+            <field name="code">HRTBO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.BONO</field>
+            <field name="category_id" ref="hr_payroll.NET" />
+            <field name="name">Total de bonos y premios</field>
+            <field name="sequence" eval="40" />
+            <field name="note">Total de bonos y premios.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30" />
         </record>
 
@@ -630,18 +911,29 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.DED</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Descuentos</field>
-            <field name="sequence" eval="55" />
+            <field name="sequence" eval="50" />
             <field name="note">Total de Desecuentos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_anticipo_recibir_t1_7_30" model="hr.salary.rule">
+            <field name="code">HRTANT</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Anticipo a Recibir</field>
+            <field name="sequence" eval="60"/>
+            <field name="note">Anticipo a Recibir</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30"/>
         </record>
 
         <record id="hr_ant_salary_rule_liquido_recibir_t1_7_30" model="hr.salary.rule">
             <field name="code">LIQRE</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="amount_python_compute">result = HRTANT + HRTBO</field>
             <field name="category_id" ref="hr_payroll.NET"/>
             <field name="name">Líquido a Recibir</field>
-            <field name="sequence" eval="56"/>
+            <field name="sequence" eval="90"/>
             <field name="note">Líquido a Recibir</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_7_30"/>
         </record>
@@ -664,7 +956,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = contract.wage</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Salario básico total</field>
-            <field name="sequence" eval="50"/>
+            <field name="sequence" eval="1"/>
             <field name="note">Sueldo base.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30"/>
     
@@ -676,33 +968,10 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_sueldo_x_dia_porcentaje(payslip, categories, worked_days, inputs,'WORK100','SEPTIMO',40)</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Sueldo x Dias</field>
-            <field name="sequence" eval="51"/>
+            <field name="sequence" eval="10"/>
             <field name="note">Anticipo de 40% de sueldo por los dias trabajados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30"/>
             <field name="account_debit" search="[('code', '=', '110309'),]"/>
-    
-        </record>
-
-        <record id="hr_ant_salary_rule_comision_t1_8_30" model="hr.salary.rule">
-            <field name="code">COMISION</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = inputs.COMISION and inputs.COMISION.amount</field>
-            <field name="category_id" ref="hr_payroll.ALW" />
-            <field name="name">Comision</field>
-            <field name="sequence" eval="52" />
-            <field name="note">Comision</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30" />
-        </record>
-
-        <record id="hr_ant_salary_rule_premio_t1_8_30" model="hr.salary.rule">
-            <field name="code">PREMIO</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = inputs.PREMIO and inputs.PREMIO.amount</field>
-            <field name="category_id" ref="hr_payroll.ALW"/>
-            <field name="name">Premio</field>
-            <field name="sequence" eval="53"/>
-            <field name="note">Premio.</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30"/>
     
         </record>
 
@@ -712,8 +981,42 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.ALW</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Ingresos</field>
-            <field name="sequence" eval="54" />
+            <field name="sequence" eval="20" />
             <field name="note">Total de Ingresos para los empleados.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_comision_t1_8_30" model="hr.salary.rule">
+            <field name="code">COMISION</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.COMISION and inputs.COMISION.amount</field>
+            <field name="category_id" ref="hr_category_bono" />
+            <field name="name">Comision</field>
+            <field name="sequence" eval="30" />
+            <field name="note">Comision</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_premio_t1_8_30" model="hr.salary.rule">
+            <field name="code">PREMIO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.PREMIO and inputs.PREMIO.amount</field>
+            <field name="category_id" ref="hr_category_bono"/>
+            <field name="name">Premio</field>
+            <field name="sequence" eval="31"/>
+            <field name="note">Premio.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30"/>
+    
+        </record>
+
+        <record id="hr_ant_salary_rule_total_bonos_t1_8_30" model="hr.salary.rule">
+            <field name="code">HRTBO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.BONO</field>
+            <field name="category_id" ref="hr_payroll.NET" />
+            <field name="name">Total de bonos y premios</field>
+            <field name="sequence" eval="40" />
+            <field name="note">Total de bonos y premios.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30" />
         </record>
 
@@ -723,18 +1026,29 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.DED</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Descuentos</field>
-            <field name="sequence" eval="55" />
+            <field name="sequence" eval="50" />
             <field name="note">Total de Desecuentos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_anticipo_recibir_t1_8_30" model="hr.salary.rule">
+            <field name="code">HRTANT</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Anticipo a Recibir</field>
+            <field name="sequence" eval="60"/>
+            <field name="note">Anticipo a Recibir</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30"/>
         </record>
 
         <record id="hr_ant_salary_rule_liquido_recibir_t1_8_30" model="hr.salary.rule">
             <field name="code">LIQRE</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="amount_python_compute">result = HRTANT + HRTBO</field>
             <field name="category_id" ref="hr_payroll.NET"/>
             <field name="name">Líquido a Recibir</field>
-            <field name="sequence" eval="56"/>
+            <field name="sequence" eval="90"/>
             <field name="note">Líquido a Recibir</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t1_8_30"/>
         </record>
@@ -757,7 +1071,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = contract.wage</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Salario básico total</field>
-            <field name="sequence" eval="50"/>
+            <field name="sequence" eval="1"/>
             <field name="note">Sueldo base.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30"/>
     
@@ -769,33 +1083,10 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_sueldo_x_dia_porcentaje(payslip, categories, worked_days, inputs,'WORK100','SEPTIMO',40)</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Sueldo x Dias</field>
-            <field name="sequence" eval="51"/>
+            <field name="sequence" eval="10"/>
             <field name="note">Anticipo de 40% de sueldo por los dias trabajados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30"/>
             <field name="account_debit" search="[('code', '=', '110309'),]"/>
-    
-        </record>
-
-        <record id="hr_ant_salary_rule_comision_t2_7_30" model="hr.salary.rule">
-            <field name="code">COMISION</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = inputs.COMISION and inputs.COMISION.amount</field>
-            <field name="category_id" ref="hr_payroll.ALW" />
-            <field name="name">Comision</field>
-            <field name="sequence" eval="52" />
-            <field name="note">Comision</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30" />
-        </record>
-
-        <record id="hr_ant_salary_rule_premio_t2_7_30" model="hr.salary.rule">
-            <field name="code">PREMIO</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = inputs.PREMIO and inputs.PREMIO.amount</field>
-            <field name="category_id" ref="hr_payroll.ALW"/>
-            <field name="name">Premio</field>
-            <field name="sequence" eval="53"/>
-            <field name="note">Premio.</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30"/>
     
         </record>
 
@@ -805,8 +1096,42 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.ALW</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Ingresos</field>
-            <field name="sequence" eval="54" />
+            <field name="sequence" eval="20" />
             <field name="note">Total de Ingresos para los empleados.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_comision_t2_7_30" model="hr.salary.rule">
+            <field name="code">COMISION</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.COMISION and inputs.COMISION.amount</field>
+            <field name="category_id" ref="hr_category_bono" />
+            <field name="name">Comision</field>
+            <field name="sequence" eval="30" />
+            <field name="note">Comision</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_premio_t2_7_30" model="hr.salary.rule">
+            <field name="code">PREMIO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.PREMIO and inputs.PREMIO.amount</field>
+            <field name="category_id" ref="hr_category_bono"/>
+            <field name="name">Premio</field>
+            <field name="sequence" eval="31"/>
+            <field name="note">Premio.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30"/>
+    
+        </record>
+
+        <record id="hr_ant_salary_rule_total_bonos_t2_7_30" model="hr.salary.rule">
+            <field name="code">HRTBO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.BONO</field>
+            <field name="category_id" ref="hr_payroll.NET" />
+            <field name="name">Total de bonos y premios</field>
+            <field name="sequence" eval="40" />
+            <field name="note">Total de bonos y premios.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30" />
         </record>
 
@@ -816,18 +1141,29 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.DED</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Descuentos</field>
-            <field name="sequence" eval="55" />
+            <field name="sequence" eval="50" />
             <field name="note">Total de Desecuentos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_anticipo_recibir_t2_7_30" model="hr.salary.rule">
+            <field name="code">HRTANT</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Anticipo a Recibir</field>
+            <field name="sequence" eval="60"/>
+            <field name="note">Anticipo a Recibir</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30"/>
         </record>
 
         <record id="hr_ant_salary_rule_liquido_recibir_t2_7_30" model="hr.salary.rule">
             <field name="code">LIQRE</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="amount_python_compute">result = HRTANT + HRTBO</field>
             <field name="category_id" ref="hr_payroll.NET"/>
             <field name="name">Líquido a Recibir</field>
-            <field name="sequence" eval="56"/>
+            <field name="sequence" eval="90"/>
             <field name="note">Líquido a Recibir</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_7_30"/>
         </record>
@@ -850,7 +1186,7 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = contract.wage</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Salario básico total</field>
-            <field name="sequence" eval="50"/>
+            <field name="sequence" eval="1"/>
             <field name="note">Sueldo base.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30"/>
     
@@ -862,33 +1198,10 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = compute_sueldo_x_dia_porcentaje(payslip, categories, worked_days, inputs,'WORK100','SEPTIMO',40)</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
             <field name="name">Sueldo x Dias</field>
-            <field name="sequence" eval="51"/>
+            <field name="sequence" eval="10"/>
             <field name="note">Anticipo de 40% de sueldo por los dias trabajados.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30"/>
             <field name="account_debit" search="[('code', '=', '110309'),]"/>
-    
-        </record>
-
-        <record id="hr_ant_salary_rule_comision_t2_8_30" model="hr.salary.rule">
-            <field name="code">COMISION</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = inputs.COMISION and inputs.COMISION.amount</field>
-            <field name="category_id" ref="hr_payroll.ALW" />
-            <field name="name">Comision</field>
-            <field name="sequence" eval="52" />
-            <field name="note">Comision</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30" />
-        </record>
-
-        <record id="hr_ant_salary_rule_premio_t2_8_30" model="hr.salary.rule">
-            <field name="code">PREMIO</field>
-            <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = inputs.PREMIO and inputs.PREMIO.amount</field>
-            <field name="category_id" ref="hr_payroll.ALW"/>
-            <field name="name">Premio</field>
-            <field name="sequence" eval="53"/>
-            <field name="note">Premio.</field>
-            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30"/>
     
         </record>
 
@@ -898,8 +1211,42 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.ALW</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Ingresos</field>
-            <field name="sequence" eval="54" />
+            <field name="sequence" eval="20" />
             <field name="note">Total de Ingresos para los empleados.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_comision_t2_8_30" model="hr.salary.rule">
+            <field name="code">COMISION</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.COMISION and inputs.COMISION.amount</field>
+            <field name="category_id" ref="hr_category_bono" />
+            <field name="name">Comision</field>
+            <field name="sequence" eval="30" />
+            <field name="note">Comision</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_premio_t2_8_30" model="hr.salary.rule">
+            <field name="code">PREMIO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.PREMIO and inputs.PREMIO.amount</field>
+            <field name="category_id" ref="hr_category_bono"/>
+            <field name="name">Premio</field>
+            <field name="sequence" eval="31"/>
+            <field name="note">Premio.</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30"/>
+    
+        </record>
+
+        <record id="hr_ant_salary_rule_total_bonos_t2_8_30" model="hr.salary.rule">
+            <field name="code">HRTBO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.BONO</field>
+            <field name="category_id" ref="hr_payroll.NET" />
+            <field name="name">Total de bonos y premios</field>
+            <field name="sequence" eval="40" />
+            <field name="note">Total de bonos y premios.</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30" />
         </record>
 
@@ -909,18 +1256,29 @@ if (horas_totales_lab > 0) and contract.bono_decreto and worked_days.WORK100 and
             <field name="amount_python_compute">result = categories.DED</field>
             <field name="category_id" ref="hr_payroll.NET" />
             <field name="name">Total de Descuentos</field>
-            <field name="sequence" eval="55" />
+            <field name="sequence" eval="50" />
             <field name="note">Total de Desecuentos</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30" />
+        </record>
+
+        <record id="hr_ant_salary_rule_anticipo_recibir_t2_8_30" model="hr.salary.rule">
+            <field name="code">HRTANT</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Anticipo a Recibir</field>
+            <field name="sequence" eval="60"/>
+            <field name="note">Anticipo a Recibir</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30"/>
         </record>
 
         <record id="hr_ant_salary_rule_liquido_recibir_t2_8_30" model="hr.salary.rule">
             <field name="code">LIQRE</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = HRTIG - TDESC</field>
+            <field name="amount_python_compute">result = HRTANT + HRTBO</field>
             <field name="category_id" ref="hr_payroll.NET"/>
             <field name="name">Líquido a Recibir</field>
-            <field name="sequence" eval="56"/>
+            <field name="sequence" eval="90"/>
             <field name="note">Líquido a Recibir</field>
             <field name="struct_id" ref="hr_payroll_salary_structure_gt_anticipo_t2_8_30"/>
         </record>

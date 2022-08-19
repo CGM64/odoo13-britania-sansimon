@@ -46,7 +46,7 @@
                     </t>
                 </t>
                 
-                <table class="">
+                <table class="" style="width: 100% !important;">
                     <tr>
                         <td>
                             <span t-field="o.company_id.company_registry"/>
@@ -127,7 +127,7 @@
                 <p>
                     Por este medio hago constar que hasta la fecha he recibido de la empresa <span t-field="o.company_id.company_registry"/> todas las prestaciones laborales que me corresponden: incluso decreto No. 37-2001. así como mis salarios ordinarios y extraordinarios: según lo especifica la Constitución de la República, leyes, reglamentos y convenios de trabajo y previsión social.
                 </p>
-                <table class="mt-3" style="width: 100% !important;">
+                <table class="" style="width: 100% !important; margin-top:45px;">
                     <tbody>
                         <tr>
                             <td class="text-center">_________________________________________________________________</td>

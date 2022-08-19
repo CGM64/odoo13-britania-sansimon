@@ -92,8 +92,8 @@ class HrPayslipRunXlsxExport(models.AbstractModel):
         for line in model.slip_ids.line_ids:
             if {line.code:line.name} not in codigos and {line.code:line.name} not in lista_exclusion:
                 codigos.append({line.code:line.name})
-                if line.code == 'HRTIG':
-                    codigos.append({'HRCLI':'Cuota Laboral IGSS'})
+                # if line.code == 'HRTIG':
+                #     codigos.append({'HRCLI':'Cuota Laboral IGSS'})
         codigos.append({'FORMAPAGO':'FORMA DE PAGO'})
         return codigos
 

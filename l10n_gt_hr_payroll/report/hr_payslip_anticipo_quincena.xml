@@ -95,13 +95,16 @@
                         </tbody>
                     </table>
                 </div>
-                <table class="mt-3" style="width: 100% !important;">
+                <table class="" style="width: 100% !important; margin-top:70px;">
                     <tbody>
                         <tr>
                             <td class="text-center">________________________________________________________________________________</td>
                         </tr>
                         <tr>
                             <td class="text-center"><span t-field="o.employee_id"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><span t-field="o.employee_id.cui"/></td>
                         </tr>
                     </tbody>
                 </table>

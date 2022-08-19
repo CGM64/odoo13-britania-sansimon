@@ -164,8 +164,8 @@ class HrPlanillaIgss(models.TransientModel):
         lista_empleados_suspendios = []
         
         asistencia = self.env["hr.work.entry"].search([('employee_id','=',156)])
-        for asis in asistencia:
-            print(asis)
+        # for asis in asistencia:
+        #     print(asis)
         
         return lista_empleados_suspendios
 

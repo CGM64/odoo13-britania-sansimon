@@ -94,6 +94,49 @@
       <field name="country_id" ref="base.gt" />
       <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp'))]" />
     </record>
+
+    <record id="gt_hr_payslip_input_reintegro" model="hr.payslip.input.type">
+      <field name="name">Reintegro</field>
+      <field name="code">REINTEGRO</field>
+      <field name="country_id" ref="base.gt" />
+      <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp'))]" />
+    </record>
+
+    <record id="gt_hr_payslip_input_horas_extras" model="hr.payslip.input.type">
+      <field name="name">Horas Extras</field>
+      <field name="code">HRSEXTR</field>
+      <field name="country_id" ref="base.gt" />
+      <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp'))]" />
+    </record>
+
+    <record id="gt_hr_payslip_input_otros_ingresos" model="hr.payslip.input.type">
+      <field name="name">Otros Ingresos</field>
+      <field name="code">OTRSING</field>
+      <field name="country_id" ref="base.gt" />
+      <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp'))]" />
+    </record>
+
+    <record id="gt_hr_payslip_input_ahorro_solidario" model="hr.payslip.input.type">
+      <field name="name">Ahorro Solidario</field>
+      <field name="code">HRASOL</field>
+      <field name="country_id" ref="base.gt" />
+      <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp'))]" />
+    </record>
+
+    <record id="gt_hr_payslip_input_prestamo" model="hr.payslip.input.type">
+      <field name="name">Prestamo</field>
+      <field name="code">HRPREST</field>
+      <field name="country_id" ref="base.gt" />
+      <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp'))]" />
+    </record>
+
+    <record id="gt_hr_payslip_input_otros_descuentos" model="hr.payslip.input.type">
+      <field name="name">Otros descuentos</field>
+      <field name="code">HROTRDESC</field>
+      <field name="country_id" ref="base.gt" />
+      <field name="struct_ids" eval="[(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_7_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_8_30')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp')),(4, ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp'))]" />
+    </record>
+
   </data>
 
 </odoo>

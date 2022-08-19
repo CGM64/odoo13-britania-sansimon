@@ -190,7 +190,14 @@ class Payslip(models.Model):
         ]
 
         #La siguiente funcion es para ir a traer todos los sueldos en el año y promediarlo
-        empleado_nominas = self.env['hr.payslip'].search(dominio_nominas + [('struct_id','=',(self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp').id)),])
+        empleado_nominas = self.env['hr.payslip'].search(dominio_nominas + [('struct_id','in',(
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_7_30').id,
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_8_30').id,
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_7_30').id,
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_8_30').id,
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp').id
+            )
+            ),])
         # sueldo_total = sum(sueldo_dia.total for sueldo_dia in empleado_nominas.line_ids.filtered(lambda payslip: payslip.code == 'HRSUD'))
         sueldo_total = sum(calculo.total for calculo in empleado_nominas.line_ids.filtered(lambda payslip: payslip.code == 'BASIC'))
         sueldo_promedio = sueldo_total / 12
@@ -267,6 +274,14 @@ class Payslip(models.Model):
         ]
         
         estructuras_salariales = (
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_7_30').id,
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t1_8_30').id,
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_7_30').id,
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_t2_8_30').id,
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_7_30').id,
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t1_8_30').id,
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_7_30').id,
+            self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_8_30').id,
             self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_emp').id,
             self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_emp').id,
         )
@@ -308,14 +323,11 @@ class Payslip(models.Model):
                     self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_8_30').id,
                     self.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_emp').id)
                 ),
-                #('state','in',('done','paid')),
+                ('state','in',('done','paid')),
                 ('contract_id','=', self.contract_id.id),
                 ('date_from','>=',fecha_inicio)
                 ])
-        print("$$$$$$ %s", empleado_nomina_anticpo.id)
-        for calculo in empleado_nomina_anticpo.line_ids.filtered(lambda payslip: payslip.code == 'LIQRE'):
-            print("0000000 %s = %s", calculo.code, calculo.total)
-        for calculo in empleado_nomina_anticpo.line_ids.filtered(lambda payslip: payslip.code == 'LIQRE'):
+        for calculo in empleado_nomina_anticpo.line_ids.filtered(lambda payslip: payslip.code == 'HRTANT'):
             return calculo.total
         return 0
 
@@ -440,13 +452,13 @@ def compute_codigo_nomina_anterior(payslip, clave):
                 payslip.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_t2_8_30').id,
                 payslip.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_anticipo_emp').id,
                 payslip.env.ref('l10n_gt_hr_payroll.hr_payroll_salary_structure_gt_bonos_emp').id)),
-            #('state','in',('done','paid')),
+            ('state','in',('done','paid')),
             ('contract_id','=', payslip.contract_id.id),
             ('date_from','>=',fecha_inicio),
             ('date_to','<=',fecha_fin)
             ])
     total = sum(calculo.total for calculo in empleado_nomina_anticpo.line_ids.filtered(lambda payslip: payslip.code == clave))
-    print("Si entro con la %s=%s" % (clave,total))
+    #print("Si entro con la %s=%s" % (clave,total))
     return total
 
 # class HrPayslipRun(models.Model):
