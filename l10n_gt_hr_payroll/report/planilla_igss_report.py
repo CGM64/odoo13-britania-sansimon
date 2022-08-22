@@ -137,6 +137,16 @@ class HrPlanillaIgss(models.TransientModel):
                 
                 primer_nombre, segundo_nombre, tercer_nombre, primer_apellido, segundo_apellido, apellido_casada = employee.get_nombres_separados()
                 hr_contract = self.env['hr.contract'].search([('employee_id','=',employee.id),('state','not in',('cancel','draft'))])
+
+                hr_payslip = self.env['hr.payslip'].search([('employee_id', '=', employee.id), ('date_to', '=', fin)])
+                
+                sueldo = 0.00
+                if hr_payslip:
+                    for rule in hr_payslip.line_ids:
+                        if rule.code == 'LIQRE':
+                            sueldo += rule.total
+                        if rule.code == 'ANTIQUI':
+                            sueldo += rule.total
                         
                 empleado = {
                     'num_liquidacion': employee.tipo_planilla_id.code,
@@ -146,7 +156,7 @@ class HrPlanillaIgss(models.TransientModel):
                     'primer_apellido': primer_apellido,
                     'segundo_apellido': segundo_apellido,
                     'apellido_casada': apellido_casada,
-                    'sueldo': hr_contract.condicion_laboral,
+                    'sueldo': sueldo,
                     'fecha_alta': hr_contract.date_start.strftime('%d/%m/%Y') if self.get_bool_rango_fecha(inicio, fin, hr_contract.date_start) else '',
                     'fecha_baja': hr_contract.date_end.strftime('%d/%m/%Y') if self.get_bool_rango_fecha(inicio, fin, hr_contract.date_end) else '',
                     'cod_centro': employee.work_location_id.location_number if employee.work_location_id else '',
