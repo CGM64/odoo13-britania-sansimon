@@ -306,7 +306,8 @@ class repairOrder(models.Model):
                         val += c['amount']
             for fee in order.fees_lines:
                 if fee.tax_id:
-                    tax_calculate = fee.tax_id.compute_all(fee.price_unit, order.pricelist_id.currency_id, fee.product_uom_qty, fee.product_id, order.partner_id)
+                    fee_price = fee.price_unit * (1 - (fee.discount or 0.0) / 100.0)
+                    tax_calculate = fee.tax_id.compute_all(fee_price, order.pricelist_id.currency_id, fee.product_uom_qty, fee.product_id, order.partner_id)
                     for c in tax_calculate['taxes']:
                         val += c['amount']
             order.amount_tax = val
