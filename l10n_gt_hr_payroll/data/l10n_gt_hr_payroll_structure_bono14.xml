@@ -1,55 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-  <record id="hr_payroll_salary_structure_type_gt_emp_bono" model="hr.payroll.structure.type">
-      <field name="name">Planilla de Bonos</field>
-      <field name="country_id" ref="base.gt"/>
-      <field name="default_schedule_pay">monthly</field>
-  </record>
-
-    <record id="hr_payroll_salary_structure_gt_bono14_emp" model="hr.payroll.structure">
-        <field name="name">Planilla de Bono 14</field>
-        <field name="country_id" ref="base.gt"/>
-        <field name="type_id" ref="hr_payroll_salary_structure_type_gt_emp_bono"/>
-        <field name="schedule_pay">monthly</field>
-        <field name="journal_id" ref="hr_payroll_gt_journal_nomina"/>
-    </record>
-
-    <record id="hr_salary_rule_anticipo_bono14_bono14" model="hr.salary.rule">
-        <field name="code">BONO14</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.INPBONO14 and inputs.INPBONO14.amount</field>
-        <field name="category_id" ref="hr_payroll.ALW"/>
-        <field name="name">Bono 14</field>
-        <field name="sequence" eval="57"/>
-        <field name="note">Bono que se dan los primeros 5 dias de cada mes</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_bono14_emp"/>
-        <!-- <field name="account_debit" search="[('code', '=', '2.01.01.05.02'),]"/> -->
-    </record>
-
-    <record id="hr_salary_rule_desc_anticipo_bono14" model="hr.salary.rule">
-        <field name="code">DESANTI</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = inputs.DESANTI and inputs.DESANTI.amount</field>
-        <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="name">Desc. Anticipo</field>
-        <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
-        <field name="sequence" eval="60"/>
-        <field name="note">Descuento al empleado por anticipo salario</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_bono14_emp"/>
-        <!-- <field name="account_credit" search="[('code', '=', '1.01.03.02.06'),]"/> -->
-    </record>
-
-    <record id="hr_salary_rule_liquido_recibir_bono14" model="hr.salary.rule">
-        <field name="code">LIQRE</field>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = categories.ALW - categories.DED</field>
-        <field name="category_id" ref="hr_payroll.NET"/>
-        <field name="name">Liquido a Recibir</field>
-        <field name="sequence" eval="65"/>
-        <field name="note">Liquido a Recibir</field>
-        <field name="struct_id" ref="hr_payroll_salary_structure_gt_bono14_emp"/>
-        <!-- <field name="account_credit" search="[('code', '=', '2-1-03-01-001'),]"/> -->
-    </record>
+    <data noupdate="1">
+        <record id="hr_payroll_salary_structure_type_gt_emp_bono" model="hr.payroll.structure.type">
+            <field name="name">Planilla de Bonos</field>
+            <field name="country_id" ref="base.gt"/>
+            <field name="default_schedule_pay">monthly</field>
+        </record>
+      
+          <record id="hr_payroll_salary_structure_gt_bono14_emp" model="hr.payroll.structure">
+              <field name="name">Planilla de Bono 14</field>
+              <field name="country_id" ref="base.gt"/>
+              <field name="type_id" ref="hr_payroll_salary_structure_type_gt_emp_bono"/>
+              <field name="schedule_pay">monthly</field>
+              <field name="journal_id" ref="hr_payroll_gt_journal_nomina"/>
+          </record>
+      
+          <record id="hr_salary_rule_anticipo_bono14_bono14" model="hr.salary.rule">
+              <field name="code">BONO14</field>
+              <field name="amount_select">code</field>
+              <field name="amount_python_compute">result = inputs.INPBONO14 and inputs.INPBONO14.amount</field>
+              <field name="category_id" ref="hr_payroll.ALW"/>
+              <field name="name">Bono 14</field>
+              <field name="sequence" eval="57"/>
+              <field name="note">Bono que se dan los primeros 5 dias de cada mes</field>
+              <field name="struct_id" ref="hr_payroll_salary_structure_gt_bono14_emp"/>
+              <!-- <field name="account_debit" search="[('code', '=', '2.01.01.05.02'),]"/> -->
+          </record>
+      
+          <record id="hr_salary_rule_desc_anticipo_bono14" model="hr.salary.rule">
+              <field name="code">DESANTI</field>
+              <field name="amount_select">code</field>
+              <field name="amount_python_compute">result = inputs.DESANTI and inputs.DESANTI.amount</field>
+              <field name="category_id" ref="hr_payroll.DED"/>
+              <field name="name">Desc. Anticipo</field>
+              <!-- <field name="partner_id" ref="hr_houserent_allowance_register"/> -->
+              <field name="sequence" eval="60"/>
+              <field name="note">Descuento al empleado por anticipo salario</field>
+              <field name="struct_id" ref="hr_payroll_salary_structure_gt_bono14_emp"/>
+              <!-- <field name="account_credit" search="[('code', '=', '1.01.03.02.06'),]"/> -->
+          </record>
+      
+          <record id="hr_salary_rule_liquido_recibir_bono14" model="hr.salary.rule">
+              <field name="code">LIQRE</field>
+              <field name="amount_select">code</field>
+              <field name="amount_python_compute">result = categories.ALW - categories.DED</field>
+              <field name="category_id" ref="hr_payroll.NET"/>
+              <field name="name">Liquido a Recibir</field>
+              <field name="sequence" eval="65"/>
+              <field name="note">Liquido a Recibir</field>
+              <field name="struct_id" ref="hr_payroll_salary_structure_gt_bono14_emp"/>
+              <!-- <field name="account_credit" search="[('code', '=', '2-1-03-01-001'),]"/> -->
+          </record>
+    </data>
 
   </odoo>

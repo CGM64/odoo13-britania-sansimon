@@ -95,8 +95,7 @@ class HrBonosDescuentosLine(models.Model):
     _allowed_input_type_ids = fields.Many2many('hr.payslip.input.type', 
         related='bono_descuento_id.struct_id.input_line_type_ids')
     input_type_id = fields.Many2one('hr.payslip.input.type', string='Tipo', 
-        required=True, 
-        domain="[('id', 'in', _allowed_input_type_ids)]")
+        required=True)
    
     
     

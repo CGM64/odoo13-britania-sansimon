@@ -10,4 +10,38 @@
             </field>
         </field>
     </record>
+
+    <!-- HEREDO LA VISTA DEL RES.COMPANY PARA COLOCAR LOS NUEVOS CAMPOS -->
+    <record id="hr_view_res_company_inherit" model="ir.ui.view">
+      <field name="name">hr.view.res.company.inherit</field>
+      <field name="model">res.company</field>
+      <field name="inherit_id" ref="base.view_company_form" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='vat']" position="after">
+          <field name="numero_patronal"/>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="hr_view_res_state_inherit" model="ir.ui.view">
+      <field name="name">hr.view.tree.res.state.inherit</field>
+      <field name="model">res.country.state</field>
+      <field name="inherit_id" ref="base.view_country_state_tree" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='code']" position="after">
+          <field name="code_igss"/>
+        </xpath>
+      </field>
+    </record>
+
+    <record id="hr_view_res_municipio_inherit" model="ir.ui.view">
+      <field name="name">hr.view.tree.res.municipio.inherit</field>
+      <field name="model">res.state.municipio</field>
+      <field name="inherit_id" ref="l10n_gt_sat.view_state_municipio_tree" />
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='code']" position="after">
+          <field name="code_igss"/>
+        </xpath>
+      </field>
+    </record>
 </odoo>

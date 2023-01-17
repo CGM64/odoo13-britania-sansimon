@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <data noupdate="1">
+           <record id="1" model="res.state.municipio">
+                <field name="name">Guatemala</field>
+                <field name="code">101</field>
+                <field name="state_id">90</field>
+           </record>
+     </data>
+</odoo>

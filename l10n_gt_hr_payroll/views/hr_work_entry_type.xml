@@ -11,6 +11,7 @@
                 <group name="other">
                     <field name="es_afecto_septimo"/>
                     <field name="es_informe_empleador"/>
+                    <field name="es_suspendido_planilla_igss"/>
                 </group>
             </group>
         </field>

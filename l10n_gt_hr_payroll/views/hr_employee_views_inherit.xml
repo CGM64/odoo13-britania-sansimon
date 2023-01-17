@@ -14,6 +14,7 @@
       <xpath expr="//field[@name='phone']" position="after">
         <field name="vat"/>
         <field name="cui"/>
+        <field name="municipio_dpi_id"/>
       </xpath>
 
       <xpath expr="//field[@name='vat']" position="after">
@@ -32,6 +33,11 @@
       <xpath expr="//field[@name='country_id']" position="after">
         <field name="state_id"/>
         <field name="municipio_id"/>
+      </xpath>
+
+      <xpath expr="//field[@name='address_id']" position="after">
+        <field name="tipo_planilla_id"/>
+        <field name="work_location_id"/>
       </xpath>
 
       <xpath expr="//page[@name='personal_information']/group[last()]" position="inside">
@@ -71,10 +77,6 @@
         <field name="distribucion_nombres"/>
       </xpath>
 
-      <xpath expr="//field[@name='country_of_birth']" position="after">
-        <field name="municipio_of_birth_id"/>
-      </xpath>
-
     </field>
   </record>
 
@@ -97,6 +99,12 @@
       <xpath expr="//field[@name='email']" position="after">
         <field name="vat"/>
       </xpath>
+
+      <field name="state_id" position="before">
+          <field name="zona" placeholder="Zona" options="{'no_open': True, 'no_create': True}" style="width:20%;"/>
+          <field name="municipio_id" placeholder="Municipio" options="{'no_open': True, 'no_create': True}" style="width:35%;"/>
+      </field>
+
 
       <xpath expr="//field[@name='acc_number']" position="before">
         <field name="bank_id"/>
