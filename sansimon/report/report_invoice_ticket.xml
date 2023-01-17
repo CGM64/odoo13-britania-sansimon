@@ -174,7 +174,7 @@
           <div class="row">
             <div class="col-12 text-center">
               <strong><span class="mt0" t-field="company.company_registry"/></strong><br/>
-              <span class="mt0" t-field="company.display_street"/><br/>
+              <span class="mt0" t-field="o.journal_id.fel_setting_id.emisor.street"/><br/>
               <span class="mt0">Teléfono:
               </span><span class="mt0" t-field="company.phone"/><br/>
               <span class="mt0">Nit:
