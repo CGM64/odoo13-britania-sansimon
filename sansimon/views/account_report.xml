@@ -34,7 +34,7 @@
             id="account_invoices_ticket"
             model="account.move"
             string="Factura Ticket"
-            report_type="qweb-html"
+            report_type="qweb-pdf"
             name="sansimon.report_invoice_ticket"
             file="sansimon.report_invoice_ticket"
             attachment="(object.state == 'posted') and ((object.name or 'INV').replace('/','_')+'.pdf')"
