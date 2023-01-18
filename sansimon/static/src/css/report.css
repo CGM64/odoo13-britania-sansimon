@@ -21,3 +21,11 @@ font-size: 12px;
   font-size: 14px;
   padding-top: 0%;
 }
+
+.container {
+  background-color: transparent !important;
+}
+
+.header_container {
+  position:relative !important
+}

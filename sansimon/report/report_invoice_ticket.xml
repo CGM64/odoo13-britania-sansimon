@@ -56,6 +56,11 @@
                     <img t-if="doc.generate_qr()" t-att-src="'data:image/png;base64,%s' % to_text(doc.generate_qr())" class="qr" />
               </div>
             </div>
+            <t t-if="doc.state == 'cancel'">
+              <div class="text-center">
+                <p style="font-size:30px; color:red;">CANCELADA</p>
+              </div>
+            </t>
             <div class="row">
               <div class="col-12 m-0 p-0">
                 <span>
@@ -119,8 +124,6 @@
             <br/>
             <br/>
             <br/>
-            <br/>
-            <br/>
             <div class="row text-center">
               <div class="col m-0 p-0">
                 <span>Documento Interno:
@@ -174,6 +177,7 @@
           <div class="row">
             <div class="col-12 text-center">
               <strong><span class="mt0" t-field="company.company_registry"/></strong><br/>
+              <strong><span class="mt0" t-field="o.journal_id.fel_setting_id.emisor.name"/></strong><br/>
               <span class="mt0" t-field="o.journal_id.fel_setting_id.emisor.street"/><br/>
               <span class="mt0">Teléfono:
               </span><span class="mt0" t-field="company.phone"/><br/>
