@@ -337,9 +337,8 @@ class AccountMove(models.Model):
                     #factura.name = str(fel_certificacion_response["serie"])+"-"+str(fel_certificacion_response["numero"])
                     factura.fac_serie = resultado["Serie"]
                     factura.fac_numero = resultado["Numero"]
-                    print(resultado)
-                    print(fecha_certificacion)
-                    fecha_certificacion = fields.datetime.strptime(fecha_certificacion, '%Y-%m-%dT%H:%M:%S')
+
+                    fecha_certificacion = fields.datetime.strptime(fecha_certificacion[:-6], '%Y-%m-%dT%H:%M:%S')
                     #offset = fields.datetime.now(pytz.timezone(self.env.user.tz or 'UTC')).utcoffset()
                     fecha_certificacion = fecha_certificacion #+ offset
                     factura.fecha_certificacion = fecha_certificacion
