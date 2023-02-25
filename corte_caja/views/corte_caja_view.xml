@@ -28,7 +28,7 @@
                 <field name="fecha_inicio" />
                 <field name="total_corte" />
                 <field name="company_id" groups="base.group_multi_company" optional="hide"/>
-                <field name="state" widget="badge" decoration-success="state == 'confirm'" decoration-info="state == 'draft'" decoration-danger="state == 'cancel'" />
+                <field name="state"  />
             </tree>
         </field>
     </record>
