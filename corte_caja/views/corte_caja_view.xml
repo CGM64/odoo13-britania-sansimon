@@ -113,6 +113,7 @@
                         <h1>
                             <field name="name" placeholder="e.j. Descripción del gasto"/>
                         </h1>
+                        <field name="company_id" invisible="0"/>
                     </div>
                     <group>
                         <group>

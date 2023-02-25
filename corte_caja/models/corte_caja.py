@@ -47,6 +47,15 @@ class CorteCaja(models.Model):
 
     total_corte = fields.Float(string='Total Corte', compute="_total_corte", store=True)
     total_facturas = fields.Float(string='Total Facturas', compute="_total_facturas", store=True)
+    
+    company_id = fields.Many2one(comodel_name='res.company', string='Compañía',
+                                 store=True, readonly=True,
+                                 compute='_compute_company_id')
+    
+    @api.depends('journal_id')
+    def _compute_company_id(self):
+        for move in self:
+            move.company_id = move.journal_id.company_id or move.company_id or self.env.company
 
     @api.onchange('corte_caja_ids', 'corte_caja_resumen_ids',)
     def _total_corte(self):
@@ -126,6 +135,7 @@ class CorteCaja(models.Model):
         dominio = [
             ('state', '=', 'posted'),
             ('type', '=', 'out_invoice'),
+            ('company_id', '=', self.company_id),
         ]
 
         if self.user_id:
@@ -147,6 +157,7 @@ class CorteCaja(models.Model):
         dominio = [
             ('state', '=', 'posted'),
             ('payment_type', '=', 'inbound'),
+            ('company_id', '=', self.company_id)
         ]
 
         if self.user_id:
@@ -296,7 +307,10 @@ class CorteCaja(models.Model):
             if registro['move_id'] not in facturas:
                 ids_facturas.append(registro['move_id'])  
 
-        dominio=[('id','in',tuple(ids_facturas))] 
+        dominio=[
+            ('id','in',tuple(ids_facturas)),
+            ('company_id', '=', self.company_id)
+        ] 
         sumatoria=0
         consulta_account_move = request.env['account.move'].search(dominio)
         for rec in consulta_account_move:
@@ -319,19 +333,20 @@ class CorteCaja(models.Model):
 
         return listado_facturas
         
-    def get_pagos_aplicados_factura(self,parametro):
+    def get_pagos_aplicados_factura(self,parametro, prefix='ml'):
         listado_ids=[]
         query = """
-                SELECT ml2.id,ml2.partner_id,ml.move_name,ml2.payment_id,ml.move_id, ml2.ref, m2.date, apr.amount
+                SELECT ml2.id,ml2.partner_id,ml.move_name,ml2.payment_id,{}.move_id, ml2.ref, m2.date, apr.amount
                 FROM account_move_line ml
                 JOIN account_partial_reconcile apr on apr.debit_move_id = ml.id
                 JOIN account_move_line ml2 on apr.credit_move_id = ml2.id
                 JOIN account_move m2 on ml2.move_id = m2.id
                 where ml.account_internal_type = 'receivable'
                 and m2.date  between  %s and %s
+                and m2.company_id = %s
                 order by ml2.payment_id
-                """
-        self.env.cr.execute(query, (self.fecha_inicio, self.fecha_fin,))
+                """.format(prefix)
+        self.env.cr.execute(query, (self.fecha_inicio, self.fecha_fin,self.company_id,))
         query_result = self.env.cr.dictfetchall()
 
         for registro in query_result:
@@ -430,6 +445,7 @@ class CorteCaja(models.Model):
             ('state', '=', 'posted'),
             ('type', '=', 'out_refund'),
             ('invoice_payment_state', '=', 'paid'),
+            ('company_id', '=', self.company_id),
         ]
 
         if self.user_id:
@@ -440,7 +456,7 @@ class CorteCaja(models.Model):
             dominio += ('invoice_date', '<=', self.fecha_fin),
 
         consulta_account_move = request.env['account.move'].search(dominio)
-        notas_credito=self.get_pagos_aplicados_factura('nota_credito')
+        notas_credito=self.get_pagos_aplicados_factura('nota_credito','ml2')
         lista_nc=[]
         lista_nota_credito=[]
         sumatoria=0
