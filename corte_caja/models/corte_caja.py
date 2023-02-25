@@ -55,7 +55,8 @@ class CorteCaja(models.Model):
     @api.depends('journal_id')
     def _compute_company_id(self):
         for move in self:
-            move.company_id = move.journal_id.company_id or move.company_id or self.env.company
+            #move.company_id = move.journal_id.company_id or move.company_id or self.env.company
+            move.company_id = self.env.company
 
     @api.onchange('corte_caja_ids', 'corte_caja_resumen_ids',)
     def _total_corte(self):
