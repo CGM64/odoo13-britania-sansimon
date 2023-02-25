@@ -138,7 +138,7 @@ class CorteCaja(models.Model):
         dominio = [
             ('state', '=', 'posted'),
             ('type', '=', 'out_invoice'),
-            ('company_id', '=', self.company_id),
+            ('company_id', '=', self.env.company.id),
         ]
 
         if self.user_id:
@@ -160,7 +160,7 @@ class CorteCaja(models.Model):
         dominio = [
             ('state', '=', 'posted'),
             ('payment_type', '=', 'inbound'),
-            ('company_id', '=', self.company_id)
+            ('company_id', '=', self.env.company.id)
         ]
 
         if self.user_id:
@@ -312,7 +312,7 @@ class CorteCaja(models.Model):
 
         dominio=[
             ('id','in',tuple(ids_facturas)),
-            ('company_id', '=', self.company_id)
+            ('company_id', '=', self.env.company.id)
         ] 
         sumatoria=0
         consulta_account_move = request.env['account.move'].search(dominio)
@@ -349,7 +349,7 @@ class CorteCaja(models.Model):
                 and m2.company_id = %s
                 order by ml2.payment_id
                 """.format(prefix)
-        self.env.cr.execute(query, (self.fecha_inicio, self.fecha_fin,self.company_id,))
+        self.env.cr.execute(query, (self.fecha_inicio, self.fecha_fin,self.env.company.id,))
         query_result = self.env.cr.dictfetchall()
 
         for registro in query_result:
@@ -448,7 +448,7 @@ class CorteCaja(models.Model):
             ('state', '=', 'posted'),
             ('type', '=', 'out_refund'),
             ('invoice_payment_state', '=', 'paid'),
-            ('company_id', '=', self.company_id),
+            ('company_id', '=', self.env.company.id),
         ]
 
         if self.user_id:
