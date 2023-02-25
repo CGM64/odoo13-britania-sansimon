@@ -13,6 +13,8 @@ class CorteCaja(models.Model):
     _name = "corte.caja"
     _description = "Corte de Caja"
     _order = 'create_date desc'
+    
+    _check_company_auto = True
 
     state = fields.Selection([
         ('draft', 'Borrador'),
