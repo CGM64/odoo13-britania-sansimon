@@ -306,7 +306,7 @@
             <div class="row fac_t_letra">
               <div class="col-4 text-center"><img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % to_text(o.company_id.logo)" class="factura_logo"/></div>
               <div class="col-4 text-center">
-                <h5><span t-field="o.company_id.name"/></h5>
+                <h6><span t-field="o.company_id.name"/></h6>
                 <t t-if="o.fel_setting_id"><span t-esc="o.fel_setting_id.nombre_comercial.upper()"/></t>
                 <t t-if="o.company_id.company_registry"><br/><span t-esc="o.company_id.company_registry.upper()"/></t>
                 <small>

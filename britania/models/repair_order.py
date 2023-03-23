@@ -4,7 +4,6 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
 from odoo.http import request
 from datetime import datetime,date
-ALMACEN_TALLER_DEFAULT = 30
 
 
 class RepairType(models.Model):
@@ -82,13 +81,8 @@ class repairOrder(models.Model):
         vin = fleet.vin_sn
         return vin  
 
-    @api.model
-    def _default_stock_location(self):
-        return ALMACEN_TALLER_DEFAULT
-
     location_id = fields.Many2one(
         'stock.location', 'Location',
-        default=_default_stock_location,
         index=True, readonly=True, required=True,
         help="This is the location where the product to repair is located.",
         states={'draft': [('readonly', False)], 'confirmed': [('readonly', True)]})
@@ -475,7 +469,6 @@ class RepairLine(models.Model):
             self.onchange_product_id()
             args = self.repair_id.company_id and [('company_id', '=', self.repair_id.company_id.id)] or []
             warehouse = self.env['stock.warehouse'].search(args, limit=1)
-            self.location_id = ALMACEN_TALLER_DEFAULT
             self.location_dest_id = self.env['stock.location'].search([('usage', '=', 'production')], limit=1).id
         else:
             self.price_unit = 0.0

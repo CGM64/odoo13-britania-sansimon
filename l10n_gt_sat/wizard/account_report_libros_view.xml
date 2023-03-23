@@ -17,7 +17,7 @@
                 <field name="libro"/>
                 <field name="periodo"/>
                 <field name="folio"/>
-                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                <field name="company_id" domain="[('id', 'in', allowed_company_ids)]" options="{'no_create': True}" groups="base.group_multi_company"/>
             </group>
           </group>
             <footer>

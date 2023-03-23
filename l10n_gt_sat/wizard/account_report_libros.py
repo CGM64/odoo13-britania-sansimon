@@ -28,7 +28,7 @@ class AccountLibroFiscalReport(models.TransientModel):
     _name = "l10n_gt_sat.librofiscal.report"
     _description = "Libro Fiscal Report"
 
-    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.user.company_id)
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
     libro = fields.Selection(TIPOS_DE_LIBROS, string='Libro', required=True, default='sale')
     tipo = fields.Selection([('detallado', 'Detallado'),
                              ('resumido', 'Resumido'),
