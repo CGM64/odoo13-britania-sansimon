@@ -19,7 +19,7 @@ class AccountMove(models.Model):
 
     fel_setting_id = fields.Many2one('fel.setting', string='Facturacion FEL', copy=False, readonly=True, track_visibility='onchange')
     fel_firma = fields.Char('Firma FEL', copy=False, readonly=True, track_visibility='onchange')
-    fel_motivo = fields.Char('Motivo', copy=False, track_visibility='onchange')
+    fel_motivo = fields.Char('Motivo', copy=False, readonly=False, track_visibility='onchange')
 
     fel_factura_referencia_id = fields.Many2one('account.move', string="Factura Referencia", help="Factura de referencia para ligar la nota de debito con la factura",
                                     domain="[('company_id', '=', company_id),('state', '=', 'posted'),('type', '=', 'out_invoice'),('partner_id', '=', partner_id)]",)
@@ -336,9 +336,8 @@ class AccountMove(models.Model):
                     factura.fel_firma = resultado["NumeroAutorizacion"]
                     #factura.name = str(fel_certificacion_response["serie"])+"-"+str(fel_certificacion_response["numero"])
                     factura.fac_serie = resultado["Serie"]
-                    factura.fac_numero = resultado["Numero"]
-
-                    fecha_certificacion = fields.datetime.strptime(fecha_certificacion[:-6], '%Y-%m-%dT%H:%M:%S')
+                    factura.fac_numero = resultado["Numero"] 
+                    fecha_certificacion = fields.datetime.strptime(fecha_certificacion, '%Y-%m-%dT%H:%M:%S')
                     #offset = fields.datetime.now(pytz.timezone(self.env.user.tz or 'UTC')).utcoffset()
                     fecha_certificacion = fecha_certificacion #+ offset
                     factura.fecha_certificacion = fecha_certificacion

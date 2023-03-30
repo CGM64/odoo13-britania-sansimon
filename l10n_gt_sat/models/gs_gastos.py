@@ -25,8 +25,8 @@ class GsComprasGastos(models.Model):
             'default_partner_type': 'supplier',
             'default_amount': self.amount_total,
             'default_partner_id': proveedor,
-            'default_payment_method_id': 4,
-            'default_journal_id': 56,
+            #'default_payment_method_id': 4,
+            #'default_journal_id': 56,
             'default_check_no_negociable': 1,
         }
         return result
