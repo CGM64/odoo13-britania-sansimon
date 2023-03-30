@@ -32,5 +32,19 @@
             </xpath>
         </field>
     </record>
+    <record id="view_l10n_gt_sat_account_journal_banco_form_inherited" model="ir.ui.view">
+      <field name="name">account.journal.banco.form.inherited</field>
+      <field name="model">account.journal</field>
+      <field name="inherit_id" ref="account.view_account_journal_form" />
+      <field name="arch" type="xml">
+          <xpath expr="//group[@name='group_alias']" position="after">
+            <group name="group_cuenta_ban" position="after">
+              <field name="cheque_template"/>
+              <field name="voucher_template"/>
+              <field name="papel_cheque"/>
+            </group>
+          </xpath>
+      </field>
+  </record>
   </data>
 </odoo>

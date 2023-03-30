@@ -40,7 +40,7 @@ class AccountCommonJournalReport(models.TransientModel):
     #Funcion que devuelve el arreglo listo para procesar en el reportes
     def get_libro(self, data):
         company_id = data['form']['company_id'][0]
-
+        
         #sale
         #purchase
         libros = self._get_libros_procesar(data)
@@ -55,6 +55,10 @@ class AccountCommonJournalReport(models.TransientModel):
 
         for libro in libros:
             journals = self.env['account.journal'].search([('invoice_receipt','=',True),('type', '=', libro['libro']),('company_id', '=', company_id)])
+            print("#####=====")
+            print(company_id)
+            print(libro['libro'])
+            print(journals)
             tipo_libro = {}
             tipo_libro['tipo'] = data['form']['tipo']
             tipo_libro['libro'] = libro['libro']

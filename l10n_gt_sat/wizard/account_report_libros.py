@@ -73,6 +73,6 @@ class AccountLibroFiscalReport(models.TransientModel):
     def export_invetory_xls(self):
         self.ensure_one()
         data = {}
-        data['form'] = self.read(['fecha_inicio', 'fecha_fin','generar_por','picking_ids'])[0]
+        data['form'] = self.read(['generar_por','picking_ids'])[0]
         return self.env['ir.actions.report'].search([('report_name', '=', 'l10n_gt_sat.account_inventario_report_xls'),
                 ('report_type', '=', 'xlsx')], limit=1).report_action(self,data=data)
