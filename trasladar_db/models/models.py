@@ -38,4 +38,14 @@ class IrAttachment(models.Model):
     _inherit = "ir.attachment"
     
     origen_id = fields.Integer(string='Origen ID', help='Origen ID del otro Odoo')
+
+class IrAttachment(models.Model):
+    _inherit = "mail.activity.type"
+    
+    origen_id = fields.Integer(string='Origen ID', help='Origen ID del otro Odoo')
+
+class IrAttachment(models.Model):
+    _inherit = "mail.activity"
+    
+    origen_id = fields.Integer(string='Origen ID', help='Origen ID del otro Odoo')
     
