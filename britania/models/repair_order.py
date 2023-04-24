@@ -4,6 +4,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
 from odoo.http import request
 from datetime import datetime,date
+import calendar
 
 
 class RepairType(models.Model):
@@ -33,6 +34,8 @@ class repairOrder(models.Model):
     
     amount_total_piezas = fields.Float('Total Piezas', compute='_amount_total_piezas_operaciones', store=True)
     amount_total_operaciones = fields.Float('Total Operaciones', compute='_amount_total_piezas_operaciones', store=True)
+    
+    fecha_certificacion = fields.Datetime(related="invoice_id.fecha_certificacion")
 
     @api.depends('amount_untaxed', 'amount_tax')
     def _amount_total_piezas_operaciones(self):
