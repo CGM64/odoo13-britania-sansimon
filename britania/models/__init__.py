@@ -9,3 +9,4 @@ from . import tri_product
 from . import res_partner
 from . import repair_report
 from . import crm_team
+from . import product
