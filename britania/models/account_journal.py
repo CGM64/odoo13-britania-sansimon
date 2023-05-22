@@ -10,6 +10,7 @@ class AccountJournal(models.Model):
 
     template_invoice = fields.Selection(selection=[
             ('britania.invoice_britania', 'Plantilla Factura FEL Britania'),
+            ('britania.invoice_royal', 'Plantilla Factura FEL Royal Enfield'),
         ], string='Plantilla Invoice', default='britania.invoice_britania')
 
     def get_tipo_dte_info(self,dte):
