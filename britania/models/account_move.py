@@ -196,7 +196,7 @@ class AccountMove(models.Model):
                         linea['blanco'] = False
                         linea['default_code'] = l.product_id.default_code  if mostrar_contenido else ''
                         linea['quantity'] = '{0:,.2f}'.format(l.quantity) if mostrar_contenido else ''
-                        linea['nombre_sin_codigo'] = l.product_id.name
+                        linea['nombre_sin_codigo'] = descripcion[d]
                         linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
                         linea['name'] = descripcion[d]
                         linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(linea_factura['precio_sin_descuento']) if mostrar_contenido else ''
