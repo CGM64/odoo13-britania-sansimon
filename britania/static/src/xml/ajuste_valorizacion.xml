@@ -1,0 +1,5 @@
+<templates>
+    <div t-name="britania.ajusteValorizacion">
+        <button type="button" class="btn btn-primary mostrar-datos">Mostrar Datos</button>
+    </div>
+</templates>

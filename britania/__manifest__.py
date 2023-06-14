@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account','repair','stock','fel','product'],
+    'depends': ['account','repair','stock','fel','product', 'stock_landed_costs'],
 
     # always loaded
     'data': [
@@ -49,10 +49,12 @@
         'data/sale_group_data.xml',
         'report/account_payment.xml',
         'views/product_views.xml',
+        'views/stock_landed_cost_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
         #'demo/demo.xml',
 
     ],
+    'qweb': ['static/src/xml/ajuste_valorizacion.xml'],
 }
