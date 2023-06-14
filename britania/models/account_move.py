@@ -166,6 +166,16 @@ class AccountMove(models.Model):
                 nueva_desc.append(cadena)
                 break
         return nueva_desc
+    
+    def obtener_nombre_sin_codigo(self, linea):
+        cad = linea.name
+        print(cad)
+        codigo_prod = linea.product_id.default_code
+        print(codigo_prod)
+        cad = cad.replace(codigo_prod,"")
+        cad = cad.replace("[]","")
+        print(cad)
+        return cad
 
     def detalle_factura(self):
         num_linea_x_pagina = 35
@@ -219,7 +229,7 @@ class AccountMove(models.Model):
                         linea['quantity'] = '{0:,.2f}'.format(l.quantity) if mostrar_contenido else ''
                         linea['product_uom_name'] = (l.product_uom_id.name if l.product_uom_id.name != 'Unidades' else 'U') if mostrar_contenido else ''
                         linea['name'] = nueva_linea_desc
-                        linea['nombre_sin_codigo'] = l.product_id.name
+                        linea['nombre_sin_codigo'] = self.obtener_nombre_sin_codigo(l)
                         linea['price_unit'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(linea_factura['precio_sin_descuento']) if mostrar_contenido else ''
                         linea['price_total'] = o.company_id.currency_id.symbol + ' ' + '{0:,.2f}'.format(linea_factura['total_linea_sin_descuento']) if mostrar_contenido else ''
                         linea['discount'] = str('{0:,.2f}'.format(l.discount))+"%" if mostrar_contenido else ''
