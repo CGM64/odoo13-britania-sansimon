@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    
+    <report id="report_custom2"
+      string="Recibo Royal Enfield"
+      model="account.move"
+      report_type="qweb-pdf"
+      name="britania.recibo2_custom_template"
+    />
+  
+    <template id="recibo2_custom_template">
+      <t t-foreach="docs" t-as="o">
+      <t t-call="web.basic_layout">
+        <div class="container">
+          <div class="header">
+            <img src="/britania/static/description/royal.png" style="margin-top:5px; " width="250" height="230"/>
+            <div class="fac_t_letra_peq text-right col-10 " style="font-size:25px; top: -165px; right: -70px;">
+                <font color="grey"><b><span t-field="o.company_id.company_registry"/></b></font>
+            </div>
+            <div class="fac_t_letra_peq text-right col-9 " style="font-size:14px; top: -160px; right: -25px;">
+              <span t-field="o.company_id.display_street"/>
+            </div>
+            <div class="fac_t_letra_peq text-right col-10 " style="font-size:14px; top: -155px; right: 5px;">
+              Teléfono: <span t-field="o.company_id.phone"/> , Nit: <span t-field="o.company_id.vat"/>
+            </div>
+            <div class="fac_t_letra_peq text-right col-11 " style="font-size:14px; top: -150px; right: 20px;">
+              Web: <span t-field="o.company_id.website"/> , Correo: <span t-field="o.company_id.email"/>
+              <hr style="height:1px;border-width:0;color:grey;background-color:grey;width:135%;margin-left: -5em; "></hr>
+            </div>
+            <div class="fac_t_letra_peq  text-right col-9" style="font-size:15px; top: -90px; left: 69px;">
+              <span t-field="o.partner_id.name"/>
+            </div>
+            <div class="fac_t_letra_peq text-right col-10 " style="font-size:14px; top: -85px; right: -88px;">
+              <span t-field="o.partner_id.display_street"/>
+            </div>
+            <div class="fac_t_letra_peq text-right col-9 " style="font-size:14px; top: -80px; left: -44px;">
+              Guatemala GUA
+            </div>
+            <div class="fac_t_letra_peq text-right col-9 " style="font-size:14px; top: -75px; left: -77px;">
+              Guatemala
+            </div>
+            <div class="fac_t_letra_peq text-right col-9 " style="font-size:14px; top: -65px; left: -57px;">
+              NIT: <span t-field="o.partner_id.vat"/>
+            </div>
+            
+            <div class="fac_t_letra_peq text-left" style="font-size:30px; top: -60px;">
+              Recibo <span t-field="o.name"/><br/><br/>
+            </div>
+            <div class="fac_t_letra_peq text-left" style="font-size:15px;">
+              <b>Fecha de factura:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Fecha de vencimiento:&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Referencia:</b><br/>
+            </div>
+            <div class="fac_t_letra_peq text-left" style="font-size:15px;">
+              <pre><span t-field="o.invoice_date"/>               <span t-field="o.invoice_date_due"/>                        <span t-field="o.ref"/></pre><br/><br/>
+            </div>
+            <t t-foreach="o.detalle_factura()['detalle']" t-as="o.invoice_line_ids">
+              <table style="border-style: solid; border-width: thin;">
+                <tr>
+                  <td style="border: 1px solid black; text-align: left;" width="300"><b>DESCRIPCIÓN</b></td>
+                  <td style="border: 1px solid black; text-align: right;" width="150"><b>CANTIDAD</b></td>
+                  <td style="border: 1px solid black; text-align: right;" width="250"><b>PRECIO UNITARIO</b></td>
+                  <td style="border: 1px solid black; text-align: right;" width="250"><b>PRECIO TOTAL</b></td>
+                </tr>
+                <t t-foreach="o.invoice_line_ids" t-as="l">
+                  <tr>
+                    <td style="border: 1px solid black; text-align: left;"><t t-esc="l.name"/></td>
+                    <td style="border: 1px solid black; text-align: right;"><span t-esc="l.quantity"/></td>
+                    <td style="border: 1px solid black; text-align: right;"><span t-esc="o.currency_id.symbol"/>&#160;<span t-esc="'{0:,.2f}'.format(l.price_unit)"/></td>
+                    <td style="border: 1px solid black; text-align: right; background-color:#D6D6D6;"><span t-esc="o.currency_id.symbol"/>&#160;<span t-esc="'{0:,.2f}'.format(l.price_total)"/></td>
+                  </tr>
+                </t>
+              </table><br/>
+              <table style="border-style: solid; border-width: thin;" align="right">
+                <tr>
+                  <td style="border: 1px solid black; text-align: left;" width="300"><b>Subtotal</b></td>
+                  <td style="border: 1px solid black; text-align: right;" width="150"><span t-esc="o.currency_id.symbol"/>&#160;<span t-esc="'{0:,.2f}'.format(o.amount_untaxed)"/></td>
+                  
+                </tr>
+
+                <tr>
+                  <td style="border: 1px solid black; text-align: left; background-color:black;"><font color="white"><b>Total</b></font></td>
+                  <td style="border: 1px solid black; text-align: right;background-color:black;"><font color="white"><span t-esc="o.currency_id.symbol"/>&#160;<span t-esc="'{0:,.2f}'.format(o.amount_total)"/></font></td>
+                </tr>
+              </table><br/><br/><br/>
+            </t>
+            <div class="fac_t_letra_peq text-left " style="font-size:14px;">
+              Por favor utilice la siguiente referencia al realizar su pago: <span t-field="o.name"/><br/><br/>
+              <span t-field="o.narration" />
+            </div>
+
+
+          </div>
+          <div class="page">
+                <p>j</p>
+          </div>
+          <div class="footer">
+                <hr style="height:2px;border-width:0;color:black;background-color:black;width:135%;margin-left: -5em; "></hr><br/>
+                <div class="fac_t_letra_peq text-center" style="font-size:15px;">
+                  <pre>Tel: <span t-field="o.company_id.phone"/> Mail: <span t-field="o.company_id.email"/> Web: <span t-field="o.company_id.website"/> NIT : <span t-field="o.company_id.vat"/></pre><br/>
+                  <pre>Page: 1/1</pre>
+                </div>
+          </div>
+        </div>
+      </t>
+      </t>
+    </template>
+
+  </data>
+</odoo>

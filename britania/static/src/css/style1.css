@@ -1,0 +1,48 @@
+.fac_t_letra_for {
+    font-size: 15px;
+  }
+
+.fac_t_letra_forp {
+font-size: 14px;
+}
+
+.tabizq {
+border: 1px solid black;
+text-align: left;
+}
+
+.tabder{
+  border: 1px solid black;
+  text-align: right;
+}
+
+.linea_hr{
+  height:2px;
+  border-width:0;
+  color:black;
+  background-color:black;
+  
+  width:135%;
+  margin-left: -5em; 
+}
+
+.linea_hr2{
+  height:1px;
+  border-width:0;
+  color:grey;
+  background-color:grey;
+  width:135%;
+  margin-left: -5em; 
+}
+
+.fondo_table{
+  background-color: white;
+}
+
+.letra_peqi{
+  font-size: 13px;
+}
+
+.justificar{
+  text-align: justify;
+}
