@@ -4,6 +4,8 @@ from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 from odoo.http import request
 from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
+from datetime import datetime
+
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
@@ -62,6 +64,54 @@ class SaleOrder(models.Model):
             if line.discount >porcentaje_maximo:
                 raise UserError(_("El porcentaje de descuento es mayor al porcentaje permitido en la linea del producto %s.") % (line.product_id.name))
         return  rslt
+
+    def obtener_variante(self,line_id1):
+        
+        co = " "
+        
+        vehiculo = self.env['fleet.vehicle'].sudo().search([('product_id','=',line_id1.id)])
+        
+        if line_id1.is_vehicle:
+            for temporal in vehiculo:
+                colorfinal = (temporal.color)
+                co = " Color " + str(colorfinal.lower())
+
+            return (co)
+        
+            
+    
+    def fechacot(self,fecha):
+        
+        fe = str(fecha)
+        
+        if fe[5] == "0" and fe[6] == "1":
+            fe1 = fe[8] + fe[9] + " de enero de " + fe[0] + fe[1] + fe[2] + fe[3] 
+        if fe[5] == "0" and fe[6] == "2":
+            fe1 = fe[8] + fe[9] + " de febrero de " + fe[0] + fe[1] + fe[2] + fe[3] 
+        if fe[5] == "0" and fe[6] == "3":
+            fe1 = fe[8] + fe[9] + " de marzo de " + fe[0] + fe[1] + fe[2] + fe[3] 
+        if fe[5] == "0" and fe[6] == "4":
+            fe1 = fe[8] + fe[9] + " de abril de " + fe[0] + fe[1] + fe[2] + fe[3] 
+        if fe[5] == "0" and fe[6] == "5":
+            fe1 = fe[8] + fe[9] + " de abril de " + fe[0] + fe[1] + fe[2] + fe[3] 
+        if fe[5] == "0" and fe[6] == "6":
+            fe1 = fe[8] + fe[9] + " de junio de " + fe[0] + fe[1] + fe[2] + fe[3] 
+        if fe[5] == "0" and fe[6] == "7":
+            fe1 = fe[8] + fe[9] + " de julio de " + fe[0] + fe[1] + fe[2] + fe[3] 
+        if fe[5] == "0" and fe[6] == "8":
+            fe1 = fe[8] + fe[9] + " de agosto de " + fe[0] + fe[1] + fe[2] + fe[3] 
+        if fe[5] == "0" and fe[6] == "9":
+            fe1 = fe[8] + fe[9] + " de septiembre de " + fe[0] + fe[1] + fe[2] + fe[3] 
+        if fe[5] == "1" and fe[6] == "0":
+            fe1 = fe[8] + fe[9] + " de octubre de " + fe[0] + fe[1] + fe[2] + fe[3] 
+        if fe[5] == "1" and fe[6] == "1":
+            fe1 = fe[8] + fe[9] + " de noviembre de " + fe[0] + fe[1] + fe[2] + fe[3] 
+        if fe[5] == "1" and fe[6] == "2":
+            fe1 = fe[8] + fe[9] + " de diciembre de " + fe[0] + fe[1] + fe[2] + fe[3] 
+            
+        return fe1
+        
+        
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"

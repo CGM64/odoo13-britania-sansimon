@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    
+    <report id="report_custom3"
+      string="Cotización de vehiculo"
+      model="sale.order"
+      report_type="qweb-pdf"
+      name="britania.cotizacion_custom_template"
+    />
+  
+    <template id="cotizacion_custom_template">
+      <t t-call="web.html_container">
+
+      <t t-foreach="docs" t-as="o">
+
+      <t t-call="web.basic_layout">
+
+          <div class="header">
+            <img class="mx-auto d-block w-100" src="/britania/static/description/Imagen1.png.jpg" style="max-height:120px; padding-up: 100px; "/><br/><br/>
+            <div class="letra_peqi text-right">
+              <t t-foreach="o.order_line" t-as="l">
+                <p>Guatemala,&#160;<span t-esc="o.fechacot(o.date_order)"/></p> 
+                <p>Cotización Motocicleta nueva</p><br/>
+              </t>
+            </div>
+          </div>
+      
+          <div class="page">
+            <br/><br/><br/><br/><br/>
+            <div class="fac_t_letra_forp">
+              <p>Estimado:</p>
+                <p><span t-field="o.partner_id.name"/></p><br/>
+                <p>A continuación, se detalla la motocicleta de su interés.</p> 
+                <div>
+                  <t t-foreach="o.order_line" t-as="l">
+                    <p>Motocicleta marca <span t-esc="o.company_id.name"/> estilo <span t-field="o.origin"/> <span t-esc="o.obtener_variante(l.product_id)"/> modelo 2023. Accesorios no incluidos.</p>
+                    <pre><b>    •  Precio unidad nueva     <span t-field="l.price_unit"/></b> (más placas)</pre>
+                    <pre><b>    •  Precio especial 	 	     <span t-field="l.price_total"/></b> (más placas)</pre><br/>
+                  </t>
+                </div>
+                <p>Tasa de cambio: Q7.90</p>
+                <p>Entrega estimada: <b>Inmediato</b></p><br/>
+                <p>
+                  Para realizar la reserva de la motocicleta, por medio de depósito, cheque o transferencia.<br/>
+                  Número de cuenta en Dolares 31-4006033-2, de Banco Agromercantil a nombre de Britania Motors, S.A.<br/> 
+                  Número de cuenta en Quetzales 30-4025931-9, de Banco Agromercantil a nombre de Britania Motors, S.A.<br/> 
+                  Cheque a nombre de Britania Motors, S.A.
+                </p><br/>
+                <p>Garantía;</p>
+                <pre>    •	2 años libre de kilometraje</pre>
+                <pre>    •	1er servicio de cortesía</pre><br/><br/>
+                <small><span t-field="o.company_id.name"/></small>
+                <p><span t-field="o.user_id"/></p><br/>
+                <small>
+                  Vigencia: Debido a que la fábrica cobra de acuerdo con el precio vigente durante el mes de producción, los precios acordados estarán vigentes
+                  mientras no haya cambios por parte de la fábrica. La liquidación final se hará al entregarse el vehículo, cargando los precios vigentes durante el 
+                  mes de producción y no Necesariamente los indicados en esta cotización. Esta cotización tiene validez de 7 días hábiles. Se cobrará un 10% de 
+                  gastos administrativos al momento de reservar una motocicleta y anular dicha reserva.
+                </small>
+              </div>
+          </div>
+
+          <div class="footer">
+              <img class="mx-auto d-block w-100" src="/britania/static/description/Imagen2.jpg" style="max-height:140px; padding-up: 100px; "/>
+          </div>
+      </t>
+      </t>
+      </t>
+    </template>
+
+  </data>
+</odoo>
