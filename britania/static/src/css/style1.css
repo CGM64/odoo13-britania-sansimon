@@ -42,3 +42,7 @@ text-align: left;
 .letra_peqi{
   font-size: 13px;
 }
+
+.justificar{
+  text-align: justify;
+}

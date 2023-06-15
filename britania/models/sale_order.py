@@ -67,8 +67,6 @@ class SaleOrder(models.Model):
 
     def obtener_variante(self,line_id1):
         
-        co = " "
-        
         vehiculo = self.env['fleet.vehicle'].sudo().search([('product_id','=',line_id1.id)])
         
         if line_id1.is_vehicle:
@@ -86,7 +84,6 @@ class SaleOrder(models.Model):
             fechamod = datetime.strftime(fecha,'%Y-%m-%d' )
             fechactual1 = datetime.now()
             fechactual2 = datetime.strftime(fechactual1,'%Y-%m-%d')
-            
             if fechactual2 > fechamod:
                 fechaf = "Inmediato"
             else:
@@ -96,7 +93,22 @@ class SaleOrder(models.Model):
         except:
             
             return ""
+        
+    def modelo_vehiculo(self,modelo):
+         
+        vehiculo = self.env['fleet.vehicle'].sudo().search([('product_id','=',modelo.id)])
+        if modelo.is_vehicle:
+            for temporal in vehiculo:
+                mod = (temporal.model_year)
+            return mod
             
+    def marca_vehiculo(self,marca):
+        
+        vehiculo = self.env['fleet.vehicle'].sudo().search([('product_id','=',marca.id)])
+        if vehiculo.is_vehicle:
+            for temporal in vehiculo:
+                mar = (temporal.company_id )
+            return mar.name
     
     def fechacot(self,fecha):
         
