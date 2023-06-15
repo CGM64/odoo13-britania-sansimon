@@ -78,6 +78,24 @@ class SaleOrder(models.Model):
 
             return (co)
         
+    def fecha_entrega(self):
+        
+        try:
+        
+            fecha = (self.commitment_date)
+            fechamod = datetime.strftime(fecha,'%Y-%m-%d' )
+            fechactual1 = datetime.now()
+            fechactual2 = datetime.strftime(fechactual1,'%Y-%m-%d')
+            
+            if fechactual2 > fechamod:
+                fechaf = "Inmediato"
+            else:
+                fechaf = datetime.strftime(fecha, '%d-%m-%Y')
+            return fechaf
+        
+        except:
+            
+            return ""
             
     
     def fechacot(self,fecha):
