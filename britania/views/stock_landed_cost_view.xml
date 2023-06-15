@@ -8,13 +8,6 @@
         <field name="arch" type="xml">
             <notebook position="inside">
                 <page string="Vista ajustes de valorización" name="pivot_view">
-                    <!-- <pivot string="Pivote">
-                        <field name="valuation_adjustment_lines" type="row">
-                            <field name="product_id"/>
-                            <field name="cost_line_id"/>
-                            <field name="quantity"/>
-                        </field>
-                    </pivot> -->
                     <widget name="ajuste_valorizacion_widget" />
                 </page>
             </notebook>
