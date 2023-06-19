@@ -63,5 +63,6 @@
     </record>
 
     <menuitem id="repair_comisiones" name="Comisiones" parent="repair.repair_menu_reporting" action="action_repair_ver_comisiones"/>
+
   </data>
 </odoo>

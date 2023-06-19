@@ -3,7 +3,7 @@
 
 from random import randint
 
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class FleetModelRepair(models.Model):
@@ -31,3 +31,4 @@ class FleetModelYear(models.Model):
     _sql_constraints = [
         ('name_uniq', 'unique (name)', "Ya existe un registro con este año."),
     ]
+

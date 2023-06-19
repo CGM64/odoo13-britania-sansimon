@@ -59,6 +59,13 @@ class FleetVehicleProductProduct(models.Model):
     cuota_mensual_dolar = fields.Float(string='Cuota mensual ($)', help="Cuota mensual a pagar para el plan 3 veces mas fácil de BAC (33 cuotas)",required=False,copy=True)
     cuota_final_dolar = fields.Float(string='Cuota final ($)', help="Cuota final para el plan 3 veces mas fácil de BAC",required=False,copy=True)
 
+    def actualizar_ficha_vehiculos(self):
+        vehiculos = self.env["fleet.vehicle"].sudo().search([])
+        for vehiculo in vehiculos:
+            if vehiculo.product_id:
+                vehiculo.product_id.chasis = vehiculo.chasis
+                vehiculo.product_id.product_tmpl_id._compute_chasis()
+
     @api.model
     def create(self, vals):
         """Overrridden method to update the product information."""
@@ -73,6 +80,11 @@ class FleetVehicleProductProduct(models.Model):
                 'is_vehicle': True,
                 'default_code':new_vehicle.pedido})
             new_vehicle.product_id.product_tmpl_id.write({'is_vehicle': True})
+        
+        if vals.get('chasis', False):
+            if new_vehicle.product_id:
+                new_vehicle.product_id.chasis = vals.get('chasis', False)
+                new_vehicle.product_id.product_tmpl_id._compute_chasis()
         return new_vehicle
 
     def write(self, vals):
@@ -92,6 +104,10 @@ class FleetVehicleProductProduct(models.Model):
                     update_prod_vals.update({'name': vehicle.name})
                 if update_prod_vals:
                     vehicle.product_id.with_context(ctx).write(update_prod_vals)
+        if vals.get('chasis', False):
+            if self.product_id:
+                self.product_id.chasis = self.chasis
+                self.product_id.product_tmpl_id._compute_chasis()
         return res
 
 
