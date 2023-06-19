@@ -169,12 +169,9 @@ class AccountMove(models.Model):
     
     def obtener_nombre_sin_codigo(self, linea):
         cad = linea.name
-        print(cad)
         codigo_prod = linea.product_id.default_code
-        print(codigo_prod)
         cad = cad.replace("" if not codigo_prod else codigo_prod,"")
         cad = cad.replace("[]","")
-        print(cad)
         return cad
 
     def detalle_factura(self):
