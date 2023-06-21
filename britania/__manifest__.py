@@ -30,6 +30,7 @@
         'views/assets.xml',
         'report/reporte_invoice.xml',
         'report/cotizacion_prueba.xml',
+        'report/reparaciones_formato.xml',
         'views/account_journal.xml',
         'views/repair_views.xml',
         'views/stock_picking_view.xml',

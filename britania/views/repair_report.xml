@@ -127,7 +127,7 @@
                         <strong>VIN:</strong>
                         <br/>
                         <t t-esc="o.obtnener_vin()" />
-                    </div>
+                    </div><br/>
                     <div class="col-3 bm-3">
                         <strong>Fecha:</strong>
                         <p t-field="o.create_date" t-options="{'widget': 'date'}" class="m-0" />
