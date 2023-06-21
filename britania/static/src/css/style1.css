@@ -50,3 +50,9 @@ text-align: left;
 .justificar{
   text-align: justify;
 }
+
+.linea_n{
+  height: 1px;
+  color:black;
+  width:5%;
+}

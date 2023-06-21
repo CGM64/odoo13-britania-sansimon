@@ -75,16 +75,6 @@
             <t t-call="britania.external_layout_reparacion"/>
             <div class="page">
                 <div class="oe_structure"/>
-
-                <!-- <br/>
-                <div class="cot_letra" style="font-size: 15px;">
-                <p><b>Datos de facturación:</b></p>
-                <p>Nombre: <span t-field="o.partner_id.name"/></p>
-                <p>Dirección: <div t-field="o.partner_invoice_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "phone_icons": True}' /></p>
-                <p></p>
-                <p></p> -->
-
-                
                 
                 <div style="font-size: 20px;"><strong t-if="o.address_id == o.partner_invoice_id">Datos de facturación:</strong></div>
                 <div t-if="o.partner_invoice_id">
@@ -124,10 +114,12 @@
                     <p><b>Vencimiento de garantía:  </b><span t-field="o.guarantee_limit"/></p>
                     <p><b>Método de facturación:  </b><span t-field="o.invoice_method"/></p>
                     <p><b>Responsable:  </b><span t-field="o.user_id"/></p>
-                    <br/>
+                    <p><b>Tipo de orden:  </b><span t-field="o.tipo_orden"/></p><br/>
                     <p><span t-field="o.internal_notes"/></p>
-                    <br/>
                     <p><span t-field="o.quotation_notes"/></p>
+                    <br/><br/><br/>
+                    <hr size="2px" color="black"  width="25%" style="margin-left: 8em;"/><hr size="2px" color="black"  width="25%" style="margin-left: 32em; margin-top: -7px;"/>
+                    <pre>                                      Nombre de quien recibe                                                      Nombre de quien lo envia</pre>
                 </div>
                 
                 
