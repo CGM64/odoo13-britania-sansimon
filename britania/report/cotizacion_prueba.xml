@@ -90,12 +90,12 @@
               </div>
               <p>Tasa de cambio: Q7.90</p>
               <p>Entrega estimada: <b><span t-esc="o.fecha_entrega()"/></b></p><br/>
-              <p>
+              <t t-if="o.company_id.name == 'Triumph'">
                 Para realizar la reserva de la motocicleta, por medio de depósito, cheque o transferencia.<br/>
                 Número de cuenta en Dolares 31-4006033-2, de Banco Agromercantil a nombre de Britania Motors, S.A.<br/> 
                 Número de cuenta en Quetzales 30-4025931-9, de Banco Agromercantil a nombre de Britania Motors, S.A.<br/> 
                 Cheque a nombre de Britania Motors, S.A.
-              </p><br/>
+              </t><br/>
               <p>Garantía;</p>
               <pre>    •	2 años libre de kilometraje</pre>
               <pre>    •	1er servicio de cortesía</pre><br/><br/>

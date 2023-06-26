@@ -6,6 +6,10 @@
 font-size: 14px;
 }
 
+.cot_letra {
+  font-size: 13px;
+}
+
 .tabizq {
 border: 1px solid black;
 text-align: left;
@@ -45,4 +49,10 @@ text-align: left;
 
 .justificar{
   text-align: justify;
+}
+
+.linea_n{
+  height: 1px;
+  color:black;
+  width:5%;
 }
