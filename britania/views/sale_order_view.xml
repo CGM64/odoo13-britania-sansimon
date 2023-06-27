@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
-  <!-- <record id="sale_autorizar_facturacion" model="ir.ui.view">
+  <record id="sale_autorizar_facturacion" model="ir.ui.view">
     <field name="name">sale.order.autorizar.facturacion.form</field>
     <field name="model">sale.order</field>
     <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="groups_id" eval="[(4, ref('britania.autorizar_facturacion'))]"/>
     <field name="arch" type="xml">
         <button name="action_quotation_send" position="before">
             <button string="Autorizar Facturación" name="autorizar_factura" type="object" class="btn-primary" groups="britania.autorizar_facturacion" 
@@ -12,9 +13,14 @@
             <button string="Cancelar autorización" name="cancelar_autorizar_factura" type="object" groups="britania.autorizar_facturacion" 
             attrs="{'invisible': [('estado_autorizacion', '=', 'pendiente')]}" />
         </button>
-        <field name="partner_id" position="before">
-            <field name="estado_autorizacion" readonly="1"/>
-        </field>
+    </field>
+  </record>
+  <record id="sale_autorizar_facturacion_2" model="ir.ui.view">
+    <field name="name">sale.order.autorizar.facturacion.2.form</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="groups_id" eval="[(4, ref('britania.solicitar_autorizacion_facturacion'))]"/>
+    <field name="arch" type="xml">
         <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
             <attribute name="attrs">{'invisible': ['|',('invoice_status', '!=', 'to invoice'),('estado_autorizacion', '=', 'pendiente')]}</attribute>
         </xpath>
@@ -22,5 +28,15 @@
             <attribute name="attrs">{'invisible': ['|','|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale'),('estado_autorizacion', '=', 'pendiente')]}</attribute>
         </xpath>
     </field>
-  </record> -->
+  </record>
+  <record id="sale_autorizar_facturacion_3" model="ir.ui.view">
+    <field name="name">sale.order.autorizar.facturacion.3.form</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+        <field name="partner_id" position="before">
+            <field name="estado_autorizacion" readonly="1" groups="britania.autorizar_facturacion,britania.solicitar_autorizacion_facturacion"/>
+        </field>
+    </field>
+  </record>
 </odoo>
