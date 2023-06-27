@@ -20,11 +20,12 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['account','repair','stock','fel','product', 'stock_landed_costs', 'vehicles_dealership'],
+    'depends': ['account','repair','stock','fel','product', 'stock_landed_costs', 'vehicles_dealership', 'sale'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/security_groups.xml',
         #'data/account_chart_template_data.xml',
         #'data/product_dai_data.xml',
         'views/assets.xml',
@@ -52,6 +53,7 @@
         'data/sale_group_data.xml',
         'report/account_payment.xml',
         'views/stock_landed_cost_view.xml',
+        'views/sale_order_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

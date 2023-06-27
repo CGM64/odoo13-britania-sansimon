@@ -262,31 +262,25 @@ class AccountMove(models.Model):
         return pagina
 
     def action_post(self):
-        res = super(AccountMove, self).action_post()
         
-        # for move in self:
-        #     isVehicle = False
-        #     for line in move.line_ids:
-        #         if line.product_id.is_vehicle:
-        #             isVehicle = True
+        for move in self:
             
-        #     if isVehicle:
-        #         sale_order = self.env["sale.order"].sudo().search([
-        #             ("name","=",move.invoice_origin)
-        #         ])
-        #         if sale_order:
-        #             movimientos = sale_order.picking_ids
-        #             if movimientos:
-        #                 movimientos = movimientos.filtered(lambda m: m.state not in ('done', 'cancel') and m.product_id.is_vehicle)
-        #                 for movimiento in movimientos:
-        #                     movimiento.action_confirm()
-        #                     movimiento.action_assign()
-        #                     for move in movimiento.move_lines.filtered(lambda m: m.state not in ['done', 'cancel']):
-        #                         for move_line in move.move_line_ids:
-        #                             move_line.qty_done = move_line.product_uom_qty
-                            
-        #                     movimiento.sudo().button_validate()
-        #     isVehicle = False
+            sale_order = self.env["sale.order"].sudo().search([
+                ("name","=",move.invoice_origin)
+            ])
+            if sale_order:
+                movimientos = sale_order.picking_ids
+                if movimientos:
+                    movimientos = movimientos.filtered(lambda m: m.state not in ('done', 'cancel'))
+                    for movimiento in movimientos:
+                        movimiento.action_confirm()
+                        movimiento.action_assign()
+                        for move in movimiento.move_lines.filtered(lambda m: m.state not in ['done', 'cancel']):
+                            for move_line in move.move_line_ids:
+                                move_line.qty_done = move_line.product_uom_qty
+                        
+                        movimiento.sudo().button_validate()
+        res = super(AccountMove, self).action_post()
         return res
         pass
 

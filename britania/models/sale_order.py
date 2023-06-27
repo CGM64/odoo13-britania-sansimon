@@ -28,6 +28,11 @@ class SaleOrder(models.Model):
     total_discount = fields.Monetary(string="Descuento", compute="_amount_discount")
     amount_total_undiscounted = fields.Monetary(string="Total sin descuento", compute="_amount_total_undiscounted")
 
+    estado_autorizacion = fields.Selection([
+        ("pendiente","Pendiente de autorización"),
+        ("autorizado","Autorizado"),
+        ],string="Estado de autorización", default="pendiente")
+
     @api.depends('order_line.price_total')
     def _amount_discount(self):
         
@@ -140,7 +145,14 @@ class SaleOrder(models.Model):
             fe1 = fe[8] + fe[9] + " de diciembre de " + fe[0] + fe[1] + fe[2] + fe[3] 
             
         return fe1
-        
+    
+    def autorizar_factura(self):
+        for pedido in self:
+            pedido.sudo().estado_autorizacion = 'autorizado'
+    
+    def cancelar_autorizar_factura(self):
+        for pedido in self:
+            pedido.sudo().estado_autorizacion = 'pendiente'
         
 
 class AccountMoveLine(models.Model):

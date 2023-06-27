@@ -1,0 +1,10 @@
+<odoo>
+    <data>
+        <record id="autorizar_facturacion" model="res.groups">
+            <field name="name">Autorizar facturación</field>
+            <field name="comment">Grupo de permisos para permitir que un pedido de venta se puede facturar.</field>
+            <field name="category_id" ref="base.module_category_sales_sales" />
+        </record>
+
+    </data>
+</odoo>
