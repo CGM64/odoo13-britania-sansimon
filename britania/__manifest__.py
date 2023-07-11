@@ -54,6 +54,7 @@
         'report/account_payment.xml',
         'views/stock_landed_cost_view.xml',
         'views/sale_order_view.xml',
+        'views/stock_quant_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
