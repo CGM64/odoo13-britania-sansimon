@@ -4,15 +4,15 @@
 
     <record id="view_stock_cantidad_actual_search" model="ir.ui.view">
       <field name="name">stock.cantidad.actual.search</field>
-      <field name="model">stock.valuation.layer</field>
+      <field name="model">stock.quant</field>
       <field name="arch" type="xml">
         <search string="Stock actual">
           <field name="product_id"/>
           <field name="product_chasis"/>
-          <!-- <filter name='internal_loc' string="Ubicación Interna" domain="[('location_id.usage','=', 'internal')]"/>
+          <filter name='internal_loc' string="Ubicación Interna" domain="[('location_id.usage','=', 'internal')]"/>
           <filter name='transit_loc' string="Ubicación de Tránsito" domain="[('location_id.usage' ,'=', 'transit')]"/>
           <filter name="on_hand" string="A mano" domain="[('on_hand', '=', True)]"/>
-          <separator/> -->
+          <separator/>
           <filter name="negative" string="Stock negativo" domain="[('quantity', '&lt;', 0.0)]"/>
           <filter name="positive" string="Stock positivo" domain="[('quantity', '&gt;', 0.0)]"/>
           <filter name="without_zero" string="Stock sin ceros" domain="[('quantity', '!=', 0.0)]"/>
@@ -27,7 +27,7 @@
 
     <record id="view_stock_cantidad_actual_tree" model="ir.ui.view">
       <field name="name">stock.cantidad.actual.tree</field>
-      <field name="model">stock.valuation.layer</field>
+      <field name="model">stock.quant</field>
       <field name="arch" type="xml">
         <tree string="Stock actual">
           <field name="product_default_code" string="Referencia interna"/>
@@ -44,8 +44,9 @@
     <record id="action_stock_ver_cantidad_actual" model="ir.actions.act_window">
       <field name="name">Stock cantidad actual</field>
       <field name="type">ir.actions.act_window</field>
-      <field name="res_model">stock.valuation.layer</field>
+      <field name="res_model">stock.quant</field>
       <field name="view_mode">tree,form</field>
+      <field name="context">{'search_default_internal_loc': 1}</field>
       <field name="view_id" ref="britania.view_stock_cantidad_actual_tree"/>
       <field name="search_view_id" ref="britania.view_stock_cantidad_actual_search"/>
       

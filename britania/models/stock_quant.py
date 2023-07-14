@@ -1,7 +1,7 @@
 from odoo import fields, models, _
 
 class StockQuant(models.Model):
-    _inherit = 'stock.valuation.layer'
+    _inherit = 'stock.quant'
 
     product_default_code = fields.Char(related="product_id.default_code", string="Referencia interna")
     product_chasis = fields.Char(related="product_id.chasis")
