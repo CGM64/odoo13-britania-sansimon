@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
           <field name="vat" position="after">
               <field name="cui"/>
+              <field name="pasaporte"/>
           </field>
 
         </field>

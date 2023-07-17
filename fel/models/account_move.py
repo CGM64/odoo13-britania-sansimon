@@ -70,9 +70,12 @@ class AccountMove(models.Model):
         documento["NombreReceptor"] = factura.partner_id.name
         documento["CorreoReceptor"] = factura.partner_id.email or ''
 
-        if factura.journal_id.tipo_documento == "FESP":
+        if factura.journal_id.type == "sale" and factura.partner_id.cui:
             documento["IDReceptor"] = factura.partner_id.cui
             documento["TipoEspecial"] = "CUI"
+        if factura.journal_id.type == "sale" and factura.partner_id.pasaporte:
+            documento["IDReceptor"] = factura.partner_id.pasaporte
+            documento["TipoEspecial"] = "EXT"
 
         documento["ReceptorDireccion"] = factura.partner_id.street or 'Ciudad'
         documento["ReceptorCodigoPostal"] = factura.partner_id.zip or '01009'

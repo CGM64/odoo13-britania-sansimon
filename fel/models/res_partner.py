@@ -6,3 +6,4 @@ class res_partner(models.Model):
     _inherit = 'res.partner'
 
     cui = fields.Char(string="CUI")
+    pasaporte = fields.Char(string="Pasaporte")
