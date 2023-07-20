@@ -282,32 +282,34 @@ class repairOrder(models.Model):
 
         return dict((repair.id, repair.invoice_id.id) for repair in repairs)
 
-    @api.depends('operations.price_subtotal', 'invoice_method', 'fees_lines.price_subtotal', 'pricelist_id.currency_id','operations.discount','fees_lines.discount')
+    @api.depends('operations.price_unit','operations.tax_id','operations.product_uom_qty','operations.price_subtotal', 'invoice_method', 'fees_lines.price_subtotal', 'pricelist_id.currency_id','operations.discount','fees_lines.discount')
     def _amount_untaxed(self):
-        for order in self:
-            total = sum(operation.price_subtotal for operation in order.operations)
-            total += sum(fee.price_subtotal for fee in order.fees_lines)
-            order.amount_untaxed = order.pricelist_id.currency_id.round(total)
+        return super(repairOrder,self)._amount_untaxed()
+        # for order in self:
+        #     total = sum(operation.price_subtotal for operation in order.operations)
+        #     total += sum(fee.price_subtotal for fee in order.fees_lines)
+        #     order.amount_untaxed = order.pricelist_id.currency_id.round(total)
 
-    @api.depends('operations.price_unit', 'operations.product_uom_qty', 'operations.product_id',
+    @api.depends('operations.price_unit', 'operations.tax_id','operations.product_uom_qty', 'operations.product_id',
                  'fees_lines.price_unit', 'fees_lines.product_uom_qty', 'fees_lines.product_id',
                  'pricelist_id.currency_id', 'partner_id','operations.discount','fees_lines.discount')
     def _amount_tax(self):
-        for order in self:
-            val = 0.0
-            for operation in order.operations:
-                if operation.tax_id:
-                    price = operation.price_unit * (1 - (operation.discount or 0.0) / 100.0)
-                    tax_calculate = operation.tax_id.compute_all(price, order.pricelist_id.currency_id, operation.product_uom_qty, operation.product_id, order.partner_id)
-                    for c in tax_calculate['taxes']:
-                        val += c['amount']
-            for fee in order.fees_lines:
-                if fee.tax_id:
-                    fee_price = fee.price_unit * (1 - (fee.discount or 0.0) / 100.0)
-                    tax_calculate = fee.tax_id.compute_all(fee_price, order.pricelist_id.currency_id, fee.product_uom_qty, fee.product_id, order.partner_id)
-                    for c in tax_calculate['taxes']:
-                        val += c['amount']
-            order.amount_tax = val
+        return super(repairOrder,self)._amount_tax()
+        # for order in self:
+        #     val = 0.0
+        #     for operation in order.operations:
+        #         if operation.tax_id:
+        #             price = operation.price_unit * (1 - (operation.discount or 0.0) / 100.0)
+        #             tax_calculate = operation.tax_id.compute_all(price, order.pricelist_id.currency_id, operation.product_uom_qty, operation.product_id, order.partner_id)
+        #             for c in tax_calculate['taxes']:
+        #                 val += c['amount']
+        #     for fee in order.fees_lines:
+        #         if fee.tax_id:
+        #             fee_price = fee.price_unit * (1 - (fee.discount or 0.0) / 100.0)
+        #             tax_calculate = fee.tax_id.compute_all(fee_price, order.pricelist_id.currency_id, fee.product_uom_qty, fee.product_id, order.partner_id)
+        #             for c in tax_calculate['taxes']:
+        #                 val += c['amount']
+        #     order.amount_tax = val
             
     def action_validate(self):
         repair = super(repairOrder,self).action_validate()
@@ -431,7 +433,7 @@ class RepairFee(models.Model):
             if (discount > 0 and new_list_price > 0) or (discount < 0 and new_list_price < 0):
                 self.discount = discount
 
-    @api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id','discount')
+    @api.depends('price_unit', 'repair_id','tax_id', 'product_uom_qty', 'product_id','discount')
     def _compute_price_subtotal(self):
         for fee in self:
             price = fee.price_unit * (1 - (fee.discount or 0.0) / 100.0)
@@ -483,11 +485,14 @@ class RepairLine(models.Model):
         for line in self:
             line.amount_total = line.price_unit * line.product_uom_qty
 
-    @api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id', 'repair_id.invoice_method', 'discount')
+    @api.depends('price_unit', 'repair_id','tax_id', 'product_uom_qty', 'product_id', 'repair_id.invoice_method', 'discount')
     def _compute_price_subtotal(self):
         for line in self:
             price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-            taxes = line.tax_id.compute_all(price, line.repair_id.pricelist_id.currency_id, line.product_uom_qty, line.product_id, line.repair_id.partner_id)
+            taxes = line.tax_id.compute_all(price, line.repair_id.pricelist_id.currency_id, line.product_uom_qty, product=line.product_id, partner=line.repair_id.partner_id)
+            print("$$$$")
+            print("$$$$")
+            print(taxes['total_excluded'])
             line.price_subtotal = taxes['total_excluded']
 
     @api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id', 'tax_id', 'repair_id.invoice_method', 'discount')
