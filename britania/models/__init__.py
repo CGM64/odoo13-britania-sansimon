@@ -10,3 +10,4 @@ from . import res_partner
 from . import repair_report
 from . import crm_team
 from . import stock_quant
+from . import product

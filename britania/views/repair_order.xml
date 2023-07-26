@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <data>
+    <record model="ir.ui.view" id="view_repair_order_form_britania">
+      <field name="name">repair.form.britania</field>
+      <field name="model">repair.order</field>
+      <field name="inherit_id" ref="repair.view_repair_order_form"/>
+      <field name="arch" type="xml">
+        <button name="action_repair_start" position="after">
+          <button name="action_revert_validate" groups="base.group_erp_manager" string="Convertir a presupuesto" type="object" attrs="{'invisible': ['|',('state','!=','confirmed'),('invoice_method','=','b4repair')]}"/>
+        </button>
+        <button name="action_repair_end" position="after">
+          <button name="action_revert_repair_start" groups="base.group_erp_manager" string="Regresar a confirmado" type="object" attrs="{'invisible': ['|',('state','!=','under_repair'),('invoice_method','=','b4repair')]}"/>
+        </button>
+      </field>
+    </record>
+
     <record model="ir.ui.view" id="view_repair_order_tree_britania">
       <field name="name">repair.tree.britania</field>
       <field name="model">repair.order</field>

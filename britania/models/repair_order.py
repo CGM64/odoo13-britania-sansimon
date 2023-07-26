@@ -332,6 +332,22 @@ class repairOrder(models.Model):
                 raise UserError(_("Producto sin existencia suficiente: %s.") % (line.product_id.name))          
         
         return repair
+
+    
+    def action_revert_validate(self):
+        a_facturar = self.filtered(lambda repair: repair.state != 'confirmed')
+        para_revertir = self - a_facturar
+        operaciones_para_revertir = para_revertir.mapped('operations')
+        operaciones_para_revertir.write({'state': 'draft'})
+        para_revertir.write({'state': 'draft'})
+        return True
+    
+    def action_revert_repair_start(self):
+        self.mapped('operations').write({'state': 'confirmed'})
+        return self.write({'state': 'confirmed'})
+        pass
+
+
 class RepairFee(models.Model):
     _inherit = "repair.fee"
 
