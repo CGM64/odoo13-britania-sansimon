@@ -31,7 +31,7 @@ class SaleOrder(models.Model):
     estado_autorizacion = fields.Selection([
         ("pendiente","Pendiente de autorización"),
         ("autorizado","Autorizado"),
-        ],string="Estado de autorización", default="pendiente")
+        ],string="Estado de autorización", default="pendiente",tracking=True)
 
     @api.depends('order_line.price_total')
     def _amount_discount(self):
