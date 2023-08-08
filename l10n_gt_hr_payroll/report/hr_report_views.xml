@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <record id="hr_exportar_nomina_pdf" model="ir.actions.report">
+            <field name="name">Planilla de Pagos (PDF)</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_gt_hr_payroll.report_nomina_pagos</field>
+            <field name="report_file">l10n_gt_hr_payroll.report_nomina_pagos</field>
+            <field name="paperformat_id" ref="librodesalarios_paper"/>
+            <field name="binding_model_id" ref="model_hr_payslip_run"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="export_planilla_xls" model="ir.actions.report">
+            <field name="name">Exportar Planilla (XLSX)</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_name">l10n_gt_hr_payroll.report_planilla_excel</field>
+            <field name="report_file">l10n_gt_hr_payroll.report_planilla_excel</field>
+            <field name="binding_model_id" ref="model_hr_payslip_run"/>
+            <field name="binding_type">report</field>
+            <!-- <field name="file">ExportarPlanilla</field> -->
+        </record>
+        <!--
+    <record id="hr_exportar_planilla" model="ir.actions.report">
+        <field name="name">Archivo Bancario (TXT)</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="report_type">qweb-text</field>
+        <field name="report_name">l10n_gt_hr_payroll.report_hr_exportar_planilla</field>
+        <field name="report_file">l10n_gt_hr_payroll.report_hr_exportar_planilla</field>
+        <field name="paperformat_id" ref="l10n_gt_sat.l10n_gt_sat_paper_libro_fiscal"/>
+        <field name="file">ArchivoBancario</field>
+    </record>
+-->
+
+        <record id="hr_exportar_planilla" model="ir.actions.report">
+            <field name="name">Archivo Bancario (TXT)</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="report_type">qweb-text</field>
+            <field name="report_name">l10n_gt_hr_payroll.report_hr_exportar_planilla</field>
+            <field name="report_file">l10n_gt_hr_payroll.report_hr_exportar_planilla</field>
+            <field name="paperformat_id" ref="l10n_gt_sat.l10n_gt_sat_paper_libro_fiscal"/>
+            <field name="binding_model_id" ref="model_hr_payslip_run"/>
+            <field name="binding_type">report</field>
+            <!-- <field name="file">ArchivoBancario</field> -->
+        </record>
+
+
+        <record id="hr_transferencia_ach" model="ir.actions.report">
+            <field name="name">Archivo Bancario ACH (TXT)</field>
+            <field name="model">hr.payslip.run</field>
+            <field name="report_type">qweb-text</field>
+            <field name="report_name">l10n_gt_hr_payroll.report_hr_transferencia_ach</field>
+            <field name="report_file">l10n_gt_hr_payroll.report_hr_transferencia_ach</field>
+            <!-- <field name="paperformat_id" ref="l10n_gt_sat.l10n_gt_sat_paper_libro_fiscal"/> -->
+            <field name="binding_model_id" ref="model_hr_payslip_run"/>
+            <field name="binding_type">report</field>
+            <!-- <field name="file">ArchivoBancario</field> -->
+        </record>
+
+
+    <!-- <record id="hr_exportar_planilla_pdf" model="ir.actions.report">
+        <field name="name">Planilla de Pagos (PDF)</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_gt_hr_payroll.report_nomina_template</field>
+        <field name="report_file">l10n_gt_hr_payroll.report_nomina_template</field>
+        <field name="paperformat_id" ref="librodesalarios_paper"/>
+        <field name="binding_model_id" ref="model_hr_payslip_run"/>
+        <field name="binding_type">report</field>
+    </record>
+ -->
+
+    <!-- <record id="hr_planilla_pdf" model="ir.actions.report">
+        <field name="name">Planilla de Pagos (PDF)</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_gt_hr_payroll.report_nomina_pagos</field>
+        <field name="report_file">l10n_gt_hr_payroll.report_nomina_pagos</field>
+        <field name="paperformat_id" ref="librodesalarios_paper"/>
+        <field name="binding_model_id" ref="model_hr_payslip_run"/>
+        <field name="binding_type">report</field>
+    </record> -->
+
+    <record id="l10n_gt_hr_payroll_boleta_pago_report" model="ir.actions.report">
+        <field name="name">Boleta de pago empleado</field>
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_gt_hr_payroll.boleta_pago</field>
+        <field name="report_file">l10n_gt_hr_payroll.boleta_pago</field>
+        <field name="binding_model_id" ref="model_hr_payslip"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Payslip - %s' % (object.employee_id.name)</field>
+    </record>
+    
+    <record id="l10n_gt_planilla_igss_xlsx" model="ir.actions.report">
+        <field name="name">l10n_gt_hr_payroll.hr_payroll_igss_xlsx</field>
+        <field name="model">report.l10n_gt_hr_payroll.planilla_igss_xlsx</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">l10n_gt_hr_payroll.planilla_igss_xlsx</field>
+        <field name="report_file">l10n_gt_hr_payroll.planilla_igss_xlsx</field>
+        <!-- <field name="binding_model_id" ref="model_hr_payslip_run"/>  -->
+        <field name="binding_type">report</field>
+    </record>
+    
+    <record id="l10n_gt_planilla_electronica_igss_txt" model="ir.actions.report">
+        <field name="name">l10n_gt_hr_payroll.planilla_igss_txt</field>
+        <field name="model">l10n_gt_hr_payroll.planilla_igss_txt.report</field>
+        <field name="report_type">qweb-text</field>
+        <field name="report_name">l10n_gt_hr_payroll.planilla_igss_txt</field>
+        <field name="report_file">l10n_gt_hr_payroll.planilla_igss_txt</field>
+        <field name="binding_type">report</field>
+    </record>
+    </data>
+</odoo>

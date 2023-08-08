@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    
+    <report id="report_custom1"
+      string="Recibo Triumph"
+      model="account.move"
+      report_type="qweb-pdf"
+      name="britania.recibo_custom_template"
+    />
+  
+    <template id="recibo_custom_template">
+      <t t-call="web.html_container">
+
+      <t t-foreach="docs" t-as="o">
+
+      <t t-call="web.basic_layout">
+
+          <!-- <link rel="stylesheet" href="/britania/static/src/css/style1.css"/> -->
+          
+          <div class="header">
+          
+
+            <img src="/britania/static/description/triumph.png" style="max-height:70px; margin-top:25px; "/>
+            <div class="col-10 fac_t_letra_forp text-right" style="font-size:25px; top: -95px; right: -15px; text-transform: uppercase;">
+                <font color="grey"><b><span t-field="o.company_id.company_registry"/></b></font>
+            </div>
+            <div class="col-9 fac_t_letra_forp text-right" style="top: -90px; right: -25px;">
+              <span t-field="o.company_id.display_street"/>
+            </div>
+            <div class="col-10 fac_t_letra_forp text-right" style="top: -85px; right: 5px;">
+              Teléfono: <span t-field="o.company_id.phone"/> , Nit: <span t-field="o.company_id.vat"/>
+            </div>
+            <div class="col-10 fac_t_letra_forp text-right" style="top: -80px; right: -35px;">
+              Web: <span t-field="o.company_id.website"/>, Correo: <span t-field="o.company_id.email"/>
+
+              <hr class="linea_hr2"></hr>
+            </div>
+          </div>
+      
+          <div class="page" >
+
+            <br/><br/><br/><br/><br/>
+            <div class="fac_t_letra_forp text-right col-9" style="top: -45px; left: 69px;">
+              <span t-field="o.partner_id.name"/><br/>
+            </div>
+            <div class="text-left" style="font-size:30px;">
+              Recibo <span t-field="o.name"/><br/><br/>
+            </div>
+            <div class="text-left fac_t_letra_for">
+              <pre><b>Fecha de factura:      Fecha de vencimiento:      Referencia:</b></pre>
+            </div>
+            <div class="text-left fac_t_letra_for">
+              <pre><span t-field="o.invoice_date"/>                    <span t-field="o.invoice_date_due"/>                            <span t-field="o.ref"/></pre><br/><br/>
+            </div>
+            <t t-foreach="o.detalle_factura()['detalle']" t-as="o.invoice_line_ids">
+              <table>
+                
+                <tr>
+                  <td class="tabizq" width="300"><b>DESCRIPCIÓN</b></td>
+                  <td class="tabder" width="150"><b>CANTIDAD</b></td>
+                  <td class="tabder" width="250"><b>PRECIO UNITARIO</b></td>
+                  <td class="tabder" width="250"><b>PRECIO TOTAL</b></td>
+                </tr>
+                <t t-foreach="o.invoice_line_ids" t-as="l">
+                  <tr>
+                    <td class="tabizq"><t t-esc="l.name"/></td>
+                    <td class="tabder" ><span t-esc="l.quantity"/></td>
+                    <td class="tabder" ><span t-esc="o.currency_id.symbol"/>&#160;<span t-esc="'{0:,.2f}'.format(l.price_unit)"/></td>
+                    <td class="tabder" ><span t-esc="o.currency_id.symbol"/>&#160;<span t-esc="'{0:,.2f}'.format(l.price_total)"/></td>
+                  </tr>
+                </t>
+                
+              </table><br/>
+              <table align="right">
+                
+                <t t-if="o.currency_id.symbol == '$'">
+                    <tr>
+                      <td class="tabizq" width="300"><b>Subtotal</b></td>
+                      <td class="tabder" width="150"><span t-esc="o.currency_id.symbol"/>&#160;<span t-esc="'{0:,.2f}'.format(o.amount_untaxed)"/></td>
+                    </tr>
+                </t>
+                <t t-if="not o.currency_id.symbol == '$'">
+                  <tr>
+                    <td class="tabizq" width="300"><b>Subtotal</b></td>
+                    <td class="tabder" width="150"><span t-esc="o.detalle_factura()['total']['gran_total']" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                    
+                  </tr>
+                </t>
+
+                <tr>
+                  <td class="tabizq" style="background-color:black;"><font color="white"><b>Total</b></font></td>
+                  <td class="tabder" style="background-color:black;"><font color="white"><span t-esc="o.currency_id.symbol"/>&#160;<span t-esc="'{0:,.2f}'.format(o.amount_total)"/></font></td>
+                </tr>
+                
+              </table><br/><br/><br/>
+            </t>
+            <div class="text-left fac_t_letra_forp">
+              Por favor utilice la siguiente referencia al realizar su pago: <span t-field="o.name"/><br/><br/>
+              <span t-field="o.narration" />
+            </div>
+
+
+          </div>
+
+          <div class="footer">
+              
+              <hr class="linea_hr"></hr><br/>
+              <div class="text-center fac_t_letra_for">
+                <pre>Tel: <span t-field="o.company_id.phone"/> Mail: <span t-field="o.company_id.email"/> Web: <span t-field="o.company_id.website"/> NIT: <span t-field="o.company_id.vat"/></pre>
+                <pre>Page: 1/1</pre>
+              </div>
+          </div>
+      </t>
+      </t>
+      </t>
+    </template>
+
+  </data>
+</odoo>

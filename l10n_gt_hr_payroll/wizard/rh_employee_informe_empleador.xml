@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_hr_employee_informe_empleador_wizard" model="ir.ui.view">
+            <field name="name">hr.employee.informe.empleador.wizard.view</field>
+            <field name="model">hr.employee.informe.empleador.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Informe del Empleador y Nomina 29-89 Y Zonas Francas">
+                    <field name="company_id" invisible="1"/>
+                    <group>
+                        <field name="periodos"/>
+                    </group>
+                    <footer>
+                        <button string='Excel' name="informe_empleador" type="object" class="btn-primary" data-hotkey="q"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <record id="action_hr_employee_informe_empledor" model="ir.actions.act_window">
+            <field name="name">Informe del Empleador y Nomina 29-89 Y Zonas Francas</field>
+            <field name="res_model">hr.employee.informe.empleador.wizard</field>
+            <field name="view_id" ref="view_hr_employee_informe_empleador_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            id="hr_employee_informe_empleador_menu"
+            name="Informe del Empleador y Nomina 29-89 Y Zonas Francas"
+            parent="hr.hr_menu_hr_reports"
+            groups="hr.group_hr_manager"
+            action="action_hr_employee_informe_empledor"
+            sequence="200"/>
+
+    </data>
+</odoo>

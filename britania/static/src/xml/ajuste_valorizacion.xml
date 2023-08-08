@@ -1,0 +1,25 @@
+<templates>
+    <div t-name="britania.ajusteValorizacion">
+        <table class="o_list_table table table-sm table-hover table-striped o_list_table_ungrouped" style="table-layout: fixed;">
+            <thead>
+                <th scope="col">Etiquetas de fila</th>
+                <t t-foreach="widget.encabezados" t-as="enc">
+                    <th scope="col"><t t-esc="enc"/></th>
+                </t>
+                <th scope="col">Total</th>
+            </thead>
+            <tbody>
+                <t t-foreach="widget.datos" t-as="ajuste">
+                    <tr>
+                        <td scope="col"><span t-esc="ajuste['producto']"/></td>
+                        <t t-foreach="widget.encabezados" t-as="enc">
+                            <td scope="col"><t t-esc="ajuste[enc]"/></td>
+                        </t>
+                        <td scope="col"><span t-esc="ajuste['total']"/></td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+    </div>
+
+</templates>

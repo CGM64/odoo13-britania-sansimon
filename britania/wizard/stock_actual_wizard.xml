@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_actual_historial" model="ir.ui.view">
+        <field name="name">stock.actual.historial.reporte</field>
+        <field name="model">stock.actual.historial</field>
+        <field name="arch" type="xml">
+            <form string="Choose your date">
+                <group>
+                    <field name="fecha_inicial"/>
+                    <field name="fecha_fin"/>
+                </group>
+                <footer>
+                    <button name="open_at_date" string="Confirmar" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_actual_historial" model="ir.actions.act_window">
+        <field name="name">Reporte stock</field>
+        <field name="res_model">stock.actual.historial</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="britania.view_stock_actual_historial"/>
+        <field name="target">new</field>
+        <field name="context"></field>
+    </record>
+
+    <menuitem id="menu_stock_actual_historial" name="Reporte inventario por rango" parent="stock.menu_warehouse_report" action="britania.action_stock_actual_historial"/>
+</odoo>

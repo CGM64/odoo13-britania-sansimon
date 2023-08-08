@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <!--Menu de Servicios-->
+    <record id="fleet_repair_tree_view" model="ir.ui.view">
+            <field name="name">fleet.repair.tree</field>
+            <field name="model">fleet.model.repair</field>
+            <field name="arch" type="xml">
+                <tree string="Servicios" editable="bottom">
+                    <field name="model_id" options="{'no_create': True, 'no_edit': True}" required="1"/>
+                    <field name="year_id" required="1"/>
+                    <field name="product_id" options="{'no_create': True, 'no_edit': True}" required="1"/>
+                    <field name="labour_time" required="1"/>
+                </tree>
+            </field>
+    </record>
+
+    <record id="fleet_repair_action" model="ir.actions.act_window">
+        <field name="name">Servicios</field>
+        <field name="res_model">fleet.model.repair</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="fleet_repair_tree_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea servicios
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem id="menu_tag_productos_menu_list"
+                name="Servicios"
+                action="fleet_repair_action"
+                parent="menu_rma_reparaciones_operaciones"
+                groups="base.group_user"/>
+
+    <!--Menu de Año modelo-->
+    <record id="fleet_repair_year_view" model="ir.ui.view">
+        <field name="name">fleet.year.tree</field>
+        <field name="model">fleet.model.year</field>
+        <field name="arch" type="xml">
+              <tree string="Año del modelo" editable="bottom">
+                  <field name="name" required="1"/>
+              </tree>
+        </field>
+    </record>
+
+    <record id="fleet_year_action" model="ir.actions.act_window">
+        <field name="name">Año del modelo</field>
+        <field name="res_model">fleet.model.year</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="fleet_repair_year_view"/>
+        <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                  Añade años para los modelos
+              </p>
+        </field>
+  </record>
+<!--
+  <menuitem id="menu_fleet_year_menu_list"
+                  name="Año del modelos"
+                  action="fleet_year_action"
+                  parent="menu_rma_reparaciones_operaciones"
+                  groups="base.group_user"/>
+-->
+</data>
+</odoo>

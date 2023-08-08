@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <!-- factura pedido-->
+    <template id="report_account" inherit_id="account.report_invoice_document" name="report_account">
+
+        <xpath expr="//th[@name='th_taxes']" position="replace">
+        </xpath>
+        
+        <xpath expr="//t[@name='account_invoice_line_accountable']" position="replace">
+            <t t-if="not line.display_type" name="account_invoice_line_accountable">
+                <td name="account_invoice_line_name"><span t-field="line.name" t-options="{'widget': 'text'}"/></td>
+                <td class="text-right">
+                    <span t-field="line.quantity"/>
+                    <span t-field="line.product_uom_id"  groups="uom.group_uom"/>
+                </td>
+                <td t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                    <span class="text-nowrap" t-field="line.price_unit"/>
+                </td>
+                <td t-if="display_discount" t-attf-class="text-right {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}">
+                    <span t-options='{"widget": "float", "precision": 0}' class="text-nowrap" t-field="line.discount"/>
+                </td>
+                <td class="text-right o_price_total">
+                    <span class="text-nowrap" t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
+                    <span class="text-nowrap" t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                </td>
+            </t>
+        </xpath>
+
+        <xpath expr="//table[@style='page-break-inside: avoid;']" position="replace">
+            <table class="table table-sm" style="page-break-inside: avoid;">
+                <tr>
+                    <td><strong>Subtotal</strong></td>
+                    <td class="text-right">
+                        <span t-field="o.amount_total_undiscounted"/>
+                    </td>
+                </tr>
+                
+                <tr t-if="o.total_discount">
+                    <td><strong>Descuento</strong></td>
+                    <td class="text-right">
+                        <span class="text-nowrap" t-field="o.total_discount"/>
+                    </td>
+                </tr>
+
+                <tr class="border-black o_total">
+                    <td><strong>Total</strong></td>
+                    <td class="text-right">
+                        <span class="text-nowrap" t-field="o.amount_total"/>
+                    </td>
+                </tr>
+            </table>
+        </xpath>
+    </template>
+</odoo>

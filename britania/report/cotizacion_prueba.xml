@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    
+    <report id="report_custom3"
+      string="Cotización de vehículo"
+      model="sale.order"
+      report_type="qweb-pdf"
+      name="britania.cotizacion_custom_template"
+    />
+  
+    <template id="external_layout_cotizacion1">
+      <div t-attf-class="header o_company_#{o.company_id.id}_layout" t-att-style="report_header_style">
+          <div class="o_boxed_header">
+                <div class="row mb8">
+                    <div class="col-4">
+                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" alt="Logo" />
+                    </div>
+                    <div class="col-8  text-center">
+                        <h4 class="mt0" t-field="o.company_id.company_registry" />
+                        <h6 class="mt0" t-field="o.company_id.display_street" />
+                        <h6 class="mt0">
+                            <span>Teléfono:
+              </span>
+                            <span t-field="o.company_id.phone" />
+                            <span>, Nit:
+              </span>
+                            <span t-field="o.company_id.vat" />
+                            <br/>
+                        </h6>
+                        <h6 class="mt0">
+                            <span>Web:
+              </span>
+                            <span t-field="o.company_id.display_website" />
+                            <span>, Correo:
+              </span>
+                            <span t-field="o.company_id.email" />
+                        </h6>
+                    </div>
+                </div>
+            </div>
+      </div>
+
+      <div t-attf-class="footer o_boxed_footer o_company_#{o.company_id.id}_layout">
+          <div class="text-center">
+                <ul class="list-inline">
+                    <li t-if="o.company_id.phone" class="list-inline-item">
+                        Tel:
+                        <span t-field="o.company_id.phone" />
+                    </li>
+                    <li t-if="o.company_id.email" class="list-inline-item">
+                        Mail:
+                        <span t-field="o.company_id.email" />
+                    </li>
+                    <li t-if="o.company_id.website" class="list-inline-item">
+                        Web:
+                        <span t-field="o.company_id.display_website" />
+                    </li>
+                    <li t-if="o.company_id.vat" class="list-inline-item">
+                        <t t-esc="o.company_id.country_id.vat_label or 'Tax ID'" />
+                        :
+                        <span t-field="o.company_id.vat" />
+                    </li>
+                </ul>
+                <div t-field="o.company_id.report_footer" />
+                
+            </div>
+      </div>
+    </template>
+
+    <template id="cotizacion_custom_template">
+      <t t-call="web.html_container">
+      
+        <t t-foreach="docs" t-as="o">
+          <t t-call="britania.external_layout_cotizacion1"/>
+          <div class="page">
+            <div class="oe_structure"/>
+
+            <br/>
+            <div class="cot_letra" style="font-size: 15px;">
+              <p>Estimado:</p>
+              <p><span t-field="o.partner_id.name"/></p><br/>
+              <p>A continuación, se detalla la motocicleta de su interés.</p> 
+              <div>
+                <t t-foreach="o.order_line" t-as="l">
+                  <p>Motocicleta marca <span t-esc="o.marca_vehiculo(l.product_id)"/> estilo <span t-field="o.origin"/> <span t-esc="o.obtener_variante(l.product_id)"/> modelo <span t-esc="o.modelo_vehiculo(l.product_id)"/>. Accesorios no incluidos.</p><br/>
+                  <pre><b>    •  Precio unidad nueva     <span t-options='{"widget": "monetary", "display_currency": o.currency_id}' t-field="l.price_unit"/></b> (más placas)</pre>
+                  <pre><b>    •  Precio especial 	 	     <span t-field="l.price_total"/></b> (más placas)</pre><br/>
+                </t>
+              </div>
+              <p>Tasa de cambio: Q7.90</p>
+              <p>Entrega estimada: <b><span t-esc="o.fecha_entrega()"/></b></p><br/>
+              <t t-if="o.company_id.name == 'Triumph'">
+                Para realizar la reserva de la motocicleta, por medio de depósito, cheque o transferencia.<br/>
+                Número de cuenta en Dolares 31-4006033-2, de Banco Agromercantil a nombre de Britania Motors, S.A.<br/> 
+                Número de cuenta en Quetzales 30-4025931-9, de Banco Agromercantil a nombre de Britania Motors, S.A.<br/> 
+                Cheque a nombre de Britania Motors, S.A.
+              </t><br/>
+              <p>Garantía;</p>
+              <pre>    •	2 años libre de kilometraje</pre>
+              <pre>    •	1er servicio de cortesía</pre><br/><br/>
+              <small><span t-field="o.company_id.name"/></small>
+              <p><span t-field="o.user_id"/></p><br/>
+              <div class="justificar">
+                <small>
+                  Vigencia: Debido a que la fábrica cobra de acuerdo con el precio vigente durante el mes de producción, los precios acordados estarán vigentes
+                  mientras no haya cambios por parte de la fábrica. La liquidación final se hará al entregarse el vehículo, cargando los precios vigentes durante el 
+                  mes de producción y no Necesariamente los indicados en esta cotización. Esta cotización tiene validez de 7 días hábiles. Se cobrará un 10% de 
+                  gastos administrativos al momento de reservar una motocicleta y anular dicha reserva.
+                </small>
+              </div>
+            </div>
+
+            
+          
+          </div>
+        </t>
+      </t>
+      
+    </template>
+
+
+
+  </data>
+</odoo>

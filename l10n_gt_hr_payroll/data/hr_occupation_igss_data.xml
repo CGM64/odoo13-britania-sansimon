@@ -1,0 +1,2715 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <record id="hr_occupation_igss_1" model="hr.occupation.igss">
+            <field name="name">FUERZAS ARMADAS</field>
+            <field name="code">0</field>
+        </record>
+        <record id="hr_occupation_igss_2" model="hr.occupation.igss">
+            <field name="name">FUERZAS ARMADAS</field>
+            <field name="code">01</field>
+            <field name="parent_id" ref="hr_occupation_igss_1" />
+        </record>
+        <record id="hr_occupation_igss_3" model="hr.occupation.igss">
+            <field name="name">FUERZAS ARMADAS</field>
+            <field name="code">011</field>
+            <field name="parent_id" ref="hr_occupation_igss_2" />
+        </record>
+        <record id="hr_occupation_igss_4" model="hr.occupation.igss">
+            <field name="name">Miembros de las fuerzas armadas</field>
+            <field name="code">0110</field>
+            <field name="parent_id" ref="hr_occupation_igss_3" />
+        </record>
+        <record id="hr_occupation_igss_5" model="hr.occupation.igss">
+            <field name="name">MIEMBROS DEL PODER EJECUTIVO Y DE LOS CUERPOS LEGISLATIVOS Y PERSONAL DIRECTIVO DE LA ADMINISTRACIÓN PÚBLICA Y DE EMPRESAS</field>
+            <field name="code">1</field>
+        </record>
+        <record id="hr_occupation_igss_6" model="hr.occupation.igss">
+            <field name="name">MIEMBROS DEL PODER EJECUTIVO Y DE LOS CUERPOS LEGISLATIVOS Y PERSONAL DIRECTIVO DE LA ADMINISTRACIÓN PÚBLICA</field>
+            <field name="code">11</field>
+            <field name="parent_id" ref="hr_occupation_igss_5" />
+        </record>
+        <record id="hr_occupation_igss_7" model="hr.occupation.igss">
+            <field name="name">MIEMBROS DEL PODER EJECUTIVO Y DE LOS CUERPOS LEGISLATIVOS</field>
+            <field name="code">111</field>
+            <field name="parent_id" ref="hr_occupation_igss_6" />
+        </record>
+        <record id="hr_occupation_igss_8" model="hr.occupation.igss">
+            <field name="name">Miembros del poder ejecutivo y de los cuerpos legislativos</field>
+            <field name="code">1110</field>
+            <field name="parent_id" ref="hr_occupation_igss_7" />
+        </record>
+        <record id="hr_occupation_igss_9" model="hr.occupation.igss">
+            <field name="name">PERSONAL DIRECTIVO DE LA ADMINISTRACIÓN PÚBLICA</field>
+            <field name="code">112</field>
+            <field name="parent_id" ref="hr_occupation_igss_6" />
+        </record>
+        <record id="hr_occupation_igss_10" model="hr.occupation.igss">
+            <field name="name">Personal directivo de la administración pública</field>
+            <field name="code">1120</field>
+            <field name="parent_id" ref="hr_occupation_igss_9" />
+        </record>
+        <record id="hr_occupation_igss_11" model="hr.occupation.igss">
+            <field name="name">JEFES DE PEQUEÑAS POBLACIONES</field>
+            <field name="code">113</field>
+            <field name="parent_id" ref="hr_occupation_igss_6" />
+        </record>
+        <record id="hr_occupation_igss_12" model="hr.occupation.igss">
+            <field name="name">Jefes de pequeñas poblaciones</field>
+            <field name="code">1130</field>
+            <field name="parent_id" ref="hr_occupation_igss_11" />
+        </record>
+        <record id="hr_occupation_igss_13" model="hr.occupation.igss">
+            <field name="name">DIRIGENTES Y ADMINISTRADORES DE ORGANIZACIONES ESPECIALIZADAS</field>
+            <field name="code">114</field>
+            <field name="parent_id" ref="hr_occupation_igss_6" />
+        </record>
+        <record id="hr_occupation_igss_14" model="hr.occupation.igss">
+            <field name="name">Dirigentes y administradores de partidos políticos</field>
+            <field name="code">1141</field>
+            <field name="parent_id" ref="hr_occupation_igss_13" />
+        </record>
+        <record id="hr_occupation_igss_15" model="hr.occupation.igss">
+            <field name="name">Dirigentes y administradores de organizaciones de empleadores, de trabajadores y de otras de interés socioeconómico</field>
+            <field name="code">1142</field>
+            <field name="parent_id" ref="hr_occupation_igss_13" />
+        </record>
+        <record id="hr_occupation_igss_16" model="hr.occupation.igss">
+            <field name="name">Dirigentes y administradores de organizaciones humanitarias y de otras organizaciones</field>
+            <field name="code">1143</field>
+            <field name="parent_id" ref="hr_occupation_igss_13" />
+        </record>
+        <record id="hr_occupation_igss_17" model="hr.occupation.igss">
+            <field name="name">DIRECTORES DE EMPRESA</field>
+            <field name="code">12</field>
+            <field name="parent_id" ref="hr_occupation_igss_5" />
+        </record>
+        <record id="hr_occupation_igss_18" model="hr.occupation.igss">
+            <field name="name">DIRECTORES GENERALES Y GERENTES GENERALES DE EMPRESAS</field>
+            <field name="code">121</field>
+            <field name="parent_id" ref="hr_occupation_igss_17" />
+        </record>
+        <record id="hr_occupation_igss_19" model="hr.occupation.igss">
+            <field name="name">Directores generales y gerentes generales de empresas</field>
+            <field name="code">1210</field>
+            <field name="parent_id" ref="hr_occupation_igss_18" />
+        </record>
+        <record id="hr_occupation_igss_20" model="hr.occupation.igss">
+            <field name="name">DIRECTORES DE DEPARTAMENTOS DE PRODUCCIÓN Y OPERACIONES</field>
+            <field name="code">122</field>
+            <field name="parent_id" ref="hr_occupation_igss_17" />
+        </record>
+        <record id="hr_occupation_igss_21" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de producción y operaciones, agricultura, caza, silvicultura y pesca</field>
+            <field name="code">1221</field>
+            <field name="parent_id" ref="hr_occupation_igss_20" />
+        </record>
+        <record id="hr_occupation_igss_22" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de producción y operaciones, industrias manufactureras</field>
+            <field name="code">1222</field>
+            <field name="parent_id" ref="hr_occupation_igss_20" />
+        </record>
+        <record id="hr_occupation_igss_23" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de producción y operaciones, construcción y obras públicas</field>
+            <field name="code">1223</field>
+            <field name="parent_id" ref="hr_occupation_igss_20" />
+        </record>
+        <record id="hr_occupation_igss_24" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de producción y operaciones, comercio mayorista y minorista</field>
+            <field name="code">1224</field>
+            <field name="parent_id" ref="hr_occupation_igss_20" />
+        </record>
+        <record id="hr_occupation_igss_25" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de producción y operaciones, restauración y hostelería</field>
+            <field name="code">1225</field>
+            <field name="parent_id" ref="hr_occupation_igss_20" />
+        </record>
+        <record id="hr_occupation_igss_26" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de producción y operaciones, transporte, almacenamiento y comunicaciones</field>
+            <field name="code">1226</field>
+            <field name="parent_id" ref="hr_occupation_igss_20" />
+        </record>
+        <record id="hr_occupation_igss_27" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de producción y operaciones, empresas de intermediación y servicios a empresas</field>
+            <field name="code">1227</field>
+            <field name="parent_id" ref="hr_occupation_igss_20" />
+        </record>
+        <record id="hr_occupation_igss_28" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de producción y operaciones, servicios de cuidados personales, limpieza y servicios similares</field>
+            <field name="code">1228</field>
+            <field name="parent_id" ref="hr_occupation_igss_20" />
+        </record>
+        <record id="hr_occupation_igss_29" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de producción y operaciones no clasificados bajo otros epígrafes.</field>
+            <field name="code">1229</field>
+            <field name="parent_id" ref="hr_occupation_igss_20" />
+        </record>
+        <record id="hr_occupation_igss_30" model="hr.occupation.igss">
+            <field name="name">OTROS DIRECTORES DE DEPARTAMENTOS</field>
+            <field name="code">123</field>
+            <field name="parent_id" ref="hr_occupation_igss_17" />
+        </record>
+        <record id="hr_occupation_igss_31" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos financieros y administrativos</field>
+            <field name="code">1231</field>
+            <field name="parent_id" ref="hr_occupation_igss_30" />
+        </record>
+        <record id="hr_occupation_igss_32" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de personal y de relaciones laborales</field>
+            <field name="code">1232</field>
+            <field name="parent_id" ref="hr_occupation_igss_30" />
+        </record>
+        <record id="hr_occupation_igss_33" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de ventas y comercialización</field>
+            <field name="code">1233</field>
+            <field name="parent_id" ref="hr_occupation_igss_30" />
+        </record>
+        <record id="hr_occupation_igss_34" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de publicidad y de relaciones públicas</field>
+            <field name="code">1234</field>
+            <field name="parent_id" ref="hr_occupation_igss_30" />
+        </record>
+        <record id="hr_occupation_igss_35" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de abastecimiento y distribución</field>
+            <field name="code">1235</field>
+            <field name="parent_id" ref="hr_occupation_igss_30" />
+        </record>
+        <record id="hr_occupation_igss_36" model="hr.occupation.igss">
+            <field name="name">Directores de departamentos de servicios de informática</field>
+            <field name="code">1236</field>
+            <field name="parent_id" ref="hr_occupation_igss_30" />
+        </record>
+        <record id="hr_occupation_igss_37" model="hr.occupation.igss">
+            <field name="name">Directores de departamento de investigaciones y desarrollo</field>
+            <field name="code">1237</field>
+            <field name="parent_id" ref="hr_occupation_igss_30" />
+        </record>
+        <record id="hr_occupation_igss_38" model="hr.occupation.igss">
+            <field name="name">Otros directores de departamentos, no clasificados bajo otros epígrafes</field>
+            <field name="code">1239</field>
+            <field name="parent_id" ref="hr_occupation_igss_30" />
+        </record>
+        <record id="hr_occupation_igss_39" model="hr.occupation.igss">
+            <field name="name">GERENTES DE EMPRESA</field>
+            <field name="code">13</field>
+            <field name="parent_id" ref="hr_occupation_igss_5" />
+        </record>
+        <record id="hr_occupation_igss_40" model="hr.occupation.igss">
+            <field name="name">GERENTES DE EMPRESA</field>
+            <field name="code">131</field>
+            <field name="parent_id" ref="hr_occupation_igss_39" />
+        </record>
+        <record id="hr_occupation_igss_41" model="hr.occupation.igss">
+            <field name="name">Gerentes de empresa de agricultura, caza, silvicultura y pesca</field>
+            <field name="code">1311</field>
+            <field name="parent_id" ref="hr_occupation_igss_40" />
+        </record>
+        <record id="hr_occupation_igss_42" model="hr.occupation.igss">
+            <field name="name">Gerentes de industrias manufactureras</field>
+            <field name="code">1312</field>
+            <field name="parent_id" ref="hr_occupation_igss_40" />
+        </record>
+        <record id="hr_occupation_igss_43" model="hr.occupation.igss">
+            <field name="name">Gerentes de empresas de construcción y obras públicas</field>
+            <field name="code">1313</field>
+            <field name="parent_id" ref="hr_occupation_igss_40" />
+        </record>
+        <record id="hr_occupation_igss_44" model="hr.occupation.igss">
+            <field name="name">Gerentes de comercios mayoristas y minoristas</field>
+            <field name="code">1314</field>
+            <field name="parent_id" ref="hr_occupation_igss_40" />
+        </record>
+        <record id="hr_occupation_igss_45" model="hr.occupation.igss">
+            <field name="name">Gerentes de empresas de restauración y hostelería</field>
+            <field name="code">1315</field>
+            <field name="parent_id" ref="hr_occupation_igss_40" />
+        </record>
+        <record id="hr_occupation_igss_46" model="hr.occupation.igss">
+            <field name="name">Gerentes de empresas de transporte, almacenamiento y comunicaciones</field>
+            <field name="code">1316</field>
+            <field name="parent_id" ref="hr_occupation_igss_40" />
+        </record>
+        <record id="hr_occupation_igss_47" model="hr.occupation.igss">
+            <field name="name">Gerentes de empresas de intermediación y servicios a empresas</field>
+            <field name="code">1317</field>
+            <field name="parent_id" ref="hr_occupation_igss_40" />
+        </record>
+        <record id="hr_occupation_igss_48" model="hr.occupation.igss">
+            <field name="name">Gerentes de empresas de servicios de cuidados personales, limpieza y servicios similares</field>
+            <field name="code">1318</field>
+            <field name="parent_id" ref="hr_occupation_igss_40" />
+        </record>
+        <record id="hr_occupation_igss_49" model="hr.occupation.igss">
+            <field name="name">Gerentes de empresas no clasificados bajo otros epígrafes</field>
+            <field name="code">1319</field>
+            <field name="parent_id" ref="hr_occupation_igss_40" />
+        </record>
+        <record id="hr_occupation_igss_50" model="hr.occupation.igss">
+            <field name="name">PROFESIONALES, CIENTÍFICOS E INTELECTUALES</field>
+            <field name="code">2</field>
+        </record>
+        <record id="hr_occupation_igss_51" model="hr.occupation.igss">
+            <field name="name">PROFESIONALES DE LAS CIENCIAS FÍSICAS, QUÍMICAS,  MATEMÁTICAS Y DE LA INGENIERÍA</field>
+            <field name="code">21</field>
+            <field name="parent_id" ref="hr_occupation_igss_50" />
+        </record>
+        <record id="hr_occupation_igss_52" model="hr.occupation.igss">
+            <field name="name">FÍSICOS, QUÍMICOS Y AFINES</field>
+            <field name="code">211</field>
+            <field name="parent_id" ref="hr_occupation_igss_51" />
+        </record>
+        <record id="hr_occupation_igss_53" model="hr.occupation.igss">
+            <field name="name">Físicos y astrónomos</field>
+            <field name="code">2111</field>
+            <field name="parent_id" ref="hr_occupation_igss_52" />
+        </record>
+        <record id="hr_occupation_igss_54" model="hr.occupation.igss">
+            <field name="name">Meteorólogos</field>
+            <field name="code">2112</field>
+            <field name="parent_id" ref="hr_occupation_igss_52" />
+        </record>
+        <record id="hr_occupation_igss_55" model="hr.occupation.igss">
+            <field name="name">Químicos</field>
+            <field name="code">2113</field>
+            <field name="parent_id" ref="hr_occupation_igss_52" />
+        </record>
+        <record id="hr_occupation_igss_56" model="hr.occupation.igss">
+            <field name="name">Geólogos y geofísicos</field>
+            <field name="code">2114</field>
+            <field name="parent_id" ref="hr_occupation_igss_52" />
+        </record>
+        <record id="hr_occupation_igss_57" model="hr.occupation.igss">
+            <field name="name">MATEMÁTICOS, ESTADÍSTICOS Y AFINES</field>
+            <field name="code">212</field>
+            <field name="parent_id" ref="hr_occupation_igss_51" />
+        </record>
+        <record id="hr_occupation_igss_58" model="hr.occupation.igss">
+            <field name="name">Matemáticos y afines</field>
+            <field name="code">2121</field>
+            <field name="parent_id" ref="hr_occupation_igss_57" />
+        </record>
+        <record id="hr_occupation_igss_59" model="hr.occupation.igss">
+            <field name="name">Estadísticos</field>
+            <field name="code">2122</field>
+            <field name="parent_id" ref="hr_occupation_igss_57" />
+        </record>
+        <record id="hr_occupation_igss_60" model="hr.occupation.igss">
+            <field name="name">PROFESIONALES DE LA INFORMÁTICA</field>
+            <field name="code">213</field>
+            <field name="parent_id" ref="hr_occupation_igss_51" />
+        </record>
+        <record id="hr_occupation_igss_61" model="hr.occupation.igss">
+            <field name="name">Creadores y analistas de sistemas informáticos</field>
+            <field name="code">2131</field>
+            <field name="parent_id" ref="hr_occupation_igss_60" />
+        </record>
+        <record id="hr_occupation_igss_62" model="hr.occupation.igss">
+            <field name="name">Programadores informáticos y obras públicas</field>
+            <field name="code">2132</field>
+            <field name="parent_id" ref="hr_occupation_igss_60" />
+        </record>
+        <record id="hr_occupation_igss_63" model="hr.occupation.igss">
+            <field name="name">Profesionales de la informática no clasificados bajo otros epígrafes</field>
+            <field name="code">2139</field>
+            <field name="parent_id" ref="hr_occupation_igss_60" />
+        </record>
+        <record id="hr_occupation_igss_64" model="hr.occupation.igss">
+            <field name="name">ARQUITECTOS, INGENIEROS Y AFINES</field>
+            <field name="code">214</field>
+            <field name="parent_id" ref="hr_occupation_igss_51" />
+        </record>
+        <record id="hr_occupation_igss_65" model="hr.occupation.igss">
+            <field name="name">Arquitectos, urbanistas e ingenieros de tránsito</field>
+            <field name="code">2141</field>
+            <field name="parent_id" ref="hr_occupation_igss_64" />
+        </record>
+        <record id="hr_occupation_igss_66" model="hr.occupation.igss">
+            <field name="name">Ingenieros civiles</field>
+            <field name="code">2142</field>
+            <field name="parent_id" ref="hr_occupation_igss_64" />
+        </record>
+        <record id="hr_occupation_igss_67" model="hr.occupation.igss">
+            <field name="name">Ingenieros electricistas</field>
+            <field name="code">2143</field>
+            <field name="parent_id" ref="hr_occupation_igss_64" />
+        </record>
+        <record id="hr_occupation_igss_68" model="hr.occupation.igss">
+            <field name="name">Ingenieros electronicistas y de telecomunicaciones</field>
+            <field name="code">2144</field>
+            <field name="parent_id" ref="hr_occupation_igss_64" />
+        </record>
+        <record id="hr_occupation_igss_69" model="hr.occupation.igss">
+            <field name="name">Ingenieros mecánicos</field>
+            <field name="code">2145</field>
+            <field name="parent_id" ref="hr_occupation_igss_64" />
+        </record>
+        <record id="hr_occupation_igss_70" model="hr.occupation.igss">
+            <field name="name">Ingenieros Químicos</field>
+            <field name="code">2146</field>
+            <field name="parent_id" ref="hr_occupation_igss_64" />
+        </record>
+        <record id="hr_occupation_igss_71" model="hr.occupation.igss">
+            <field name="name">Ingenieros de minas y metalúrgicos y afines</field>
+            <field name="code">2147</field>
+            <field name="parent_id" ref="hr_occupation_igss_64" />
+        </record>
+        <record id="hr_occupation_igss_72" model="hr.occupation.igss">
+            <field name="name">Cartógrafos y agrimensores</field>
+            <field name="code">2148</field>
+            <field name="parent_id" ref="hr_occupation_igss_64" />
+        </record>
+        <record id="hr_occupation_igss_73" model="hr.occupation.igss">
+            <field name="name">Arquitectos, ingenieros y afines no clasificados bajo otros epígrafes</field>
+            <field name="code">2149</field>
+            <field name="parent_id" ref="hr_occupation_igss_64" />
+        </record>
+        <record id="hr_occupation_igss_74" model="hr.occupation.igss">
+            <field name="name">PROFESIONALES DE LAS CIENCIAS BIOLÓGICAS, LA MEDICINA Y LA SALUD</field>
+            <field name="code">22</field>
+            <field name="parent_id" ref="hr_occupation_igss_50" />
+        </record>
+        <record id="hr_occupation_igss_75" model="hr.occupation.igss">
+            <field name="name">PROFESIONALES EN CIENCIAS BIOLÓGICAS Y OTRAS DISCIPLINAS RELATIVAS A LOS SERES ORGÁNICOS</field>
+            <field name="code">221</field>
+            <field name="parent_id" ref="hr_occupation_igss_74" />
+        </record>
+        <record id="hr_occupation_igss_76" model="hr.occupation.igss">
+            <field name="name">Biólogos, botánicos, zoólogos y afines</field>
+            <field name="code">2211</field>
+            <field name="parent_id" ref="hr_occupation_igss_75" />
+        </record>
+        <record id="hr_occupation_igss_77" model="hr.occupation.igss">
+            <field name="name">Farmacólogos, patólogos y afines</field>
+            <field name="code">2212</field>
+            <field name="parent_id" ref="hr_occupation_igss_75" />
+        </record>
+        <record id="hr_occupation_igss_78" model="hr.occupation.igss">
+            <field name="name">Agrónomo y afines</field>
+            <field name="code">2213</field>
+            <field name="parent_id" ref="hr_occupation_igss_75" />
+        </record>
+        <record id="hr_occupation_igss_79" model="hr.occupation.igss">
+            <field name="name">MÉDICOS Y PROFESIONALES AFINES (excepto el personal de enfermería y partería)</field>
+            <field name="code">222</field>
+            <field name="parent_id" ref="hr_occupation_igss_74" />
+        </record>
+        <record id="hr_occupation_igss_80" model="hr.occupation.igss">
+            <field name="name">Médicos</field>
+            <field name="code">2221</field>
+            <field name="parent_id" ref="hr_occupation_igss_79" />
+        </record>
+        <record id="hr_occupation_igss_81" model="hr.occupation.igss">
+            <field name="name">Odontólogos</field>
+            <field name="code">2222</field>
+            <field name="parent_id" ref="hr_occupation_igss_79" />
+        </record>
+        <record id="hr_occupation_igss_82" model="hr.occupation.igss">
+            <field name="name">Veterinarios</field>
+            <field name="code">2223</field>
+            <field name="parent_id" ref="hr_occupation_igss_79" />
+        </record>
+        <record id="hr_occupation_igss_83" model="hr.occupation.igss">
+            <field name="name">Farmacéuticos</field>
+            <field name="code">2224</field>
+            <field name="parent_id" ref="hr_occupation_igss_79" />
+        </record>
+        <record id="hr_occupation_igss_84" model="hr.occupation.igss">
+            <field name="name">Médicos y profesionales afines (excepto el personal de enfermería y partería) no clasificados bajo otros epígrafes</field>
+            <field name="code">2229</field>
+            <field name="parent_id" ref="hr_occupation_igss_79" />
+        </record>
+        <record id="hr_occupation_igss_85" model="hr.occupation.igss">
+            <field name="name">PERSONAL DE ENFERMERÍA Y PARTERÍA A NIVEL SUPERIOR</field>
+            <field name="code">223</field>
+            <field name="parent_id" ref="hr_occupation_igss_74" />
+        </record>
+        <record id="hr_occupation_igss_86" model="hr.occupation.igss">
+            <field name="name">Personal de enfermería y partería a nivel superior</field>
+            <field name="code">2230</field>
+            <field name="parent_id" ref="hr_occupation_igss_85" />
+        </record>
+        <record id="hr_occupation_igss_87" model="hr.occupation.igss">
+            <field name="name">PROFESIONALES DE LA ENSEÑANZA</field>
+            <field name="code">23</field>
+            <field name="parent_id" ref="hr_occupation_igss_50" />
+        </record>
+        <record id="hr_occupation_igss_88" model="hr.occupation.igss">
+            <field name="name">PROFESORES DE UNIVERSIDADES Y OTROS ESTABLECIMIENTOS DE LA ENSEÑANZA SUPERIOR</field>
+            <field name="code">231</field>
+            <field name="parent_id" ref="hr_occupation_igss_87" />
+        </record>
+        <record id="hr_occupation_igss_89" model="hr.occupation.igss">
+            <field name="name">Profesores de universidades y otros establecimientos de la enseñanza superior</field>
+            <field name="code">2310</field>
+            <field name="parent_id" ref="hr_occupation_igss_88" />
+        </record>
+        <record id="hr_occupation_igss_90" model="hr.occupation.igss">
+            <field name="name">PROFESORES DE LA ENSEÑANZA SECUNDARIA</field>
+            <field name="code">232</field>
+            <field name="parent_id" ref="hr_occupation_igss_87" />
+        </record>
+        <record id="hr_occupation_igss_91" model="hr.occupation.igss">
+            <field name="name">Profesores de la enseñanza secundaria</field>
+            <field name="code">2320</field>
+            <field name="parent_id" ref="hr_occupation_igss_90" />
+        </record>
+        <record id="hr_occupation_igss_92" model="hr.occupation.igss">
+            <field name="name">MAESTROS DE NIVEL SUPERIOR DE LA ENSEÑANZA PRIMARIA</field>
+            <field name="code">233</field>
+            <field name="parent_id" ref="hr_occupation_igss_87" />
+        </record>
+        <record id="hr_occupation_igss_93" model="hr.occupation.igss">
+            <field name="name">Maestros de nivel superior de la enseñanza primaria</field>
+            <field name="code">2331</field>
+            <field name="parent_id" ref="hr_occupation_igss_92" />
+        </record>
+        <record id="hr_occupation_igss_94" model="hr.occupation.igss">
+            <field name="name">Maestros de nivel superior de la enseñanza preescolar</field>
+            <field name="code">2332</field>
+            <field name="parent_id" ref="hr_occupation_igss_92" />
+        </record>
+        <record id="hr_occupation_igss_95" model="hr.occupation.igss">
+            <field name="name">MAESTROS E INSTRUCTORES DE NIVEL SUPERIOR DE LA ENSEÑANZA ESPECIAL</field>
+            <field name="code">234</field>
+            <field name="parent_id" ref="hr_occupation_igss_87" />
+        </record>
+        <record id="hr_occupation_igss_96" model="hr.occupation.igss">
+            <field name="name">Maestros e instructores de nivel superior de la enseñanza especial</field>
+            <field name="code">2340</field>
+            <field name="parent_id" ref="hr_occupation_igss_95" />
+        </record>
+        <record id="hr_occupation_igss_97" model="hr.occupation.igss">
+            <field name="name">OTROS PROFESIONALES DE LA ENSEÑANZA</field>
+            <field name="code">235</field>
+            <field name="parent_id" ref="hr_occupation_igss_87" />
+        </record>
+        <record id="hr_occupation_igss_98" model="hr.occupation.igss">
+            <field name="name">Especialistas en métodos pedagógicos y material didáctico</field>
+            <field name="code">2351</field>
+            <field name="parent_id" ref="hr_occupation_igss_97" />
+        </record>
+        <record id="hr_occupation_igss_99" model="hr.occupation.igss">
+            <field name="name">Inspectores de la enseñanza</field>
+            <field name="code">2352</field>
+            <field name="parent_id" ref="hr_occupation_igss_97" />
+        </record>
+        <record id="hr_occupation_igss_100" model="hr.occupation.igss">
+            <field name="name">Otros profesionales de la enseñanza, no clasificados bajo otros epígrafes</field>
+            <field name="code">2359</field>
+            <field name="parent_id" ref="hr_occupation_igss_97" />
+        </record>
+        <record id="hr_occupation_igss_101" model="hr.occupation.igss">
+            <field name="name">OTROS PROFESIONALES CIENTÍFICOS E INTELECTUALES</field>
+            <field name="code">24</field>
+            <field name="parent_id" ref="hr_occupation_igss_50" />
+        </record>
+        <record id="hr_occupation_igss_102" model="hr.occupation.igss">
+            <field name="name">ESPECIALISTAS EN ORGANIZACIÓN Y ADMINISTRACIÓN DE EMPRESAS AFINES</field>
+            <field name="code">241</field>
+            <field name="parent_id" ref="hr_occupation_igss_101" />
+        </record>
+        <record id="hr_occupation_igss_103" model="hr.occupation.igss">
+            <field name="name">Contadores</field>
+            <field name="code">2411</field>
+            <field name="parent_id" ref="hr_occupation_igss_102" />
+        </record>
+        <record id="hr_occupation_igss_104" model="hr.occupation.igss">
+            <field name="name">Especialistas en políticas y servicios de personal y afines</field>
+            <field name="code">2412</field>
+            <field name="parent_id" ref="hr_occupation_igss_102" />
+        </record>
+        <record id="hr_occupation_igss_105" model="hr.occupation.igss">
+            <field name="name">Especialistas en organización y administración de empresas afines, no clasificados bajo otros epígrafes</field>
+            <field name="code">2419</field>
+            <field name="parent_id" ref="hr_occupation_igss_102" />
+        </record>
+        <record id="hr_occupation_igss_106" model="hr.occupation.igss">
+            <field name="name">PROFESIONALES DEL DERECHO</field>
+            <field name="code">242</field>
+            <field name="parent_id" ref="hr_occupation_igss_101" />
+        </record>
+        <record id="hr_occupation_igss_107" model="hr.occupation.igss">
+            <field name="name">Abogados</field>
+            <field name="code">2421</field>
+            <field name="parent_id" ref="hr_occupation_igss_106" />
+        </record>
+        <record id="hr_occupation_igss_108" model="hr.occupation.igss">
+            <field name="name">Jueces</field>
+            <field name="code">2422</field>
+            <field name="parent_id" ref="hr_occupation_igss_106" />
+        </record>
+        <record id="hr_occupation_igss_109" model="hr.occupation.igss">
+            <field name="name">profesionales del derecho, no clasificados bajo otros epígrafes</field>
+            <field name="code">2429</field>
+            <field name="parent_id" ref="hr_occupation_igss_106" />
+        </record>
+        <record id="hr_occupation_igss_110" model="hr.occupation.igss">
+            <field name="name">ARCHIVEROS, BIBLIOTECARIOS, DOCUMENTALISTAS Y AFINES</field>
+            <field name="code">243</field>
+            <field name="parent_id" ref="hr_occupation_igss_101" />
+        </record>
+        <record id="hr_occupation_igss_111" model="hr.occupation.igss">
+            <field name="name">Archiveros y conservadores de museos</field>
+            <field name="code">2431</field>
+            <field name="parent_id" ref="hr_occupation_igss_110" />
+        </record>
+        <record id="hr_occupation_igss_112" model="hr.occupation.igss">
+            <field name="name">Bibliotecarios, documentalistas y afines</field>
+            <field name="code">2432</field>
+            <field name="parent_id" ref="hr_occupation_igss_110" />
+        </record>
+        <record id="hr_occupation_igss_113" model="hr.occupation.igss">
+            <field name="name">ESPECIALISTAS EN CIENCIAS SOCIALES Y HUMANAS</field>
+            <field name="code">244</field>
+            <field name="parent_id" ref="hr_occupation_igss_101" />
+        </record>
+        <record id="hr_occupation_igss_114" model="hr.occupation.igss">
+            <field name="name">Economistas</field>
+            <field name="code">2441</field>
+            <field name="parent_id" ref="hr_occupation_igss_113" />
+        </record>
+        <record id="hr_occupation_igss_115" model="hr.occupation.igss">
+            <field name="name">Sociólogos, antropólogos y afines</field>
+            <field name="code">2442</field>
+            <field name="parent_id" ref="hr_occupation_igss_113" />
+        </record>
+        <record id="hr_occupation_igss_116" model="hr.occupation.igss">
+            <field name="name">Filósofos, historiadores y especialistas en ciencias políticas</field>
+            <field name="code">2443</field>
+            <field name="parent_id" ref="hr_occupation_igss_113" />
+        </record>
+        <record id="hr_occupation_igss_117" model="hr.occupation.igss">
+            <field name="name">Traductores e intérpretes</field>
+            <field name="code">2444</field>
+            <field name="parent_id" ref="hr_occupation_igss_113" />
+        </record>
+        <record id="hr_occupation_igss_118" model="hr.occupation.igss">
+            <field name="name">Psicólogos</field>
+            <field name="code">2445</field>
+            <field name="parent_id" ref="hr_occupation_igss_113" />
+        </record>
+        <record id="hr_occupation_igss_119" model="hr.occupation.igss">
+            <field name="name">Profesionales del trabajo social</field>
+            <field name="code">2446</field>
+            <field name="parent_id" ref="hr_occupation_igss_113" />
+        </record>
+        <record id="hr_occupation_igss_120" model="hr.occupation.igss">
+            <field name="name">ESCRITORES, ARTISTAS CREATIVOS Y EJECUTANTES</field>
+            <field name="code">245</field>
+            <field name="parent_id" ref="hr_occupation_igss_101" />
+        </record>
+        <record id="hr_occupation_igss_121" model="hr.occupation.igss">
+            <field name="name">Autores, periodistas y otros escritores</field>
+            <field name="code">2451</field>
+            <field name="parent_id" ref="hr_occupation_igss_120" />
+        </record>
+        <record id="hr_occupation_igss_122" model="hr.occupation.igss">
+            <field name="name">Escultores, pintores y afines</field>
+            <field name="code">2452</field>
+            <field name="parent_id" ref="hr_occupation_igss_120" />
+        </record>
+        <record id="hr_occupation_igss_123" model="hr.occupation.igss">
+            <field name="name">Compositores, músicos y cantantes</field>
+            <field name="code">2453</field>
+            <field name="parent_id" ref="hr_occupation_igss_120" />
+        </record>
+        <record id="hr_occupation_igss_124" model="hr.occupation.igss">
+            <field name="name">Coreógrafos y bailarines</field>
+            <field name="code">2454</field>
+            <field name="parent_id" ref="hr_occupation_igss_120" />
+        </record>
+        <record id="hr_occupation_igss_125" model="hr.occupation.igss">
+            <field name="name">Actores y directores de cine, radio, teatro, televisión y afines</field>
+            <field name="code">2455</field>
+            <field name="parent_id" ref="hr_occupation_igss_120" />
+        </record>
+        <record id="hr_occupation_igss_126" model="hr.occupation.igss">
+            <field name="name">SACERDOTES DE DISTINTAS RELIGIONES</field>
+            <field name="code">246</field>
+            <field name="parent_id" ref="hr_occupation_igss_101" />
+        </record>
+        <record id="hr_occupation_igss_127" model="hr.occupation.igss">
+            <field name="name">Sacerdotes de distintas religiones</field>
+            <field name="code">2460</field>
+            <field name="parent_id" ref="hr_occupation_igss_126" />
+        </record>
+        <record id="hr_occupation_igss_128" model="hr.occupation.igss">
+            <field name="name">TÉCNICOS Y PROFESIONALES DE NIVEL MEDIO</field>
+            <field name="code">3</field>
+        </record>
+        <record id="hr_occupation_igss_129" model="hr.occupation.igss">
+            <field name="name">TÉCNICOS Y PROFESIONALES DE NIVEL MEDIO DE LAS CIENCIAS FÍSICAS Y QUÍMICAS, LA INGENIERÍA Y AFINES</field>
+            <field name="code">31</field>
+            <field name="parent_id" ref="hr_occupation_igss_128" />
+        </record>
+        <record id="hr_occupation_igss_130" model="hr.occupation.igss">
+            <field name="name">Técnicos en ciencias físicas y Químicas y en ingeniería</field>
+            <field name="code">311</field>
+            <field name="parent_id" ref="hr_occupation_igss_129" />
+        </record>
+        <record id="hr_occupation_igss_131" model="hr.occupation.igss">
+            <field name="name">Técnicos en ciencias físicas y Químicas</field>
+            <field name="code">3111</field>
+            <field name="parent_id" ref="hr_occupation_igss_130" />
+        </record>
+        <record id="hr_occupation_igss_132" model="hr.occupation.igss">
+            <field name="name">Técnicos en ingeniería civil</field>
+            <field name="code">3112</field>
+            <field name="parent_id" ref="hr_occupation_igss_130" />
+        </record>
+        <record id="hr_occupation_igss_133" model="hr.occupation.igss">
+            <field name="name">Electrotécnicos</field>
+            <field name="code">3113</field>
+            <field name="parent_id" ref="hr_occupation_igss_130" />
+        </record>
+        <record id="hr_occupation_igss_134" model="hr.occupation.igss">
+            <field name="name">Técnicos en electrónica y telecomunicaciones</field>
+            <field name="code">3114</field>
+            <field name="parent_id" ref="hr_occupation_igss_130" />
+        </record>
+        <record id="hr_occupation_igss_135" model="hr.occupation.igss">
+            <field name="name">Técnicos en mecánica y construcción mecánica</field>
+            <field name="code">3115</field>
+            <field name="parent_id" ref="hr_occupation_igss_130" />
+        </record>
+        <record id="hr_occupation_igss_136" model="hr.occupation.igss">
+            <field name="name">Técnicos en química industrial</field>
+            <field name="code">3116</field>
+            <field name="parent_id" ref="hr_occupation_igss_130" />
+        </record>
+        <record id="hr_occupation_igss_137" model="hr.occupation.igss">
+            <field name="name">Técnicos en ingeniería de minas y metalurgia</field>
+            <field name="code">3117</field>
+            <field name="parent_id" ref="hr_occupation_igss_130" />
+        </record>
+        <record id="hr_occupation_igss_138" model="hr.occupation.igss">
+            <field name="name">Delineantes y dibujantes técnicos</field>
+            <field name="code">3118</field>
+            <field name="parent_id" ref="hr_occupation_igss_130" />
+        </record>
+        <record id="hr_occupation_igss_139" model="hr.occupation.igss">
+            <field name="name">Técnicos en ciencias físicas y químicas y en ingeniería, no clasificados bajo otros epígrafes</field>
+            <field name="code">3119</field>
+            <field name="parent_id" ref="hr_occupation_igss_130" />
+        </record>
+        <record id="hr_occupation_igss_140" model="hr.occupation.igss">
+            <field name="name">TÉCNICOS EN PROGRAMACIÓN Y CONTROL INFORMÁTICOS</field>
+            <field name="code">312</field>
+            <field name="parent_id" ref="hr_occupation_igss_129" />
+        </record>
+        <record id="hr_occupation_igss_141" model="hr.occupation.igss">
+            <field name="name">Técnicos en programación informática</field>
+            <field name="code">3121</field>
+            <field name="parent_id" ref="hr_occupation_igss_140" />
+        </record>
+        <record id="hr_occupation_igss_142" model="hr.occupation.igss">
+            <field name="name">Técnicos en control de equipos informáticos</field>
+            <field name="code">3122</field>
+            <field name="parent_id" ref="hr_occupation_igss_140" />
+        </record>
+        <record id="hr_occupation_igss_143" model="hr.occupation.igss">
+            <field name="name">Técnicos en control de robots industriales</field>
+            <field name="code">3123</field>
+            <field name="parent_id" ref="hr_occupation_igss_140" />
+        </record>
+        <record id="hr_occupation_igss_144" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE EQUIPOS ÓPTICOS Y ELECTRÓNICOS</field>
+            <field name="code">313</field>
+            <field name="parent_id" ref="hr_occupation_igss_129" />
+        </record>
+        <record id="hr_occupation_igss_145" model="hr.occupation.igss">
+            <field name="name">Fotógrafos y operadores de equipos de grabación de imagen y sonido</field>
+            <field name="code">3131</field>
+            <field name="parent_id" ref="hr_occupation_igss_144" />
+        </record>
+        <record id="hr_occupation_igss_146" model="hr.occupation.igss">
+            <field name="name">Operadores de equipos de radiodifusión, televisión y telecomunicaciones</field>
+            <field name="code">3132</field>
+            <field name="parent_id" ref="hr_occupation_igss_144" />
+        </record>
+        <record id="hr_occupation_igss_147" model="hr.occupation.igss">
+            <field name="name">Operadores de aparatos de diagnóstico y tratamiento médicos</field>
+            <field name="code">3133</field>
+            <field name="parent_id" ref="hr_occupation_igss_144" />
+        </record>
+        <record id="hr_occupation_igss_148" model="hr.occupation.igss">
+            <field name="name">Operadores de quipos ópticos y electrónicos, no clasificados bajo otros epígrafes</field>
+            <field name="code">3139</field>
+            <field name="parent_id" ref="hr_occupation_igss_144" />
+        </record>
+        <record id="hr_occupation_igss_149" model="hr.occupation.igss">
+            <field name="name">TÉCNICOS EN NAVEGACIÓN MARÍTIMA Y AERONÁUTICA</field>
+            <field name="code">314</field>
+            <field name="parent_id" ref="hr_occupation_igss_129" />
+        </record>
+        <record id="hr_occupation_igss_150" model="hr.occupation.igss">
+            <field name="name">Oficiales maquinistas</field>
+            <field name="code">3141</field>
+            <field name="parent_id" ref="hr_occupation_igss_149" />
+        </record>
+        <record id="hr_occupation_igss_151" model="hr.occupation.igss">
+            <field name="name">Capitanes, oficiales de Cubierta y Prácticos</field>
+            <field name="code">3142</field>
+            <field name="parent_id" ref="hr_occupation_igss_149" />
+        </record>
+        <record id="hr_occupation_igss_152" model="hr.occupation.igss">
+            <field name="name">Pilotos de aviación y afines</field>
+            <field name="code">3143</field>
+            <field name="parent_id" ref="hr_occupation_igss_149" />
+        </record>
+        <record id="hr_occupation_igss_153" model="hr.occupation.igss">
+            <field name="name">Controladores de tráfico aéreo</field>
+            <field name="code">3144</field>
+            <field name="parent_id" ref="hr_occupation_igss_149" />
+        </record>
+        <record id="hr_occupation_igss_154" model="hr.occupation.igss">
+            <field name="name">Técnicos en seguridad aeronáutica</field>
+            <field name="code">3145</field>
+            <field name="parent_id" ref="hr_occupation_igss_149" />
+        </record>
+        <record id="hr_occupation_igss_155" model="hr.occupation.igss">
+            <field name="name">INSPECTORES DE OBRAS, SEGURIDAD Y SALUD Y CONTROL DE CALIDAD</field>
+            <field name="code">315</field>
+            <field name="parent_id" ref="hr_occupation_igss_129" />
+        </record>
+        <record id="hr_occupation_igss_156" model="hr.occupation.igss">
+            <field name="name">Inspectores de edificios y de prevención e investigación de incendios</field>
+            <field name="code">3151</field>
+            <field name="parent_id" ref="hr_occupation_igss_155" />
+        </record>
+        <record id="hr_occupation_igss_157" model="hr.occupation.igss">
+            <field name="name">Inspectores de seguridad y salud y control de calidad</field>
+            <field name="code">3152</field>
+            <field name="parent_id" ref="hr_occupation_igss_155" />
+        </record>
+        <record id="hr_occupation_igss_158" model="hr.occupation.igss">
+            <field name="name">TÉCNICOS Y PROFESIONALES DE NIVEL MEDIO DE LAS CIENCIAS BIOLÓGICAS, LA MEDICINA Y LA SALUD</field>
+            <field name="code">32</field>
+            <field name="parent_id" ref="hr_occupation_igss_128" />
+        </record>
+        <record id="hr_occupation_igss_159" model="hr.occupation.igss">
+            <field name="name">TÉCNICOS A NIVEL MEDIO EN CIENCIAS BIOLÓGICAS, AGRONOMÍA, ZOOTECNIA Y AFINES</field>
+            <field name="code">321</field>
+            <field name="parent_id" ref="hr_occupation_igss_158" />
+        </record>
+        <record id="hr_occupation_igss_160" model="hr.occupation.igss">
+            <field name="name">Técnicos en ciencias biológicas y afines</field>
+            <field name="code">3211</field>
+            <field name="parent_id" ref="hr_occupation_igss_159" />
+        </record>
+        <record id="hr_occupation_igss_161" model="hr.occupation.igss">
+            <field name="name">Técnicos en agronomía, zootecnia y silvicultura</field>
+            <field name="code">3212</field>
+            <field name="parent_id" ref="hr_occupation_igss_159" />
+        </record>
+        <record id="hr_occupation_igss_162" model="hr.occupation.igss">
+            <field name="name">Consejeros agrícolas y forestales</field>
+            <field name="code">3213</field>
+            <field name="parent_id" ref="hr_occupation_igss_159" />
+        </record>
+        <record id="hr_occupation_igss_163" model="hr.occupation.igss">
+            <field name="name">PROFESIONALES DE NIVEL MEDIO DE MEDICINA MODERNA Y LA SALUD (excepto el personal de enfermería y partería)</field>
+            <field name="code">322</field>
+            <field name="parent_id" ref="hr_occupation_igss_158" />
+        </record>
+        <record id="hr_occupation_igss_164" model="hr.occupation.igss">
+            <field name="name">Practicantes y asistentes médicos</field>
+            <field name="code">3221</field>
+            <field name="parent_id" ref="hr_occupation_igss_163" />
+        </record>
+        <record id="hr_occupation_igss_165" model="hr.occupation.igss">
+            <field name="name">Higienistas y otro personal sanitario</field>
+            <field name="code">3222</field>
+            <field name="parent_id" ref="hr_occupation_igss_163" />
+        </record>
+        <record id="hr_occupation_igss_166" model="hr.occupation.igss">
+            <field name="name">Técnicos en dietética y nutrición</field>
+            <field name="code">3223</field>
+            <field name="parent_id" ref="hr_occupation_igss_163" />
+        </record>
+        <record id="hr_occupation_igss_167" model="hr.occupation.igss">
+            <field name="name">Técnicos en optometría y ópticos</field>
+            <field name="code">3224</field>
+            <field name="parent_id" ref="hr_occupation_igss_163" />
+        </record>
+        <record id="hr_occupation_igss_168" model="hr.occupation.igss">
+            <field name="name">Dentistas auxiliares y ayudantes de odontología</field>
+            <field name="code">3225</field>
+            <field name="parent_id" ref="hr_occupation_igss_163" />
+        </record>
+        <record id="hr_occupation_igss_169" model="hr.occupation.igss">
+            <field name="name">Fisioterapeutas y afines</field>
+            <field name="code">3226</field>
+            <field name="parent_id" ref="hr_occupation_igss_163" />
+        </record>
+        <record id="hr_occupation_igss_170" model="hr.occupation.igss">
+            <field name="name">Técnicos y asistentes veterinarios</field>
+            <field name="code">3227</field>
+            <field name="parent_id" ref="hr_occupation_igss_163" />
+        </record>
+        <record id="hr_occupation_igss_171" model="hr.occupation.igss">
+            <field name="name">Técnicos y asistentes farmacéuticos</field>
+            <field name="code">3228</field>
+            <field name="parent_id" ref="hr_occupation_igss_163" />
+        </record>
+        <record id="hr_occupation_igss_172" model="hr.occupation.igss">
+            <field name="name">Profesionales de nivel medio de la medicina moderna y la salud (excepto el personal de enfermería y partería), no clasificados bajo otros epígrafes</field>
+            <field name="code">3229</field>
+            <field name="parent_id" ref="hr_occupation_igss_163" />
+        </record>
+        <record id="hr_occupation_igss_173" model="hr.occupation.igss">
+            <field name="name">PERSONAL DE ENFERMERÍA Y PARTERÍA DE NIVEL MEDIO</field>
+            <field name="code">323</field>
+            <field name="parent_id" ref="hr_occupation_igss_158" />
+        </record>
+        <record id="hr_occupation_igss_174" model="hr.occupation.igss">
+            <field name="name">Personal de enfermería de nivel medio</field>
+            <field name="code">3231</field>
+            <field name="parent_id" ref="hr_occupation_igss_173" />
+        </record>
+        <record id="hr_occupation_igss_175" model="hr.occupation.igss">
+            <field name="name">Personal de partería de nivel medio</field>
+            <field name="code">3232</field>
+            <field name="parent_id" ref="hr_occupation_igss_173" />
+        </record>
+        <record id="hr_occupation_igss_176" model="hr.occupation.igss">
+            <field name="name">PRACTICANTES DE LA MEDICINA TRADICIONAL Y CURANDEROS</field>
+            <field name="code">324</field>
+            <field name="parent_id" ref="hr_occupation_igss_158" />
+        </record>
+        <record id="hr_occupation_igss_177" model="hr.occupation.igss">
+            <field name="name">Practicantes de la medicina tradicional</field>
+            <field name="code">3241</field>
+            <field name="parent_id" ref="hr_occupation_igss_176" />
+        </record>
+        <record id="hr_occupation_igss_178" model="hr.occupation.igss">
+            <field name="name">Curanderos</field>
+            <field name="code">3242</field>
+            <field name="parent_id" ref="hr_occupation_igss_176" />
+        </record>
+        <record id="hr_occupation_igss_179" model="hr.occupation.igss">
+            <field name="name">MAESTROS E INSTRUCTORES DE NIVEL MEDIO</field>
+            <field name="code">33</field>
+            <field name="parent_id" ref="hr_occupation_igss_128" />
+        </record>
+        <record id="hr_occupation_igss_180" model="hr.occupation.igss">
+            <field name="name">MAESTROS DE NIVEL MEDIO DE LA ENSEÑANZA PRIMARIA</field>
+            <field name="code">331</field>
+            <field name="parent_id" ref="hr_occupation_igss_179" />
+        </record>
+        <record id="hr_occupation_igss_181" model="hr.occupation.igss">
+            <field name="name">Maestros de nivel medio de la enseñanza primaria</field>
+            <field name="code">3310</field>
+            <field name="parent_id" ref="hr_occupation_igss_180" />
+        </record>
+        <record id="hr_occupation_igss_182" model="hr.occupation.igss">
+            <field name="name">MAESTROS DE NIVEL MEDIO DE LA ENSEÑANZA PREESCOLAR</field>
+            <field name="code">332</field>
+            <field name="parent_id" ref="hr_occupation_igss_179" />
+        </record>
+        <record id="hr_occupation_igss_183" model="hr.occupation.igss">
+            <field name="name">Maestros de nivel medio de la enseñanza preescolar</field>
+            <field name="code">3320</field>
+            <field name="parent_id" ref="hr_occupation_igss_182" />
+        </record>
+        <record id="hr_occupation_igss_184" model="hr.occupation.igss">
+            <field name="name">MAESTROS DE NIVEL MEDIO DE LA ENSEÑANZA ESPECIAL</field>
+            <field name="code">333</field>
+            <field name="parent_id" ref="hr_occupation_igss_179" />
+        </record>
+        <record id="hr_occupation_igss_185" model="hr.occupation.igss">
+            <field name="name">Maestros de nivel medio de la enseñanza especial</field>
+            <field name="code">3330</field>
+            <field name="parent_id" ref="hr_occupation_igss_184" />
+        </record>
+        <record id="hr_occupation_igss_186" model="hr.occupation.igss">
+            <field name="name">OTROS MAESTROS E INSTRUCTORES DE NIVEL MEDIO</field>
+            <field name="code">334</field>
+            <field name="parent_id" ref="hr_occupation_igss_179" />
+        </record>
+        <record id="hr_occupation_igss_187" model="hr.occupation.igss">
+            <field name="name">Otros maestros e instructores de nivel medio</field>
+            <field name="code">3340</field>
+            <field name="parent_id" ref="hr_occupation_igss_186" />
+        </record>
+        <record id="hr_occupation_igss_188" model="hr.occupation.igss">
+            <field name="name">OTROS TÉCNICOS Y PROFESIONALES DE NIVEL MEDIO</field>
+            <field name="code">34</field>
+            <field name="parent_id" ref="hr_occupation_igss_128" />
+        </record>
+        <record id="hr_occupation_igss_189" model="hr.occupation.igss">
+            <field name="name">PROFESIONALES DE NIVEL MEDIO EN OPERACIONES FINANCIERAS Y COMERCIALES</field>
+            <field name="code">341</field>
+            <field name="parent_id" ref="hr_occupation_igss_188" />
+        </record>
+        <record id="hr_occupation_igss_190" model="hr.occupation.igss">
+            <field name="name">Agentes de bolsa, cambio y otros servicios financieros</field>
+            <field name="code">3411</field>
+            <field name="parent_id" ref="hr_occupation_igss_189" />
+        </record>
+        <record id="hr_occupation_igss_191" model="hr.occupation.igss">
+            <field name="name">Agentes de seguros</field>
+            <field name="code">3412</field>
+            <field name="parent_id" ref="hr_occupation_igss_189" />
+        </record>
+        <record id="hr_occupation_igss_192" model="hr.occupation.igss">
+            <field name="name">Agentes inmobiliarios</field>
+            <field name="code">3413</field>
+            <field name="parent_id" ref="hr_occupation_igss_189" />
+        </record>
+        <record id="hr_occupation_igss_193" model="hr.occupation.igss">
+            <field name="name">Agentes de viajes</field>
+            <field name="code">3414</field>
+            <field name="parent_id" ref="hr_occupation_igss_189" />
+        </record>
+        <record id="hr_occupation_igss_194" model="hr.occupation.igss">
+            <field name="name">Representantes comerciales y técnicos de ventas</field>
+            <field name="code">3415</field>
+            <field name="parent_id" ref="hr_occupation_igss_189" />
+        </record>
+        <record id="hr_occupation_igss_195" model="hr.occupation.igss">
+            <field name="name">Compradores</field>
+            <field name="code">3416</field>
+            <field name="parent_id" ref="hr_occupation_igss_189" />
+        </record>
+        <record id="hr_occupation_igss_196" model="hr.occupation.igss">
+            <field name="name">Tasadores y subastadores</field>
+            <field name="code">3417</field>
+            <field name="parent_id" ref="hr_occupation_igss_189" />
+        </record>
+        <record id="hr_occupation_igss_197" model="hr.occupation.igss">
+            <field name="name">Profesionales de nivel medio en operaciones financiera y comerciales, no clasificados bajo otros epígrafes</field>
+            <field name="code">3419</field>
+            <field name="parent_id" ref="hr_occupation_igss_189" />
+        </record>
+        <record id="hr_occupation_igss_198" model="hr.occupation.igss">
+            <field name="name">AGENTES COMERCIALES Y CORREDORES</field>
+            <field name="code">342</field>
+            <field name="parent_id" ref="hr_occupation_igss_188" />
+        </record>
+        <record id="hr_occupation_igss_199" model="hr.occupation.igss">
+            <field name="name">Agentes de comprar y consignatarios</field>
+            <field name="code">3421</field>
+            <field name="parent_id" ref="hr_occupation_igss_198" />
+        </record>
+        <record id="hr_occupation_igss_200" model="hr.occupation.igss">
+            <field name="name">Declarantes o gestores de aduana</field>
+            <field name="code">3422</field>
+            <field name="parent_id" ref="hr_occupation_igss_198" />
+        </record>
+        <record id="hr_occupation_igss_201" model="hr.occupation.igss">
+            <field name="name">Agentes públicos y privados de colocación y contratistas de mano de obra</field>
+            <field name="code">3423</field>
+            <field name="parent_id" ref="hr_occupation_igss_198" />
+        </record>
+        <record id="hr_occupation_igss_202" model="hr.occupation.igss">
+            <field name="name">Agentes comerciales y corredores, no clasificados bajo otros epígrafes</field>
+            <field name="code">3429</field>
+            <field name="parent_id" ref="hr_occupation_igss_198" />
+        </record>
+        <record id="hr_occupation_igss_203" model="hr.occupation.igss">
+            <field name="name">PROFESIONALES DE NIVEL MEDIO DE SERVICIOS DE ADMINISTRACIÓN</field>
+            <field name="code">343</field>
+            <field name="parent_id" ref="hr_occupation_igss_188" />
+        </record>
+        <record id="hr_occupation_igss_204" model="hr.occupation.igss">
+            <field name="name">Profesionales de nivel medio de servicios administrativos afines</field>
+            <field name="code">3431</field>
+            <field name="parent_id" ref="hr_occupation_igss_203" />
+        </record>
+        <record id="hr_occupation_igss_205" model="hr.occupation.igss">
+            <field name="name">Profesionales de nivel medio del derecho y servicios legales o afines</field>
+            <field name="code">3432</field>
+            <field name="parent_id" ref="hr_occupation_igss_203" />
+        </record>
+        <record id="hr_occupation_igss_206" model="hr.occupation.igss">
+            <field name="name">Tenedores de libros</field>
+            <field name="code">3433</field>
+            <field name="parent_id" ref="hr_occupation_igss_203" />
+        </record>
+        <record id="hr_occupation_igss_207" model="hr.occupation.igss">
+            <field name="name">Profesionales de nivel medio de servicios estadísticos, matemáticos y afines</field>
+            <field name="code">3434</field>
+            <field name="parent_id" ref="hr_occupation_igss_203" />
+        </record>
+        <record id="hr_occupation_igss_208" model="hr.occupation.igss">
+            <field name="name">Profesionales de nivel medio de servicios de administración, no clasificados bajo otros epígrafes</field>
+            <field name="code">3439</field>
+            <field name="parent_id" ref="hr_occupation_igss_203" />
+        </record>
+        <record id="hr_occupation_igss_209" model="hr.occupation.igss">
+            <field name="name">AGENTES DE LAS ADMINISTRACIONES PUBLICAS DE ADUANAS, IMPUESTOS Y AFINES</field>
+            <field name="code">344</field>
+            <field name="parent_id" ref="hr_occupation_igss_188" />
+        </record>
+        <record id="hr_occupation_igss_210" model="hr.occupation.igss">
+            <field name="name">Agentes de aduana e inspectores de fronteras</field>
+            <field name="code">3441</field>
+            <field name="parent_id" ref="hr_occupation_igss_209" />
+        </record>
+        <record id="hr_occupation_igss_211" model="hr.occupation.igss">
+            <field name="name">Funcionarios del fisco</field>
+            <field name="code">3442</field>
+            <field name="parent_id" ref="hr_occupation_igss_209" />
+        </record>
+        <record id="hr_occupation_igss_212" model="hr.occupation.igss">
+            <field name="name">Funcionarios de servicios de seguridad social</field>
+            <field name="code">3443</field>
+            <field name="parent_id" ref="hr_occupation_igss_209" />
+        </record>
+        <record id="hr_occupation_igss_213" model="hr.occupation.igss">
+            <field name="name">Funcionarios de servicios de expedición de licencias y permisos</field>
+            <field name="code">3444</field>
+            <field name="parent_id" ref="hr_occupation_igss_209" />
+        </record>
+        <record id="hr_occupation_igss_214" model="hr.occupation.igss">
+            <field name="name">Agentes de las administraciones públicas de aduanas, impuestos y afines, no clasificados bajo otros epígrafes</field>
+            <field name="code">3449</field>
+            <field name="parent_id" ref="hr_occupation_igss_209" />
+        </record>
+        <record id="hr_occupation_igss_215" model="hr.occupation.igss">
+            <field name="name">INSPECTORES DE POLICÍA Y DETECTIVES</field>
+            <field name="code">345</field>
+            <field name="parent_id" ref="hr_occupation_igss_188" />
+        </record>
+        <record id="hr_occupation_igss_216" model="hr.occupation.igss">
+            <field name="name">Inspectores de policía y detectives</field>
+            <field name="code">3450</field>
+            <field name="parent_id" ref="hr_occupation_igss_215" />
+        </record>
+        <record id="hr_occupation_igss_217" model="hr.occupation.igss">
+            <field name="name">TRABAJADORES Y ASISTENTES SOCIALES DE NIVEL MEDIO</field>
+            <field name="code">346</field>
+            <field name="parent_id" ref="hr_occupation_igss_188" />
+        </record>
+        <record id="hr_occupation_igss_218" model="hr.occupation.igss">
+            <field name="name">Trabajadores asistentes sociales de nivel medio</field>
+            <field name="code">3460</field>
+            <field name="parent_id" ref="hr_occupation_igss_217" />
+        </record>
+        <record id="hr_occupation_igss_219" model="hr.occupation.igss">
+            <field name="name">PROFESIONALES DE NIVEL MEDIO DE ACTIVIDADES ARTÍSTICAS, ESPECTÁCULOS Y DEPORTES</field>
+            <field name="code">347</field>
+            <field name="parent_id" ref="hr_occupation_igss_188" />
+        </record>
+        <record id="hr_occupation_igss_220" model="hr.occupation.igss">
+            <field name="name">Decoradores y diseñadores</field>
+            <field name="code">3471</field>
+            <field name="parent_id" ref="hr_occupation_igss_219" />
+        </record>
+        <record id="hr_occupation_igss_221" model="hr.occupation.igss">
+            <field name="name">Locutores de radio y televisión y afines</field>
+            <field name="code">3472</field>
+            <field name="parent_id" ref="hr_occupation_igss_219" />
+        </record>
+        <record id="hr_occupation_igss_222" model="hr.occupation.igss">
+            <field name="name">Músicos, cantantes y bailarines callejeros, de cabaret y afines</field>
+            <field name="code">3473</field>
+            <field name="parent_id" ref="hr_occupation_igss_219" />
+        </record>
+        <record id="hr_occupation_igss_223" model="hr.occupation.igss">
+            <field name="name">Payasos, prestidigitadores, acróbatas y afines</field>
+            <field name="code">3474</field>
+            <field name="parent_id" ref="hr_occupation_igss_219" />
+        </record>
+        <record id="hr_occupation_igss_224" model="hr.occupation.igss">
+            <field name="name">Atletas, deportistas y afines</field>
+            <field name="code">3475</field>
+            <field name="parent_id" ref="hr_occupation_igss_219" />
+        </record>
+        <record id="hr_occupation_igss_225" model="hr.occupation.igss">
+            <field name="name">AUXILIARES LAICOS DE LOS CULTOS</field>
+            <field name="code">348</field>
+            <field name="parent_id" ref="hr_occupation_igss_188" />
+        </record>
+        <record id="hr_occupation_igss_226" model="hr.occupation.igss">
+            <field name="name">Auxiliares laicos de los cultos</field>
+            <field name="code">3480</field>
+            <field name="parent_id" ref="hr_occupation_igss_225" />
+        </record>
+        <record id="hr_occupation_igss_227" model="hr.occupation.igss">
+            <field name="name">EMPLEADOS DE OFICINA</field>
+            <field name="code">4</field>
+        </record>
+        <record id="hr_occupation_igss_228" model="hr.occupation.igss">
+            <field name="name">OFICINISTAS</field>
+            <field name="code">41</field>
+            <field name="parent_id" ref="hr_occupation_igss_227" />
+        </record>
+        <record id="hr_occupation_igss_229" model="hr.occupation.igss">
+            <field name="name">SECRETARIOS Y OPERADORES DE MAQUINAS DE OFICINA</field>
+            <field name="code">411</field>
+            <field name="parent_id" ref="hr_occupation_igss_228" />
+        </record>
+        <record id="hr_occupation_igss_230" model="hr.occupation.igss">
+            <field name="name">Taquígrafos y mecanógrafos</field>
+            <field name="code">4111</field>
+            <field name="parent_id" ref="hr_occupation_igss_229" />
+        </record>
+        <record id="hr_occupation_igss_231" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas de tratamiento de textos y afines</field>
+            <field name="code">4112</field>
+            <field name="parent_id" ref="hr_occupation_igss_229" />
+        </record>
+        <record id="hr_occupation_igss_232" model="hr.occupation.igss">
+            <field name="name">Operadores de entrada de datos</field>
+            <field name="code">4113</field>
+            <field name="parent_id" ref="hr_occupation_igss_229" />
+        </record>
+        <record id="hr_occupation_igss_233" model="hr.occupation.igss">
+            <field name="name">Operadores de calculadoras</field>
+            <field name="code">4114</field>
+            <field name="parent_id" ref="hr_occupation_igss_229" />
+        </record>
+        <record id="hr_occupation_igss_234" model="hr.occupation.igss">
+            <field name="name">Secretarios</field>
+            <field name="code">4115</field>
+            <field name="parent_id" ref="hr_occupation_igss_229" />
+        </record>
+        <record id="hr_occupation_igss_235" model="hr.occupation.igss">
+            <field name="name">AUXILIARES CONTABLES Y FINANCIEROS</field>
+            <field name="code">412</field>
+            <field name="parent_id" ref="hr_occupation_igss_228" />
+        </record>
+        <record id="hr_occupation_igss_236" model="hr.occupation.igss">
+            <field name="name">Empleados de contabilidad y cálculo de costos</field>
+            <field name="code">4121</field>
+            <field name="parent_id" ref="hr_occupation_igss_235" />
+        </record>
+        <record id="hr_occupation_igss_237" model="hr.occupation.igss">
+            <field name="name">Empleados de servicios estadísticos y financieros</field>
+            <field name="code">4122</field>
+            <field name="parent_id" ref="hr_occupation_igss_235" />
+        </record>
+        <record id="hr_occupation_igss_238" model="hr.occupation.igss">
+            <field name="name">EMPLEADOS ENCARGADOS DE REGISTRO DE MATERIALES Y TRANSPORTE</field>
+            <field name="code">413</field>
+            <field name="parent_id" ref="hr_occupation_igss_228" />
+        </record>
+        <record id="hr_occupation_igss_239" model="hr.occupation.igss">
+            <field name="name">Empleados de control de abastecimientos e inventario</field>
+            <field name="code">4131</field>
+            <field name="parent_id" ref="hr_occupation_igss_238" />
+        </record>
+        <record id="hr_occupation_igss_240" model="hr.occupation.igss">
+            <field name="name">Empleados de servicios de apoyo a la producción</field>
+            <field name="code">4132</field>
+            <field name="parent_id" ref="hr_occupation_igss_238" />
+        </record>
+        <record id="hr_occupation_igss_241" model="hr.occupation.igss">
+            <field name="name">Empleados de servicios de transporte</field>
+            <field name="code">4133</field>
+            <field name="parent_id" ref="hr_occupation_igss_238" />
+        </record>
+        <record id="hr_occupation_igss_242" model="hr.occupation.igss">
+            <field name="name">EMPLEADOS DE BIBLIOTECAS Y SERVICIOS DE CORREOS Y AFINES</field>
+            <field name="code">414</field>
+            <field name="parent_id" ref="hr_occupation_igss_228" />
+        </record>
+        <record id="hr_occupation_igss_243" model="hr.occupation.igss">
+            <field name="name">Empleados de bibliotecas y archivos</field>
+            <field name="code">4141</field>
+            <field name="parent_id" ref="hr_occupation_igss_242" />
+        </record>
+        <record id="hr_occupation_igss_244" model="hr.occupation.igss">
+            <field name="name">Empleados de servicios de correos</field>
+            <field name="code">4142</field>
+            <field name="parent_id" ref="hr_occupation_igss_242" />
+        </record>
+        <record id="hr_occupation_igss_245" model="hr.occupation.igss">
+            <field name="name">Codificadores de datos, correctores de pruebas de imprenta y afines</field>
+            <field name="code">4143</field>
+            <field name="parent_id" ref="hr_occupation_igss_242" />
+        </record>
+        <record id="hr_occupation_igss_246" model="hr.occupation.igss">
+            <field name="name">Escribientes públicos y afines</field>
+            <field name="code">4144</field>
+            <field name="parent_id" ref="hr_occupation_igss_242" />
+        </record>
+        <record id="hr_occupation_igss_247" model="hr.occupation.igss">
+            <field name="name">OTROS OFICINISTAS</field>
+            <field name="code">419</field>
+            <field name="parent_id" ref="hr_occupation_igss_228" />
+        </record>
+        <record id="hr_occupation_igss_248" model="hr.occupation.igss">
+            <field name="name">Otros oficinistas</field>
+            <field name="code">4190</field>
+            <field name="parent_id" ref="hr_occupation_igss_247" />
+        </record>
+        <record id="hr_occupation_igss_249" model="hr.occupation.igss">
+            <field name="name">EMPLEADOS EN TRATO DIRECTO CON EL PÚBLICO</field>
+            <field name="code">42</field>
+            <field name="parent_id" ref="hr_occupation_igss_227" />
+        </record>
+        <record id="hr_occupation_igss_250" model="hr.occupation.igss">
+            <field name="name">CAJEROS, TAQUILLEROS Y AFINES</field>
+            <field name="code">421</field>
+            <field name="parent_id" ref="hr_occupation_igss_249" />
+        </record>
+        <record id="hr_occupation_igss_251" model="hr.occupation.igss">
+            <field name="name">Cajeros y expendedores de billetes</field>
+            <field name="code">4211</field>
+            <field name="parent_id" ref="hr_occupation_igss_250" />
+        </record>
+        <record id="hr_occupation_igss_252" model="hr.occupation.igss">
+            <field name="name">Pegadores y cobradores de ventanilla y taquilleros</field>
+            <field name="code">4212</field>
+            <field name="parent_id" ref="hr_occupation_igss_250" />
+        </record>
+        <record id="hr_occupation_igss_253" model="hr.occupation.igss">
+            <field name="name">Receptores de apuestas y afines</field>
+            <field name="code">4213</field>
+            <field name="parent_id" ref="hr_occupation_igss_250" />
+        </record>
+        <record id="hr_occupation_igss_254" model="hr.occupation.igss">
+            <field name="name">Prestamistas</field>
+            <field name="code">4214</field>
+            <field name="parent_id" ref="hr_occupation_igss_250" />
+        </record>
+        <record id="hr_occupation_igss_255" model="hr.occupation.igss">
+            <field name="name">Cobradores y afines</field>
+            <field name="code">4215</field>
+            <field name="parent_id" ref="hr_occupation_igss_250" />
+        </record>
+        <record id="hr_occupation_igss_256" model="hr.occupation.igss">
+            <field name="name">EMPLEADOS DE SERVICIOS DE INFORMACIÓN A LA CLIENTELA</field>
+            <field name="code">422</field>
+            <field name="parent_id" ref="hr_occupation_igss_249" />
+        </record>
+        <record id="hr_occupation_igss_257" model="hr.occupation.igss">
+            <field name="name">Empleados de agencias de viajes</field>
+            <field name="code">4221</field>
+            <field name="parent_id" ref="hr_occupation_igss_256" />
+        </record>
+        <record id="hr_occupation_igss_258" model="hr.occupation.igss">
+            <field name="name">Recepcionistas y empleados de informaciones</field>
+            <field name="code">4222</field>
+            <field name="parent_id" ref="hr_occupation_igss_256" />
+        </record>
+        <record id="hr_occupation_igss_259" model="hr.occupation.igss">
+            <field name="name">telefonistas</field>
+            <field name="code">4223</field>
+            <field name="parent_id" ref="hr_occupation_igss_256" />
+        </record>
+        <record id="hr_occupation_igss_260" model="hr.occupation.igss">
+            <field name="name">TRABAJADORES DE LOS SERVICIOS Y VENDEDORES DE COMERCIO Y MERCADOS</field>
+            <field name="code">5</field>
+        </record>
+        <record id="hr_occupation_igss_261" model="hr.occupation.igss">
+            <field name="name">TRABAJADORES DE LOS SERVICIOS PERSONALES Y DE LOS SERVICIOS DE PROTECCIÓN Y SEGURIDAD</field>
+            <field name="code">51</field>
+            <field name="parent_id" ref="hr_occupation_igss_260" />
+        </record>
+        <record id="hr_occupation_igss_262" model="hr.occupation.igss">
+            <field name="name">PERSONALES AL SERVICIO DIRECTO DE LOS PASAJEROS</field>
+            <field name="code">511</field>
+            <field name="parent_id" ref="hr_occupation_igss_261" />
+        </record>
+        <record id="hr_occupation_igss_263" model="hr.occupation.igss">
+            <field name="name">Camareros y azafatas</field>
+            <field name="code">5111</field>
+            <field name="parent_id" ref="hr_occupation_igss_262" />
+        </record>
+        <record id="hr_occupation_igss_264" model="hr.occupation.igss">
+            <field name="name">Revisores, guardas y cobradores de los transportes públicos</field>
+            <field name="code">5112</field>
+            <field name="parent_id" ref="hr_occupation_igss_262" />
+        </record>
+        <record id="hr_occupation_igss_265" model="hr.occupation.igss">
+            <field name="name">Guías</field>
+            <field name="code">5113</field>
+            <field name="parent_id" ref="hr_occupation_igss_262" />
+        </record>
+        <record id="hr_occupation_igss_266" model="hr.occupation.igss">
+            <field name="name">PERSONAL DE INTENDENCIA Y DE RESTAURACIÓN</field>
+            <field name="code">512</field>
+            <field name="parent_id" ref="hr_occupation_igss_261" />
+        </record>
+        <record id="hr_occupation_igss_267" model="hr.occupation.igss">
+            <field name="name">Ecónomos, mayordomos y afines</field>
+            <field name="code">5121</field>
+            <field name="parent_id" ref="hr_occupation_igss_266" />
+        </record>
+        <record id="hr_occupation_igss_268" model="hr.occupation.igss">
+            <field name="name">Cocineros</field>
+            <field name="code">5122</field>
+            <field name="parent_id" ref="hr_occupation_igss_266" />
+        </record>
+        <record id="hr_occupation_igss_269" model="hr.occupation.igss">
+            <field name="name">Camareros y taberneros</field>
+            <field name="code">5123</field>
+            <field name="parent_id" ref="hr_occupation_igss_266" />
+        </record>
+        <record id="hr_occupation_igss_270" model="hr.occupation.igss">
+            <field name="name">TRABAJADORES DE LOS CUIDADOS PERSONALES Y AFINES</field>
+            <field name="code">513</field>
+            <field name="parent_id" ref="hr_occupation_igss_261" />
+        </record>
+        <record id="hr_occupation_igss_271" model="hr.occupation.igss">
+            <field name="name">Niñeras y celadoras infantiles</field>
+            <field name="code">5131</field>
+            <field name="parent_id" ref="hr_occupation_igss_270" />
+        </record>
+        <record id="hr_occupation_igss_272" model="hr.occupation.igss">
+            <field name="name">Ayudantes de enfermería en instituciones</field>
+            <field name="code">5132</field>
+            <field name="parent_id" ref="hr_occupation_igss_270" />
+        </record>
+        <record id="hr_occupation_igss_273" model="hr.occupation.igss">
+            <field name="name">Ayudantes de enfermería a domicilio</field>
+            <field name="code">5133</field>
+            <field name="parent_id" ref="hr_occupation_igss_270" />
+        </record>
+        <record id="hr_occupation_igss_274" model="hr.occupation.igss">
+            <field name="name">Trabajadores de los cuidados personales y afines, no clasificados bajo otros epígrafes</field>
+            <field name="code">5139</field>
+            <field name="parent_id" ref="hr_occupation_igss_270" />
+        </record>
+        <record id="hr_occupation_igss_275" model="hr.occupation.igss">
+            <field name="name">OTROS TRABAJADORES DE SERVICIOS PERSONALES A PARTICULARES</field>
+            <field name="code">514</field>
+            <field name="parent_id" ref="hr_occupation_igss_261" />
+        </record>
+        <record id="hr_occupation_igss_276" model="hr.occupation.igss">
+            <field name="name">Peluqueros, especialistas en tratamiento de belleza y afines</field>
+            <field name="code">5141</field>
+            <field name="parent_id" ref="hr_occupation_igss_275" />
+        </record>
+        <record id="hr_occupation_igss_277" model="hr.occupation.igss">
+            <field name="name">Acompañantes y ayudas de cámara</field>
+            <field name="code">5142</field>
+            <field name="parent_id" ref="hr_occupation_igss_275" />
+        </record>
+        <record id="hr_occupation_igss_278" model="hr.occupation.igss">
+            <field name="name">Personal de pompas fúnebres y embalsamadores</field>
+            <field name="code">5143</field>
+            <field name="parent_id" ref="hr_occupation_igss_275" />
+        </record>
+        <record id="hr_occupation_igss_279" model="hr.occupation.igss">
+            <field name="name">Otros trabajadores de servicios personales a particulares, clasificados bajo otros epígrafes</field>
+            <field name="code">5149</field>
+            <field name="parent_id" ref="hr_occupation_igss_275" />
+        </record>
+        <record id="hr_occupation_igss_280" model="hr.occupation.igss">
+            <field name="name">ASTRÓLOGOS, ADIVINADORES Y AFINES</field>
+            <field name="code">515</field>
+            <field name="parent_id" ref="hr_occupation_igss_261" />
+        </record>
+        <record id="hr_occupation_igss_281" model="hr.occupation.igss">
+            <field name="name">Astrólogos y afines</field>
+            <field name="code">5151</field>
+            <field name="parent_id" ref="hr_occupation_igss_280" />
+        </record>
+        <record id="hr_occupation_igss_282" model="hr.occupation.igss">
+            <field name="name">Adivinadores, quirománticos y afines</field>
+            <field name="code">5152</field>
+            <field name="parent_id" ref="hr_occupation_igss_280" />
+        </record>
+        <record id="hr_occupation_igss_283" model="hr.occupation.igss">
+            <field name="name">PERSONAL DE LOS SERVICIOS DE PROTECCIÓN Y SEGURIDAD</field>
+            <field name="code">516</field>
+            <field name="parent_id" ref="hr_occupation_igss_261" />
+        </record>
+        <record id="hr_occupation_igss_284" model="hr.occupation.igss">
+            <field name="name">Bomberos</field>
+            <field name="code">5161</field>
+            <field name="parent_id" ref="hr_occupation_igss_283" />
+        </record>
+        <record id="hr_occupation_igss_285" model="hr.occupation.igss">
+            <field name="name">Policías</field>
+            <field name="code">5162</field>
+            <field name="parent_id" ref="hr_occupation_igss_283" />
+        </record>
+        <record id="hr_occupation_igss_286" model="hr.occupation.igss">
+            <field name="name">Guardianes de prisión</field>
+            <field name="code">5163</field>
+            <field name="parent_id" ref="hr_occupation_igss_283" />
+        </record>
+        <record id="hr_occupation_igss_287" model="hr.occupation.igss">
+            <field name="name">Personal de los servicios de protección y seguridad, no clasificados en otros epígrafes</field>
+            <field name="code">5169</field>
+            <field name="parent_id" ref="hr_occupation_igss_283" />
+        </record>
+        <record id="hr_occupation_igss_288" model="hr.occupation.igss">
+            <field name="name">MODELOS, VENDEDORES Y DEMOSTRADORES</field>
+            <field name="code">52</field>
+            <field name="parent_id" ref="hr_occupation_igss_260" />
+        </record>
+        <record id="hr_occupation_igss_289" model="hr.occupation.igss">
+            <field name="name">MODELOS DE MODAS, ARTE Y PUBLICIDAD</field>
+            <field name="code">521</field>
+            <field name="parent_id" ref="hr_occupation_igss_288" />
+        </record>
+        <record id="hr_occupation_igss_290" model="hr.occupation.igss">
+            <field name="name">Modelos de modas, arte y publicidad</field>
+            <field name="code">5210</field>
+            <field name="parent_id" ref="hr_occupation_igss_289" />
+        </record>
+        <record id="hr_occupation_igss_291" model="hr.occupation.igss">
+            <field name="name">VENDEDORES Y DEMOSTRADORES DE TIENDAS Y ALMACENES</field>
+            <field name="code">522</field>
+            <field name="parent_id" ref="hr_occupation_igss_288" />
+        </record>
+        <record id="hr_occupation_igss_292" model="hr.occupation.igss">
+            <field name="name">Vendedores y demostradores de tiendas y almacenes</field>
+            <field name="code">5220</field>
+            <field name="parent_id" ref="hr_occupation_igss_291" />
+        </record>
+        <record id="hr_occupation_igss_293" model="hr.occupation.igss">
+            <field name="name">VENDEDORES DE QUIOSCOS Y DE PUESTOS DE MERCADO</field>
+            <field name="code">523</field>
+            <field name="parent_id" ref="hr_occupation_igss_288" />
+        </record>
+        <record id="hr_occupation_igss_294" model="hr.occupation.igss">
+            <field name="name">Vendedores de kioscos y de puestos de mercado</field>
+            <field name="code">5230</field>
+            <field name="parent_id" ref="hr_occupation_igss_293" />
+        </record>
+        <record id="hr_occupation_igss_295" model="hr.occupation.igss">
+            <field name="name">AGRICULTORES Y TRABAJADORES CALIFICADOS AGROPECUARIOS Y PESQUEROS</field>
+            <field name="code">6</field>
+        </record>
+        <record id="hr_occupation_igss_296" model="hr.occupation.igss">
+            <field name="name">AGRICULTORES Y TRABAJADORES CALIFICADOS DE EXPLOTACIONES AGROPECUARIAS, FORESTALES Y PESQUERAS CON DESTINO AL MERCADO</field>
+            <field name="code">61</field>
+            <field name="parent_id" ref="hr_occupation_igss_295" />
+        </record>
+        <record id="hr_occupation_igss_297" model="hr.occupation.igss">
+            <field name="name">AGRICULTORES Y TRABAJADORES CALIFICADOS DE CULTIVOS PARA EL MERCADO</field>
+            <field name="code">611</field>
+            <field name="parent_id" ref="hr_occupation_igss_296" />
+        </record>
+        <record id="hr_occupation_igss_298" model="hr.occupation.igss">
+            <field name="name">Agricultores y trabajadores calificados de cultivos extensivos</field>
+            <field name="code">6111</field>
+            <field name="parent_id" ref="hr_occupation_igss_297" />
+        </record>
+        <record id="hr_occupation_igss_299" model="hr.occupation.igss">
+            <field name="name">Agricultores y trabajadores calificados de plantaciones de árboles y arbustos</field>
+            <field name="code">6112</field>
+            <field name="parent_id" ref="hr_occupation_igss_297" />
+        </record>
+        <record id="hr_occupation_igss_300" model="hr.occupation.igss">
+            <field name="name">Agricultores y trabajadores calificados de huertas, invernaderos y jardines</field>
+            <field name="code">6113</field>
+            <field name="parent_id" ref="hr_occupation_igss_297" />
+        </record>
+        <record id="hr_occupation_igss_301" model="hr.occupation.igss">
+            <field name="name">Agricultores y trabajadores calificados de cultivos mixtos</field>
+            <field name="code">6114</field>
+            <field name="parent_id" ref="hr_occupation_igss_297" />
+        </record>
+        <record id="hr_occupation_igss_302" model="hr.occupation.igss">
+            <field name="name">CRIADORES Y TRABAJADORES PECUARIOS CALIFICADOS DE LA CRÍA DE ANIMALES PARA EL MERCADO Y AFINES</field>
+            <field name="code">612</field>
+            <field name="parent_id" ref="hr_occupation_igss_296" />
+        </record>
+        <record id="hr_occupation_igss_303" model="hr.occupation.igss">
+            <field name="name">Criadores de ganado y otros animales domésticos, productores de leche y sus derivados</field>
+            <field name="code">6121</field>
+            <field name="parent_id" ref="hr_occupation_igss_302" />
+        </record>
+        <record id="hr_occupation_igss_304" model="hr.occupation.igss">
+            <field name="name">Avicultores y trabajadores calificados de la avicultura</field>
+            <field name="code">6122</field>
+            <field name="parent_id" ref="hr_occupation_igss_302" />
+        </record>
+        <record id="hr_occupation_igss_305" model="hr.occupation.igss">
+            <field name="name">Apicultores y sericicultores y trabajadores calificados de la apicultura y la sericicultura</field>
+            <field name="code">6123</field>
+            <field name="parent_id" ref="hr_occupation_igss_302" />
+        </record>
+        <record id="hr_occupation_igss_306" model="hr.occupation.igss">
+            <field name="name">Criadores y trabajadores calificados de la cría de animales domésticos diversos</field>
+            <field name="code">6124</field>
+            <field name="parent_id" ref="hr_occupation_igss_302" />
+        </record>
+        <record id="hr_occupation_igss_307" model="hr.occupation.igss">
+            <field name="name">Criadores y trabajadores pecuarios calificados de la cría de animales para el mercado y afines, no clasificados bajo otros epígrafes</field>
+            <field name="code">6129</field>
+            <field name="parent_id" ref="hr_occupation_igss_302" />
+        </record>
+        <record id="hr_occupation_igss_308" model="hr.occupation.igss">
+            <field name="name">PRODUCTORES Y TRABAJADORES AGROPECUARIOS CALIFICADOS CUYA PRODUCCIÓN SE DESTINA AL MERCADO</field>
+            <field name="code">613</field>
+            <field name="parent_id" ref="hr_occupation_igss_296" />
+        </record>
+        <record id="hr_occupation_igss_309" model="hr.occupation.igss">
+            <field name="name">Productores y trabajadores agropecuarios calificados cuya producción se destina al mercado</field>
+            <field name="code">6130</field>
+            <field name="parent_id" ref="hr_occupation_igss_308" />
+        </record>
+        <record id="hr_occupation_igss_310" model="hr.occupation.igss">
+            <field name="name">TRABAJADORES FORESTALES CALIFICADOS Y AFINES</field>
+            <field name="code">614</field>
+            <field name="parent_id" ref="hr_occupation_igss_296" />
+        </record>
+        <record id="hr_occupation_igss_311" model="hr.occupation.igss">
+            <field name="name">Taladores y otros trabajadores forestales</field>
+            <field name="code">6141</field>
+            <field name="parent_id" ref="hr_occupation_igss_310" />
+        </record>
+        <record id="hr_occupation_igss_312" model="hr.occupation.igss">
+            <field name="name">Carboneros de carbón vegetal y afines</field>
+            <field name="code">6142</field>
+            <field name="parent_id" ref="hr_occupation_igss_310" />
+        </record>
+        <record id="hr_occupation_igss_313" model="hr.occupation.igss">
+            <field name="name">PESCADORES, CAZADORES Y TRAMPEROS</field>
+            <field name="code">615</field>
+            <field name="parent_id" ref="hr_occupation_igss_296" />
+        </record>
+        <record id="hr_occupation_igss_314" model="hr.occupation.igss">
+            <field name="name">Criadores de especies acuáticas</field>
+            <field name="code">6151</field>
+            <field name="parent_id" ref="hr_occupation_igss_313" />
+        </record>
+        <record id="hr_occupation_igss_315" model="hr.occupation.igss">
+            <field name="name">Pescadores de agua dulce y en aguas costeras</field>
+            <field name="code">6152</field>
+            <field name="parent_id" ref="hr_occupation_igss_313" />
+        </record>
+        <record id="hr_occupation_igss_316" model="hr.occupation.igss">
+            <field name="name">Pescadores de alta mar</field>
+            <field name="code">6153</field>
+            <field name="parent_id" ref="hr_occupation_igss_313" />
+        </record>
+        <record id="hr_occupation_igss_317" model="hr.occupation.igss">
+            <field name="name">Cazadores y tramperos</field>
+            <field name="code">6154</field>
+            <field name="parent_id" ref="hr_occupation_igss_313" />
+        </record>
+        <record id="hr_occupation_igss_318" model="hr.occupation.igss">
+            <field name="name">TRABAJADORES AGROPECUARIOS Y PESQUEROS DE SUBSISTENCIA</field>
+            <field name="code">62</field>
+            <field name="parent_id" ref="hr_occupation_igss_295" />
+        </record>
+        <record id="hr_occupation_igss_319" model="hr.occupation.igss">
+            <field name="name">TRABAJADORES AGROPECUARIOS Y PESQUEROS DE SUBSISTENCIA</field>
+            <field name="code">621</field>
+            <field name="parent_id" ref="hr_occupation_igss_318" />
+        </record>
+        <record id="hr_occupation_igss_320" model="hr.occupation.igss">
+            <field name="name">Trabajadores agropecuarios y pesqueros de subsistencia</field>
+            <field name="code">6210</field>
+            <field name="parent_id" ref="hr_occupation_igss_319" />
+        </record>
+        <record id="hr_occupation_igss_321" model="hr.occupation.igss">
+            <field name="name">OFICIALES, OPERARIOS Y ARTESANOS DE ARTES MECÁNICAS Y DE OTROS OFICIOS</field>
+            <field name="code">7</field>
+        </record>
+        <record id="hr_occupation_igss_322" model="hr.occupation.igss">
+            <field name="name">OFICIALES Y OPERARIOS DE LAS INDUSTRIAS EXTRACTIVAS Y DE LA CONSTRUCCIÓN</field>
+            <field name="code">71</field>
+            <field name="parent_id" ref="hr_occupation_igss_321" />
+        </record>
+        <record id="hr_occupation_igss_323" model="hr.occupation.igss">
+            <field name="name">MINEROS, CANTEROS, PEGADORES Y LABRANTES DE PIEDRA</field>
+            <field name="code">711</field>
+            <field name="parent_id" ref="hr_occupation_igss_322" />
+        </record>
+        <record id="hr_occupation_igss_324" model="hr.occupation.igss">
+            <field name="name">Mineros y canteros</field>
+            <field name="code">7111</field>
+            <field name="parent_id" ref="hr_occupation_igss_323" />
+        </record>
+        <record id="hr_occupation_igss_325" model="hr.occupation.igss">
+            <field name="name">Pegadores</field>
+            <field name="code">7112</field>
+            <field name="parent_id" ref="hr_occupation_igss_323" />
+        </record>
+        <record id="hr_occupation_igss_326" model="hr.occupation.igss">
+            <field name="name">Trozadores, labrantes y grabadores de piedra</field>
+            <field name="code">7113</field>
+            <field name="parent_id" ref="hr_occupation_igss_323" />
+        </record>
+        <record id="hr_occupation_igss_327" model="hr.occupation.igss">
+            <field name="name">OFICIALES Y OPERARIOS DE LA CONSTRUCCIÓN (OBRA GRUESA) Y AFINES</field>
+            <field name="code">712</field>
+            <field name="parent_id" ref="hr_occupation_igss_322" />
+        </record>
+        <record id="hr_occupation_igss_328" model="hr.occupation.igss">
+            <field name="name">Constructores con técnicas y materiales tradicionales</field>
+            <field name="code">7121</field>
+            <field name="parent_id" ref="hr_occupation_igss_327" />
+        </record>
+        <record id="hr_occupation_igss_329" model="hr.occupation.igss">
+            <field name="name">Albañiles y mamposteros</field>
+            <field name="code">7122</field>
+            <field name="parent_id" ref="hr_occupation_igss_327" />
+        </record>
+        <record id="hr_occupation_igss_330" model="hr.occupation.igss">
+            <field name="name">Operarios en cemento armado, enfoscadores y afines</field>
+            <field name="code">7123</field>
+            <field name="parent_id" ref="hr_occupation_igss_327" />
+        </record>
+        <record id="hr_occupation_igss_331" model="hr.occupation.igss">
+            <field name="name">Carpinteros de armar y de banco</field>
+            <field name="code">7124</field>
+            <field name="parent_id" ref="hr_occupation_igss_327" />
+        </record>
+        <record id="hr_occupation_igss_332" model="hr.occupation.igss">
+            <field name="name">Oficiales y operarios de la construcción (obra gruesa) y afines, no clasificados bajo otros epígrafes</field>
+            <field name="code">7129</field>
+            <field name="parent_id" ref="hr_occupation_igss_327" />
+        </record>
+        <record id="hr_occupation_igss_333" model="hr.occupation.igss">
+            <field name="name">OFICIALES Y OPERARIOS DE LA CONSTRUCCIÓN (TRABAJOS DE ACABADO) Y AFINES</field>
+            <field name="code">713</field>
+            <field name="parent_id" ref="hr_occupation_igss_322" />
+        </record>
+        <record id="hr_occupation_igss_334" model="hr.occupation.igss">
+            <field name="name">Techadores</field>
+            <field name="code">7131</field>
+            <field name="parent_id" ref="hr_occupation_igss_333" />
+        </record>
+        <record id="hr_occupation_igss_335" model="hr.occupation.igss">
+            <field name="name">Paqueteros y colocadores de suelos</field>
+            <field name="code">7132</field>
+            <field name="parent_id" ref="hr_occupation_igss_333" />
+        </record>
+        <record id="hr_occupation_igss_336" model="hr.occupation.igss">
+            <field name="name">Revocadores</field>
+            <field name="code">7133</field>
+            <field name="parent_id" ref="hr_occupation_igss_333" />
+        </record>
+        <record id="hr_occupation_igss_337" model="hr.occupation.igss">
+            <field name="name">Instaladores de material aislante y de insonorización</field>
+            <field name="code">7134</field>
+            <field name="parent_id" ref="hr_occupation_igss_333" />
+        </record>
+        <record id="hr_occupation_igss_338" model="hr.occupation.igss">
+            <field name="name">Cristaleros</field>
+            <field name="code">7135</field>
+            <field name="parent_id" ref="hr_occupation_igss_333" />
+        </record>
+        <record id="hr_occupation_igss_339" model="hr.occupation.igss">
+            <field name="name">Fontaneros e instaladores de tuberías</field>
+            <field name="code">7136</field>
+            <field name="parent_id" ref="hr_occupation_igss_333" />
+        </record>
+        <record id="hr_occupation_igss_340" model="hr.occupation.igss">
+            <field name="name">Electricistas de obras afines</field>
+            <field name="code">7137</field>
+            <field name="parent_id" ref="hr_occupation_igss_333" />
+        </record>
+        <record id="hr_occupation_igss_341" model="hr.occupation.igss">
+            <field name="name">PINTORES, LIMPIADORES DE FACHADA Y AFINES</field>
+            <field name="code">714</field>
+            <field name="parent_id" ref="hr_occupation_igss_322" />
+        </record>
+        <record id="hr_occupation_igss_342" model="hr.occupation.igss">
+            <field name="name">Pintores y empapeladores</field>
+            <field name="code">7141</field>
+            <field name="parent_id" ref="hr_occupation_igss_341" />
+        </record>
+        <record id="hr_occupation_igss_343" model="hr.occupation.igss">
+            <field name="name">Barnizadores y afines</field>
+            <field name="code">7142</field>
+            <field name="parent_id" ref="hr_occupation_igss_341" />
+        </record>
+        <record id="hr_occupation_igss_344" model="hr.occupation.igss">
+            <field name="name">Limpiadores de fachadas y deshollinadores</field>
+            <field name="code">7143</field>
+            <field name="parent_id" ref="hr_occupation_igss_341" />
+        </record>
+        <record id="hr_occupation_igss_345" model="hr.occupation.igss">
+            <field name="name">OFICIALES Y OPERARIOS DE LA METALURGIA, LA CONSTRUCCIÓN MECÁNICA Y AFINES</field>
+            <field name="code">72</field>
+            <field name="parent_id" ref="hr_occupation_igss_321" />
+        </record>
+        <record id="hr_occupation_igss_346" model="hr.occupation.igss">
+            <field name="name">MOLDEADORES, SOLDADORES, CHAPISTAS, CALDEREROS, MONTADORES DE ESTRUCTURAS METÁLICAS Y AFINES</field>
+            <field name="code">721</field>
+            <field name="parent_id" ref="hr_occupation_igss_345" />
+        </record>
+        <record id="hr_occupation_igss_347" model="hr.occupation.igss">
+            <field name="name">Moldeadores y macheros</field>
+            <field name="code">7211</field>
+            <field name="parent_id" ref="hr_occupation_igss_346" />
+        </record>
+        <record id="hr_occupation_igss_348" model="hr.occupation.igss">
+            <field name="name">Soldadores y oxicortadores</field>
+            <field name="code">7212</field>
+            <field name="parent_id" ref="hr_occupation_igss_346" />
+        </record>
+        <record id="hr_occupation_igss_349" model="hr.occupation.igss">
+            <field name="name">Chapistas y calderos</field>
+            <field name="code">7213</field>
+            <field name="parent_id" ref="hr_occupation_igss_346" />
+        </record>
+        <record id="hr_occupation_igss_350" model="hr.occupation.igss">
+            <field name="name">Montadores de estructuras metálicas</field>
+            <field name="code">7214</field>
+            <field name="parent_id" ref="hr_occupation_igss_346" />
+        </record>
+        <record id="hr_occupation_igss_351" model="hr.occupation.igss">
+            <field name="name">Aparejadores y empalmadores de cables</field>
+            <field name="code">7215</field>
+            <field name="parent_id" ref="hr_occupation_igss_346" />
+        </record>
+        <record id="hr_occupation_igss_352" model="hr.occupation.igss">
+            <field name="name">Buzos</field>
+            <field name="code">7216</field>
+            <field name="parent_id" ref="hr_occupation_igss_346" />
+        </record>
+        <record id="hr_occupation_igss_353" model="hr.occupation.igss">
+            <field name="name">HERREROS, HERRAMENTISTAS Y AFINES</field>
+            <field name="code">722</field>
+            <field name="parent_id" ref="hr_occupation_igss_345" />
+        </record>
+        <record id="hr_occupation_igss_354" model="hr.occupation.igss">
+            <field name="name">Herreros y forjadores</field>
+            <field name="code">7221</field>
+            <field name="parent_id" ref="hr_occupation_igss_353" />
+        </record>
+        <record id="hr_occupation_igss_355" model="hr.occupation.igss">
+            <field name="name">Herramentistas y afines</field>
+            <field name="code">7222</field>
+            <field name="parent_id" ref="hr_occupation_igss_353" />
+        </record>
+        <record id="hr_occupation_igss_356" model="hr.occupation.igss">
+            <field name="name">Reguladores y reguladores-operadores de máquinas herramientas</field>
+            <field name="code">7223</field>
+            <field name="parent_id" ref="hr_occupation_igss_353" />
+        </record>
+        <record id="hr_occupation_igss_357" model="hr.occupation.igss">
+            <field name="name">Pulidores de metales y afiladores de herramientas</field>
+            <field name="code">7224</field>
+            <field name="parent_id" ref="hr_occupation_igss_353" />
+        </record>
+        <record id="hr_occupation_igss_358" model="hr.occupation.igss">
+            <field name="name">MECÁNICOS Y AJUSTADORES </field>
+            <field name="code">723</field>
+            <field name="parent_id" ref="hr_occupation_igss_345" />
+        </record>
+        <record id="hr_occupation_igss_359" model="hr.occupation.igss">
+            <field name="name">Mecánicos y ajustadores de vehículos de motor</field>
+            <field name="code">7231</field>
+            <field name="parent_id" ref="hr_occupation_igss_358" />
+        </record>
+        <record id="hr_occupation_igss_360" model="hr.occupation.igss">
+            <field name="name">Mecánicos y ajustadores de motores de avión</field>
+            <field name="code">7232</field>
+            <field name="parent_id" ref="hr_occupation_igss_358" />
+        </record>
+        <record id="hr_occupation_igss_361" model="hr.occupation.igss">
+            <field name="name">Mecánicos y ajustadores de máquinas agrícolas e industriales</field>
+            <field name="code">7233</field>
+            <field name="parent_id" ref="hr_occupation_igss_358" />
+        </record>
+        <record id="hr_occupation_igss_362" model="hr.occupation.igss">
+            <field name="name">MECÁNICOS Y AJUSTADORES DE EQUIPOS ELÉCTRICOS Y ELECTRÓNICOS</field>
+            <field name="code">724</field>
+            <field name="parent_id" ref="hr_occupation_igss_345" />
+        </record>
+        <record id="hr_occupation_igss_363" model="hr.occupation.igss">
+            <field name="name">Mecánicos y ajustadores electricistas</field>
+            <field name="code">7241</field>
+            <field name="parent_id" ref="hr_occupation_igss_362" />
+        </record>
+        <record id="hr_occupation_igss_364" model="hr.occupation.igss">
+            <field name="name">Ajustadores electronicistas</field>
+            <field name="code">7242</field>
+            <field name="parent_id" ref="hr_occupation_igss_362" />
+        </record>
+        <record id="hr_occupation_igss_365" model="hr.occupation.igss">
+            <field name="name">Mecánicos y reparadores de aparatos electrónicos</field>
+            <field name="code">7243</field>
+            <field name="parent_id" ref="hr_occupation_igss_362" />
+        </record>
+        <record id="hr_occupation_igss_366" model="hr.occupation.igss">
+            <field name="name">Instaladores y reparadores de telégrafos y teléfonos</field>
+            <field name="code">7244</field>
+            <field name="parent_id" ref="hr_occupation_igss_362" />
+        </record>
+        <record id="hr_occupation_igss_367" model="hr.occupation.igss">
+            <field name="name">Instaladores y reparadores de líneas eléctricas</field>
+            <field name="code">7245</field>
+            <field name="parent_id" ref="hr_occupation_igss_362" />
+        </record>
+        <record id="hr_occupation_igss_368" model="hr.occupation.igss">
+            <field name="name">MECÁNICOS DE PRECISIÓN, ARTESANOS, OPERARIOS DE LAS ARTES GRÁFICAS Y AFINES</field>
+            <field name="code">73</field>
+            <field name="parent_id" ref="hr_occupation_igss_321" />
+        </record>
+        <record id="hr_occupation_igss_369" model="hr.occupation.igss">
+            <field name="name">MECÁNICOS DE PRECISIÓN EN METALES Y MATERIALES SIMILARES</field>
+            <field name="code">731</field>
+            <field name="parent_id" ref="hr_occupation_igss_368" />
+        </record>
+        <record id="hr_occupation_igss_370" model="hr.occupation.igss">
+            <field name="name">Mecánicos y reparadores de instrumentos de precisión</field>
+            <field name="code">7311</field>
+            <field name="parent_id" ref="hr_occupation_igss_369" />
+        </record>
+        <record id="hr_occupation_igss_371" model="hr.occupation.igss">
+            <field name="name">Constructores y afinadores de instrumentos musicales</field>
+            <field name="code">7312</field>
+            <field name="parent_id" ref="hr_occupation_igss_369" />
+        </record>
+        <record id="hr_occupation_igss_372" model="hr.occupation.igss">
+            <field name="name">Joyeros, orfebres y plateros</field>
+            <field name="code">7313</field>
+            <field name="parent_id" ref="hr_occupation_igss_369" />
+        </record>
+        <record id="hr_occupation_igss_373" model="hr.occupation.igss">
+            <field name="name">ALFAREROS, OPERARIOS DE CRISTALERÍAS Y AFINES</field>
+            <field name="code">732</field>
+            <field name="parent_id" ref="hr_occupation_igss_368" />
+        </record>
+        <record id="hr_occupation_igss_374" model="hr.occupation.igss">
+            <field name="name">Alfareros y afines (barro, arcilla y abrasivos)</field>
+            <field name="code">7321</field>
+            <field name="parent_id" ref="hr_occupation_igss_373" />
+        </record>
+        <record id="hr_occupation_igss_375" model="hr.occupation.igss">
+            <field name="name">Sopladores, modeladores, laminadores, cortadores y pulidores de vidrio</field>
+            <field name="code">7322</field>
+            <field name="parent_id" ref="hr_occupation_igss_373" />
+        </record>
+        <record id="hr_occupation_igss_376" model="hr.occupation.igss">
+            <field name="name">Grabadores de vidrio</field>
+            <field name="code">7323</field>
+            <field name="parent_id" ref="hr_occupation_igss_373" />
+        </record>
+        <record id="hr_occupation_igss_377" model="hr.occupation.igss">
+            <field name="name">Pintores, decoradores de vidrio, cerámica y otros materiales</field>
+            <field name="code">7324</field>
+            <field name="parent_id" ref="hr_occupation_igss_373" />
+        </record>
+        <record id="hr_occupation_igss_378" model="hr.occupation.igss">
+            <field name="name">ARTESANOS DE LA MADERA, TEJIDOS, CUERO Y MATERIALES SIMILARES</field>
+            <field name="code">733</field>
+            <field name="parent_id" ref="hr_occupation_igss_368" />
+        </record>
+        <record id="hr_occupation_igss_379" model="hr.occupation.igss">
+            <field name="name">Artesanos de la madera y materiales similares</field>
+            <field name="code">7331</field>
+            <field name="parent_id" ref="hr_occupation_igss_378" />
+        </record>
+        <record id="hr_occupation_igss_380" model="hr.occupation.igss">
+            <field name="name">Artesanos de los tejidos, el cuero y materiales similares</field>
+            <field name="code">7332</field>
+            <field name="parent_id" ref="hr_occupation_igss_378" />
+        </record>
+        <record id="hr_occupation_igss_381" model="hr.occupation.igss">
+            <field name="name">OFICIALES Y OPERARIOS DE LAS ARTES GRÁFICAS Y AFINES</field>
+            <field name="code">734</field>
+            <field name="parent_id" ref="hr_occupation_igss_368" />
+        </record>
+        <record id="hr_occupation_igss_382" model="hr.occupation.igss">
+            <field name="name">Cajista, tipógrafos y afines</field>
+            <field name="code">7341</field>
+            <field name="parent_id" ref="hr_occupation_igss_381" />
+        </record>
+        <record id="hr_occupation_igss_383" model="hr.occupation.igss">
+            <field name="name">Estereotipistas y galvanotipistas</field>
+            <field name="code">7342</field>
+            <field name="parent_id" ref="hr_occupation_igss_381" />
+        </record>
+        <record id="hr_occupation_igss_384" model="hr.occupation.igss">
+            <field name="name">Grabadores de imprenta y fotograbadores</field>
+            <field name="code">7343</field>
+            <field name="parent_id" ref="hr_occupation_igss_381" />
+        </record>
+        <record id="hr_occupation_igss_385" model="hr.occupation.igss">
+            <field name="name">Operarios de la fotografía y afines</field>
+            <field name="code">7344</field>
+            <field name="parent_id" ref="hr_occupation_igss_381" />
+        </record>
+        <record id="hr_occupation_igss_386" model="hr.occupation.igss">
+            <field name="name">Encuadernadores y afines</field>
+            <field name="code">7345</field>
+            <field name="parent_id" ref="hr_occupation_igss_381" />
+        </record>
+        <record id="hr_occupation_igss_387" model="hr.occupation.igss">
+            <field name="name">Impresores de serigrafía y estampadores, plancha y en textiles</field>
+            <field name="code">7346</field>
+            <field name="parent_id" ref="hr_occupation_igss_381" />
+        </record>
+        <record id="hr_occupation_igss_388" model="hr.occupation.igss">
+            <field name="name">OTROS OFICIALES, OPERARIOS Y ARTESANOS DE ARTES MECÁNICAS Y DE OTROS OFICIOS</field>
+            <field name="code">74</field>
+            <field name="parent_id" ref="hr_occupation_igss_321" />
+        </record>
+        <record id="hr_occupation_igss_389" model="hr.occupation.igss">
+            <field name="name">OFICIALES Y OPERARIOS DEL PROCESAMIENTO DE ALIMENTOS AFINES</field>
+            <field name="code">741</field>
+            <field name="parent_id" ref="hr_occupation_igss_388" />
+        </record>
+        <record id="hr_occupation_igss_390" model="hr.occupation.igss">
+            <field name="name">Carniceros, pescaderos y afines</field>
+            <field name="code">7411</field>
+            <field name="parent_id" ref="hr_occupation_igss_389" />
+        </record>
+        <record id="hr_occupation_igss_391" model="hr.occupation.igss">
+            <field name="name">Panaderos, pasteleros y confiteros</field>
+            <field name="code">7412</field>
+            <field name="parent_id" ref="hr_occupation_igss_389" />
+        </record>
+        <record id="hr_occupation_igss_392" model="hr.occupation.igss">
+            <field name="name">Operarios de la elaboración de productos lácteos</field>
+            <field name="code">7413</field>
+            <field name="parent_id" ref="hr_occupation_igss_389" />
+        </record>
+        <record id="hr_occupation_igss_393" model="hr.occupation.igss">
+            <field name="name">Operarios de la conservación de frutas, legumbres, verduras y afines</field>
+            <field name="code">7414</field>
+            <field name="parent_id" ref="hr_occupation_igss_389" />
+        </record>
+        <record id="hr_occupation_igss_394" model="hr.occupation.igss">
+            <field name="name">Catadores y clasificadores de alimentos y bebidas</field>
+            <field name="code">7415</field>
+            <field name="parent_id" ref="hr_occupation_igss_389" />
+        </record>
+        <record id="hr_occupation_igss_395" model="hr.occupation.igss">
+            <field name="name">Preparadores y elaboradores de tabaco y productos afines</field>
+            <field name="code">7416</field>
+            <field name="parent_id" ref="hr_occupation_igss_389" />
+        </record>
+        <record id="hr_occupation_igss_396" model="hr.occupation.igss">
+            <field name="name">OFICIALES Y OPERARIOS DEL TRATAMIENTO DE LA MADERA, EBANISTAS Y AFINES</field>
+            <field name="code">742</field>
+            <field name="parent_id" ref="hr_occupation_igss_388" />
+        </record>
+        <record id="hr_occupation_igss_397" model="hr.occupation.igss">
+            <field name="name">Operarios en el tratamiento de la madera</field>
+            <field name="code">7421</field>
+            <field name="parent_id" ref="hr_occupation_igss_396" />
+        </record>
+        <record id="hr_occupation_igss_398" model="hr.occupation.igss">
+            <field name="name">Ebanistas y afines</field>
+            <field name="code">7422</field>
+            <field name="parent_id" ref="hr_occupation_igss_396" />
+        </record>
+        <record id="hr_occupation_igss_399" model="hr.occupation.igss">
+            <field name="name">Reguladores y reguladores-operadores de máquinas de labrar madera</field>
+            <field name="code">7423</field>
+            <field name="parent_id" ref="hr_occupation_igss_396" />
+        </record>
+        <record id="hr_occupation_igss_400" model="hr.occupation.igss">
+            <field name="name">Cesteros, bruceros y afines</field>
+            <field name="code">7424</field>
+            <field name="parent_id" ref="hr_occupation_igss_396" />
+        </record>
+        <record id="hr_occupation_igss_401" model="hr.occupation.igss">
+            <field name="name">OFICIALES Y OPERARIOS DE LOS TEXTILES, DE LA CONFECCIÓN Y AFINES</field>
+            <field name="code">743</field>
+            <field name="parent_id" ref="hr_occupation_igss_388" />
+        </record>
+        <record id="hr_occupation_igss_402" model="hr.occupation.igss">
+            <field name="name">Preparadores de fibras</field>
+            <field name="code">7431</field>
+            <field name="parent_id" ref="hr_occupation_igss_401" />
+        </record>
+        <record id="hr_occupation_igss_403" model="hr.occupation.igss">
+            <field name="name">Tejedores con telares o de tejidos de punto y afines</field>
+            <field name="code">7432</field>
+            <field name="parent_id" ref="hr_occupation_igss_401" />
+        </record>
+        <record id="hr_occupation_igss_404" model="hr.occupation.igss">
+            <field name="name">Sastres, modistos y sombrereros</field>
+            <field name="code">7433</field>
+            <field name="parent_id" ref="hr_occupation_igss_401" />
+        </record>
+        <record id="hr_occupation_igss_405" model="hr.occupation.igss">
+            <field name="name">Peleteros y afines</field>
+            <field name="code">7434</field>
+            <field name="parent_id" ref="hr_occupation_igss_401" />
+        </record>
+        <record id="hr_occupation_igss_406" model="hr.occupation.igss">
+            <field name="name">Patronistas y cortadores de tela, cuero y afines</field>
+            <field name="code">7435</field>
+            <field name="parent_id" ref="hr_occupation_igss_401" />
+        </record>
+        <record id="hr_occupation_igss_407" model="hr.occupation.igss">
+            <field name="name">Costureros, bordadores y afines</field>
+            <field name="code">7436</field>
+            <field name="parent_id" ref="hr_occupation_igss_401" />
+        </record>
+        <record id="hr_occupation_igss_408" model="hr.occupation.igss">
+            <field name="name">Tapiceros, colchoneros y afines</field>
+            <field name="code">7437</field>
+            <field name="parent_id" ref="hr_occupation_igss_401" />
+        </record>
+        <record id="hr_occupation_igss_409" model="hr.occupation.igss">
+            <field name="name">OFICIALES Y OPERARIOS DE LAS PIELES, CUERO Y CALZADO</field>
+            <field name="code">744</field>
+            <field name="parent_id" ref="hr_occupation_igss_388" />
+        </record>
+        <record id="hr_occupation_igss_410" model="hr.occupation.igss">
+            <field name="name">Apelambradores, pellejeros y curtidores</field>
+            <field name="code">7441</field>
+            <field name="parent_id" ref="hr_occupation_igss_409" />
+        </record>
+        <record id="hr_occupation_igss_411" model="hr.occupation.igss">
+            <field name="name">Zapateros y afines</field>
+            <field name="code">7442</field>
+            <field name="parent_id" ref="hr_occupation_igss_409" />
+        </record>
+        <record id="hr_occupation_igss_412" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE INSTALACIONES, MÁQUINAS Y MONTADORES</field>
+            <field name="code">8</field>
+        </record>
+        <record id="hr_occupation_igss_413" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE INSTALACIONES FIJAS Y AFINES</field>
+            <field name="code">81</field>
+            <field name="parent_id" ref="hr_occupation_igss_412" />
+        </record>
+        <record id="hr_occupation_igss_414" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE INSTALACIONES MINERAS Y DE EXTRACCIÓN Y PROCESAMIENTO DE MINERALES</field>
+            <field name="code">811</field>
+            <field name="parent_id" ref="hr_occupation_igss_413" />
+        </record>
+        <record id="hr_occupation_igss_415" model="hr.occupation.igss">
+            <field name="name">Operadores de instalaciones mineras</field>
+            <field name="code">8111</field>
+            <field name="parent_id" ref="hr_occupation_igss_414" />
+        </record>
+        <record id="hr_occupation_igss_416" model="hr.occupation.igss">
+            <field name="name">Operadores de instalaciones de procesamiento de minerales y rocas</field>
+            <field name="code">8112</field>
+            <field name="parent_id" ref="hr_occupation_igss_414" />
+        </record>
+        <record id="hr_occupation_igss_417" model="hr.occupation.igss">
+            <field name="name">Perforadores y sondistas de pozos y afines</field>
+            <field name="code">8113</field>
+            <field name="parent_id" ref="hr_occupation_igss_414" />
+        </record>
+        <record id="hr_occupation_igss_418" model="hr.occupation.igss">
+            <field name="name">OPERADORES E INSTALACIONES DE PROCESAMIENTO DE METALES</field>
+            <field name="code">812</field>
+            <field name="parent_id" ref="hr_occupation_igss_413" />
+        </record>
+        <record id="hr_occupation_igss_419" model="hr.occupation.igss">
+            <field name="name">Operadores de hornos de minerales y de hornos de primera fusión de metales</field>
+            <field name="code">8121</field>
+            <field name="parent_id" ref="hr_occupation_igss_418" />
+        </record>
+        <record id="hr_occupation_igss_420" model="hr.occupation.igss">
+            <field name="name">Operadores de hornos de segunda fusión, máquinas de colar y moldear metales y trenes de laminación</field>
+            <field name="code">8122</field>
+            <field name="parent_id" ref="hr_occupation_igss_418" />
+        </record>
+        <record id="hr_occupation_igss_421" model="hr.occupation.igss">
+            <field name="name">Operadores de instalaciones de tratamiento térmico de metales</field>
+            <field name="code">8123</field>
+            <field name="parent_id" ref="hr_occupation_igss_418" />
+        </record>
+        <record id="hr_occupation_igss_422" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas trefiladoras y estiradoras de metales</field>
+            <field name="code">8124</field>
+            <field name="parent_id" ref="hr_occupation_igss_418" />
+        </record>
+        <record id="hr_occupation_igss_423" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE INSTALACIONES DE VIDRIARÍA, CERÁMICA Y AFINES</field>
+            <field name="code">813</field>
+            <field name="parent_id" ref="hr_occupation_igss_413" />
+        </record>
+        <record id="hr_occupation_igss_424" model="hr.occupation.igss">
+            <field name="name">Operadores de hornos de vidriería y cerámica y operadores de máquinas afines</field>
+            <field name="code">8131</field>
+            <field name="parent_id" ref="hr_occupation_igss_423" />
+        </record>
+        <record id="hr_occupation_igss_425" model="hr.occupation.igss">
+            <field name="name">operadores de instalaciones de vidriería, cerámica y afines, no clasificados bajo otros epígrafes</field>
+            <field name="code">8139</field>
+            <field name="parent_id" ref="hr_occupation_igss_423" />
+        </record>
+        <record id="hr_occupation_igss_426" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE INSTALACIONES DE PROCESAMIENTO DE LA MADERA Y LA FABRICACIÓN DE PAPEL</field>
+            <field name="code">814</field>
+            <field name="parent_id" ref="hr_occupation_igss_413" />
+        </record>
+        <record id="hr_occupation_igss_427" model="hr.occupation.igss">
+            <field name="name">Operadores de instalaciones de procesamiento de la madera</field>
+            <field name="code">8141</field>
+            <field name="parent_id" ref="hr_occupation_igss_426" />
+        </record>
+        <record id="hr_occupation_igss_428" model="hr.occupation.igss">
+            <field name="name">Operadores de instalaciones para la preparación de la pasta para papel</field>
+            <field name="code">8142</field>
+            <field name="parent_id" ref="hr_occupation_igss_426" />
+        </record>
+        <record id="hr_occupation_igss_429" model="hr.occupation.igss">
+            <field name="name">Operadores de instalaciones para la fabricación de papel</field>
+            <field name="code">8143</field>
+            <field name="parent_id" ref="hr_occupation_igss_426" />
+        </record>
+        <record id="hr_occupation_igss_430" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE INSTALACIONES DE TRATAMIENTOS QUÍMICOS</field>
+            <field name="code">815</field>
+            <field name="parent_id" ref="hr_occupation_igss_413" />
+        </record>
+        <record id="hr_occupation_igss_431" model="hr.occupation.igss">
+            <field name="name">Operadores de instalaciones quebrantadoras, trituradoras y mezcladoras de sustancias químicas</field>
+            <field name="code">8151</field>
+            <field name="parent_id" ref="hr_occupation_igss_430" />
+        </record>
+        <record id="hr_occupation_igss_432" model="hr.occupation.igss">
+            <field name="name">Operadores de instalaciones de tratamiento químico térmico</field>
+            <field name="code">8152</field>
+            <field name="parent_id" ref="hr_occupation_igss_430" />
+        </record>
+        <record id="hr_occupation_igss_433" model="hr.occupation.igss">
+            <field name="name">Operadores de equipos de filtración y separación de sustancias químicas</field>
+            <field name="code">8153</field>
+            <field name="parent_id" ref="hr_occupation_igss_430" />
+        </record>
+        <record id="hr_occupation_igss_434" model="hr.occupation.igss">
+            <field name="name">Operadores de equipos de destilación y de reacción química (excepto petróleo y gas natural)</field>
+            <field name="code">8154</field>
+            <field name="parent_id" ref="hr_occupation_igss_430" />
+        </record>
+        <record id="hr_occupation_igss_435" model="hr.occupation.igss">
+            <field name="name">Operadores de instalaciones de refinación de petróleo y gas natural</field>
+            <field name="code">8155</field>
+            <field name="parent_id" ref="hr_occupation_igss_430" />
+        </record>
+        <record id="hr_occupation_igss_436" model="hr.occupation.igss">
+            <field name="name">Operadores de instalaciones de tratamientos químicos, no clasificados bajo otros epígrafes</field>
+            <field name="code">8159</field>
+            <field name="parent_id" ref="hr_occupation_igss_430" />
+        </record>
+        <record id="hr_occupation_igss_437" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE INSTALACIONES DE PRODUCCIÓN DE ENERGÍA Y AFINES</field>
+            <field name="code">816</field>
+            <field name="parent_id" ref="hr_occupation_igss_413" />
+        </record>
+        <record id="hr_occupation_igss_438" model="hr.occupation.igss">
+            <field name="name">Operadores de instalaciones de producción de energía</field>
+            <field name="code">8161</field>
+            <field name="parent_id" ref="hr_occupation_igss_437" />
+        </record>
+        <record id="hr_occupation_igss_439" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas de vapor y calderas</field>
+            <field name="code">8162</field>
+            <field name="parent_id" ref="hr_occupation_igss_437" />
+        </record>
+        <record id="hr_occupation_igss_440" model="hr.occupation.igss">
+            <field name="name">Operadores de incineradores, instalaciones de tratamiento de agua y afines</field>
+            <field name="code">8163</field>
+            <field name="parent_id" ref="hr_occupation_igss_437" />
+        </record>
+        <record id="hr_occupation_igss_441" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE CADENAS DE MONTAJE AUTOMATIZADAS Y DE ROBOTS INDUSTRIALES</field>
+            <field name="code">817</field>
+            <field name="parent_id" ref="hr_occupation_igss_413" />
+        </record>
+        <record id="hr_occupation_igss_442" model="hr.occupation.igss">
+            <field name="name">Operadores de cadenas de montaje automatizadas</field>
+            <field name="code">8171</field>
+            <field name="parent_id" ref="hr_occupation_igss_441" />
+        </record>
+        <record id="hr_occupation_igss_443" model="hr.occupation.igss">
+            <field name="name">operadores de robots industriales</field>
+            <field name="code">8172</field>
+            <field name="parent_id" ref="hr_occupation_igss_441" />
+        </record>
+        <record id="hr_occupation_igss_444" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE MÁQUINAS Y MONTADORES</field>
+            <field name="code">82</field>
+            <field name="parent_id" ref="hr_occupation_igss_412" />
+        </record>
+        <record id="hr_occupation_igss_445" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE MÁQUINAS PARA TRABAJAR METALES Y PRODUCTOS MINERALES</field>
+            <field name="code">821</field>
+            <field name="parent_id" ref="hr_occupation_igss_444" />
+        </record>
+        <record id="hr_occupation_igss_446" model="hr.occupation.igss">
+            <field name="name">Operadores de maquinarias herramientas</field>
+            <field name="code">8211</field>
+            <field name="parent_id" ref="hr_occupation_igss_445" />
+        </record>
+        <record id="hr_occupation_igss_447" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para fabricar cemento y otros productos minerales</field>
+            <field name="code">8212</field>
+            <field name="parent_id" ref="hr_occupation_igss_445" />
+        </record>
+        <record id="hr_occupation_igss_448" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE MÁQUINAS PARA FABRICAR PRODUCTOS QUÍMICOS</field>
+            <field name="code">822</field>
+            <field name="parent_id" ref="hr_occupation_igss_444" />
+        </record>
+        <record id="hr_occupation_igss_449" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para fabricar productos farmacéuticos y cosméticos</field>
+            <field name="code">8221</field>
+            <field name="parent_id" ref="hr_occupation_igss_448" />
+        </record>
+        <record id="hr_occupation_igss_450" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para fabricar municiones y explosivos</field>
+            <field name="code">8222</field>
+            <field name="parent_id" ref="hr_occupation_igss_448" />
+        </record>
+        <record id="hr_occupation_igss_451" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas pulidoras, galvanizadoras y recubridoras de metales</field>
+            <field name="code">8223</field>
+            <field name="parent_id" ref="hr_occupation_igss_448" />
+        </record>
+        <record id="hr_occupation_igss_452" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para fabricar accesorios fotográficos</field>
+            <field name="code">8224</field>
+            <field name="parent_id" ref="hr_occupation_igss_448" />
+        </record>
+        <record id="hr_occupation_igss_453" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para fabricar productos químicos, no clasificados bajo otros epígrafes</field>
+            <field name="code">8229</field>
+            <field name="parent_id" ref="hr_occupation_igss_448" />
+        </record>
+        <record id="hr_occupation_igss_454" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE MÁQUINAS PARA FABRICAR PRODUCTOS DE CAUCHO Y MATERIAL PLÁSTICO</field>
+            <field name="code">823</field>
+            <field name="parent_id" ref="hr_occupation_igss_444" />
+        </record>
+        <record id="hr_occupation_igss_455" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para fabricar productos de caucho</field>
+            <field name="code">8231</field>
+            <field name="parent_id" ref="hr_occupation_igss_454" />
+        </record>
+        <record id="hr_occupation_igss_456" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para fabricar productos de material plástico</field>
+            <field name="code">8232</field>
+            <field name="parent_id" ref="hr_occupation_igss_454" />
+        </record>
+        <record id="hr_occupation_igss_457" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE MÁQUINAS PARA FABRICAR PRODUCTOS DE MADERA</field>
+            <field name="code">824</field>
+            <field name="parent_id" ref="hr_occupation_igss_444" />
+        </record>
+        <record id="hr_occupation_igss_458" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para fabricar productos de madera</field>
+            <field name="code">8240</field>
+            <field name="parent_id" ref="hr_occupation_igss_457" />
+        </record>
+        <record id="hr_occupation_igss_459" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE MÁQUINAS DE IMPRENTA, ENCUADERNACIÓN Y FABRICACIÓN DE PRODUCTOS DE PAPEL</field>
+            <field name="code">825</field>
+            <field name="parent_id" ref="hr_occupation_igss_444" />
+        </record>
+        <record id="hr_occupation_igss_460" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas de imprenta</field>
+            <field name="code">8251</field>
+            <field name="parent_id" ref="hr_occupation_igss_459" />
+        </record>
+        <record id="hr_occupation_igss_461" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas de encuadernación</field>
+            <field name="code">8252</field>
+            <field name="parent_id" ref="hr_occupation_igss_459" />
+        </record>
+        <record id="hr_occupation_igss_462" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para fabricar productos de papel</field>
+            <field name="code">8253</field>
+            <field name="parent_id" ref="hr_occupation_igss_459" />
+        </record>
+        <record id="hr_occupation_igss_463" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE MÁQUINAS PARA FABRICAR PRODUCTOS TEXTILES Y ARTÍCULOS DE PIEL Y CUERO</field>
+            <field name="code">826</field>
+            <field name="parent_id" ref="hr_occupation_igss_444" />
+        </record>
+        <record id="hr_occupation_igss_464" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas de preparación de fibras, hilado y devanado</field>
+            <field name="code">8261</field>
+            <field name="parent_id" ref="hr_occupation_igss_463" />
+        </record>
+        <record id="hr_occupation_igss_465" model="hr.occupation.igss">
+            <field name="name">Operadores de telares y otras máquinas tejedoras</field>
+            <field name="code">8262</field>
+            <field name="parent_id" ref="hr_occupation_igss_463" />
+        </record>
+        <record id="hr_occupation_igss_466" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para coser</field>
+            <field name="code">8263</field>
+            <field name="parent_id" ref="hr_occupation_igss_463" />
+        </record>
+        <record id="hr_occupation_igss_467" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas de blanqueo, teñido y tintura</field>
+            <field name="code">8264</field>
+            <field name="parent_id" ref="hr_occupation_igss_463" />
+        </record>
+        <record id="hr_occupation_igss_468" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas de tratamiento de pieles y cueros</field>
+            <field name="code">8265</field>
+            <field name="parent_id" ref="hr_occupation_igss_463" />
+        </record>
+        <record id="hr_occupation_igss_469" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para la fabricación de calzado y afines</field>
+            <field name="code">8266</field>
+            <field name="parent_id" ref="hr_occupation_igss_463" />
+        </record>
+        <record id="hr_occupation_igss_470" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para fabricar productos textiles y artículos de piel y cuero, no clasificados bajo otros epígrafes</field>
+            <field name="code">8269</field>
+            <field name="parent_id" ref="hr_occupation_igss_463" />
+        </record>
+        <record id="hr_occupation_igss_471" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE MÁQUINAS PARA ELABORAR ALIMENTOS Y PRODUCTOS AFINES</field>
+            <field name="code">827</field>
+            <field name="parent_id" ref="hr_occupation_igss_444" />
+        </record>
+        <record id="hr_occupation_igss_472" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para elaborar carne de pescado y mariscos</field>
+            <field name="code">8271</field>
+            <field name="parent_id" ref="hr_occupation_igss_471" />
+        </record>
+        <record id="hr_occupation_igss_473" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para elaborar productos lácteos</field>
+            <field name="code">8272</field>
+            <field name="parent_id" ref="hr_occupation_igss_471" />
+        </record>
+        <record id="hr_occupation_igss_474" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para moler cereales y especies</field>
+            <field name="code">7273</field>
+            <field name="parent_id" ref="hr_occupation_igss_471" />
+        </record>
+        <record id="hr_occupation_igss_475" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para elaborar cereales, productos de panadería, repostería y artículos de chocolate</field>
+            <field name="code">8274</field>
+            <field name="parent_id" ref="hr_occupation_igss_471" />
+        </record>
+        <record id="hr_occupation_igss_476" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para elaborar frutos húmedos, secos y hortalizas</field>
+            <field name="code">8275</field>
+            <field name="parent_id" ref="hr_occupation_igss_471" />
+        </record>
+        <record id="hr_occupation_igss_477" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para fabricar azúcares</field>
+            <field name="code">8276</field>
+            <field name="parent_id" ref="hr_occupation_igss_471" />
+        </record>
+        <record id="hr_occupation_igss_478" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para elaborar té, café y cacao</field>
+            <field name="code">8277</field>
+            <field name="parent_id" ref="hr_occupation_igss_471" />
+        </record>
+        <record id="hr_occupation_igss_479" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para elaborar cerveza, vinos y otras bebidas</field>
+            <field name="code">8278</field>
+            <field name="parent_id" ref="hr_occupation_igss_471" />
+        </record>
+        <record id="hr_occupation_igss_480" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas para elaborar productos de tabaco</field>
+            <field name="code">8279</field>
+            <field name="parent_id" ref="hr_occupation_igss_471" />
+        </record>
+        <record id="hr_occupation_igss_481" model="hr.occupation.igss">
+            <field name="name">MONTADORES</field>
+            <field name="code">828</field>
+            <field name="parent_id" ref="hr_occupation_igss_444" />
+        </record>
+        <record id="hr_occupation_igss_482" model="hr.occupation.igss">
+            <field name="name">Montadores de mecanismos y elementos mecánicos de máquinas</field>
+            <field name="code">8281</field>
+            <field name="parent_id" ref="hr_occupation_igss_481" />
+        </record>
+        <record id="hr_occupation_igss_483" model="hr.occupation.igss">
+            <field name="name">Montadores de equipos eléctricos</field>
+            <field name="code">8282</field>
+            <field name="parent_id" ref="hr_occupation_igss_481" />
+        </record>
+        <record id="hr_occupation_igss_484" model="hr.occupation.igss">
+            <field name="name">Montadores de equipos electrónicos</field>
+            <field name="code">8283</field>
+            <field name="parent_id" ref="hr_occupation_igss_481" />
+        </record>
+        <record id="hr_occupation_igss_485" model="hr.occupation.igss">
+            <field name="name">Montadores de productos metálicos, de caucho y de material plástico</field>
+            <field name="code">8284</field>
+            <field name="parent_id" ref="hr_occupation_igss_481" />
+        </record>
+        <record id="hr_occupation_igss_486" model="hr.occupation.igss">
+            <field name="name">Montadores de productos de madera y de materiales afines</field>
+            <field name="code">8285</field>
+            <field name="parent_id" ref="hr_occupation_igss_481" />
+        </record>
+        <record id="hr_occupation_igss_487" model="hr.occupation.igss">
+            <field name="name">Montadores de productos de cartón, textiles y materiales afines</field>
+            <field name="code">8286</field>
+            <field name="parent_id" ref="hr_occupation_igss_481" />
+        </record>
+        <record id="hr_occupation_igss_488" model="hr.occupation.igss">
+            <field name="name">OTROS OPERADORES DE MÁQUINAS Y MONTADORES</field>
+            <field name="code">829</field>
+            <field name="parent_id" ref="hr_occupation_igss_444" />
+        </record>
+        <record id="hr_occupation_igss_489" model="hr.occupation.igss">
+            <field name="name">Otros operadores de máquinas y montadores</field>
+            <field name="code">8290</field>
+            <field name="parent_id" ref="hr_occupation_igss_488" />
+        </record>
+        <record id="hr_occupation_igss_490" model="hr.occupation.igss">
+            <field name="name">CONDUCTORES DE VEHÍCULOS Y OPERADORES DE EQUIPOS PESADOS MÓVILES</field>
+            <field name="code">83</field>
+            <field name="parent_id" ref="hr_occupation_igss_412" />
+        </record>
+        <record id="hr_occupation_igss_491" model="hr.occupation.igss">
+            <field name="name">MAQUINISTA DE LOCOMOTORAS Y AFINES</field>
+            <field name="code">831</field>
+            <field name="parent_id" ref="hr_occupation_igss_490" />
+        </record>
+        <record id="hr_occupation_igss_492" model="hr.occupation.igss">
+            <field name="name">Maquinista de locomotoras</field>
+            <field name="code">8311</field>
+            <field name="parent_id" ref="hr_occupation_igss_491" />
+        </record>
+        <record id="hr_occupation_igss_493" model="hr.occupation.igss">
+            <field name="name">Guardafrenos, guardagujas y agentes de maniobras</field>
+            <field name="code">8312</field>
+            <field name="parent_id" ref="hr_occupation_igss_491" />
+        </record>
+        <record id="hr_occupation_igss_494" model="hr.occupation.igss">
+            <field name="name">CONDUCTORES DE VEHÍCULOS DE MOTOR</field>
+            <field name="code">832</field>
+            <field name="parent_id" ref="hr_occupation_igss_490" />
+        </record>
+        <record id="hr_occupation_igss_495" model="hr.occupation.igss">
+            <field name="name">Conductores de motocicletas</field>
+            <field name="code">8321</field>
+            <field name="parent_id" ref="hr_occupation_igss_494" />
+        </record>
+        <record id="hr_occupation_igss_496" model="hr.occupation.igss">
+            <field name="name">Conductores de automóviles, taxis y camionetas</field>
+            <field name="code">8322</field>
+            <field name="parent_id" ref="hr_occupation_igss_494" />
+        </record>
+        <record id="hr_occupation_igss_497" model="hr.occupation.igss">
+            <field name="name">Conductores de autobuses y tranvías</field>
+            <field name="code">8323</field>
+            <field name="parent_id" ref="hr_occupation_igss_494" />
+        </record>
+        <record id="hr_occupation_igss_498" model="hr.occupation.igss">
+            <field name="name">Conductores de camiones pesados</field>
+            <field name="code">8324</field>
+            <field name="parent_id" ref="hr_occupation_igss_494" />
+        </record>
+        <record id="hr_occupation_igss_499" model="hr.occupation.igss">
+            <field name="name">OPERADORES DE MAQUINARIA AGRÍCOLA MÓVIL Y DE OTRAS MÁQUINAS MÓVILES</field>
+            <field name="code">833</field>
+            <field name="parent_id" ref="hr_occupation_igss_490" />
+        </record>
+        <record id="hr_occupation_igss_500" model="hr.occupation.igss">
+            <field name="name">Operadores de maquinaria agrícola y forestal motorizada</field>
+            <field name="code">8331</field>
+            <field name="parent_id" ref="hr_occupation_igss_499" />
+        </record>
+        <record id="hr_occupation_igss_501" model="hr.occupation.igss">
+            <field name="name">Operadores de máquinas de movimientos de tierras y afines</field>
+            <field name="code">8332</field>
+            <field name="parent_id" ref="hr_occupation_igss_499" />
+        </record>
+        <record id="hr_occupation_igss_502" model="hr.occupation.igss">
+            <field name="name">Operadores de grúas, de aparatos elevadores y afines</field>
+            <field name="code">8333</field>
+            <field name="parent_id" ref="hr_occupation_igss_499" />
+        </record>
+        <record id="hr_occupation_igss_503" model="hr.occupation.igss">
+            <field name="name">Conductores de camiones pesados (agrícolas)</field>
+            <field name="code">8334</field>
+            <field name="parent_id" ref="hr_occupation_igss_499" />
+        </record>
+        <record id="hr_occupation_igss_504" model="hr.occupation.igss">
+            <field name="name">MARINEROS DE CUBIERTA Y AFINES</field>
+            <field name="code">834</field>
+            <field name="parent_id" ref="hr_occupation_igss_490" />
+        </record>
+        <record id="hr_occupation_igss_505" model="hr.occupation.igss">
+            <field name="name">Marineros de cubierta y afines</field>
+            <field name="code">8340</field>
+            <field name="parent_id" ref="hr_occupation_igss_504" />
+        </record>
+        <record id="hr_occupation_igss_506" model="hr.occupation.igss">
+            <field name="name">TRABAJADORES NO CALIFICADOS</field>
+            <field name="code">9</field>
+        </record>
+        <record id="hr_occupation_igss_507" model="hr.occupation.igss">
+            <field name="name">TRABAJADORES NO CALIFICADOS DE VENTAS Y SERVICIOS</field>
+            <field name="code">91</field>
+            <field name="parent_id" ref="hr_occupation_igss_506" />
+        </record>
+        <record id="hr_occupation_igss_508" model="hr.occupation.igss">
+            <field name="name">VENDEDORES AMBULANTES Y AFINES</field>
+            <field name="code">911</field>
+            <field name="parent_id" ref="hr_occupation_igss_507" />
+        </record>
+        <record id="hr_occupation_igss_509" model="hr.occupation.igss">
+            <field name="name">Vendedores ambulantes de productos comestibles</field>
+            <field name="code">9111</field>
+            <field name="parent_id" ref="hr_occupation_igss_508" />
+        </record>
+        <record id="hr_occupation_igss_510" model="hr.occupation.igss">
+            <field name="name">Vendedores ambulantes de productos no comestibles</field>
+            <field name="code">9112</field>
+            <field name="parent_id" ref="hr_occupation_igss_508" />
+        </record>
+        <record id="hr_occupation_igss_511" model="hr.occupation.igss">
+            <field name="name">Vendedores a domicilio y por teléfono</field>
+            <field name="code">9113</field>
+            <field name="parent_id" ref="hr_occupation_igss_508" />
+        </record>
+        <record id="hr_occupation_igss_512" model="hr.occupation.igss">
+            <field name="name">LIMPIABOTAS Y OTROS TRABAJADORES CALLEJEROS</field>
+            <field name="code">912</field>
+            <field name="parent_id" ref="hr_occupation_igss_507" />
+        </record>
+        <record id="hr_occupation_igss_513" model="hr.occupation.igss">
+            <field name="name">Limpiabotas y otros trabajadores callejeros</field>
+            <field name="code">9120</field>
+            <field name="parent_id" ref="hr_occupation_igss_512" />
+        </record>
+        <record id="hr_occupation_igss_514" model="hr.occupation.igss">
+            <field name="name">PERSONAL DOMÉSTICO Y AFINES, LIMPIADORES , PLANCHADORES, LAVANDEROS Y PLANCHADORES</field>
+            <field name="code">913</field>
+            <field name="parent_id" ref="hr_occupation_igss_507" />
+        </record>
+        <record id="hr_occupation_igss_515" model="hr.occupation.igss">
+            <field name="name">Personal doméstico</field>
+            <field name="code">9131</field>
+            <field name="parent_id" ref="hr_occupation_igss_514" />
+        </record>
+        <record id="hr_occupation_igss_516" model="hr.occupation.igss">
+            <field name="name">Limpiadores de oficinas, hoteles y otros establecimientos</field>
+            <field name="code">9132</field>
+            <field name="parent_id" ref="hr_occupation_igss_514" />
+        </record>
+        <record id="hr_occupation_igss_517" model="hr.occupation.igss">
+            <field name="name">Lavanderos y planchadores manuales</field>
+            <field name="code">9133</field>
+            <field name="parent_id" ref="hr_occupation_igss_514" />
+        </record>
+        <record id="hr_occupation_igss_518" model="hr.occupation.igss">
+            <field name="name">CONSERJES, LAVADORES DE VENTANAS Y AFINES</field>
+            <field name="code">914</field>
+            <field name="parent_id" ref="hr_occupation_igss_507" />
+        </record>
+        <record id="hr_occupation_igss_519" model="hr.occupation.igss">
+            <field name="name">Conserjes</field>
+            <field name="code">9141</field>
+            <field name="parent_id" ref="hr_occupation_igss_518" />
+        </record>
+        <record id="hr_occupation_igss_520" model="hr.occupation.igss">
+            <field name="name">Lavadores de vehículos, ventanas y afines</field>
+            <field name="code">9142</field>
+            <field name="parent_id" ref="hr_occupation_igss_518" />
+        </record>
+        <record id="hr_occupation_igss_521" model="hr.occupation.igss">
+            <field name="name">MENSAJEROS, PORTEADORES, PORTEROS Y AFINES</field>
+            <field name="code">915</field>
+            <field name="parent_id" ref="hr_occupation_igss_507" />
+        </record>
+        <record id="hr_occupation_igss_522" model="hr.occupation.igss">
+            <field name="name">Mensajeros, porteadores y repartidores</field>
+            <field name="code">9151</field>
+            <field name="parent_id" ref="hr_occupation_igss_521" />
+        </record>
+        <record id="hr_occupation_igss_523" model="hr.occupation.igss">
+            <field name="name">Porteros y guardianes y afines</field>
+            <field name="code">9152</field>
+            <field name="parent_id" ref="hr_occupation_igss_521" />
+        </record>
+        <record id="hr_occupation_igss_524" model="hr.occupation.igss">
+            <field name="name">Recolectores de dinero en aparatos de venta automática, lectores de medidores y afines</field>
+            <field name="code">9153</field>
+            <field name="parent_id" ref="hr_occupation_igss_521" />
+        </record>
+        <record id="hr_occupation_igss_525" model="hr.occupation.igss">
+            <field name="name">RECOLECTORES DE BASURA Y AFINES</field>
+            <field name="code">916</field>
+            <field name="parent_id" ref="hr_occupation_igss_507" />
+        </record>
+        <record id="hr_occupation_igss_526" model="hr.occupation.igss">
+            <field name="name">Recolectores de basura</field>
+            <field name="code">9161</field>
+            <field name="parent_id" ref="hr_occupation_igss_525" />
+        </record>
+        <record id="hr_occupation_igss_527" model="hr.occupation.igss">
+            <field name="name">Barrenderos y afines</field>
+            <field name="code">9162</field>
+            <field name="parent_id" ref="hr_occupation_igss_525" />
+        </record>
+        <record id="hr_occupation_igss_528" model="hr.occupation.igss">
+            <field name="name">PEONES AGROPECUARIOS, FORESTALES, PESQUEROS Y AFINES</field>
+            <field name="code">92</field>
+            <field name="parent_id" ref="hr_occupation_igss_506" />
+        </record>
+        <record id="hr_occupation_igss_529" model="hr.occupation.igss">
+            <field name="name">PEONES AGROPECUARIOS, FORESTALES, PESQUEROS Y AFINES</field>
+            <field name="code">921</field>
+            <field name="parent_id" ref="hr_occupation_igss_528" />
+        </record>
+        <record id="hr_occupation_igss_530" model="hr.occupation.igss">
+            <field name="name">Mozos de labranza y peones agropecuarios</field>
+            <field name="code">9211</field>
+            <field name="parent_id" ref="hr_occupation_igss_529" />
+        </record>
+        <record id="hr_occupation_igss_531" model="hr.occupation.igss">
+            <field name="name">Peones forestales</field>
+            <field name="code">9212</field>
+            <field name="parent_id" ref="hr_occupation_igss_529" />
+        </record>
+        <record id="hr_occupation_igss_532" model="hr.occupation.igss">
+            <field name="name">Peones de la pesca, la caza y la trampa</field>
+            <field name="code">9213</field>
+            <field name="parent_id" ref="hr_occupation_igss_529" />
+        </record>
+        <record id="hr_occupation_igss_533" model="hr.occupation.igss">
+            <field name="name">PEONES DE LA MINERÍA, LA CONSTRUCCIÓN, LA INDUSTRIA MANUFACTURERA Y EL TRANSPORTE</field>
+            <field name="code">93</field>
+            <field name="parent_id" ref="hr_occupation_igss_506" />
+        </record>
+        <record id="hr_occupation_igss_534" model="hr.occupation.igss">
+            <field name="name">PEONES DE LA MINERÍA Y LA CONSTRUCCIÓN</field>
+            <field name="code">931</field>
+            <field name="parent_id" ref="hr_occupation_igss_533" />
+        </record>
+        <record id="hr_occupation_igss_535" model="hr.occupation.igss">
+            <field name="name">Peones de minas y canteras</field>
+            <field name="code">9311</field>
+            <field name="parent_id" ref="hr_occupation_igss_534" />
+        </record>
+        <record id="hr_occupation_igss_536" model="hr.occupation.igss">
+            <field name="name">Peones de obras públicas y mantenimiento de carreteras, presas y obras similares</field>
+            <field name="code">9312</field>
+            <field name="parent_id" ref="hr_occupation_igss_534" />
+        </record>
+        <record id="hr_occupation_igss_537" model="hr.occupation.igss">
+            <field name="name">Peones de la construcción de edificios</field>
+            <field name="code">9313</field>
+            <field name="parent_id" ref="hr_occupation_igss_534" />
+        </record>
+        <record id="hr_occupation_igss_538" model="hr.occupation.igss">
+            <field name="name">Peones de la industria manufacturera</field>
+            <field name="code">932</field>
+            <field name="parent_id" ref="hr_occupation_igss_533" />
+        </record>
+        <record id="hr_occupation_igss_539" model="hr.occupation.igss">
+            <field name="name">Peones de montaje</field>
+            <field name="code">9321</field>
+            <field name="parent_id" ref="hr_occupation_igss_538" />
+        </record>
+        <record id="hr_occupation_igss_540" model="hr.occupation.igss">
+            <field name="name">Embaladores manuales y otros peones de la industria manufacturera</field>
+            <field name="code">9322</field>
+            <field name="parent_id" ref="hr_occupation_igss_538" />
+        </record>
+        <record id="hr_occupation_igss_541" model="hr.occupation.igss">
+            <field name="name">PEONES DEL TRANSPORTE</field>
+            <field name="code">933</field>
+            <field name="parent_id" ref="hr_occupation_igss_533" />
+        </record>
+        <record id="hr_occupation_igss_542" model="hr.occupation.igss">
+            <field name="name">Conductores de vehículos accionados a pedal o a brazo</field>
+            <field name="code">9331</field>
+            <field name="parent_id" ref="hr_occupation_igss_541" />
+        </record>
+        <record id="hr_occupation_igss_543" model="hr.occupation.igss">
+            <field name="name">Conductores de vehículos y máquinas de tracción animal</field>
+            <field name="code">9332</field>
+            <field name="parent_id" ref="hr_occupation_igss_541" />
+        </record>
+        <record id="hr_occupation_igss_544" model="hr.occupation.igss">
+            <field name="name">Peones de carga</field>
+            <field name="code">9333</field>
+            <field name="parent_id" ref="hr_occupation_igss_541" />
+        </record>
+    </data>
+</odoo>

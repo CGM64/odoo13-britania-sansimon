@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_work_entry_contract_type_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.work.entry.type.contract.view.form.inherit</field>
+        <field name="model">hr.work.entry.type</field>
+        <field name="inherit_id" ref="hr_work_entry.hr_work_entry_type_view_form"/>
+        <field name="arch" type="xml">
+            <!-- <group name="time_off" position="inside"> -->
+                <!-- No exite el grupo 'time_off' en odoo 13 -->
+            <group name="main_group" position="after">
+                <group name="other">
+                    <field name="es_afecto_septimo"/>
+                    <field name="es_informe_empleador"/>
+                    <field name="es_suspendido_planilla_igss"/>
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>

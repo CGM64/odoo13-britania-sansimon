@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_account_journal_form_bri">
+        <field name="name">fel.account.journal.form.bri</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <group name="column_posting" position="after">
+                  <group string="Invoice template" groups="account.group_account_manager">
+                    <field name="template_invoice"/>
+                  </group>
+                </group>
+            </data>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_account_journal_form_bri">
+        <field name="name">fel.account.journal.form.bri</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <group name="column_posting" position="after">
+                  <group string="Invoice template" groups="account.group_account_manager">
+                    <field name="template_invoice"/>
+                  </group>
+                </group>
+            </data>
+        </field>
+    </record>
+
+    <record id="view_repair_inherited_orden_form" model="ir.ui.view">
+      <field name="name">product.inherited.form</field>
+      <field name="model">repair.order</field>
+      <field name="inherit_id" ref="repair.view_repair_order_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//button[@name='action_repair_cancel']" position="after">
+            <button name="update_detail" string="Actualizar detalle" type="object"/>
+        </xpath>
+      </field>
+    </record>
+
+    <!-- PORCENTAJE PARA DESCUENTO-->
+    <record id="view_crm_team_form_inherit" model="ir.ui.view">
+      <field name="name">crm.team.form</field>
+      <field name="model">crm.team</field>
+      <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='invoiced_target']" position="after">
+          <label for="porcentaje_maximo"/>
+          <div>
+            <field name="porcentaje_maximo" class="oe_inline"/>%%
+          </div>
+          <label for="porcentaje_maximo_lider"/>
+          <div>
+            <field string="Porcentaje Max. lider" name="porcentaje_maximo_lider" class="oe_inline"/>%%
+          </div>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>

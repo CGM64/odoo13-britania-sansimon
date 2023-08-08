@@ -1,0 +1,37 @@
+<odoo>
+    <template id="bri_custom_submenu">
+        <section id="bri_custom_menu" class="dropdown-menu bri_custom_submenu o_mega_menu">
+
+        </section>
+    </template>
+    <template id="website_custom_submenu" inherit_id="website.submenu">
+        <xpath expr="//li/div[@t-if='submenu.is_mega_menu']" position="attributes">
+            <attribute name="t-attf-class">dropdown-menu o_mega_menu #{submenu.mega_menu_classes} #{'' if submenu.tipo_submenu else 'o_mega_menu-small dropdown-menu-center'}  </attribute>
+        </xpath>
+        <xpath expr="//li[@t-if='submenu.is_visible and not has_visible_submenu']" position="inside">
+            <t t-if="submenu.desplegable">
+                <t t-call="theme_britania.bri_custom_submenu" />
+            </t>
+        </xpath>
+        <xpath expr="//li[@t-if='submenu.is_visible and not has_visible_submenu']" position="attributes">
+            <attribute name="t-attf-class">#{item_class or ''} #{'bri_custom_menu_flag' if submenu.desplegable else ''} </attribute>
+        </xpath>
+        <xpath expr="//li[@t-if='has_visible_submenu']//a" position="replace">
+            <a t-attf-class="#{link_class or ''} dropdown-toggle #{submenu.is_mega_menu and 'o_mega_menu_toggle'}" data-toggle="dropdown" t-att-href="submenu.url or '#'">
+                <span t-field="submenu.name"/>
+            </a>
+        </xpath>
+        <xpath expr="//li[@t-if='submenu.is_visible and not has_visible_submenu']//a" position="replace">
+            <t t-if="submenu.desplegable">
+                <a t-attf-class="#{link_class or ''} dropdown-toggle #{submenu.is_mega_menu and 'o_mega_menu_toggle'}" data-toggle="dropdown" t-att-href="submenu.url or '#'">
+                    <span t-field="submenu.name"/>
+                </a>
+            </t>
+            <t t-else="">
+                <a t-att-href="submenu.clean_url()" t-attf-class="#{link_class or ''} #{'active' if submenu.clean_url() and unslug_url(request.httprequest.path) == unslug_url(submenu.clean_url()) else ''}" role="menuitem" t-ignore="true" t-att-target="'_blank' if submenu.new_window else None">
+                    <span t-field="submenu.name"/>
+                </a>
+            </t>
+        </xpath>
+    </template>
+</odoo>

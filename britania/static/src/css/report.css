@@ -1,0 +1,141 @@
+.aym_table{
+ width:100%;
+ align:center;
+}
+.aym_td{
+  width: 45px;
+  border-width: 1px;
+  border-style: solid;
+}
+.sat_table {
+  width: 100%;
+
+}
+.sat_table_fiscal {
+  width: 2000px;
+
+}
+.sat_td{
+  border-width: 2px;
+  border-style: solid;
+}
+.sat_td_stotal{
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+.sat_td_total{
+  border-bottom: 4px double;
+}
+.sat_td{
+  padding: 2px;
+}
+.sat_td_fiscal{
+  width: 100px;
+}
+.sat_td_fiscal_center{
+  width: 100px;
+  text-align:center;
+}
+.sat_td_fiscal_cantidad{
+  width: 100px;
+  text-align:right;
+}
+.sat_td_fiscal_cantidad_totales{
+  width: 100px;
+  text-align:right;
+  border-top: 2px solid black;
+}
+.col_20 {
+  width: 20%;
+  text-align: :center;
+}
+
+.col_60 {
+  width: 20%;
+  text-align: :center;
+}
+
+.factura_logo {
+  max-height: 75px;
+}
+
+.fac_t_letra {
+  font-size: 10px;
+}
+
+.fac_t_letra_peq {
+  font-size: 8px;
+}
+
+.fac_t_letra_blanca {
+  color: white;
+}
+
+.factura_dte_numero {
+  color: red;
+}
+
+.fn {
+  background-color: green;
+}
+
+.factura_ancho {
+  width: 100%
+}
+
+.factura_tabla th {
+  border: 1px solid black;
+  text-align: center;
+}
+
+.factura_tabla td {
+  border-left: 1px solid;
+  border-right: 1px solid;
+  padding-left: 10px;
+}
+
+.factura_td_numeros {
+  padding-right: 15px;
+  text-align: right;
+}
+
+.factura_encabezado1 th {
+  text-align: left;
+}
+
+.factura_encabezado1 p {
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  padding-left: 15px;
+  padding-top: 10px;
+}
+
+.factura_encabezado2 th {
+  font-size: 9px;
+  padding-top: 8px;
+}
+
+.factura_encabezado3 th {
+  padding: 8px;
+}
+
+.factura_pie_tabla td {
+  border: 1px solid black;
+  padding-top: 10px;
+}
+
+.factura_linea {
+  border-bottom: 1px solid black;
+  padding: 0px;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.salto {
+  page-break-inside: avoid;
+  page-break-after: always;
+}
+.qr {
+  max-height: 60px;
+}

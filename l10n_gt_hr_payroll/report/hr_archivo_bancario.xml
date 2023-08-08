@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<template id="report_hr_exportar_planilla"><t t-foreach="docs.transferencia()" t-as="dato"><t t-if="'lineas' in dato"><t t-esc="dato['lineas']" /></t>
+</t>
+</template>
+<template id="report_hr_transferencia_ach"><t t-foreach="docs.ach()" t-as="dato"><t t-if="'ach' in dato"><t t-esc="dato['ach']" /></t>
+</t>
+</template>
+    </data>
+</odoo>

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <!-- PLANTILLA BRITANIA-->
+    <template id="external_layout_bri">
+        <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
+            <div class="o_boxed_header">
+                <div class="row mb8">
+                    <div class="col-4">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo" />
+                    </div>
+                    <div class="col-8  text-center">
+                        <h4 class="mt0" t-field="company.company_registry" />
+                        <h6 class="mt0" t-field="company.display_street" />
+                        <h6 class="mt0">
+                            <span>Teléfono:
+              </span>
+                            <span t-field="company.phone" />
+                            <span>, Nit:
+              </span>
+                            <span t-field="company.vat" />
+                            <br/>
+                        </h6>
+                        <h6 class="mt0">
+                            <span>Web:
+              </span>
+                            <span t-field="company.display_website" />
+                            <span>, Correo:
+              </span>
+                            <span t-field="company.email" />
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div t-attf-class="article o_report_layout_boxed o_company_#{company.id}_layout article o_report_layout_background" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout" />
+            <t t-raw="0" />
+        </div>
+
+        <div t-attf-class="footer o_boxed_footer o_company_#{company.id}_layout">
+            <div class="text-center">
+                <ul class="list-inline">
+                    <li t-if="company.phone" class="list-inline-item">
+                        Tel:
+                        <span t-field="company.phone" />
+                    </li>
+                    <li t-if="company.email" class="list-inline-item">
+                        Mail:
+                        <span t-field="company.email" />
+                    </li>
+                    <li t-if="company.website" class="list-inline-item">
+                        Web:
+                        <span t-field="company.display_website" />
+                    </li>
+                    <li t-if="company.vat" class="list-inline-item">
+                        <t t-esc="company.country_id.vat_label or 'Tax ID'" />
+                        :
+                        <span t-field="company.vat" />
+                    </li>
+                </ul>
+                <div t-field="company.report_footer" />
+                <div t-if="report_type == 'pdf'">
+                    Page:
+                    <span class="page" />
+                    /
+                    <span class="topage" />
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="external_layout_inherited" inherit_id="web.external_layout" name="external_layout_custom">
+
+        <xpath expr="//t[@t-if='company.external_report_layout_id']" position="replace" />
+
+        <xpath expr="//t[@t-call='web.external_layout_standard']" position="replace">
+            <t t-call="britania.external_layout_bri">
+                <t t-raw="0" />
+            </t>
+        </xpath>
+
+    </template>
+
+    <template id="report_repairorderbri">
+        <t t-set="o" t-value="doc" />
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
+            <t t-set="information_block">
+                <strong t-if="o.address_id == o.partner_invoice_id">Datos de facturación:</strong>
+                <div t-if="o.partner_invoice_id">
+                    <strong t-if="o.address_id != o.partner_invoice_id">Invoice address: </strong>
+                    <div t-field="o.partner_invoice_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}' />
+                    <p t-if="o.partner_invoice_id.vat">
+                        <t t-esc="o.company_id.country_id.vat_label or 'Tax ID'" />
+                        :
+                        <span t-field="o.partner_invoice_id.vat" />
+                    </p>
+                </div>
+            </t>
+            <t t-set="address">
+            </t>
+            <div class="page">
+                <div class="oe_structure" />
+
+                <div class="container">
+                    <div class="row"></div>
+                </div>
+
+                <h2>
+                    <span t-if="o.state != 'draft'">Orden de </span>
+                    <span t-if="o.state == 'draft'">Presupuesto de </span>
+                    <span t-field="o.tipo_orden" />
+                    <span> nº:</span>
+                    <span t-field="o.name" />
+                </h2>
+
+
+                <div id="informations" class="row mt32 mb32">
+                    <div t-if="o.product_id.name" class="col-3 bm-2">
+                        <strong>Datos de motocicleta:</strong>
+                        <p t-field="o.product_id.name" class="m-0" />
+                    </div>
+                    <div class="col-3 bm-3">
+                        <strong>VIN:</strong>
+                        <br/>
+                        <t t-esc="o.obtnener_vin()" />
+                    </div><br/>
+                    <div class="col-3 bm-3">
+                        <strong>Fecha:</strong>
+                        <p t-field="o.create_date" t-options="{'widget': 'date'}" class="m-0" />
+                    </div>
+                    <div class="col-3 bm-3"></div>
+                </div>
+
+                <table class="table border-0 table-sm">
+                    <thead>
+                        <t t-set="display_discount_p" t-value="any(l.discount for l in o.operations)" />
+                        <t t-set="display_discount_o" t-value="any(l.discount for l in o.fees_lines)" />
+                        <tr class="border-0">
+                            <th class="border-0">DESCRIPCIÓN</th>
+                            <th class="text-right border-0">CANTIDAD</th>
+                            <th class="text-right border-0">PRECIO UNIT.</th>
+                            <t t-if="display_discount_p or display_discount_o">
+                                <th class="text-right border-0">DESC.</th>
+                            </t>
+                            <th class="text-right border-0">PRECIO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-if="o.operations">
+                            <t t-set="display_discount_p" t-value="any(l.discount for l in o.operations)" />
+                            <t t-set="display_discount_o" t-value="any(l.discount for l in o.fees_lines)" />
+                            <t t-if="display_discount_p">
+                                <t t-set="display_discount" t-value="1" />
+                            </t>
+                            <t t-if="display_discount_o">
+                                <t t-set="display_discount" t-value="1" />
+                            </t>
+                            <tr class="bg-200 o_line_section border-0">
+                                <td class="border-0" colspan="5">
+                                    <strong>Repuestos</strong>
+                                </td>
+                            </tr>
+                            <tr class="border-0" t-foreach="o.operations" t-as="line">
+                                <td class="border-0">
+                                    <span t-field="line.product_id.name" />
+                                </td>
+                                <td class="text-right border-0">
+                                    <span t-field="line.product_uom_qty" />
+                                    <span groups="uom.group_uom" t-field="line.product_uom.name" />
+                                </td>
+                                <td class="text-right border-0">
+                                    <span t-field="line.price_unit" />
+                                </td>
+                                <t t-if="display_discount == 1">
+                                    <td class="text-right border-0">
+                                        <span t-field="line.discount" t-options='{"precision": 2}' />
+                                        %
+                                    </td>
+                                </t>
+                                <td class="text-right o_price_total border-0">
+                                    <span t-field="line.price_total" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}' />
+                                </td>
+                            </tr>
+                            <tr>
+                                <t t-set="total_ops" t-value="sum(l.price_total for l in o.operations)" />
+                                <t t-if="display_discount == 1">
+                                    <td colspan="4" class="text-right border-0">Subtotal repuestos: </td>
+                                    <td class="text-right border-0">
+                                        <t t-esc="total_ops" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}' />
+                                    </td>
+                                </t>
+                                <t t-if="not display_discount">
+                                    <td colspan="3" class="text-right border-0">Subtotal repuestos: </td>
+                                    <td class="text-right border-0">
+                                        <t t-esc="total_ops" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}' />
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                        <t t-if="o.fees_lines">
+                            <t t-set="display_discount_p" t-value="any(l.discount for l in o.operations)" />
+                            <t t-set="display_discount_o" t-value="any(l.discount for l in o.fees_lines)" />
+                            <t t-if="display_discount_p">
+                                <t t-set="display_discount" t-value="1" />
+                            </t>
+                            <t t-if="display_discount_o">
+                                <t t-set="display_discount" t-value="1" />
+                            </t>
+                            <tr class="bg-200 o_line_section border-0">
+                                <td class="border-0" colspan="5">
+                                    <strong>Servicios</strong>
+                                </td>
+                            </tr>
+                            <tr class="border-0" t-foreach="o.fees_lines" t-as="fees">
+                                <t t-if="display_discount == 1">
+                                    <td class="border-0">
+                                        <span t-field="fees.name" />
+                                    </td>
+                                </t>
+                                <t t-if="not display_discount">
+                                    <td class="border-0">
+                                        <span t-field="fees.name" />
+                                    </td>
+                                </t>
+                                <td class="border-0"></td>
+                                <td class="border-0"></td>
+                                <t t-if="display_discount == 1">
+                                    <td class="border-0">
+                                        <span t-field="fees.discount" />
+                                    </td>
+                                </t>
+                                <td class="text-right o_price_total border-0">
+                                    <span t-field="fees.amount_total" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}' />
+                                </td>
+                            </tr>
+                            <tr>
+                                <t t-set="total_fees" t-value="sum(l.amount_total for l in o.fees_lines)" />
+                                <t t-if="display_discount == 1">
+                                    <td colspan="4" class="text-right border-0">Subtotal servicios: </td>
+                                    <td class="text-right border-0">
+                                        <t t-esc="total_fees" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}' />
+                                    </td>
+                                </t>
+                                <t t-if="not display_discount">
+                                    <td colspan="3" class="text-right border-0">Subtotal servicios: </td>
+                                    <td class="text-right border-0">
+                                        <t t-esc="total_fees" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}' />
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <div id="total" class="row justify-content-end">
+                    <div class="col-4">
+                        <table class="table table-sm">
+                            <t t-if="o.invoice_method !='none'">
+                                <tr class="border-0 o_total">
+                                    <td>
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="text-right o_price_total">
+                                        <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.pricelist_id.currency_id}' />
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+                    </div>
+                </div>
+                
+
+                <div class="row">
+                    <div class="col-12">
+                        <p t-field="o.quotation_notes"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="custom_report" inherit_id="repair.report_repairorder2" name="custom_report">
+
+        <xpath expr="//t[@t-call='repair.report_repairorder']" position="replace">
+            <t t-call="britania.report_repairorderbri" />
+        </xpath>
+    </template>
+
+    <!-- Reporte pedido-->
+    <template id="custom_report_sale" inherit_id="sale.report_saleorder_document" name="custom_report_sale">
+
+        <xpath expr="/t/t/div/table/tbody/t[2]/tr/t[1]/td[1]" position="replace">
+            <td>
+              <span t-field="line.product_id.name"/>
+            </td>
+        </xpath>
+
+        <xpath expr="//th[@name='th_taxes']" position="replace">
+            <th name="th_taxes" class="text-right">Total</th>
+        </xpath>
+
+        <xpath expr="//th[@name='th_subtotal']" position="replace"></xpath>
+
+        <xpath expr="//td[@name='td_taxes']" position="replace"></xpath>
+
+        <xpath expr="//tr[hasclass('o_subtotal')]" position="replace">
+            <tr t-if="doc.total_discount">
+                <td name="td_amount_untaxed_label">
+                    <strong>Subtotal</strong>
+                </td>
+                <td name="td_amount_untaxed" class="text-right">
+                    <span t-field="doc.amount_total_undiscounted" />
+                </td>
+            </tr>
+        </xpath>
+
+        <xpath expr="//t[@t-foreach='doc.amount_by_group']" position="replace">
+            <tr t-if="doc.total_discount">
+                <td>
+                    <strong>Descuento</strong>
+                </td>
+                <td name="td_tax_total" class="text-right">
+                    <span t-field="doc.total_discount" />
+                </td>
+            </tr>
+        </xpath>
+
+        <xpath expr="//td[@t-if='display_discount']" position="replace">
+            <td t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
+                <span t-field="line.discount" t-options='{"widget": "float", "precision": 0}' />
+            </td>
+        </xpath>
+    </template>
+</odoo>

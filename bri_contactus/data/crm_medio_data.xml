@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="0">
+        <record id="crm_medio_contacto_1" model="crm.medio.contacto">
+            <field name="name">Llamada telefónica</field>
+        </record>
+        <record id="crm_medio_contacto_2" model="crm.medio.contacto">
+            <field name="name">WhatsApp</field>
+        </record>
+        <record id="crm_medio_contacto_3" model="crm.medio.contacto">
+            <field name="name">Mail</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    
+    <report id="report_custom"
+      string="Reporte Adair"
+      model="account.move"
+      report_type="qweb-pdf"
+      name="britania.report_custom_template"
+    />
+  
+    <template id="report_custom_template">
+      <t t-foreach="docs" t-as="o">
+      <t t-call="web.basic_layout">
+        <div class="container">
+          <div class="header">
+            <img class="mx-auto d-block w-100" src="/britania/static/description/Imagen1.png.jpg" style="max-height:120px; padding-up: 100px; "/><br/><br/>
+            <div class="fac_t_letra_peq text-right" style="font-size:14px;">
+              <p>Guatemala,&#160;<span t-field="o.invoice_date"/></p> 
+              <p>Cotización Motocicleta nueva</p><br/>
+            </div>
+            <div class="fac_t_letra_peq text-left" style="font-size:15px;">
+              <p>Estimado:</p>
+              <p><span t-field="o.partner_id.name"/></p><br/><br/>
+              <p>A continuación, se detalla la motocicleta de su interés.</p>
+              <p>Motocicleta marca TRIUMPH Estilo Tiger 900 Rally Pro Color Verde modelo 2023. Accesorios no incluidos.</p>
+              <pre><b>    •  Precio unidad nueva     $18,860</b> (más placas)</pre>
+              <pre><b>    •  Precio especial 	 	     $18,200</b> (más placas)</pre><br/>
+              <p>Tasa de cambio: Q7.90</p>
+              <p>Entrega estimada: <b>Inmediato</b></p><br/>
+              <p>
+                Para realizar la reserva de la motocicleta, por medio de depósito, cheque o transferencia.<br/>
+                Número de cuenta en Dolares 31-4006033-2, de Banco Agromercantil a nombre de Britania Motors, S.A.<br/> 
+                Número de cuenta en Quetzales30-4025931-9, de Banco Agromercantil a nombre de Britania Motors, S.A.<br/> 
+                Cheque a nombre de Britania Motors, S.A.
+              </p><br/>
+              <p>Garantía;</p>
+              <pre>    •	2 años libre de kilometraje</pre>
+              <pre>    •	1er servicio de cortesía</pre><br/><br/>
+              <small>Britania Motors, S. A.</small>
+              <p>Hector Valdez</p><br/>
+              <small>
+                Vigencia: Debido a que la fábrica cobra de acuerdo con el precio vigente durante el mes de producción, los precios acordados estarán vigentes
+                mientras no haya cambios por parte de la fábrica. La liquidación final se hará al entregarse el vehículo, cargando los precios vigentes durante el 
+                mes de producción y no Necesariamente los indicados en esta cotización. Esta cotización tiene validez de 7 días hábiles. Se cobrará un 10% de 
+                gastos administrativos al momento de reservar una motocicleta y anular dicha reserva.
+              </small>
+            </div>
+          </div>
+          <div class="page">
+                <p>j</p>
+          </div>
+          <div class="footer">
+                <img class="mx-auto d-block w-100" src="/britania/static/description/Imagen2.jpg" style="max-height:120px; padding-up: 100px; "/>
+          </div>
+        </div>
+      </t>
+      </t>
+    </template>
+
+    <!-- <template id="britania.invoice_template1">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+          <t t-call="{{o.journal_id.template_invoice}}"/>
+        </t>
+      </t>
+    </template> -->
+  </data>
+</odoo>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tipo de Discapacidad-->
+    <record id="hr_employee_tipo_discapacidad_form" model="ir.ui.view">
+        <field name="name">hr.employee.tipo.discapacidad.form</field>
+        <field name="model">hr.employee.tipo.discapacidad</field>
+        <field name="arch" type="xml">
+            <form string="Tipo de Discapacidad">
+            <sheet>
+                <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                <group name="category_details" col="2">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hr_employee_tipo_discapacidad_tree" model="ir.ui.view">
+        <field name="name">hr.employee.tipo.discapacidad.tree</field>
+        <field name="model">hr.employee.tipo.discapacidad</field>
+        <field name="arch" type="xml">
+            <tree string="Tipo de Discapacidad">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_hr_employee_tipo_discapacidad" model="ir.actions.act_window">
+        <field name="name">Tipo de Discapacidad</field>
+        <field name="res_model">hr.employee.tipo.discapacidad</field>
+        <field name="view_id" ref="hr_employee_tipo_discapacidad_tree"/>
+    </record>
+
+    <menuitem
+    id="tipo_discapacidad"
+    action="action_hr_employee_tipo_discapacidad"
+    parent="l10n_gt_hr_payroll.catalogos_ministerio_trabajo_menu"
+    sequence="1"/>
+
+
+</odoo>

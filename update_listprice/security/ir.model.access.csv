@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_upd_listprice,access_upd_listprice,model_upd_listprice,base.group_user,0,0,0,0
+access_upd_listprice_line,access_upd_listprice_line,model_upd_listprice_line,base.group_user,0,0,0,0
+
+access_manager_upd_listprice,access_manager_upd_listprice,model_upd_listprice,base.group_system,1,1,1,1
+access_manager_upd_listprice_line,access_manager_upd_listprice_line,model_upd_listprice_line,base.group_system,1,1,1,1

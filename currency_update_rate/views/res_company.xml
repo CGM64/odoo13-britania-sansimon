@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record model="ir.ui.view" id="currency_update_rate.view_res_company_form">
+            <field name="name">currency_view_res_company_form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <field name="currency_id" position="after">
+                    <field name="actualizar_moneda"/>
+                </field>
+            </field>
+        </record>
+</odoo>

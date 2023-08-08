@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherited product.product form view -->
+     <record id="inherit_product_normal_form_view" model="ir.ui.view">
+        <field name="name">inherit.product.product.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <label for="purchase_ok" position="after">
+                <br/><field name="is_vehicle"/>
+                <label for="is_vehicle"/>
+            </label>
+        </field>
+    </record>
+
+    <!-- Inherited product.template form view -->
+    <record id="inherit_product_template_form_view" model="ir.ui.view">
+        <field name="name">inherit.product.template.form.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <label for="purchase_ok" position="after">
+                <br/><field name="is_vehicle"/>
+                <label for="is_vehicle"/>
+            </label>
+        </field>
+    </record>
+
+    <record id="view_website_product_form" model="ir.ui.view">
+      <field name="name">product.inherited.form</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_only_form_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='responsible_id']" position="after">
+            <field name="model_ids" widget="many2many_tags" options="{'no_create': True, 'no_edit': True}"/>
+        </xpath>
+      </field>
+    </record>
+
+    <!-- Agregando filtro por vehiculo al modelo de product.template -->
+    <record id="product_template_view_search_is_vehicle" model="ir.ui.view">
+        <field name="name">product.template.search.vehicle</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='services']" position="before">
+                <filter string="Vehiculos" name="product_vehicle" domain="[('is_vehicle', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Agregando boton para mostrar vehiculos-->
+    <record id="view_product_template_vehicle_buttons_from" model="ir.ui.view">
+        <field name="name">product.template.vehicle.button.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="groups_id" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" name="action_view_vehiculos"
+                    type="object" icon="fa-car" attrs="{'invisible': [('is_vehicle', '=', False)]}" help="Lista de Vehiculos asignados.">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="vehicle_product_qty" widget="statinfo" nolabel="1" class="mr4"/>
+                            
+                        </span>
+                        <span class="o_stat_text">Vehiculos</span>
+                    </div>
+                </button>
+            </div>
+        </field>
+    </record>
+
+    <record id="action_vehicle_order_report_all" model="ir.actions.act_window">
+        <field name="name">Vehiculos</field>
+        <field name="res_model">purchase.report</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="view_id"></field>  <!-- force empty -->
+        <field name="help">Purchase Analysis allows you to easily check and analyse your company purchase history and performance. From this menu you can track your negotiation performance, the delivery performance of your vendors, etc.</field>
+        <field name="target">current</field>
+    </record>
+
+    <record model="ir.ui.view" id="product_template_tree_view_royal">
+        <field name="name">product.template.product.royal.tree</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="chasis" />
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_template_form_view_royal">
+        <field name="name">product.template.product.royal.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <group name="group_general" position="inside">
+                <field name="chasis"/>
+            </group>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_template_kanban_view_royal">
+        <field name="name">product.template.product.royal.kanban</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="arch" type="xml">
+            <ul position="inside">
+                <li>Chasis: <field name="chasis" ></field></li>
+            </ul>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="product_template_search_view_royal">
+        <field name="name">product.template.product.royal.search</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="chasis" />
+            </field>
+            <field name="name" position="replace">
+                <field name="name" string="Producto" filter_domain="['|','|', '|', ('default_code', 'ilike', self), ('name', 'ilike', self), ('barcode', 'ilike', self), ('chasis', 'ilike', self)]"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_search_royal_form_view" model="ir.ui.view">
+        <field name="name">product.product.royal.search</field>
+        <field name="model">product.product</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="replace">
+                <field name="name" string="Producto" filter_domain="['|','|', '|', ('default_code', 'ilike', self), ('name', 'ilike', self), ('barcode', 'ilike', self), ('chasis', 'ilike', self)]" />
+            </field>
+        </field>
+    </record>
+    
+</odoo>

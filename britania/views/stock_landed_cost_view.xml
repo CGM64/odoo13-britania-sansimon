@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="stock_landed_cost_view_royal">
+        <field name="name">stock.landed.cost.royal</field>
+        <field name="model">stock.landed.cost</field>
+        <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Vista ajustes de valorización" name="pivot_view">
+                    <widget name="ajuste_valorizacion_widget" />
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <template id="ajuste_valorizacion_view" name="britania.ajuste.valorizacion.view" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/britania/static/src/js/ajuste_valorizacion_widget.js"></script>
+        </xpath>
+    </template>
+  </data>
+</odoo>

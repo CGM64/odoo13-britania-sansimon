@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="view_repair_order_form_britania">
+      <field name="name">repair.form.britania</field>
+      <field name="model">repair.order</field>
+      <field name="inherit_id" ref="repair.view_repair_order_form"/>
+      <field name="arch" type="xml">
+        <button name="action_repair_start" position="after">
+          <button name="action_revert_validate" groups="base.group_erp_manager" string="Convertir a presupuesto" type="object" attrs="{'invisible': ['|',('state','!=','confirmed'),('invoice_method','=','b4repair')]}"/>
+        </button>
+        <button name="action_repair_end" position="after">
+          <button name="action_revert_repair_start" groups="base.group_erp_manager" string="Regresar a confirmado" type="object" attrs="{'invisible': ['|',('state','!=','under_repair'),('invoice_method','=','b4repair')]}"/>
+        </button>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_repair_order_tree_britania">
+      <field name="name">repair.tree.britania</field>
+      <field name="model">repair.order</field>
+      <field name="inherit_id" ref="repair.view_repair_order_tree"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='state']" position="after">
+          <field name="amount_total" string="Total" sum="Total" optional="show"/>
+        </xpath>
+        <xpath expr="//field[@name='address_id']" position="replace">
+          <!--*******ELIMINANDO CAMPO EN VISTA*******-->
+        </xpath>
+        <xpath expr="//field[@name='guarantee_limit']" position="replace">
+          <!--*******ELIMINANDO CAMPO EN VISTA*******-->
+        </xpath>
+      </field>
+    </record>
+
+    <record id="view_repair_comisiones_search" model="ir.ui.view">
+      <field name="name">repair.comisiones.search</field>
+      <field name="model">repair.order</field>
+      <field name="arch" type="xml">
+        <search string="Comisiones">
+          <filter string="Mes actual" name="mes_actual_filter" domain="['|','&#38;',('fecha_certificacion','&lt;',(context_today()+relativedelta(months=1)).strftime('%Y-%m-01')), ('fecha_certificacion','&gt;=',(context_today()).strftime('%Y-%m-01')),('invoice_id','=',False)]"/>
+          <filter string="Fecha Certificación" name="fecha_certificacion" date="fecha_certificacion"/>
+          <filter string="Estado" name="state" context="{'group_by':'state'}"/>
+          <filter string="Tipo de orden" name="tipo_orden" context="{'group_by':'tipo_orden'}"/>
+        </search>
+      </field>
+    </record>
+
+    <record id="view_repair_comisiones_tree" model="ir.ui.view">
+      <field name="name">repair.comisiones.tree</field>
+      <field name="model">repair.order</field>
+      <field name="arch" type="xml">
+        <tree string="Comisiones">
+          <field name="name"/>
+          <field name="partner_id"/>
+          <field name="product_id"/>
+          <field name="user_id"/>
+          <field name="create_date"/>
+          <field name="fecha_certificacion"/>
+          <field name="state"/>
+          <field name="tipo_orden"/>
+          <field name="amount_total_piezas"/>
+          <field name="amount_total_operaciones"/>
+          <field name="amount_total" widget="monetary" options="{'currency_field': 'pricelist_id.currency_id'}"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="action_repair_ver_comisiones" model="ir.actions.act_window">
+      <field name="name">Comisiones</field>
+      <field name="domain">['&#38;',('state', 'in', ('done',)),'|',('fecha_certificacion','!=',False),('invoice_id', '=',False)]</field>
+      <field name="context">{
+                'search_default_mes_actual_filter': 1
+            }
+      </field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">repair.order</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="britania.view_repair_comisiones_tree"/>
+      <field name="search_view_id" ref="britania.view_repair_comisiones_search"/>
+    </record>
+
+    <menuitem id="repair_comisiones" name="Comisiones" parent="repair.repair_menu_reporting" action="action_repair_ver_comisiones"/>
+
+  </data>
+</odoo>

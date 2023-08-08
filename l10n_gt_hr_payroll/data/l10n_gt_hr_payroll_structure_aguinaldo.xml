@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+        <record id="hr_payroll_salary_structure_gt_aguinaldo_emp" model="hr.payroll.structure">
+            <field name="name">Planilla de Aguinaldo</field>
+            <field name="country_id" ref="base.gt"/>
+            <field name="type_id" ref="hr_payroll_salary_structure_type_gt_emp_bono"/>
+            <field name="schedule_pay">monthly</field>
+            <field name="journal_id" ref="hr_payroll_gt_journal_nomina"/>
+        </record>
+    
+        <record id="hr_salary_rule_anticipo_aguinaldo" model="hr.salary.rule">
+            <field name="code">AGUINALDO</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.INPAGUINALDO and inputs.INPAGUINALDO.amount</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Aguinaldo</field>
+            <field name="sequence" eval="57"/>
+            <field name="note">Aguinaldo del empleado</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_aguinaldo_emp"/>
+            <!-- <field name="account_debit" search="[('code', '=', '2.01.01.05.01'),]"/> -->
+        </record>
+    
+        <record id="hr_salary_rule_liquido_recibir_bono14" model="hr.salary.rule">
+            <field name="code">LIQRE</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.ALW - categories.DED</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="name">Liquido a Recibir</field>
+            <field name="sequence" eval="65"/>
+            <field name="note">Liquido a Recibir</field>
+            <field name="struct_id" ref="hr_payroll_salary_structure_gt_aguinaldo_emp"/>
+            <!-- <field name="account_credit" search="[('code', '=', '2-1-03-01-001'),]"/> -->
+        </record>
+    </data>
+
+  </odoo>

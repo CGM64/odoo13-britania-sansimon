@@ -1,0 +1,15 @@
+.page{
+  font-size:12px;
+}
+.div-bg {
+  background-color:#3D3D3D;
+  border-radius:20px;
+}
+.border-secondary{
+  border: 2px solid  #3D3D3D !important;
+  border-radius:20px !important;
+}
+.salto {
+  page-break-inside: avoid;
+  page-break-after: always;
+}
